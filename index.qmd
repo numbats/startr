@@ -1,0 +1,10 @@
+---
+title: "Monash EBS LearnR modules"
+title-block-banner: true
+listing:
+  contents: modules
+  type: table
+  fields: [title, categories]
+  filter-ui: [title]
+  page-size: 100
+---
