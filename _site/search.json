@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Monash EBS LearnR modules",
-    "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nTitle\n\n\nCategories\n\n\n\n\n\n\nR programming basics\n\n\n \n\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "modules/basic/index.html",
     "href": "modules/basic/index.html",
     "title": "R programming basics",
@@ -68,5 +61,12 @@
     "title": "R programming basics",
     "section": "Break statement",
     "text": "Break statement\nThere are occasions where breaking the loop during execution is a good idea. The break statement can be used in for loops and while loops.\nFor example, if we are to set up a early warning system when bank_balance is less than or equal to 4 times weekly spending, we can do the following:\n\nbank_balance &lt;- 200\nweekly_spending &lt;- 28.5\nwhile (bank_balance&gt;= weekly_spending) {\n  bank_balance &lt;- bank_balance - weekly_spending\n  print(bank_balance)\n  if (bank_balance &lt;= 4*weekly_spending){\n    print(\"Find a job and cut weekly spending!\")\n    break\n  }\n}\n\n[1] 171.5\n[1] 143\n[1] 114.5\n[1] 86\n[1] \"Find a job and cut weekly spending!\""
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Monash EBS LearnR modules",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nTitle\n\n\nCategories\n\n\n\n\n\n\nR programming basics\n\n\n \n\n\n\n\n\nNo matching items"
   }
 ]
