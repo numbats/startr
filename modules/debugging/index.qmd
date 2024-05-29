@@ -5,6 +5,8 @@ title-block-banner: yes
 engine: knitr
 filters:
   - webr-teachr
+webr:
+  packages: ["tidyverse"]
 ---
 
 ```{r setup, include = FALSE}
@@ -70,14 +72,52 @@ When the error message says that <span style="color: red;">"Error: object 'somet
 ```{webr-teachr}
 # One of the r built-in dataset is called "cars"
 # Let's try to have a look at the structure of the cars dataset 
-str<<cars>>
+str(<<cars>>)
   
 ???
   
-c(
-  "Are you using the correct numbers and symbols? Have you try the hint?" = x!=25,
-  "Are you using the correct numbers and symbols? Have you try the hint?" = y!=75
-)
+p <- .code[[1]][[2]][[2]]
+  
+c("did you put in cars?" = !"cars" %in% all.vars(.code))
+```
 
+Typo is a very common error that you could make. This could be a miss-type of the object name or miss-type of function name. When you see error messages suggesting <span style="color: red;">"Error: object 'something' not found"errors</span>!, please check and make sure that you have correctly typed everything. 
+
+
+## What if we cannot find the function?!
+
+```{r,echo = FALSE, eval=TRUE}
+detach_package(tidyverse)
+```
+
+```{webr-teachr}
+# One of the r built-in dataset is called "cars"
+# Let's try to have a look at the structure of the cars dataset 
+# Instead of the base R function of checking structure for your dataset, let's use tidyverse function glance to do that. 
+
+glimpse(cars)
+  
+???
+  
+```
+
+Oh no, we could not find the function of `glance()`! We made sure that the spelling is correct, what could be the problem now?
+
+When you see the error messages says that <span style="color: red;">"Error: could not find function "something" "errors</span>!,it normally means that the required package hasn't been loaded to the environment.
+
+Let's try add in the required package `tidyverse`
+
+
+
+```{webr-teachr}
+# One of the r built-in dataset is called "cars"
+# Let's try to have a look at the structure of the cars dataset 
+# Instead of the base R function of checking structure for your dataset, let's use tidyverse function glance to do that. 
+
+library(<<tidyverse>>)
+glimpse(cars)
+  
+???
+  
 ```
 
