@@ -73,7 +73,7 @@ git checkout -b your-new-branch-name
 
 ### Develop your Modules
 
-4. **Develop your Modules, Commit and Push to GitHub**: Now you can make changes in the source code. After you've made your changes, stage them for commit:
+4. **Add your module files and Commit**: Now you can make changes in the source code. After you've made your changes, stage them for commit:
 
 ```bash
 git add .
@@ -84,6 +84,8 @@ Now commit those changes:
 ```bash
 git commit -m "commit message"
 ```
+
+5. **Push your Changes to GitHub**:
 
 Push your changes to your Forked repository on GitHub.com using the command `git push`:
 
