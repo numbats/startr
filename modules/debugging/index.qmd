@@ -1,0 +1,83 @@
+---
+title: Troubleshooting and asking for help
+subtitle: 'With coding comes bugs and errors that need troubleshooting. In this chapter, you will learn how to decipher errors, find help for fixing them, and practice asking clear questions with minimally reproducible examples.'
+title-block-banner: yes
+engine: knitr
+filters:
+  - webr-teachr
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+knitr::knit_hooks$set(class = function(before, options, envir) {
+  if(before) {
+    sprintf("<div class='%s'>", options$class)
+  } else {
+    "</div>"
+  }
+})
+knitr::opts_chunk$set(fig.retina = 2,
+                      fig.width = 6, 
+                      fig.height = 4,
+                      fig.align = "center",
+                      cache.path = "cache/",
+                      message = FALSE,
+                      warning = FALSE)
+library(icons)
+
+detach_package <- function(pkg, character.only = FALSE)
+{
+  if(!character.only)
+  {
+    pkg <- deparse(substitute(pkg))
+  }
+  search_item <- paste("package", pkg, sep = ":")
+  while(search_item %in% search())
+  {
+    detach(search_item, unload = TRUE, character.only = TRUE)
+  }
+}
+
+```
+
+# What are error messages?
+
+Eek! There's a bug `r icon_style(fontawesome("bug", style = "solid"),fill = "red")` in my code and it's causing lots of <span style="color: red;">scary red errors</span>!
+
+Don't panic - believe it or not, this error is just trying to help you! It also may have just saved you from invalid results that you may not have have noticed.
+
+Errors can be frustrating, essentially you've just asked the computer to do something and it has said no!
+
+There are a few troubleshooting techniques that we can use to find the source of the error, modify your code, and get the results you're looking for.
+
+# Read the error
+
+The first step is to carefully **read** the error message, it often contains clues into where and why the code didn't run. With some time and experience, you'll begin to identify these errors and fix your code quickly based on the message alone!
+
+## Let's have a look one of the most common error message 
+
+```{webr-teachr}
+# One of the r built-in dataset is called "cars"
+# Let's try to have a look at the structure of the cars dataset 
+str(car)
+
+```
+
+Oh no! An error message: <span style="color: red;">"Error: object 'car' not found"errors</span>!
+
+When the error message says that <span style="color: red;">"Error: object 'something' not found"errors</span>!, this is often the case that there might be a typo or you didn't load the object loaded in correctly. Let's see how we could fix this. 
+
+```{webr-teachr}
+# One of the r built-in dataset is called "cars"
+# Let's try to have a look at the structure of the cars dataset 
+str<<cars>>
+  
+???
+  
+c(
+  "Are you using the correct numbers and symbols? Have you try the hint?" = x!=25,
+  "Are you using the correct numbers and symbols? Have you try the hint?" = y!=75
+)
+
+```
+
