@@ -2,8 +2,10 @@
   {
     "listing": "/index.html",
     "items": [
+      "/modules/data-wrangling/index.html",
       "/modules/linear-regression/index.html",
-      "/modules/basic/index.html"
+      "/modules/basic/index.html",
+      "/modules/debugging/index.html"
     ]
   }
 ]

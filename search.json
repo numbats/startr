@@ -1,24 +1,24 @@
 [
   {
-    "objectID": "modules/linear-regression/index.html",
-    "href": "modules/linear-regression/index.html",
-    "title": "Linear regression with R",
+    "objectID": "modules/debugging/index.html",
+    "href": "modules/debugging/index.html",
+    "title": "Troubleshooting and asking for help",
     "section": "",
-    "text": "Linear regression is a statistical method used to model the relationship between a dependent variable and one or more independent variables. It aims to find the best-fitting linear relationship that describes how the dependent variable changes in response to the independent variable(s). This technique is of key importance in statistics and data science and is used extensively for predictive analysis.\nSimple linear regression refers to fitting a straight line to a set of data points to model the relationship between a single independent variable and a dependent variable. The equation of a simple linear regression model is given by: \\(y = \\beta_0 + \\beta_1x + \\epsilon\\), where \\(y\\) is the dependent variable, \\(x\\) is the independent variable, \\(\\beta_0\\) is the intercept, \\(\\beta_1\\) is the slope, and \\(\\epsilon\\) is the error term that follows a normal distribution with zero mean and constant variance \\(\\sigma^2\\).\n\n\n\n\n\n\nYour turn!\n\n\n\nConsider the following plot with dist as the dependent variable and speed as the independent variable:\n\nlibrary(ggplot2)\nggplot(cars, aes(speed, dist)) +\n  geom_point()\n\n\n\n\n\n\n\n\nWhat is the approximate best intercept and slope for the data?\n\n\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code"
+    "text": "Eek! There’s a bug   in my code and it’s causing lots of scary red errors!\nDon’t panic - believe it or not, this error is just trying to help you! It also may have just saved you from invalid results that you may not have have noticed.\nErrors can be frustrating, essentially you’ve just asked the computer to do something and it has said no!\nThere are a few troubleshooting techniques that we can use to find the source of the error, modify your code, and get the results you’re looking for."
   },
   {
-    "objectID": "modules/linear-regression/index.html#introduction",
-    "href": "modules/linear-regression/index.html#introduction",
-    "title": "Linear regression with R",
-    "section": "",
-    "text": "Linear regression is a statistical method used to model the relationship between a dependent variable and one or more independent variables. It aims to find the best-fitting linear relationship that describes how the dependent variable changes in response to the independent variable(s). This technique is of key importance in statistics and data science and is used extensively for predictive analysis.\nSimple linear regression refers to fitting a straight line to a set of data points to model the relationship between a single independent variable and a dependent variable. The equation of a simple linear regression model is given by: \\(y = \\beta_0 + \\beta_1x + \\epsilon\\), where \\(y\\) is the dependent variable, \\(x\\) is the independent variable, \\(\\beta_0\\) is the intercept, \\(\\beta_1\\) is the slope, and \\(\\epsilon\\) is the error term that follows a normal distribution with zero mean and constant variance \\(\\sigma^2\\).\n\n\n\n\n\n\nYour turn!\n\n\n\nConsider the following plot with dist as the dependent variable and speed as the independent variable:\n\nlibrary(ggplot2)\nggplot(cars, aes(speed, dist)) +\n  geom_point()\n\n\n\n\n\n\n\n\nWhat is the approximate best intercept and slope for the data?\n\n\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code"
+    "objectID": "modules/debugging/index.html#lets-have-a-look-one-of-the-most-common-error-message",
+    "href": "modules/debugging/index.html#lets-have-a-look-one-of-the-most-common-error-message",
+    "title": "Troubleshooting and asking for help",
+    "section": "Let’s have a look one of the most common error message",
+    "text": "Let’s have a look one of the most common error message\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code\n  \n    \n    \n      \n    \n  \n  \n  \n\n\nOh no! An error message: “Error: object ‘car’ not found”errors!\nWhen the error message says that “Error: object ‘something’ not found”errors!, this is often the case that there might be a typo or you didn’t load the object loaded in correctly. Let’s see how we could fix this.\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code\n  \n    \n    \n      \n    \n  \n  \n  \n\n\nTypo is a very common error that you could make. This could be a miss-type of the object name or miss-type of function name. When you see error messages suggesting “Error: object ‘something’ not found”errors!, please check and make sure that you have correctly typed everything."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Monash EBS LearnR modules",
-    "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nTitle\n\n\nCategories\n\n\n\n\n\n\nLinear regression with R\n\n\n \n\n\n\n\nR programming basics\n\n\n \n\n\n\n\n\nNo matching items"
+    "objectID": "modules/debugging/index.html#what-if-we-cannot-find-the-function",
+    "href": "modules/debugging/index.html#what-if-we-cannot-find-the-function",
+    "title": "Troubleshooting and asking for help",
+    "section": "What if we cannot find the function?!",
+    "text": "What if we cannot find the function?!\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code\n  \n    \n    \n      \n    \n  \n  \n  \n\n\nOh no, we could not find the function of glance()! We made sure that the spelling is correct, what could be the problem now?\nWhen you see the error messages says that “Error: could not find function”something” “errors!,it normally means that the required package hasn’t been loaded to the environment.\nLet’s try add in the required package tidyverse\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code"
   },
   {
     "objectID": "modules/basic/index.html",
@@ -82,5 +82,61 @@
     "title": "R programming basics",
     "section": "Break statement",
     "text": "Break statement\nThere are occasions where breaking the loop during execution is a good idea. The break statement can be used in for loops and while loops.\nFor example, if we are to set up a early warning system when bank_balance is less than or equal to 4 times weekly spending, we can do the following:\n\nbank_balance &lt;- 200\nweekly_spending &lt;- 28.5\nwhile (bank_balance&gt;= weekly_spending) {\n  bank_balance &lt;- bank_balance - weekly_spending\n  print(bank_balance)\n  if (bank_balance &lt;= 4*weekly_spending){\n    print(\"Find a job and cut weekly spending!\")\n    break\n  }\n}\n\n[1] 171.5\n[1] 143\n[1] 114.5\n[1] 86\n[1] \"Find a job and cut weekly spending!\""
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Monash EBS LearnR modules",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nTitle\n\n\nCategories\n\n\n\n\n\n\nData wrangling with R\n\n\n \n\n\n\n\nLinear regression with R\n\n\n \n\n\n\n\nR programming basics\n\n\n \n\n\n\n\nTroubleshooting and asking for help\n\n\n \n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "modules/linear-regression/index.html",
+    "href": "modules/linear-regression/index.html",
+    "title": "Linear regression with R",
+    "section": "",
+    "text": "Linear regression is a statistical method used to model the relationship between a dependent variable and one or more independent variables. It aims to find the best-fitting linear relationship that describes how the dependent variable changes in response to the independent variable(s). This technique is of key importance in statistics and data science and is used extensively for predictive analysis.\nSimple linear regression refers to fitting a straight line to a set of data points to model the relationship between a single independent variable and a dependent variable. The equation of a simple linear regression model is given by: \\(y = \\beta_0 + \\beta_1x + \\epsilon\\), where \\(y\\) is the dependent variable, \\(x\\) is the independent variable, \\(\\beta_0\\) is the intercept, \\(\\beta_1\\) is the slope, and \\(\\epsilon\\) is the error term that follows a normal distribution with zero mean and constant variance \\(\\sigma^2\\).\n\n\n\n\n\n\nYour turn!\n\n\n\nConsider the following plot with dist as the dependent variable and speed as the independent variable:\n\nlibrary(ggplot2)\nggplot(cars, aes(speed, dist)) +\n  geom_point()\n\n\n\n\n\n\n\n\nWhat is the approximate best intercept and slope for the data?\n\n\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code"
+  },
+  {
+    "objectID": "modules/linear-regression/index.html#introduction",
+    "href": "modules/linear-regression/index.html#introduction",
+    "title": "Linear regression with R",
+    "section": "",
+    "text": "Linear regression is a statistical method used to model the relationship between a dependent variable and one or more independent variables. It aims to find the best-fitting linear relationship that describes how the dependent variable changes in response to the independent variable(s). This technique is of key importance in statistics and data science and is used extensively for predictive analysis.\nSimple linear regression refers to fitting a straight line to a set of data points to model the relationship between a single independent variable and a dependent variable. The equation of a simple linear regression model is given by: \\(y = \\beta_0 + \\beta_1x + \\epsilon\\), where \\(y\\) is the dependent variable, \\(x\\) is the independent variable, \\(\\beta_0\\) is the intercept, \\(\\beta_1\\) is the slope, and \\(\\epsilon\\) is the error term that follows a normal distribution with zero mean and constant variance \\(\\sigma^2\\).\n\n\n\n\n\n\nYour turn!\n\n\n\nConsider the following plot with dist as the dependent variable and speed as the independent variable:\n\nlibrary(ggplot2)\nggplot(cars, aes(speed, dist)) +\n  geom_point()\n\n\n\n\n\n\n\n\nWhat is the approximate best intercept and slope for the data?\n\n\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code"
+  },
+  {
+    "objectID": "modules/data-wrangling/index.html",
+    "href": "modules/data-wrangling/index.html",
+    "title": "Data wrangling with R",
+    "section": "",
+    "text": "The tidyverse is a collection of R packages that transform and visualize data. They aim to be cohesive with each other and provide simple building block functions for you to use in complex applications. All packages of the tidyverse share very similar syntax and ideologies.\nThe tidyverse includes the following packages:\n\ndplyr: grammar of data manipulation\ntidyr: reshape your data\nreadr: read rectangular data\ntibble: re-imagining of the data frame\nstringr: working with string data\nggplot2: grammar of graphics\n\nand many more…\nIn this chapter, we focus on two packages: dplyr and tidyr.\ndplyr makes manipulating data easy. tidyr helps you to create “tidy data” (data where each variable is in a column, each observation is a row and each value is a cell). These packages contain the functions that help with adding, renaming, removing columns, computing new variables, joining data sets together, and summarising your data. These can solve the most common data manipulation challenges.\n\n\n\n\n\n\nTo get start on the journey\n\n\n\nFirst, install the core tidyverse packages with: install.packages(\"tidyverse\")\nThen, load the tidyverse package with: library(tidyverse)\n\n\n\n\n\n\n\n\nTip\n\n\n\nDid you know you can also load specific library separately, for example, library(dplyr)"
+  },
+  {
+    "objectID": "modules/data-wrangling/index.html#introduction-to-tidyverse-1",
+    "href": "modules/data-wrangling/index.html#introduction-to-tidyverse-1",
+    "title": "Data wrangling with R",
+    "section": "",
+    "text": "The tidyverse is a collection of R packages that transform and visualize data. They aim to be cohesive with each other and provide simple building block functions for you to use in complex applications. All packages of the tidyverse share very similar syntax and ideologies.\nThe tidyverse includes the following packages:\n\ndplyr: grammar of data manipulation\ntidyr: reshape your data\nreadr: read rectangular data\ntibble: re-imagining of the data frame\nstringr: working with string data\nggplot2: grammar of graphics\n\nand many more…\nIn this chapter, we focus on two packages: dplyr and tidyr.\ndplyr makes manipulating data easy. tidyr helps you to create “tidy data” (data where each variable is in a column, each observation is a row and each value is a cell). These packages contain the functions that help with adding, renaming, removing columns, computing new variables, joining data sets together, and summarising your data. These can solve the most common data manipulation challenges.\n\n\n\n\n\n\nTo get start on the journey\n\n\n\nFirst, install the core tidyverse packages with: install.packages(\"tidyverse\")\nThen, load the tidyverse package with: library(tidyverse)\n\n\n\n\n\n\n\n\nTip\n\n\n\nDid you know you can also load specific library separately, for example, library(dplyr)"
+  },
+  {
+    "objectID": "modules/data-wrangling/index.html#introduction-to-dplyr-1",
+    "href": "modules/data-wrangling/index.html#introduction-to-dplyr-1",
+    "title": "Data wrangling with R",
+    "section": "Introduction to dplyr",
+    "text": "Introduction to dplyr\ndplyr provides a selection of tools for the most common data wrangling tasks. There are a few simple yet handy functions.\n\nselect()\nfilter()\narrange()\nmutate()\ngroup_by() along with ungroup()\ncount()\ncase_when()"
+  },
+  {
+    "objectID": "modules/data-wrangling/index.html#select",
+    "href": "modules/data-wrangling/index.html#select",
+    "title": "Data wrangling with R",
+    "section": "select()",
+    "text": "select()\nThis function allows you to pick particular variables from your data.\n\ndata |&gt;\n    select(variable)\n\nThis is not only limited to one variable selection. You can select multiple variables by separating the column name with the comma.\n\ndata |&gt;\n    select(variable1, variable2)\n\n\n\n\n\n\n\nYour turn!\n\n\n\nWe will be using penguin data from the palmerpenguins package.\nLet’s say that you want to look at whether the body mass changes over the year.\nHint: To look at the column names of the data, you can use the functions colnames()\n\n\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code\n  \n    \n    \n      \n    \n  \n  \n  \n\n\n\nSelection helpers\nThere are many helper functions that allow you to select variables by matching the patterns in the column’s name. Let’s look at a few examples.\n\nstarts_with(): select all variables that start with a prefix.\n\n\npenguins |&gt;\n    select(starts_with(\"bill\"))\n\n# A tibble: 344 × 2\n   bill_length_mm bill_depth_mm\n            &lt;dbl&gt;         &lt;dbl&gt;\n 1           39.1          18.7\n 2           39.5          17.4\n 3           40.3          18  \n 4           NA            NA  \n 5           36.7          19.3\n 6           39.3          20.6\n 7           38.9          17.8\n 8           39.2          19.6\n 9           34.1          18.1\n10           42            20.2\n# ℹ 334 more rows\n\n\n\nends_with(): select all variables that ends with a suffix.\n\n\npenguins |&gt;\n    select(ends_with(\"mm\"))\n\n# A tibble: 344 × 3\n   bill_length_mm bill_depth_mm flipper_length_mm\n            &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;\n 1           39.1          18.7               181\n 2           39.5          17.4               186\n 3           40.3          18                 195\n 4           NA            NA                  NA\n 5           36.7          19.3               193\n 6           39.3          20.6               190\n 7           38.9          17.8               181\n 8           39.2          19.6               195\n 9           34.1          18.1               193\n10           42            20.2               190\n# ℹ 334 more rows\n\n\n\ncontains(): select all variables that contains a literal string.\n\n\npenguins |&gt;\n    select(contains(\"length\"))\n\n# A tibble: 344 × 2\n   bill_length_mm flipper_length_mm\n            &lt;dbl&gt;             &lt;int&gt;\n 1           39.1               181\n 2           39.5               186\n 3           40.3               195\n 4           NA                  NA\n 5           36.7               193\n 6           39.3               190\n 7           38.9               181\n 8           39.2               195\n 9           34.1               193\n10           42                 190\n# ℹ 334 more rows\n\n\n\nnum_range(): select all variables that matches a numerical range like x01, x02, x03.\n\n\nbillboard |&gt; \n    select(num_range(\"wk\", 10:15))\n\n# A tibble: 317 × 6\n    wk10  wk11  wk12  wk13  wk14  wk15\n   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1    NA    NA    NA    NA    NA    NA\n 2    NA    NA    NA    NA    NA    NA\n 3    51    51    51    47    44    38\n 4    61    61    59    61    66    72\n 5    57    64    70    75    76    78\n 6     6     7    22    29    36    47\n 7    NA    NA    NA    NA    NA    NA\n 8    36    37    37    38    49    61\n 9    10     9     8     6     1     2\n10    59    66    68    61    67    59\n# ℹ 307 more rows"
+  },
+  {
+    "objectID": "modules/data-wrangling/index.html#filter",
+    "href": "modules/data-wrangling/index.html#filter",
+    "title": "Data wrangling with R",
+    "section": "filter()",
+    "text": "filter()\nThis allow you to extract observation from the data based on a given condition.\n\ndata |&gt;\n    filter(expression)\n\nFor the expression field, there are many functions and operators that are useful for constructing the expressions.\n\n==, &gt;, &gt;= etc\n&, |, !, xor()\nis.na()\nbetween(), near()\n\n\npenguins |&gt;\n    filter(species == \"Gentoo\")\n\n# A tibble: 124 × 8\n   species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g\n   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;\n 1 Gentoo  Biscoe           46.1          13.2               211        4500\n 2 Gentoo  Biscoe           50            16.3               230        5700\n 3 Gentoo  Biscoe           48.7          14.1               210        4450\n 4 Gentoo  Biscoe           50            15.2               218        5700\n 5 Gentoo  Biscoe           47.6          14.5               215        5400\n 6 Gentoo  Biscoe           46.5          13.5               210        4550\n 7 Gentoo  Biscoe           45.4          14.6               211        4800\n 8 Gentoo  Biscoe           46.7          15.3               219        5200\n 9 Gentoo  Biscoe           43.3          13.4               209        4400\n10 Gentoo  Biscoe           46.8          15.4               215        5150\n# ℹ 114 more rows\n# ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;"
   }
 ]
