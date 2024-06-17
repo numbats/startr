@@ -2,6 +2,8 @@
 
 This repository is for learnr modules produced by Monash EBS, and submitted for listing on learnr.academy.
 
+NOTE: The instructions below are relatively generic. See [#6 Jun/Jul 2024 Modules Development Sprint](https://github.com/numbats/monash-learnr-modules/issues/6) for specific instructions.
+
 ## Instructions for Contributors
 
 Please fork this repository and submit a pull request with your module(s) added. Follow either the basic or advanced module structure specified below.
@@ -95,8 +97,8 @@ git push origin <your-branch-name>
 
 ### Submit a Pull Request
 
-Once you are finished developing your module and have pushed it back to your forked repository, you can submit a pull request to the main `numbats/monash-learnr-modules/` repository.
+Once you have finished your module, submit a pull request to the relevant issue branch on `numbats/monash-learnr-modules/` repository.
 
-6. **Submit your Changes for Review**: If you go to your repository on GitHub, you’ll see a `Compare & pull request` button. Click on that button. Now submit the pull request.
+6. **Submit your Changes for Review**: If you go to your repository on GitHub, you’ll see a `Compare & pull request` button. Click on that button. Make sure to change the target repo to `numbats/monash-learnr-modules` with the correct issue branch (e.g. `13-add-basic-tidyrdplyr`). Now submit the pull request.
 
 7. **Wait for Your Changes to be Reviewed**: Once you have submitted your pull request, your changes will be reviewed. If your changes are approved, they will be merged into the main codebase. If your changes are not approved, you will receive feedback and requests for changes.
