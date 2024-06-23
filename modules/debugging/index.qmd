@@ -65,9 +65,9 @@ str(car)
 
 ```
 
-Oh no! An error message: <span style="color: red;">"Error: object 'car' not found"errors</span>!
+Oh no! An error message: <span style="color: red;">"Error: object 'car' not found"</span>!
 
-When the error message says that <span style="color: red;">"Error: object 'something' not found"errors</span>!, this is often the case that there might be a typo or you didn't load the object loaded in correctly. Let's see how we could fix this. 
+When you see the error message <span style="color: red;">"Error: object '_____' not found"</span>, it usually means there is a typo or the object wasn't loaded in correctly. Let's look at how we can fix this. 
 
 ```{webr-teachr}
 # One of the r built-in dataset is called "cars"
@@ -81,7 +81,7 @@ p <- .code[[1]][[2]][[2]]
 c("did you put in cars?" = !"cars" %in% all.vars(.code))
 ```
 
-Typo is a very common error that you could make. This could be a miss-type of the object name or miss-type of function name. When you see error messages suggesting <span style="color: red;">"Error: object 'something' not found"errors</span>!, please check and make sure that you have correctly typed everything. 
+Typos are a common error, whether it's in the object name or the function name. When you see the error message <span style="color: red;">"Error: object '_____' not found"</span>, please check and make sure that everything is typed correctly.
 
 
 ## What if we cannot find the function?!
@@ -95,18 +95,17 @@ detach_package(tidyverse)
 # Let's try to have a look at the structure of the cars dataset 
 # Instead of the base R function of checking structure for your dataset, let's use tidyverse function glance to do that. 
 
-glimpse(cars)
+glance(cars)
   
 ???
   
 ```
 
-Oh no, we could not find the function of `glance()`! We made sure that the spelling is correct, what could be the problem now?
+Oh no, we could not find the function of `glance()`! We've checked the spelling, so what could be the problem now?
 
-When you see the error messages says that <span style="color: red;">"Error: could not find function "something" "errors</span>!,it normally means that the required package hasn't been loaded to the environment.
+When you see the error message <span style="color: red;">"Error: could not find function "_____"</span>, it usually means the required package hasn't been loaded into environment.
 
 Let's try add in the required package `tidyverse`
-
 
 
 ```{webr-teachr}
@@ -115,7 +114,7 @@ Let's try add in the required package `tidyverse`
 # Instead of the base R function of checking structure for your dataset, let's use tidyverse function glance to do that. 
 
 library(<<tidyverse>>)
-glimpse(cars)
+glance(cars)
   
 ???
   
