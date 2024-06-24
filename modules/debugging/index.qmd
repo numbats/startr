@@ -129,7 +129,7 @@ Sometimes, reading the error message can be a bit tricky. If you're not sure wha
 
 Chances are you're not the first person to encounter this problem and there's a well explained solution waiting for you on the internet - you just need to find it.
 
-Take this [notoriously confusing error](https://www.youtube.com/watch?v=vgYS-F8opgE) for example. In this code, I want to see the first few values of my `sample` object.
+Take this [notoriously confusing error](https://www.youtube.com/watch?v=vgYS-F8opgE) for example. In this code, I want to see the first few values of my `sample` object. Try running the code below:
 
 ```{webr-teachr}
 
@@ -151,10 +151,32 @@ With some luck, you'll be met with a series of StackOverflow threads, blog posts
 * [https://stackoverflow.com/questions/11308367/error-in-my-code-object-of-type-closure-is-not-subsettable](https://stackoverflow.com/questions/11308367/error-in-my-code-object-of-type-closure-is-not-subsettable) 
 * [https://www.r-bloggers.com/2019/02/object-of-type-closure-is-not-subsettable/](https://www.r-bloggers.com/2019/02/object-of-type-closure-is-not-subsettable/)
 
-Some tips for searching errors with Google (and most other search engines):
 
-1. Add 
-2.
+::: {.callout-tip}
+## Tips for searching errors online
+
+**1.** Add double quotes around the error message. This searches for those exact words in that exact order.
+
+**2.** For long error messages, just search for the unique sounding parts (don't include parts specific to your code, like a variable name)
+
+**3.** Add keywords to describe your code's language, like 'R'.
+
+**4.** If you're looking for solutions on a specific website, add `site:<domain>` to the search. For example, `site:stackoverflow.com`.
+:::
+
+
+
+# Divide and conquer
+
+If you understand the message, but have no idea where the problem stems from - try running smaller sections of your code to see if that small section causes the error. Once you identify the small section of code causing the error, it should be slightly easier to find the issue in your code.
+
+If you're often encountering situations where you need to use this strategy, it might be a sign of a code styling issue. You might benefit from writing your code in smaller pieces, rather than trying to do everything in one line (or chain) of code. Some tips on good code can be found in [Jenny Bryan's presentation 'Code Smeels and Feels](https://www.youtube.com/watch?v=7oyiPBjLAWY).
+
+# Turn it off and on again
+
+The age old classic (but sometimes it really does work!). 
+
+In R, you don't necessarily need to restart your *whole* computer, but instead you can try restarting RStudio, or your R session. Usually I would restart R, which can be done in RStudio
 
 
 
