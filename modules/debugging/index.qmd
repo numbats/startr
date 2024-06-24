@@ -44,7 +44,7 @@ detach_package <- function(pkg, character.only = FALSE)
 
 # What are error messages?
 
-Eek! There's a bug `r icon_style(fontawesome("bug", style = "solid"),fill = "red")` in my code and it's causing lots of <span style="color: red;">scary red errors</span>!
+Eek! There's a bug `r icon_style(fontawesome("bug", style = "solid"),fill = "red")` in my code and it's causing lots of [scary red errors]{style="color: red;"}!
 
 Don't panic - believe it or not, this error is just trying to help you! It also may have just saved you from invalid results that you may not have have noticed.
 
@@ -56,7 +56,6 @@ There are a few troubleshooting techniques that we can use to find the source of
 
 The first step is to carefully **read** the error message, it often contains clues into where and why the code didn't run. With some time and experience, you'll begin to identify these errors and fix your code quickly based on the message alone!
 
-
 ## Let's have a look at some common error messages
 
 ```{webr-teachr}
@@ -66,9 +65,9 @@ str(car)
 
 ```
 
-Oh no! An error message: <span style="color: red;">"Error: object 'car' not found"</span>!
+Oh no! An error message: ["Error: object 'car' not found"]{style="color: red;"}!
 
-When you see the error message <span style="color: red;">"Error: object '_____' not found"</span>, it usually means there is a typo or the object wasn't loaded in correctly. Let's look at how we can fix this. 
+When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="color: red;"}, it usually means there is a typo or the object wasn't loaded in correctly. Let's look at how we can fix this.
 
 ```{webr-teachr}
 # One of the r built-in dataset is called "cars"
@@ -82,8 +81,7 @@ p <- .code[[1]][[2]][[2]]
 c("did you put in cars?" = !"cars" %in% all.vars(.code))
 ```
 
-Typos are a common error, whether it's in the object name or the function name. When you see the error message <span style="color: red;">"Error: object '_____' not found"</span>, please check and make sure that everything is typed correctly.
-
+Typos are a common error, whether it's in the object name or the function name. When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="color: red;"}, please check and make sure that everything is typed correctly.
 
 ## What if we cannot find the function?!
 
@@ -104,10 +102,9 @@ glance(cars)
 
 Oh no, we could not find the function of `glance()`! We've checked the spelling, so what could be the problem now?
 
-When you see the error message <span style="color: red;">"Error: could not find function "_____"</span>, it usually means the required package hasn't been loaded into environment.
+When you see the error message ["Error: could not find function "\_\_\_\_\_"]{style="color: red;"}, it usually means the required package hasn't been loaded into environment.
 
 Let's try add in the required package `tidyverse`
-
 
 ```{webr-teachr}
 # One of the r built-in dataset is called "cars"
@@ -123,7 +120,7 @@ glance(cars)
 
 Sometimes, reading the error message can be a bit tricky. If you're not sure what the error message is trying to tell you, don't worry! We'll cover some other strategies.
 
-# Search the message
+## Search the message 🔎
 
 **Often,** error messages can be confusing, and even after carefully reading the message it may be difficult to ascertain what the problem is.
 
@@ -139,7 +136,7 @@ sample[1:3]
   
 ```
 
-<span style="color: red;">"Error: object of type 'closure' is not subsettable"</span>
+["Error: object of type 'closure' is not subsettable"]{style="color: red;"}
 
 What is a *'closure'*? Why can't I subset my data with `x[1:3]`?
 
@@ -147,12 +144,11 @@ When confronted with an error you've never seen, and don't understand - search t
 
 With some luck, you'll be met with a series of StackOverflow threads, blog posts and other websites explaining the solution to the exact problem you're facing. Here's my top 3 search results:
 
-* [https://coolbutuseless.github.io/2019/02/12/object-of-type-closure-is-not-subsettable/](https://coolbutuseless.github.io/2019/02/12/object-of-type-closure-is-not-subsettable/)
-* [https://stackoverflow.com/questions/11308367/error-in-my-code-object-of-type-closure-is-not-subsettable](https://stackoverflow.com/questions/11308367/error-in-my-code-object-of-type-closure-is-not-subsettable) 
-* [https://www.r-bloggers.com/2019/02/object-of-type-closure-is-not-subsettable/](https://www.r-bloggers.com/2019/02/object-of-type-closure-is-not-subsettable/)
+-   <https://coolbutuseless.github.io/2019/02/12/object-of-type-closure-is-not-subsettable/>
+-   <https://stackoverflow.com/questions/11308367/error-in-my-code-object-of-type-closure-is-not-subsettable>
+-   <https://www.r-bloggers.com/2019/02/object-of-type-closure-is-not-subsettable/>
 
-
-::: {.callout-tip}
+::: callout-tip
 ## Tips for searching errors online
 
 **1.** Add double quotes around the error message. This searches for those exact words in that exact order.
@@ -164,19 +160,35 @@ With some luck, you'll be met with a series of StackOverflow threads, blog posts
 **4.** If you're looking for solutions on a specific website, add `site:<domain>` to the search. For example, `site:stackoverflow.com`.
 :::
 
-
-
-# Divide and conquer
+## Divide and conquer 💪
 
 If you understand the message, but have no idea where the problem stems from - try running smaller sections of your code to see if that small section causes the error. Once you identify the small section of code causing the error, it should be slightly easier to find the issue in your code.
 
-If you're often encountering situations where you need to use this strategy, it might be a sign of a code styling issue. You might benefit from writing your code in smaller pieces, rather than trying to do everything in one line (or chain) of code. Some tips on good code can be found in [Jenny Bryan's presentation 'Code Smeels and Feels](https://www.youtube.com/watch?v=7oyiPBjLAWY).
+::: {.callout-note icon="false"}
+## Running into this issue often?
 
-# Turn it off and on again
+If you frequently use this strategy, it may indicate a code styling issue. Consider breaking your code into smaller pieces instead of trying to do everything in one line. For tips on good coding practices, see [Jenny Bryan's presentation 'Code Smeels and Feels](https://www.youtube.com/watch?v=7oyiPBjLAWY).
+:::
 
-The age old classic (but sometimes it really does work!). 
+## Turn it off and on again 🔄
+
+The age old classic (but sometimes it really does work!).
 
 In R, you don't necessarily need to restart your *whole* computer, but instead you can try restarting RStudio, or your R session. Usually I would restart R, which can be done in RStudio
 
+This can be done in two ways:
 
+1. 'Session' on the top menu bar, then 'Restart R'
+2. `Ctrl + Shift + F10` (Windows) or `Cmd + Shift + F10` (Mac)
+
+There are a few reasons why this can work. It allows you to re-run your code from a clean slate, with no extra packages loaded that you haven't asked for and no extra objects in your environment.
+
+# Asking for help
+
+Once you've carefully read the error, searched the web, and tried everything else you can think of, it's time to ask for help. However for a stranger to take time out of their
+
+
+
+
+checklist: https://quarto.org/docs/authoring/markdown-basics.html
 
