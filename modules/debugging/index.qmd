@@ -167,7 +167,7 @@ If you understand the message, but have no idea where the problem stems from - t
 ::: {.callout-note icon="false"}
 ## Running into this issue often?
 
-If you frequently use this strategy, it may indicate a code styling issue. Consider breaking your code into smaller pieces instead of trying to do everything in one line. For tips on good coding practices, see [Jenny Bryan's presentation 'Code Smeels and Feels](https://www.youtube.com/watch?v=7oyiPBjLAWY).
+If you frequently use this strategy, it may indicate a code styling issue. Consider breaking your code into smaller pieces instead of trying to do everything in one line. For tips on good coding practices, see [Jenny Bryan's presentation 'Code Smells and Feels](https://www.youtube.com/watch?v=7oyiPBjLAWY).
 :::
 
 ## Turn it off and on again 🔄
@@ -215,16 +215,43 @@ The process of creating an example, and reducing it down into the minimal amount
 
 There are many websites commonly used by developers facing troubleshooting errors, where experts visit and try to help. Here are some of the most popular:
 
-[**Stack Overflow**](https://stackoverflow.com/questions/tagged/rstudio). This is a platform where you can search for solutions and ask for help. Before asking a question on Stack Overflow, you can search some key words from your understanding of error messages. It is likely that people have already asked similar questions related to your error and you can try the solutions provided by others under the question.
+[**Stack Overflow.**](https://stackoverflow.com/questions/tagged/rstudio). This is a platform where you can search for solutions and ask for help. Before asking a question on Stack Overflow, you can search some key words from your understanding of error messages. It is likely that people have already asked similar questions related to your error and you can try the solutions provided by others under the question.
 
-[**RStudio Community.**](https://forum.posit.co/). This is a community channel for RStudio users. Similar to Stack Overflow, you can ask questions and also find solutions.
+[**RStudio Community.**](https://forum.posit.co/) This is a community channel for RStudio users. Similar to Stack Overflow, you can ask questions and also find solutions.
 
-[**GitHub**](https://github.com/). If you've thoroughly investigated your error and believe the issue lies in the package rather than your code, you can contact the package's developer. Most R packages are open-source and maintained on Github. Search for the package's repository using its name along with "R" and "GitHub", then use the "Issues" tab to report your problem. Make sure to check if the issue has already been reported before creating a new one.
+[**GitHub.**](https://github.com/).
+If you've thoroughly investigated your error and believe the issue lies in the package rather than your code, you can contact the package's developer. Most R packages are open-source and maintained on Github.
 
-**Discussion forum on Moodle or** [**Ed**](http://edstem.org). 
+1. Search for the package's repository using its name along with "R" and "GitHub".
 
+2. Use the "Issues" tab to report your problem.
 
+3. Make sure to check if the issue has already been reported before creating a new one.
 
+**Discussion Forum on Moodle or** [**Ed.**](http://edstem.org) If you're preparing for your Monash University course, a good place to ask for help is the discussion forum on Moodle. You can also seek assistance from your lecturers and tutors.
 
-checklist: https://quarto.org/docs/authoring/markdown-basics.html
+* If your unit uses Ed as a discussion space, use it to ask or answer questions.
+    + Some units may even allow you to post privately or anonymously if you feel shy posting publicly.
+
+::: {.callout-tip}
+## Help and Learn
+Answering questions on the forum can help consolidate your understanding and prepare you for asking and answering questions in other forums such as Stack Overflow.
+:::
+
+**Teachers and Tutors in Consultations.**  Ask your lecturers and tutors for help during consultation sessions, which are available for any content-related difficulties, including debugging code.
+
+- Prepare a small demonstration of your error beforehand to make the session more effective.
+- The benefit of these sessions is that we can guide you closer to the solution until you figure it out yourself.
+- Don't be disheartened if your error, which you've struggled with for hours, is solved in minutes — we've had plenty of practice (also being stuck for hours) troubleshooting these errors.
+
+# Minimal Reproducible Examples
+
+::: {.callout-note}
+## Remember
+A minimally reproducible example (often called an MRE) contains all of the code necessary for someone else to encounter the same error you're facing.
+:::
+
+To create one, you need to provide the **exact packages you're using**, some **data** if needed, and **your code.** A good example is also **minimal**, which means that you've taken the time to remove as much unrelated packages, code and data as possible to produce the error.
+
+## Providing
 
