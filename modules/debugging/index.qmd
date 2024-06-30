@@ -185,7 +185,43 @@ There are a few reasons why this can work. It allows you to re-run your code fro
 
 # Asking for help
 
-Once you've carefully read the error, searched the web, and tried everything else you can think of, it's time to ask for help. However for a stranger to take time out of their
+Once you've carefully read the error, searched the web, and tried everything else you can think of, it's time to ask for help. However for a stranger to take time out of their day to find the solution and write a good answer for you, you better have written a good question for them!
+
+::: {.callout-note}
+## Good Questions
+A **good question** consists of a **clear and concise** description of your problem, and a **small example** that can be used to reproduce the issue.
+:::
+
+## Describe the problem
+
+A good description provides some context to your question. When writing your question, think about what you are trying to achieve.
+
+Instead of writing generic phrases like "it doesn't work" or "it shows errors," provide more detailed information about your issue.
+
+* Clearly state your goal and the expected output.
+
+* Include the exact wording of any error messages you receive.
+
+* Use a descriptive title that summarises your problem succinctly.
+
+
+## Provide a minimal reproducible example
+
+A minimal reproducible example is the smallest amount of code that still produces the error. This step is so important that we've dedicated an entire section to writing good examples. An example allows the person helping you to quickly understand the issue you are facing, and make changes directly to your example to demonstrate the solution.
+
+The process of creating an example, and reducing it down into the minimal amount of code you can to produce the error, often results in you finding the solution yourself.
+
+## Where to ask for help
+
+There are many websites commonly used by developers facing troubleshooting errors, where experts visit and try to help. Here are some of the most popular:
+
+[**Stack Overflow**](https://stackoverflow.com/questions/tagged/rstudio). This is a platform where you can search for solutions and ask for help. Before asking a question on Stack Overflow, you can search some key words from your understanding of error messages. It is likely that people have already asked similar questions related to your error and you can try the solutions provided by others under the question.
+
+[**RStudio Community.**](https://forum.posit.co/). This is a community channel for RStudio users. Similar to Stack Overflow, you can ask questions and also find solutions.
+
+[**GitHub**](https://github.com/). If you've thoroughly investigated your error and believe the issue lies in the package rather than your code, you can contact the package's developer. Most R packages are open-source and maintained on Github. Search for the package's repository using its name along with "R" and "GitHub", then use the "Issues" tab to report your problem. Make sure to check if the issue has already been reported before creating a new one.
+
+**Discussion forum on Moodle or** [**Ed**](http://edstem.org). 
 
 
 
