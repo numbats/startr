@@ -6,7 +6,7 @@ engine: knitr
 filters:
   - webr-teachr
 webr:
-  packages: ["tidyverse"]
+  packages: ["tidyverse", "palmerpenguins"]
 ---
 
 ```{r setup, include = FALSE}
@@ -253,5 +253,50 @@ A minimally reproducible example (often called an MRE) contains all of the code 
 
 To create one, you need to provide the **exact packages you're using**, some **data** if needed, and **your code.** A good example is also **minimal**, which means that you've taken the time to remove as much unrelated packages, code and data as possible to produce the error.
 
-## Providing
+## Providing minimal datasets
 
+If your question involves using a dataset, you will need to provide a small dataset to demonstrate the problem. Often people say that the data is confidential and can’t be provided, but usually the problem isn’t specific to the data you are using. Taking the time to try your code on a different dataset is a good debugging step, and R provides many good datasets to use in these examples built in. You can find a complete list of datasets available to all R users with the `data(package = "datasets")` function.
+
+If you do need to use a custom dataset specific to your project, try reducing the size of the dataset before making your example. The error may only occur for some specific rows of your data. Once you've narrowed in on the issue, you can convert your minimal data object to code for producing it using the `dput()` function. 
+
+For example you can use use the below code to provide the first 6 rows of the iris dataset.
+
+```{r}
+dput(head(iris))
+```
+
+
+Try it yourself! Create a minimal dataset using the `dput()` function for the `penguins`
+dataset.
+
+::: {.callout-tip}
+## Hint
+We want to be putting the `penguins` data to create a minimal dataset.
+:::
+
+```{webr-teachr}
+## REVISIT THIS :( 
+# Load the penguins dataset
+library(palmerpenguins)
+# Use dput() to create a minimal dataset
+<<dput(head(penguins))>>
+  
+???
+
+# check if 'dput' is called with 'head(penguins)' as its argument
+dput_called_with_head_penguins <- search_ast(.code, .expr = dput(head(penguins)))
+
+# check with feedback
+feedback <- c(
+  "Did you use dput() with head(penguins)?" = dput_called_with_head_penguins
+)
+
+```
+
+
+
+
+
+
+
+You can
