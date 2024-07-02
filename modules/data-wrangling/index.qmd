@@ -110,7 +110,10 @@ penguins |>
 
 ???
 
-!all(c("body_mass_g", "year") %in% all.vars(.code))
+c(
+    "Did you use the right function?" != search_ast(.code, .fn = select),
+    "Did you pick the right variable?" = !all(c("body_mass_g", "year") %in% all.vars(.code))
+)
 ```
 
 ### Selection helpers
