@@ -232,6 +232,11 @@ There are many websites commonly used by developers facing troubleshooting error
 -   If your unit uses Ed as a discussion space, use it to ask or answer questions.
     -   Some units may even allow you to post privately or anonymously if you feel shy posting publicly.
 
+**Trusty (sometimes) AI.** 
+https://www.infoworld.com/article/3694611/8-chatgpt-tools-for-r-programming.html
+
+https://www.theregister.com/2024/01/27/ai_coding_automatic/
+
 ::: callout-tip
 ## Help and Learn
 
