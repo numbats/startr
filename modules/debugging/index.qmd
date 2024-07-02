@@ -351,15 +351,15 @@ This is **not an exhaustive check-list.** What needs to be included and checked 
 
 This is **not an exhaustive check-list.** What needs to be included and checked is very question specific, but this checklist should apply to most questions.
 
--   [ ] Is the problem [clearly]{style="background-color: yellow;"} and [succinctly described]{style="background-color: yellow;"}?
--   [ ] Is the [expected solution or behaviour]{style="background-color: yellow;"} outlined?
--   [ ] Has [nobody asked this question]{style="background-color: yellow;"} before? (Search the web!)
--   [ ] Are you asking the [right people]{style="background-color: yellow;"} at the [right place]{style="background-color: yellow;"}?
--   [ ] Have you added [appropriate tags]{style="background-color: yellow;"} or [keywords]{style="background-color: yellow;"} to reach the right experts?
--   [ ] Have you prepared your example using the [reprex package]{style="background-color: yellow;"} to ensure the problem is easily reproduced on other computers?
--   [ ] Have you [minimised your problem]{style="background-color: yellow;"} as much as possible, [removing irrelevant packages, data and code]{style="background-color: yellow;"}?
+-   [ ] Is the problem [**clearly**]{style="background-color: yellow;"} and [**succinctly described**]{style="background-color: yellow;"}?
+-   [ ] Is the [**expected solution or behaviour**]{style="background-color: yellow;"} outlined?
+-   [ ] Has [**nobody asked this question**]{style="background-color: yellow;"} before? (Search the web!)
+-   [ ] Are you asking the [**right people**]{style="background-color: yellow;"} at the [**right place**]{style="background-color: yellow;"}?
+-   [ ] Have you added [**appropriate tags**]{style="background-color: yellow;"} or [**keywords**]{style="background-color: yellow;"} to reach the right experts?
+-   [ ] Have you prepared your example using the [**reprex package**]{style="background-color: yellow;"} to ensure the problem is easily reproduced on other computers?
+-   [ ] Have you [**minimised your problem**]{style="background-color: yellow;"} as much as possible, [**removing irrelevant packages, data and code**]{style="background-color: yellow;"}?
 
 **If your questions involve a dataset**
 
 -   [ ] Is the data supplied
--   [ ] If the data is big, [could you cull your data further]{style="background-color: yellow;"} to communicate or reproduce the problem?
+-   [ ] If the data is big, [**could you cull your data further**]{style="background-color: yellow;"} to communicate or reproduce the problem?
