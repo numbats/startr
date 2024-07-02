@@ -173,6 +173,23 @@ penguins |>
 ```
 
 
+## arrange()
+
+This allows you to sort your data based on one or more variables. By default, it will arrange your data in ascending order. If you want to sort by descending order, it can be done using the `desc()` function.
+
+```{r}
+penguins |>
+    arrange(bill_length_mm)
+
+penguins |>
+    arrange(desc(bill_length_mm))
+```
+
+::: {.callout-tip}
+## Did you know
+
+What do you think will happen to the data if you sort the penguin's data on the species where it is a character variable? If you guess that it will sort in alphabetical order, you are correct!!!
+:::
 
 
 
