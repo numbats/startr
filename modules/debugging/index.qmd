@@ -299,4 +299,35 @@ feedback <- c(
 
 
 
-You can
+You can then copy this generated code, and make it part of your example to create your example data.
+
+Alternatively you can save this minimal dataset to a file, and attach the file in your question.
+
+When you read that file in, make sure you avoid absolute paths to it. Not everyone has the same file structure as you, so they won't be able to access your dataset if it is stored at `/home/learnr/Documents/My Job/project_2040/data/example.csv`. Instead provide a short relative oath, such as `example.csv` or `data/example.csv`. If you're uploading files, it's also nice to provide a zip that contains a R script of your minimal reproducible code, along with the data in the folders referenced by the script.
+
+-- potentially a multiple choice question here on relative paths? ---
+
+## Provide minimal code
+
+As part of a data analysis you probably write a lot of code. You need to read in the data, tidy it up, run some calculations and make some plots. When you run into an error, providing your entire analysis just makes it more time consuming for helpers to run your code and identify the source of the error.
+
+A *minimal* reproducible example cuts out as much of the code as possible, keeping just a few essential lines for producing the error. If your error comes after the data cleaning, remove that code and start with a clean, minimal dataset.
+
+If your code includes any randomisation, it’s a good idea to set the random seed using the `set.seed()` function. This ensures that each time the code is ran, the same random results are obtained.
+
+::: {.callout-tip}
+## What is set.seed()?
+The `set.seed()` function in R ensures reproducible results in code involving random values. It guarantees the same random values are produced each time you run the code, aiding in debugging and consistency. The number in the brackets can be any integer.
+:::
+
+The process of cleaning up your code and reducing it down into a small example is another great exercise that often helps you identify the problem and fix it yourself.
+
+Remember, you need to provide **all code necessary** to **load in packages you use**, **read in data** and **run functions** that cause the error.
+
+## Provide session information 
+
+Sometimes the error is specific to the version of R, or the packages you are using. To help others help you, you can provide the session information using the `sessioninfo::sessionInfo()` function. This will print out the version of R you are using, and the versions of the packages you have loaded, which makes it easier to fix some version, language or OS specific problems. A good reproducible example should come with this session information output.
+
+## Using the `reprex` package for producing examples
+
+the [`reprex`](https://reprex.tidyverse.org/) package is a useful tool that 
