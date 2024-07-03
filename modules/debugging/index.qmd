@@ -287,14 +287,8 @@ library(palmerpenguins)
 <<dput(head(penguins))>>
   
 ???
-
-# check if 'dput' is called with 'head(penguins)' as its argument
-dput_called_with_head_penguins <- search_ast(.code, .expr = dput(head(penguins)))
-
-# check with feedback
-feedback <- c(
-  "Did you use dput() with head(penguins)?" = dput_called_with_head_penguins
-)
+  
+"Did you use dput() with head(penguins)?" != search_ast(.code, .expr = dput(head(penguins)))
 
 ```
 
