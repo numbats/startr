@@ -87,6 +87,13 @@ There are many helper functions that allow you to select variables by matching t
 * `starts_with()`: select all variables that start with a prefix.
 
 ```{r}
+#| eval: false
+penguins |>
+    select(starts_with("bill"))
+```
+
+```{r}
+#| echo: false
 penguins |>
     select(starts_with("bill")) |>
     head()
@@ -95,6 +102,13 @@ penguins |>
 * `ends_with()`: select all variables that ends with a suffix.
 
 ```{r}
+#| eval: false
+penguins |>
+    select(ends_with("mm"))
+```
+
+```{r}
+#| echo: false
 penguins |>
     select(ends_with("mm")) |>
     head()
@@ -103,6 +117,13 @@ penguins |>
 * `contains()`: select all variables that contains a literal string.
 
 ```{r}
+#| eval: false
+penguins |>
+    select(contains("length"))
+```
+
+```{r}
+#| echo: false
 penguins |>
     select(contains("length")) |>
     head()
@@ -111,6 +132,13 @@ penguins |>
 * `num_range()`: select all variables that matches a numerical range like x01, x02, x03.
 
 ```{r}
+#| eval: false
+billboard |>
+    select(num_range("wk", 10:15))
+```
+
+```{r}
+#| echo: false
 billboard |> 
     select(num_range("wk", 10:15)) |>
     head()
@@ -136,6 +164,13 @@ For the expression field, there are many functions and operators that are useful
 * `between()`, `near()`
 
 ```{r}
+#| eval: false
+penguins |>
+    filter(species = "Gentoo")
+```
+
+```{r}
+#| echo: false
 penguins |>
     filter(species == "Gentoo") |>
     head()
@@ -147,6 +182,16 @@ penguins |>
 It is for sorting your data based on one or more variables. By default, it will arrange your data in ascending order. If you want to sort by descending order, it can be done using the `desc()` function.
 
 ```{r}
+#| eval: false
+penguins |>
+    arrange(bill_length_mm)
+
+penguins |>
+    arrange(desc(bill_length_mm))
+```
+
+```{r}
+#| echo: false
 penguins |>
     arrange(bill_length_mm) |>
     head()
@@ -179,6 +224,13 @@ The **"variable_name"**, this can be the existing variable you are going to modi
 Here is an example on using mutata function to modify the **existing** variable
 
 ```{r}
+#| eval: false
+penguins |>
+    mutate(sex = ifelse(sex == "male", "M", "F"))
+```
+
+```{r}
+#| echo: false
 penguins |>
     mutate(sex = ifelse(sex == "male", "M", "F")) |>
     select(species, sex) |>
