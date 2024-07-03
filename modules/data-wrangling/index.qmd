@@ -23,8 +23,6 @@ library(tidyverse)
 
 # Introduction to dplyr
 
-## Introduction to dplyr
-
 **dplyr** provides a selection of tools for the most common data wrangling tasks. There are a few simple yet handy functions.
 
 * `select()`
@@ -78,7 +76,7 @@ penguins |>
 
 c(
     "Did you use the right function?" != search_ast(.code, .fn = select),
-    "Did you pick the right variable?" = !all(c("body_mass_g", "year") %in% all.vars(.code))
+    "Did you pick the right variable?" != all(c("body_mass_g", "year") %in% all.vars(.code))
 )
 ```
 
@@ -90,28 +88,32 @@ There are many helper functions that allow you to select variables by matching t
 
 ```{r}
 penguins |>
-    select(starts_with("bill"))
+    select(starts_with("bill")) |>
+    head()
 ```
 
 * `ends_with()`: select all variables that ends with a suffix.
 
 ```{r}
 penguins |>
-    select(ends_with("mm"))
+    select(ends_with("mm")) |>
+    head()
 ```
 
 * `contains()`: select all variables that contains a literal string.
 
 ```{r}
 penguins |>
-    select(contains("length"))
+    select(contains("length")) |>
+    head()
 ```
 
 * `num_range()`: select all variables that matches a numerical range like x01, x02, x03.
 
 ```{r}
 billboard |> 
-    select(num_range("wk", 10:15))
+    select(num_range("wk", 10:15)) |>
+    head()
 ```
 
 
@@ -135,26 +137,29 @@ For the expression field, there are many functions and operators that are useful
 
 ```{r}
 penguins |>
-    filter(species == "Gentoo")
+    filter(species == "Gentoo") |>
+    head()
 ```
 
 
 ## arrange()
 
-This allows you to sort your data based on one or more variables. By default, it will arrange your data in ascending order. If you want to sort by descending order, it can be done using the `desc()` function.
+It is for sorting your data based on one or more variables. By default, it will arrange your data in ascending order. If you want to sort by descending order, it can be done using the `desc()` function.
 
 ```{r}
 penguins |>
-    arrange(bill_length_mm)
+    arrange(bill_length_mm) |>
+    head()
 
 penguins |>
-    arrange(desc(bill_length_mm))
+    arrange(desc(bill_length_mm)) |>
+    head()
 ```
 
 ::: {.callout-tip}
 ## Did you know
 
-What do you think will happen to the data if you sort the penguin's data on the species where it is a character variable? If you guess that it will sort in alphabetical order, you are correct!!!
+What do you think will happen if you sort the penguin's data by the species where it is a character variable? If you guess that it will sort in **alphabetical order**, you are correct!!!
 :::
 
 
@@ -169,20 +174,22 @@ data |>
     mutate(variable_name = value)
 ```
 
-The "variable_name", this can be the existing variable you are going to modify or  new variable name you are trying to create. The "value" is what will be assigned to the "variable_name".
+The **"variable_name"**, this can be the existing variable you are going to modify or  new variable name you are trying to create. The **"value"** is what will be assigned to the **"variable_name"**.
 
-What if there is an errors in the records where
+Here is an example on using mutata function to modify the **existing** variable
 
 ```{r}
 penguins |>
-    mutate(flipper_length_cm = flipper_length_mm / 10)
+    mutate(sex = ifelse(sex == "male", "M", "F")) |>
+    select(species, sex) |>
+    head()
 ```
 
 ::: {.callout-caution}
 ## Your turn!
-Let said that you think that the body mass of the penguins should be expressed as kilogram instead of gram. How could you modify the existing variable.
+Let said that you think that the body mass of the penguins should be expressed as kilogram instead of gram. How could you create a **new** variable? Make sure you name it as `body_mass_kg`.
 
-Hint: The conversion from gram to kilogram can be expressed in a forms of
+Hint: The conversion from gram to kilogram can be expressed in a forms of $kg = g/1000$
 :::
 
 ```{webr-teachr}
@@ -192,13 +199,13 @@ library(dplyr)
 
 # Select the column of interests
 penguins |>
-    <<select(body_mass_g, year)>>
+    <<mutate(body_mass_kg = body_mass_g/1000)>>
 
 ???
 
 c(
-    "Did you use the right function?" != search_ast(.code, .fn = select),
-    "Did you pick the right variable?" = !all(c("body_mass_g", "year") %in% all.vars(.code))
+    "Did you use the right function?" != search_ast(.code, .fn = mutate),
+    "Did you provide the right expression?" != search_ast(.code, .expr = body_mass_g/1000)
 )
 ```
 
