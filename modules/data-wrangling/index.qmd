@@ -21,40 +21,6 @@ library(palmerpenguins)
 library(tidyverse)
 ```
 
-# Introduction to tidyverse
-
-## Introduction to tidyverse
-
-The tidyverse is a collection of R packages that transform and visualize data. They aim to be cohesive with each other and provide simple building block functions for you to use in complex applications. All packages of the tidyverse share very similar syntax and ideologies.
-
-The tidyverse includes the following packages:
-
-* `dplyr`: grammar of data manipulation
-* `tidyr`: reshape your data
-* `readr`: read rectangular data
-* `tibble`: re-imagining of the data frame
-* `stringr`: working with string data
-* `ggplot2`: grammar of graphics
-
-and many more...
-
-In this chapter, we focus on two packages: **dplyr** and **tidyr**.
-
-**dplyr** makes manipulating data easy. **tidyr** helps you to create "tidy data" (data where each variable is in a column, each observation is a row and each value is a cell). These packages contain the functions that help with adding, renaming, removing columns, computing new variables, joining data sets together, and summarising your data. These can solve the most common data manipulation challenges.
-
-
-::: {.callout-caution}
-## To get start on the journey
-
-First, install the core tidyverse packages with: `install.packages("tidyverse")`
-
-Then, load the tidyverse package with: `library(tidyverse)`
-:::
-
-::: {.callout-tip}
-Did you know you can also load specific library separately, for example, `library(dplyr)`
-:::
-
 # Introduction to dplyr
 
 ## Introduction to dplyr
@@ -192,4 +158,47 @@ What do you think will happen to the data if you sort the penguin's data on the 
 :::
 
 
+## mutate()
+
+This function is for creating new variable or modify the existing one.
+
+```{r}
+#| eval: false
+
+data |>
+    mutate(variable_name = value)
+```
+
+The "variable_name", this can be the existing variable you are going to modify or  new variable name you are trying to create. The "value" is what will be assigned to the "variable_name".
+
+What if there is an errors in the records where
+
+```{r}
+penguins |>
+    mutate(flipper_length_cm = flipper_length_mm / 10)
+```
+
+::: {.callout-caution}
+## Your turn!
+Let said that you think that the body mass of the penguins should be expressed as kilogram instead of gram. How could you modify the existing variable.
+
+Hint: The conversion from gram to kilogram can be expressed in a forms of
+:::
+
+```{webr-teachr}
+# library the packages needed
+library(palmerpenguins)
+library(dplyr)
+
+# Select the column of interests
+penguins |>
+    <<select(body_mass_g, year)>>
+
+???
+
+c(
+    "Did you use the right function?" != search_ast(.code, .fn = select),
+    "Did you pick the right variable?" = !all(c("body_mass_g", "year") %in% all.vars(.code))
+)
+```
 
