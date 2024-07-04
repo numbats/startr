@@ -309,3 +309,25 @@ The `na.rm` argument in the function is for ignoring the **NAs** values when cal
 
 You may have noticed that we use the letter **z** in words like **summarize**. In British English, you might be more familiar with spelling it as **summarise**. In tidyverse, you can use either spelling when calling a function. So, whether you're used to writing summarize or summarising, the functionality is still the same either way.
 :::
+
+
+## count()
+A convenient function for getting the number of observations based on groupings. Previously, if you wanted to see how many penguins were observed for each species and sex and sort them from highest to lowest, the code would look something like this:
+
+```{r}
+penguins |>
+    group_by(species, sex) |>
+    summarize(n = n(), .groups = "drop") |>
+    arrange(desc(n))
+```
+
+However, the `count` function allows you to achieve the same result with less work. 
+
+```{r}
+penguins |>
+    count(species, sex, sort = TRUE)
+```
+
+:::{.callout-tip}
+Setting `.groups = "drop"` in the `summarize` function is similar to using the `ungroup` function. #check with mitch or cynthia
+:::
