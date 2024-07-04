@@ -19,9 +19,9 @@ webr:
 # library
 library(palmerpenguins)
 library(tidyverse)
-```
+``` 
 
-# Introduction to dplyr
+# Data Transformation and Aggregation
 
 **dplyr** provides a selection of tools for the most common data wrangling tasks. There are a few simple yet handy functions.
 
@@ -32,6 +32,10 @@ library(tidyverse)
 * `group_by()` along with `ungroup()`
 * `count()`
 * `case_when()`
+
+:::{.callout-note}
+This is a very big topic, and we will not cover all of the useful functions in this chapter. Here is a cheat sheet to help you learn more about [dplyr](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf).
+:::
 
 
 ## select()
@@ -397,3 +401,5 @@ You should order the tests in the `case_when` function from **specific** to **ge
 :::{.callout-tip}
 If this `3550 <= body_mass_g <= 4750` is the condition you are trying to check, the equivalent of this would be `between(body_mass_g, 3550, 4750)`.
 :::
+
+#
