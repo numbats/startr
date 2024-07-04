@@ -402,4 +402,67 @@ You should order the tests in the `case_when` function from **specific** to **ge
 If this `3550 <= body_mass_g <= 4750` is the condition you are trying to check, the equivalent of this would be `between(body_mass_g, 3550, 4750)`.
 :::
 
-#
+
+# Joining datasets
+
+Most of the time, you will need to use information from different datasets for your data analysis. This is why learning multiple types of joins to accommodate different needs is important. 
+
+There are many types of join in the `dplyr` package. However, we are going to focus on the one that got used often, **mutating joins**. Mutating joins add columns from one dataset to another by matching observations based on the keys. 
+
+For this section, we are going to use a synthetic dataset.
+
+```{r}
+homework1 <- tibble(name = c('Alphonso', 'Daisy', 'Philip'), 
+                    student_no = c(456,100,102), marks = c(80, 65, 34))
+homework2 <- tibble(name = c('Alphonso', 'Philip', 'Melinda'), 
+                    student_no = c(456,102,432), marks = c(85, 97, 56))
+```
+
+```{r}
+#| echo: false
+homework1
+homework2
+```
+
+
+<!-- Joins diagram -->
+
+## inner_join()
+Only keep observations that are present in both tables. 
+
+```{r}
+inner_join(homework1, homework2, by = c('name', 'student_no'))
+```
+
+:::{.callout-note}
+You may have noticed that the column names of the return table have either `.x` or `.y` attached to `marks`. The reason for this is that the join function is trying to return all the columns, but with the variable name the same for both tables, it uses `.x` and `.y` to distinguish which variables are from the **first** table (`.x`) and which one is from the **second** table (`.y`).
+:::
+
+## left_join()
+Left joins start with the left data set (the first argument) and search in the right data set (the second argument), looking for the same value keys to add to the left dataset.
+
+```{r}
+left_join(homework1, homework2, by = c('name', 'student_no'))
+```
+
+:::{.callout-note}
+
+The `NA` values in the table return mean that there is no matching data, or if you think in this context, Daisy did not submit her second homework.
+
+:::
+
+
+## right_join()
+Right joins start with the right data set (the second argument) and search in the left data set (the first argument), looking for the same value keys to add to the right dataset.
+
+```{r}
+right_join(homework1, homework2, by = c('name', 'student_no'))
+```
+
+
+## full_join
+Return all the rows.
+
+```{r}
+full_join(homework1, homework2, by = c('name', 'student_no'))
+```
