@@ -286,3 +286,26 @@ penguins |>
 :::{.callout-note}
 It is a good practice to use the `ungroup` function after you have done the operations. If you have not **ungrouped** the data, whatever operations you do after will take into account the grouping whether you want it or not.
 :::
+
+
+## summarize()
+As the name mentioned, it summarizes data into a new data frame based on the groupings and different arguments you included. The summary statistics are something you have to create very often. Here is an example of the summary statistics based on the penguin species.
+
+```{r}
+penguins |>
+    group_by(species) |>
+    summarize(
+        Average_body_mass = mean(body_mass_g, na.rm = TRUE),
+        Median_body_mass = median(body_mass_g, na.rm = TRUE),
+        SD_body_mass = sd(body_mass_g, na.rm = TRUE))
+```
+
+:::{.callout-note}
+The `na.rm` argument in the function is for ignoring the **NAs** values when calculating each statistic.
+:::
+
+:::{.callout-tip}
+## Did you know
+
+You may have noticed that we use the letter **z** in words like **summarize**. In British English, you might be more familiar with spelling it as **summarise**. In tidyverse, you can use either spelling when calling a function. So, whether you're used to writing summarize or summarising, the functionality is still the same either way.
+:::
