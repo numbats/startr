@@ -331,3 +331,69 @@ penguins |>
 :::{.callout-tip}
 Setting `.groups = "drop"` in the `summarize` function is similar to using the `ungroup` function. #check with mitch or cynthia
 :::
+
+
+## case_when()
+The function allows you to test multiple conditions and assign the specified values if it is `TRUE`.
+
+```{r}
+#| eval: false
+penguins |>
+    mutate(body_mass = ifelse(
+        body_mass_g > 4750, 
+            "heavy",
+            ifelse(
+                between(body_mass_g, 3550, 4750),
+                "average",
+                "light"
+            )))
+```
+
+```{r}
+#| echo: false
+penguins |>
+    mutate(body_mass = ifelse(
+        body_mass_g > 4750, 
+            "heavy",
+            ifelse(
+                between(body_mass_g, 3550, 4750),
+                "average",
+                "light"
+            ))) |>
+    na.omit() |>
+    select(species, body_mass_g, body_mass) |>
+    head()
+```
+
+You can see how messy it can get even with just two conditions for the `ifelse` function. Now compared to the `case_when` function:
+
+```{r}
+#| eval: false
+penguins |>
+    mutate(body_mass = case_when(
+        between(body_mass_g, 3550, 4750) ~ "average",
+        body_mass_g > 4750 ~ "heavy",
+        .default = "light"
+    ))
+```
+
+```{r}
+#| echo: false
+penguins |>
+    mutate(body_mass = case_when(
+        between(body_mass_g, 3550, 4750) ~ "average",
+        body_mass_g > 4750 ~ "heavy",
+        .default = "light"
+    )) |>
+    na.omit() |>
+    select(species, body_mass_g, body_mass) |>
+    head()
+```
+
+:::{.callout-note}
+You should order the tests in the `case_when` function from **specific** to **general** and make sure to keep track of how those ambiguous rows are being treated. `.default` here is equivalent to the `else` statement.
+:::
+
+:::{.callout-tip}
+If this `3550 <= body_mass_g <= 4750` is the condition you are trying to check, the equivalent of this would be `between(body_mass_g, 3550, 4750)`.
+:::
