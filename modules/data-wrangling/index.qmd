@@ -261,3 +261,28 @@ c(
 )
 ```
 
+
+## group_by()
+
+It allows you to take the existing data and group the specific variables together for future operations. For example, with penguins data, if you want to rank penguins by weights within each species, instead of splitting the dataset by species, rank them individually and then rejoin the data. You can use the `group_by` function together with `mutate` to achieve the same operation.
+
+```{r}
+#| eval: false
+penguins |>
+    group_by(species) |>
+    mutate(ranking = rank(body_mass_g, ties.method = "min")) |>
+    ungroup()
+```
+
+```{r}
+penguins |>
+    group_by(species) |>
+    mutate(ranking = rank(body_mass_g, ties.method = "min")) |>
+    ungroup() |>
+    select(species, body_mass_g, ranking) |>
+    head()
+```
+
+:::{.callout-note}
+It is a good practice to use the `ungroup` function after you have done the operations. If you have not **ungrouped** the data, whatever operations you do after will take into account the grouping whether you want it or not.
+:::
