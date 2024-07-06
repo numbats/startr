@@ -151,7 +151,7 @@ With some luck, you'll be met with a series of StackOverflow threads, blog posts
 -   <https://stackoverflow.com/questions/11308367/error-in-my-code-object-of-type-closure-is-not-subsettable>
 -   <https://www.r-bloggers.com/2019/02/object-of-type-closure-is-not-subsettable/>
 
-::: callout-tip
+::: {.callout-tip}
 ## Tips for searching errors online
 
 **1.** Add double quotes around the error message. This searches for those exact words in that exact order.
@@ -238,7 +238,7 @@ There are many websites commonly used by developers facing troubleshooting error
 **Trusty (sometimes) AI.** There are many AI tools that can help you write code, and some can even help you debug it. However, AI should be used with caution. While it can assist in troubleshooting errors, it may not always provide the best solution. You should still try to understand what the code is doing and why it's causing an error to avoid using code from AI which may be producing inaccurate results (despite running without error).
 
 
-::: callout-tip
+::: {.callout-tip}
 ## Help and Learn
 
 Answering questions on the forum can help consolidate your understanding and prepare you for asking and answering questions in other forums such as Stack Overflow.
@@ -252,7 +252,7 @@ Answering questions on the forum can help consolidate your understanding and pre
 
 # Minimal Reproducible Examples
 
-::: callout-note
+::: {.callout-note}
 ## Remember
 
 A minimally reproducible example (often called an MRE) contains all of the code necessary for someone else to encounter the same error you're facing.
@@ -274,7 +274,7 @@ dput(head(iris))
 
 Try it yourself! Create a minimal dataset using the `dput()` function for the `penguins` dataset.
 
-::: callout-tip
+::: {.callout-tip}
 ## Hint
 
 We want to be putting the `penguins` data to create a minimal dataset.
@@ -310,7 +310,7 @@ A *minimal* reproducible example cuts out as much of the code as possible, keepi
 
 If your code includes any randomisation, it’s a good idea to set the random seed using the `set.seed()` function. This ensures that each time the code is ran, the same random results are obtained.
 
-::: callout-tip
+::: {.callout-tip}
 ## What is set.seed()?
 
 The `set.seed()` function in R ensures reproducible results in code involving random values. It guarantees the same random values are produced each time you run the code, aiding in debugging and consistency. The number in the brackets can be any integer.
