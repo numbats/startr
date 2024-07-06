@@ -62,15 +62,15 @@ The first step is to carefully **read** the error message, it often contains clu
 ## Let's have a look at some common error messages
 
 ```{webr-teachr}
-# One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset 
-str(penguins)
+# Lets look at the penguins data from the palmerpenguins package
+# Lets take a look at the structure
+str(palmerpenguins)
 
 ```
 
-Oh no! An error message: ["Error: object 'penguins' not found"]{style="color: red;"}!
+Oh no! An error message: ["Error: object 'palmerpenguins' not found"]{style="color: red;"}!
 
-When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="color: red;"}, it usually means there is a typo or the object wasn't loaded in correctly. Let's look at how we can fix this.
+When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="color: red;"}, it usually means there is a typo or the object wasn't loaded in correctly. In this instance, we havent used the correct object. Let's look at how we can fix this.
 
 ```{webr-teachr}
 # One of the r built-in dataset is called "cars"
@@ -84,7 +84,7 @@ p <- .code[[1]][[2]][[2]]
 c("did you put in penguins?" = !"penguins" %in% all.vars(.code))
 ```
 
-Typos are a common error, whether it's in the object name or the function name. When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="color: red;"}, please check and make sure that everything is typed correctly.
+Typos are a common error, whether it's in the object name or the function name. In this example, we accidentally used the package name, instead of the name of the data from within the package. When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="color: red;"}, please check and make sure that everything is inputted correctly and the relevant packages are loaded in.
 
 ## What if we cannot find the function?!
 
