@@ -1,0 +1,11 @@
+---
+title: Quarto Basics
+subtitle: 'With coding comes bugs and errors that need troubleshooting. In this chapter, you will learn how to decipher errors, find help for fixing them, and practice asking clear questions with minimally reproducible examples.'
+title-block-banner: yes
+engine: knitr
+filters:
+  - webr-teachr
+webr:
+  packages: ["tidyverse"]
+---
+
