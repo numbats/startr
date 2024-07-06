@@ -151,7 +151,7 @@ With some luck, you'll be met with a series of StackOverflow threads, blog posts
 -   <https://stackoverflow.com/questions/11308367/error-in-my-code-object-of-type-closure-is-not-subsettable>
 -   <https://www.r-bloggers.com/2019/02/object-of-type-closure-is-not-subsettable/>
 
-::: {.callout-tip}
+::: callout-tip
 ## Tips for searching errors online
 
 **1.** Add double quotes around the error message. This searches for those exact words in that exact order.
@@ -216,29 +216,27 @@ The process of creating an example, and reducing it down into the minimal amount
 
 ## Where to ask for help
 
-There are many websites commonly used by developers facing troubleshooting errors, where experts visit and try to help. Here are some of the most popular:
++---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [**Stack Overflow.**](https://stackoverflow.com/questions/tagged/rstudio) | This is a platform where you can search for solutions and ask for help. Before asking a question on Stack Overflow, you can search some key words from your understanding of error messages. It is likely that people have already asked similar questions related to your error and you can try the solutions provided by others under the question.                                                                          |
++---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [**RStudio Community.**](https://forum.posit.co/)                         | This is a community channel for RStudio users. Similar to Stack Overflow, you can ask questions and also find solutions.                                                                                                                                                                                                                                                                                                       |
++---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [**GitHub.**](https://github.com/)                                        | If you've thoroughly investigated your error and believe the issue lies in the package rather than your code, you can contact the package's developer. Most R packages are open-source and maintained on Github.                                                                                                                                                                                                               |
+|                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|                                                                           | 1\. Search for the package's repository using its name along with "R" and "GitHub".                                                                                                                                                                                                                                                                                                                                            |
+|                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|                                                                           | 2\. Use the "Issues" tab to report your problem.                                                                                                                                                                                                                                                                                                                                                                               |
+|                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|                                                                           | 3\. Make sure to check if the issue has already been reported before creating a new one.                                                                                                                                                                                                                                                                                                                                       |
++---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Discussion Forum on Moodle or** [**Ed.**](http://edstem.org)            | If you're preparing for your Monash University course, a good place to ask for help is the discussion forum on Moodle. You can also seek assistance from your lecturers and tutors.                                                                                                                                                                                                                                            |
+|                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|                                                                           | -    If your unit uses Ed as a discussion space, use it to ask or answer questions. Some units may even allow you to post privately or anonymously if you feel shy posting publicly.                                                                                                                                                                                                                                           |
++---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Trusty (sometimes) AI.**                                                | There are many AI tools that can help you write code, and some can even help you debug it. However, AI should be used with caution. While it can assist in troubleshooting errors, it may not always provide the best solution. You should still try to understand what the code is doing and why it's causing an error to avoid using code from AI which may be producing inaccurate results (despite running without error). |
++---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-[**Stack Overflow.**](https://stackoverflow.com/questions/tagged/rstudio). This is a platform where you can search for solutions and ask for help. Before asking a question on Stack Overflow, you can search some key words from your understanding of error messages. It is likely that people have already asked similar questions related to your error and you can try the solutions provided by others under the question.
-
-[**RStudio Community.**](https://forum.posit.co/) This is a community channel for RStudio users. Similar to Stack Overflow, you can ask questions and also find solutions.
-
-[**GitHub.**](https://github.com/). If you've thoroughly investigated your error and believe the issue lies in the package rather than your code, you can contact the package's developer. Most R packages are open-source and maintained on Github.
-
-1.  Search for the package's repository using its name along with "R" and "GitHub".
-
-2.  Use the "Issues" tab to report your problem.
-
-3.  Make sure to check if the issue has already been reported before creating a new one.
-
-**Discussion Forum on Moodle or** [**Ed.**](http://edstem.org) If you're preparing for your Monash University course, a good place to ask for help is the discussion forum on Moodle. You can also seek assistance from your lecturers and tutors.
-
--   If your unit uses Ed as a discussion space, use it to ask or answer questions.
-    -   Some units may even allow you to post privately or anonymously if you feel shy posting publicly.
-
-**Trusty (sometimes) AI.** There are many AI tools that can help you write code, and some can even help you debug it. However, AI should be used with caution. While it can assist in troubleshooting errors, it may not always provide the best solution. You should still try to understand what the code is doing and why it's causing an error to avoid using code from AI which may be producing inaccurate results (despite running without error).
-
-
-::: {.callout-tip}
+::: callout-tip
 ## Help and Learn
 
 Answering questions on the forum can help consolidate your understanding and prepare you for asking and answering questions in other forums such as Stack Overflow.
@@ -252,7 +250,7 @@ Answering questions on the forum can help consolidate your understanding and pre
 
 # Minimal Reproducible Examples
 
-::: {.callout-note}
+::: callout-note
 ## Remember
 
 A minimally reproducible example (often called an MRE) contains all of the code necessary for someone else to encounter the same error you're facing.
@@ -274,14 +272,14 @@ dput(head(iris))
 
 Try it yourself! Create a minimal dataset using the `dput()` function for the `penguins` dataset.
 
-::: {.callout-tip}
+::: callout-tip
 ## Hint
 
 We want to be putting the `penguins` data to create a minimal dataset.
 :::
 
 ```{webr-teachr}
-## REVISIT THIS :( 
+
 # Load the penguins dataset
 library(palmerpenguins)
 # Use dput() to create a minimal dataset
@@ -293,7 +291,6 @@ c("Did you use dput() with head(penguins)?" =  !search_ast(.code, .expr = dput(h
 
 ```
 
-
 You can then copy this generated code, and make it part of your example to create your example data.
 
 Alternatively you can save this minimal dataset to a file, and attach the file in your question.
@@ -302,7 +299,7 @@ When you read that file in, make sure you avoid absolute paths to it. Not everyo
 
 -- potentially a multiple choice question here on relative paths? ---
 
-## Provide minimal code
+## Create minimal reproducible examples
 
 As part of a data analysis you probably write a lot of code. You need to read in the data, tidy it up, run some calculations and make some plots. When you run into an error, providing your entire analysis just makes it more time consuming for helpers to run your code and identify the source of the error.
 
@@ -310,8 +307,8 @@ A *minimal* reproducible example cuts out as much of the code as possible, keepi
 
 If your code includes any randomisation, it’s a good idea to set the random seed using the `set.seed()` function. This ensures that each time the code is ran, the same random results are obtained.
 
-::: {.callout-tip}
-## What is set.seed()?
+::: callout-tip
+## Reproducing random results
 
 The `set.seed()` function in R ensures reproducible results in code involving random values. It guarantees the same random values are produced each time you run the code, aiding in debugging and consistency. The number in the brackets can be any integer.
 :::
@@ -330,23 +327,6 @@ the [`reprex`](https://reprex.tidyverse.org/) package is a useful tool that can 
 
 -   add images
 -   potentially a video here
-
-# Asking for help checklist ☑️
-
-This is **not an exhaustive check-list.** What needs to be included and checked is very question specific, but this checklist should apply to most questions.
-
--   [ ] Is the problem [clearly]{.underline} and [succinctly described]{.underline}?
--   [ ] Is the [expected solution or behaviour]{.underline} outlined?
--   [ ] Has [nobody asked this question]{.underline} before? (Search the web!)
--   [ ] Are you asking the [right people]{.underline} at the [right place]{.underline}?
--   [ ] Have you added [appropriate tags]{.underline} or [keywords]{.underline} to reach the right experts?
--   [ ] Have you prepared your example using the [reprex package]{.underline} to ensure the problem is easily reproduced on other computers?
--   [ ] Have you [minimised your problem]{.underline} as much as possible, [removing irrelevant packages, data and code]{.underline}?
-
-**If your questions involve a dataset**
-
--   [ ] Is the data supplied
--   [ ] If the data is big, could you cull your data further to communicate or reproduce the problem?
 
 # Asking for help checklist ☑️
 
