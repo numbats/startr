@@ -190,10 +190,9 @@ There are a few reasons why this can work. It allows you to re-run your code fro
 
 Once you've carefully read the error, searched the web, and tried everything else you can think of, it's time to ask for help. However for a stranger to take time out of their day to find the solution and write a good answer for you, you better have written a good question for them!
 
-<div style="text-align: center;">
-  <img src="images/bad_question.png" width="600" alt="Bad Question">
-</div>
-
+::: {style="text-align: center;"}
+<img src="images/bad_question.png" alt="Bad Question" width="600"/>
+:::
 
 Read ahead to find out why this is an example of a **bad question**.
 
@@ -242,18 +241,18 @@ The process of creating an example, and reducing it down into the minimal amount
 +---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | **Trusty (sometimes) AI.**                                                | There are many AI tools that can help you write code, and some can even help you debug it. However, AI should be used with caution. While it can assist in troubleshooting errors, it may not always provide the best solution. You should still try to understand what the code is doing and why it's causing an error to avoid using code from AI which may be producing inaccurate results (despite running without error). |
 +---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Teachers and Tutors in Consultations.**                                 | Ask your lecturers and tutors for help during consultation sessions, which are available for any content-related difficulties, including debugging code.                                                                                                                                                                                                                                                                       |
+|                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|                                                                           | -   Prepare a small demonstration of your error beforehand to make the session more effective.                                                                                                                                                                                                                                                                                                                                 |
+|                                                                           | -   The benefit of these sessions is that we can guide you closer to the solution until you figure it out yourself.                                                                                                                                                                                                                                                                                                            |
+|                                                                           | -   Don't be disheartened if your error, which you've struggled with for hours, is solved in minutes — we've had plenty of practice (also being stuck for hours) troubleshooting these errors.                                                                                                                                                                                                                                 |
++---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 ::: callout-tip
 ## Help and Learn
 
 Answering questions on the forum can help consolidate your understanding and prepare you for asking and answering questions in other forums such as Stack Overflow.
 :::
-
-**Teachers and Tutors in Consultations.** Ask your lecturers and tutors for help during consultation sessions, which are available for any content-related difficulties, including debugging code.
-
--   Prepare a small demonstration of your error beforehand to make the session more effective.
--   The benefit of these sessions is that we can guide you closer to the solution until you figure it out yourself.
--   Don't be disheartened if your error, which you've struggled with for hours, is solved in minutes — we've had plenty of practice (also being stuck for hours) troubleshooting these errors.
 
 # Minimal Reproducible Examples
 
