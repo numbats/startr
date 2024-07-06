@@ -6,7 +6,10 @@ engine: knitr
 filters:
   - webr-teachr
 webr:
-  packages: ["tidyverse", "palmerpenguins"]
+  packages: ["palmerpenguins"]
+format:
+  html:
+    toc: true
 ---
 
 ```{r setup, include = FALSE}
@@ -61,24 +64,24 @@ The first step is to carefully **read** the error message, it often contains clu
 ```{webr-teachr}
 # One of the r built-in dataset is called "cars"
 # Let's try to have a look at the structure of the cars dataset 
-str(car)
+str(penguins)
 
 ```
 
-Oh no! An error message: ["Error: object 'car' not found"]{style="color: red;"}!
+Oh no! An error message: ["Error: object 'penguins' not found"]{style="color: red;"}!
 
 When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="color: red;"}, it usually means there is a typo or the object wasn't loaded in correctly. Let's look at how we can fix this.
 
 ```{webr-teachr}
 # One of the r built-in dataset is called "cars"
 # Let's try to have a look at the structure of the cars dataset 
-str(<<cars>>)
+str(<<penguins>>)
   
 ???
   
 p <- .code[[1]][[2]][[2]]
   
-c("did you put in cars?" = !"cars" %in% all.vars(.code))
+c("did you put in penguins?" = !"penguins" %in% all.vars(.code))
 ```
 
 Typos are a common error, whether it's in the object name or the function name. When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="color: red;"}, please check and make sure that everything is typed correctly.
@@ -232,10 +235,8 @@ There are many websites commonly used by developers facing troubleshooting error
 -   If your unit uses Ed as a discussion space, use it to ask or answer questions.
     -   Some units may even allow you to post privately or anonymously if you feel shy posting publicly.
 
-**Trusty (sometimes) AI.** 
-https://www.infoworld.com/article/3694611/8-chatgpt-tools-for-r-programming.html
+**Trusty (sometimes) AI.** There are many AI tools that can help you write code, and some can even help you debug it. However, AI should be used with caution. While it can assist in troubleshooting errors, it may not always provide the best solution. You should still try to understand what the code is doing and why it's causing an error to avoid using code from AI which may be producing inaccurate results (despite running without error).
 
-https://www.theregister.com/2024/01/27/ai_coding_automatic/
 
 ::: callout-tip
 ## Help and Learn
@@ -288,9 +289,10 @@ library(palmerpenguins)
   
 ???
   
-"Did you use dput() with head(penguins)?" != search_ast(.code, .expr = dput(head(penguins)))
+c("Did you use dput() with head(penguins)?" =  !search_ast(.code, .expr = dput(head(penguins))))
 
 ```
+
 
 You can then copy this generated code, and make it part of your example to create your example data.
 
