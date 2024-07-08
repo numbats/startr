@@ -61,10 +61,14 @@ The first step is to carefully **read** the error message, it often contains clu
 
 ## Let's have a look at some common error messages
 
+```{r,echo = FALSE, eval=TRUE}
+detach_package(palmerpenguins)
+```
+
 ```{webr-teachr}
 # Lets look at the penguins data from the palmerpenguins package
 # Lets take a look at the structure
-str(palmerpenguins)
+str(penguins)
 
 ```
 
