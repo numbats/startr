@@ -7,13 +7,39 @@ filters:
   - webr-teachr
 webr:
   packages: 
+css: style.css
 ---
 
+::: {.alert .alert-block .alert-warning}
+# What is Quarto?
 
-Potential outline:
+Quarto is a **open-source, technical publishing system** that allows you to create **interactive and reproducible** documents with ease. It is built on top of the R Markdown ecosystem and provides a range of features that make it easy to create documents for a **variety of purposes.**
+:::
 
-Introduction to quarto
-- What is Quarto?
+## Understanding Quarto Fundamentals
 
-Difference between quarto and markdown (brief)
+Quarto documents are written in a marking with Quarto extensions. This makes Quarto easy to read and write, while still providing powerful features for creating complex documents.
 
+Since Quarto is built on top of the R Markdown ecosystem, you can use **R code chunks** to embed code and create interactive visualisations in your documents. This makes it easy to create **reproducible reports** that can be easily shared and updated, and makes a lot of already existing `Rmd` files executable without modification.
+
+Quarto also provides a range of [**built-in templates**](https://quarto.org/docs/websites/website-about.html) that you can use to create documents for different purposes, such as **academic papers, presentations, and websites.** These templates make it easy to get started with Quarto and create professional-looking documents with minimal effort.
+
+## Setting Up Quarto
+
+To get started with Quarto, you will need to **install the Quarto package** in R. You can do this by running the following command in the R console:
+
+```{r eval=FALSE}
+install.packages("quarto")
+```
+
+Once you have installed the Quarto package, you can create a new Quarto document by:
+
+1.  Go to the File menu in RStudio
+
+2.  Select New `File` \> `New File` \> `Quarto Document`
+
+![](images/select_new.png){width="307" fig-align="center"}
+
+3.  Choose the document type: `Document`, `Presentation`, or `Interactive`.
+
+![](images/document_type.png){width="347" fig-align="center"}
