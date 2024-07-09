@@ -6,6 +6,7 @@ engine: knitr
 format:
   html:
     from: markdown+emoji
+    toc: true
 filters:
     - webr-teachr
 webr:
