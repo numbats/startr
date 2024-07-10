@@ -1,6 +1,6 @@
 ---
-title: Getting started with R and IDE (Integrated Development Environment)
-subtitle: 'In this chapter, you will learn how to use R and how to use it with common IDEs.'
+title: Getting started with R and RStudio
+subtitle: 'This chapter will show you how to install R and RStudio.'
 title-block-banner: yes
 engine: knitr
 filters:
