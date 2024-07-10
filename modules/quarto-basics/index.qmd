@@ -13,14 +13,40 @@ css: style.css
 ::: {.alert .alert-block .alert-warning}
 # What is Quarto?
 
-Quarto is a **open-source, technical publishing system** that allows you to create **interactive and reproducible** documents with ease. It is built on top of the R Markdown ecosystem and provides a range of features that make it easy to create documents for a **variety of purposes.**
+Quarto is a **open-source, technical publishing system** that allows you to create **interactive and reproducible** documents with ease. 
 :::
 
-## Understanding Quarto Fundamentals
+::: {.callout-note collapse="true"}
+# A Brief History Lesson: Sweave to Quarto
+
+Before delving into the basics of `Quarto`, it may be worthwhile to know the *brief* history of its predecessors.
+
+## Sweave
+
+`Sweave` is a tool that allows you to embed `R` code in LaTeX documents and was developed as one of the earlier tools for literate programming in `R`. `Sweave` integrates the statistical power of `R` with the typesetting capabilities of LaTex, laying the groundwork for more flexible and user-friendly tools like `R Markdown` and `Quarto`.
+
+
+## R Markdown
+
+R Markdown is a another file format for creating documents with R. It can be considered a modern approach to `sweave`. It allows a combination of text and R code in a single document to create reports, presentations, and websites. A primary difference between R Markdown and Sweave is that R Markdown is not tied to LaTeX, and can be used with other output formats like HTML, PDF, and Word.
+
+:::
+
+
+
+# Quarto Fundamentals
 
 Quarto documents are written in a marking with Quarto extensions. This makes Quarto easy to read and write, while still providing powerful features for creating complex documents.
 
-Since Quarto is built on top of the R Markdown ecosystem, you can use **R code chunks** to embed code and create interactive visualisations in your documents. This makes it easy to create **reproducible reports** that can be easily shared and updated, and makes a lot of already existing `Rmd` files executable without modification.
+Since Quarto is built on top of the R Markdown ecosystem, you can use **R code chunks** to embed code and create visualisations in your documents. This makes it easy to create **reproducible reports** that can be easily shared and updated, and makes a lot of already existing `Rmd` files executable without much modification.
+
+::: {.callout-tip}
+## Quarto: Multi-Language and Multi-Engine
+Quarto is not only limited to R code chunks, and you can also use **Python, Julia, and SQL code chunks** in your Quarto documents.
+
+R Markdown on the other hand is tied to R, and has a dependency and requirement for R.
+:::
+
 
 Quarto also provides a range of [**built-in templates**](https://quarto.org/docs/websites/website-about.html) that you can use to create documents for different purposes, such as **academic papers, presentations, and websites.** These templates make it easy to get started with Quarto and create professional-looking documents with minimal effort.
 
@@ -43,3 +69,7 @@ Once you have installed the Quarto package, you can create a new Quarto document
 3.  Choose the document type: `Document`, `Presentation`, or `Interactive`.
 
 ![](images/document_type.png){width="347" fig-align="center"}
+
+
+**Now that you've got your first `quarto` document up and ready, let's explore some key components!**
+
