@@ -13,7 +13,7 @@ css: style.css
 ::: {.alert .alert-block .alert-warning}
 # What is Quarto?
 
-Quarto is a **open-source, technical publishing system** that allows you to create **interactive and reproducible** documents with ease. 
+Quarto is a **open-source, technical publishing system** that allows you to create **interactive and reproducible** documents with ease.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -25,14 +25,10 @@ Before delving into the basics of `Quarto`, it may be worthwhile to know the *br
 
 `Sweave` is a tool that allows you to embed `R` code in LaTeX documents and was developed as one of the earlier tools for literate programming in `R`. `Sweave` integrates the statistical power of `R` with the typesetting capabilities of LaTex, laying the groundwork for more flexible and user-friendly tools like `R Markdown` and `Quarto`.
 
-
 ## R Markdown
 
 R Markdown is a another file format for creating documents with R. It can be considered a modern approach to `sweave`. It allows a combination of text and R code in a single document to create reports, presentations, and websites. A primary difference between R Markdown and Sweave is that R Markdown is not tied to LaTeX, and can be used with other output formats like HTML, PDF, and Word.
-
 :::
-
-
 
 # Quarto Fundamentals
 
@@ -40,13 +36,13 @@ Quarto documents are written in a marking with Quarto extensions. This makes Qua
 
 Since Quarto is built on top of the R Markdown ecosystem, you can use **R code chunks** to embed code and create visualisations in your documents. This makes it easy to create **reproducible reports** that can be easily shared and updated, and makes a lot of already existing `Rmd` files executable without much modification.
 
-::: {.callout-tip}
+::: callout-tip
 ## Quarto: Multi-Language and Multi-Engine
+
 Quarto is not only limited to R code chunks, and you can also use **Python, Julia, and SQL code chunks** in your Quarto documents.
 
 R Markdown on the other hand is tied to R, and has a dependency and requirement for R.
 :::
-
 
 Quarto also provides a range of [**built-in templates**](https://quarto.org/docs/websites/website-about.html) that you can use to create documents for different purposes, such as **academic papers, presentations, and websites.** These templates make it easy to get started with Quarto and create professional-looking documents with minimal effort.
 
@@ -70,6 +66,36 @@ Once you have installed the Quarto package, you can create a new Quarto document
 
 ![](images/document_type.png){width="347" fig-align="center"}
 
+Now that you've got your first `quarto` document up and ready, let's explore some *key components!*
 
-**Now that you've got your first `quarto` document up and ready, let's explore some key components!**
+## YAML
 
+When you open up your first `quarto` document, you will notice a block of text up the top that looks something like this:
+
+![](images/yaml.png){width="347" fig-align="center"}
+
+This is called a YAML header, and it contains metadata about your document, such as the title, author, and date. The basic structure allows you to edit the title of the document (which at the moment is "Untitled"), advises you the output will be in `html format` and the document will open in the `visual editor` by default.
+
+::: callout-note
+# Source vs Visual
+
+[RStudio v1.4](https://rstudio.com/products/rstudio/download/) or higher includes Visual Markdown editing, offering a user-friendly interface. Instead of markdown syntax (e.g., **bolding** with double asterisks), you can format text, add images and insert tables using a toolbar or keyboard commands, similar to a word processor.
+:::
+
+Beyond the basics, you can add some real handy components to the [YAML](https://quarto.org/docs/output-formats/html-basics.html)
+
+|                                                      |                                                                                                                                                                                                                           |
+|----------------|--------------------------------------------------------|
+| author                                               | For assignments especially, its good to include your name and potentially student ID with this section in the YAML.                                                                                                       |
+| subtitle                                             | For reports it may be nice to add a subtitle for further detail.                                                                                                                                                          |
+| toc                                                  | A table of contents can be a useful tool in structuring your document. `toc-depth` specifies the level of headings to include (e.g. `toc-depth: 2` includes the top-level headings and second-level headings in the toc.) |
+| [date](https://quarto.org/docs/reference/dates.html) | If you'd like to include the due date or publishing date of the report.                                                                                                                                                   |
+|                                                      |                                                                                                                                                                                                                           |
+
+
+::: {.callout-important}
+## YAML Structure
+The structure of a YAML can be a little finicky, and errors may occur if it is not formatted correctly. If you  encountering errors or missing components - it may be worthwhile to cross-check. A useful starting point is the [Quarto documentation](https://quarto.org/docs/reference/formats/opml.html).
+:::
+
+** interactive component to edit a basic yaml / include things in yaml -- pain point: warnings, messages = false, toc **
