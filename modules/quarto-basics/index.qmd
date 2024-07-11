@@ -8,6 +8,9 @@ filters:
 webr:
   packages: 
 css: style.css
+format:
+  html:
+    toc: true
 ---
 
 ::: {.alert .alert-block .alert-warning}
@@ -128,8 +131,11 @@ You can also add options to the code chunk to control how the code is executed a
 ![](images/chunk_options.png){width="347" fig-align="center"}
 
 Look at the image of the code chunk above, you can see that the chunk has the following options:
+
 `fig-cap`: This option allows you to add a caption to the figure.
+
 `fig-width`: This option specifies the width of the figure.
+
 `echo`: This option controls whether the code in the chunk is displayed in the output.
 
 These are only a couple examples of options for chunk options, and there are many more available. You can find a full list of chunk options in [section 28.5.2](https://r4ds.hadley.nz/quarto). However a helpful table of more commonly used options and what they assist with retrieved from `R for Data Science` can be seen below:
