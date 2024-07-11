@@ -111,6 +111,7 @@ The structure of a YAML can be a little finicky, and errors may occur if it is n
 
 ** interactive component to edit a basic yaml / include things in yaml -- pain point: warnings, messages = false, toc **
 
+
 ## R Code Chunks
 
 Code chunks refer to sections in the document where you can write and execute code. These chunks are enclosed by three backticks followed by the name of the language you are using (e.g., `r` for R code). Code chunks can be included in three ways:
