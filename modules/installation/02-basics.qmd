@@ -6,7 +6,9 @@ engine: knitr
 filters:
     - webr-teachr
 execute: 
-  echo: false
+    echo: false
+webr:
+    packages: [palmerpenguins]
 ---
 
 # What does it look like?
@@ -19,9 +21,7 @@ The default appearances of the RStudio user interface contains 4 primary panes:
 
 The first time you open the RStudio, you will be greeted by the three panes console, environment, and output. We will talk about the Source pane later in the chapter.
 
-```{r}
-knitr::include_graphics(here::here("modules/installation/pictures/02-basics/RStudio_interface_1.png"))
-```
+<!-- interface picture with 3 panes -->
 
 On the top right-hand side, you have the **Environment** pane, which includes the Environment, History, Connections, Build, and Version Control System (VCS) tabs. We will focus on the Environment tab, which shows the currently saved R objects.
 
@@ -35,14 +35,44 @@ You can run the R code inside the **Console**, but once you close RStudio, you w
 
 To make your work reproducible, you should write and store all the code in the R Script (.R). It will show up in the **Source** pane, allowing you to view and edit various code-related files.
 
+<!-- interface picture with 4 panes, add source pane --> 
+
+
 # R Script
 
-There are multiple ways of adding the R Script. To get started, click on the *paper with a plus* symbol and choose R Script. In an R Script, you can write code and add comments. Also, you can run each line of code by pressing **ctrl + enter/return** on Windows and Linux or **cmd + enter/return** on Macs. The code messages will shown in the **Console**.
+There are multiple ways of adding the R Script. To get started, click on the *paper with a plus* symbol and choose R Script. 
+
+<!-- new file button screenshot -->
+
+In an R Script, you can write code and add comments. Also, you can run each line of code by pressing **ctrl + enter/return** on Windows and Linux or **cmd + enter/return** on Macs. The code messages will shown in the **Console**.
 
 :::{.callout-tip}
 There is a shortcut key for creating a new R Script, which is **shift + ctrl + N** for Windows and Linux or **shift + cmd + N** for Macs.
 :::
 
+
 # R packages installation and loading
+
+An R package bundles all useful functions, help files, and data sets into a package. The installation process of the packages is like purchasing a book (package) and storing it in a bookshelf (library folder), and you grab it when you want to read it.
+
+<!-- put the book in the shelf picture -->
+
+Let's start by purchasing a book (install the package). Through the interface, navigate to the "Packages" tab in the **Output** pane. It will show you what packages you currently have. Next, click "Install", and you should be able to see the pop-up window. Type the package name you want to install in the "Packages" field. You need to make sure that you install all the dependencies by clicking on the box labeled "Install dependencies". Then click "Install", you are now ready to start reading a book.
+
+Alternatively, you can install the package by running `install.packages("package_name")` in the ***Console** pane.
+
+:::{.callout-note}
+You will hear people talk about the "base R". It refers to the pre-installed functions in R that get loaded every time you start R. It provides you with the basic functions. For example, the `sum()` function adds all the numerics inside the function.
+:::
+
+<!-- packages window picture and pop-up picture -->
+
+Now that you have the book (package) on the bookshelf, to bring it out to your current working environment, type `library(package_name)` in the **Console** pane. All of the package's functions, data sets, and help files are now available for you to use until you close your current R session. So, if you have closed it, you will need to library the R packages again.
+
+You should library the packages you used at the top of the R Script. This way, you do not need to remember which packages you need in the script. It is also a good practice to do.
+
+:::{.callout-important}
+You may have noticed we do not use quotation marks when calling the package in the `library` function. You have options to use them if you like for this function. However, the quotation marks are necessary for the `install.packages` function.
+:::
 
 
