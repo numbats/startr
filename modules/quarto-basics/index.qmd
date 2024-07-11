@@ -66,7 +66,15 @@ Once you have installed the Quarto package, you can create a new Quarto document
 
 ![](images/document_type.png){width="347" fig-align="center"}
 
-Now that you've got your first `quarto` document up and ready, let's explore some *key components!*
+A Quarto file is a plain text file with the extension `.qmd`.
+
+Now that you've got your first `quarto` document up and ready, let's explore some *key components!* These include:
+
+* A YAML header
+
+* Chunks of R code
+
+* Markdown text
 
 ## YAML
 
@@ -77,9 +85,9 @@ When you open up your first `quarto` document, you will notice a block of text u
 This is called a YAML header, and it contains metadata about your document, such as the title, author, and date. The basic structure allows you to edit the title of the document (which at the moment is "Untitled"), advises you the output will be in `html format` and the document will open in the `visual editor` by default.
 
 ::: callout-note
-# Source vs Visual
+# Source vs Visual Editor
 
-[RStudio v1.4](https://rstudio.com/products/rstudio/download/) or higher includes Visual Markdown editing, offering a user-friendly interface. Instead of markdown syntax (e.g., **bolding** with double asterisks), you can format text, add images and insert tables using a toolbar or keyboard commands, similar to a word processor.
+[RStudio v1.4](https://rstudio.com/products/rstudio/download/) or higher includes Visual Markdown editing, offering a user-friendly interface. Instead of markdown syntax (e.g., **bolding** with double asterisks), you can format text, add images and insert tables using a toolbar or keyboard commands, similar to a word processor. View sections [28.3 and 28.4](https://r4ds.hadley.nz/quarto) for more detail.
 :::
 
 Beyond the basics, you can add some real handy components to the [YAML](https://quarto.org/docs/output-formats/html-basics.html)
@@ -99,3 +107,41 @@ The structure of a YAML can be a little finicky, and errors may occur if it is n
 :::
 
 ** interactive component to edit a basic yaml / include things in yaml -- pain point: warnings, messages = false, toc **
+
+## R Code Chunks
+
+Code chunks refer to sections in the document where you can write and execute code. These chunks are enclosed by three backticks followed by the name of the language you are using (e.g., `r` for R code). Code chunks can be included in three ways:
+
+1. Keyboard commands: `Ctrl + Alt + I` (Windows) or `Cmd + Option + I` (Mac)
+2. Clicking the `Insert` button in the toolbar (top right):
+
+![](images/insert.png){width="347" fig-align="center"}
+
+3. Typing the code chunk manually:
+
+![](images/code_chunk.png){width="300" fig-align="center"}
+
+Write the code you want to include within the chunk and when you run it, the output will be displayed directly below the chunk!
+
+You can also add options to the code chunk to control how the code is executed and displayed. For example, you can specify the output format, the width and height of plots, and whether the code should be displayed in the output. 
+
+![](images/chunk_options.png){width="347" fig-align="center"}
+
+Look at the image of the code chunk above, you can see that the chunk has the following options:
+`fig-cap`: This option allows you to add a caption to the figure.
+`fig-width`: This option specifies the width of the figure.
+`echo`: This option controls whether the code in the chunk is displayed in the output.
+
+These are only a couple examples of options for chunk options, and there are many more available. You can find a full list of chunk options in [section 28.5.2](https://r4ds.hadley.nz/quarto). However a helpful table of more commonly used options and what they assist with retrieved from `R for Data Science` can be seen below:
+
+![](images/option_table.png){width="600" fig-align="center"}
+
+::: callout-tip
+## Global Options
+Now you know how to add options to individual chunks - however, you can also add global options to the entire document. This can be done in the YAML header by including `execute:` and then in the next line, press tab to indent and add the options you want to apply to all code chunks in the document.
+:::
+
+** potentially a multiple choice question here about different common chunk options and what they do ??**
+
+
+
