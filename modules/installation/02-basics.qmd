@@ -7,8 +7,6 @@ filters:
     - webr-teachr
 execute: 
     echo: false
-webr:
-    packages: [palmerpenguins]
 ---
 
 # What does it look like?
@@ -67,9 +65,9 @@ You will hear people talk about the "base R". It refers to the pre-installed fun
 
 <!-- packages window picture and pop-up picture -->
 
-Now that you have the book (package) on the bookshelf, to bring it out to your current working environment, type `library(package_name)` in the **Console** pane. All of the package's functions, data sets, and help files are now available for you to use until you close your current R session. So, if you have closed it, you will need to library the R packages again.
+Now that you have the book (package) on the bookshelf, to bring it out to your current working environment, type `library(package_name)` in the **Console** pane. All of the package's functions, data sets, and help files are now available for you to use until you close your current R session. So, if you have closed it, you will need to load the R packages again.
 
-You should library the packages you used at the top of the R Script. This way, you do not need to remember which packages you need in the script. It is also a good practice to do.
+You should load the packages you used at the top of the R Script. This way, you do not need to remember which packages you need in the script. It is also a good practice to do.
 
 :::{.callout-important}
 You may have noticed we do not use quotation marks when calling the package in the `library` function. You have options to use them if you like for this function. However, the quotation marks are necessary for the `install.packages` function.
@@ -80,10 +78,10 @@ It is now your turn to try out the package installation process. What you need t
 :::
 
 ```{webr-teachr}
-# intall the package
+# install the package
 <<install.packages("palmerpenguins")>>
 
-# library the package
+# load the package
 <<library(palmerpenguins)>>
 
 penguins
@@ -92,9 +90,9 @@ penguins
 
 c(
     "Did you use the right function for installing the package?" = !search_ast(.code, .fn = install.packages),
-    "Did you use the right function for library the package?" = !search_ast(.code, .fn = library),
+    "Did you use the right function for loading the package?" = !search_ast(.code, .fn = library),
     "Did you install the right package?" = !search_ast(.code, .expr = install.packages("palmerpenguins")),
-    "Did you library the right package?" = !search_ast(.code, .expr = library(palmerpenguins))
+    "Did you load the right package?" = !search_ast(.code, .expr = library(palmerpenguins))
 )
 
 ```
