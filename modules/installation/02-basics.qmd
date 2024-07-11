@@ -75,4 +75,26 @@ You should library the packages you used at the top of the R Script. This way, y
 You may have noticed we do not use quotation marks when calling the package in the `library` function. You have options to use them if you like for this function. However, the quotation marks are necessary for the `install.packages` function.
 :::
 
+:::{.callout-caution}
+It is now your turn to try out the package installation process. What you need to do is to get the palmerpenguins package so we can have a look at the penguin's data.
+:::
 
+```{webr-teachr}
+# intall the package
+<<install.packages("palmerpenguins")>>
+
+# library the package
+<<library(palmerpenguins)>>
+
+penguins
+
+???
+
+c(
+    "Did you use the right function for installing the package?" = !search_ast(.code, .fn = install.packages),
+    "Did you use the right function for library the package?" = !search_ast(.code, .fn = library),
+    "Did you install the right package?" = !search_ast(.code, .expr = install.packages("palmerpenguins")),
+    "Did you library the right package?" = !search_ast(.code, .expr = library(palmerpenguins))
+)
+
+```
