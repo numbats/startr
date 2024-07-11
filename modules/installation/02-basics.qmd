@@ -1,0 +1,48 @@
+---
+title: RStudio basics
+subtitle: 'In this chapter, you will learn how to use R and how to use it with RStudio.'
+title-block-banner: yes
+engine: knitr
+filters:
+    - webr-teachr
+execute: 
+  echo: false
+---
+
+# What does it look like?
+The default appearances of the RStudio user interface contains 4 primary panes:
+
+- Source pane
+- Console pane
+- Environment pane
+- Outut pane
+
+The first time you open the RStudio, you will be greeted by the three panes console, environment, and output. We will talk about the Source pane later in the chapter.
+
+```{r}
+knitr::include_graphics(here::here("modules/installation/pictures/02-basics/RStudio_interface_1.png"))
+```
+
+On the top right-hand side, you have the **Environment** pane, which includes the Environment, History, Connections, Build, and Version Control System (VCS) tabs. We will focus on the Environment tab, which shows the currently saved R objects.
+
+**Output** pane, located at the bottom-right of the app, is used to display various outputs such as plots, HTML content, or files directory. You can interact with it as well, not just for shows. For example, in the "Files" tab, you can add new folders, new blank files, delete/rename, and more.
+
+On the left-hand side, you have the **Console** pane, which is the place where you can type out the command written in the R language and execute it immediately on your computer.
+
+:::{.callout-important}
+You can run the R code inside the **Console**, but once you close RStudio, you will lose all the code.
+:::
+
+To make your work reproducible, you should write and store all the code in the R Script (.R). It will show up in the **Source** pane, allowing you to view and edit various code-related files.
+
+# R Script
+
+There are multiple ways of adding the R Script. To get started, click on the *paper with a plus* symbol and choose R Script. In an R Script, you can write code and add comments. Also, you can run each line of code by pressing **ctrl + enter/return** on Windows and Linux or **cmd + enter/return** on Macs. The code messages will shown in the **Console**.
+
+:::{.callout-tip}
+There is a shortcut key for creating a new R Script, which is **shift + ctrl + N** for Windows and Linux or **shift + cmd + N** for Macs.
+:::
+
+# R packages installation and loading
+
+
