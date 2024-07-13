@@ -14,7 +14,7 @@ filters:
 - R and RStudio are powerful tools for creating a statistical analysis
 - It is open-sourced and user-friendly
 - It provides reproducible code and report
-- Easy data cleaning and visualization
+- Easy data cleaning and visualisation
 
 ## What is R and RStudio
 
@@ -39,7 +39,7 @@ Steps:
 
 5. Allow the installer to change your device.
 
-6. Follow the prompt instructions. You do not need to customize the startup.
+6. Follow the prompt instructions. You do not need to customise the startup.
 
 ## MacOS
 
