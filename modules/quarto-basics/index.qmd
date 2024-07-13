@@ -35,9 +35,10 @@ R Markdown is a another file format for creating documents with R. It can be con
 
 # Quarto Fundamentals
 
-Quarto documents are written in a marking with Quarto extensions. This makes Quarto easy to read and write, while still providing powerful features for creating complex documents.
+Quarto offers a seamless framework for integrating code, text, and visualisations into a single document, enabling the creation of interactive and reproducible reports. Written in `Markdown`, Quarto documents are straightforward to learn and use, yet powerful enough for complex document creation.
 
-Since Quarto is built on top of the R Markdown ecosystem, you can use **R code chunks** to embed code and create visualisations in your documents. This makes it easy to create **reproducible reports** that can be easily shared and updated, and makes a lot of already existing `Rmd` files executable without much modification.
+Built on the R Markdown ecosystem, Quarto allows you to embed R code chunks directly within your documents. This facilitates the creation of reports that are easy to share and update and facilitates in many existing `Rmd` files executable with minimal modifications.
+
 
 ::: callout-tip
 ## Quarto: Multi-Language and Multi-Engine
@@ -125,7 +126,18 @@ Code chunks refer to sections in the document where you can write and execute co
 
 ![](images/code_chunk.png){width="300" fig-align="center"}
 
+
+
+
+
+
 Write the code you want to include within the chunk and when you run it, the output will be displayed directly below the chunk!
+
+::: {.callout-tip}
+## Did you know
+Code doesn't have to be in a chunk! You can also include `inline code` by using backticks (``) around code you would like to run in text.
+:::
+
 
 You can also add options to the code chunk to control how the code is executed and displayed. For example, you can specify the output format, the width and height of plots, and whether the code should be displayed in the output. 
 
@@ -139,9 +151,8 @@ Look at the image of the code chunk above, you can see that the chunk has the fo
 
 `echo`: This option controls whether the code in the chunk is displayed in the output.
 
-These are only a couple examples of options for chunk options, and there are many more available. You can find a full list of chunk options in [section 28.5.2](https://r4ds.hadley.nz/quarto). However a helpful table of more commonly used options and what they assist with retrieved from `R for Data Science` can be seen below:
+These are only a couple examples of options for chunk options, and there are many more available. You can find a full list of chunk options in [section 28.5.2](https://r4ds.hadley.nz/quarto) as well as further discussion in Communicating with Quarto. 
 
-![](images/option_table.png){width="600" fig-align="center"}
 
 ::: callout-tip
 ## Global Options
@@ -149,6 +160,7 @@ Now you know how to add options to individual chunks - however, you can also add
 :::
 
 ** potentially a multiple choice question here about different common chunk options and what they do ??**
+
 
 
 
