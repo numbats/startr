@@ -1,0 +1,9 @@
+---
+title: Project structure
+subtitle: 'In this topic, you will learn about the project structure and how to manage your project in R properly.'
+title-block-banner: yes
+engine: knitr
+filters:
+  - webr-teachr
+---
+
