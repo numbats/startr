@@ -259,12 +259,12 @@ Try adding and subtracting vectors!
 :::
 
 ```{webr-teachr}
-
+# Lets try adding two vectors!
 # Create a vector y with elements 1, 2, 3, 4
 y <- <<c(1, 2, 3, 4)>>
 # Create a vector z with elements 5, 6, 7, 8
 z <- <<c(5, 6, 7, 8)>>
-# add y and z
+# Add y and z
 <<y+z>>
 
 ???
@@ -275,6 +275,27 @@ c(
 )
   
 ```
+
+```{webr-teachr}
+# Lets try subtracting two vectors!
+# Create a vector a with elements 1, 4, 3, 5
+a <- <<c(1, 4, 3, 5)>>
+# Create a vector b with elements 2, 1, 3, 4
+b <- <<c(2, 1, 3, 4)>>
+# Subtract a and b
+<<a-b>>
+
+???
+
+c(
+  "Did you use c() and assign the correct values for a?" = !search_ast(.code, .expr = a <- c(1, 4, 3, 5)),
+  "Did you use c() and assign the correct values for b?" = !search_ast(.code, .expr = b <- c(2, 1, 3, 4)),
+  "Did you subtract a and b?" = !search_ast(.code, .expr = a-b)
+)
+
+```
+
+
 
 
 
