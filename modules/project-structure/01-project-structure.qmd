@@ -21,17 +21,17 @@ The path may look different depending on the system you are using. If we want to
 
 **Windows:**
 
-`C:\Desktop\learnR\data\mtcars.csv`
+`C:\Desktop\learnR\data\penguins.csv`
 
 **MacOS & Linux:**
 
-`/Users/Desktop/learnR/data/mtcars.csv`
+`/Users/Desktop/learnR/data/penguins.csv`
 
 ### Webpage
 
 To locate the webpage, we use the URL (Uniform Resource Locator) to identify any resource on the internet.
 
-`https://learnr.numbat.space/data/mtcars.csv`
+`https://learnr.numbat.space/data/penguins.csv`
 
 
 ## Absolute and Relative Paths {#sec-abs-rela-path}
@@ -70,7 +70,7 @@ Some common folder names you might like to use in the analysis projects.
 ```
 learnR
 ├── data
-|   └── mtcars.csv
+|   └── penguins.csv
 |
 ├── R
 |   ├── cleaning.R
