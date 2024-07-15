@@ -525,8 +525,8 @@ $$S = \begin{bmatrix}1&0\\0&1\end{bmatrix}, T = \begin{bmatrix}2&2\\4&3\end{bmat
 -   Select a sub-matrix of M with the data on the rows 1, 2, 3 and
     columns 2. Assign the result to the variable `part_of_M`.
 
-Hint 1: To stack one matrix on top of another, we can use the `rbind()`
-command. Hint 2: For example, B\[1,2\] selects the element at the first
+**HINT** 💡**:**  To stack one matrix on top of another, we can use the `rbind()`
+command. **HINT 2** 💡**:** For example, B\[1,2\] selects the element at the first
 row and second column of matrix B. B\[1:3,2:4\] results in a matrix with
 the data on the rows 1, 2, 3 and columns 2, 3, 4.
 :::
@@ -567,7 +567,7 @@ observations as rows.
 Let's look at an example. Just run the code and you will see what a data
 frame looks like in R.
 
-Hint: Simply run the code!
+**HINT** 💡**:**  Simply run the code!
 :::
 
 ```{webr-teachr}
@@ -602,7 +602,7 @@ you understand the data frame very quickly.
 Investigate the structure of the example dataframe. Have a look at the
 first and last few observations!
 
-Hint: Try `head(df)`.
+**HINT** 💡**:**  Try `head(df)`.
 :::
 
 ```{webr-teachr}
@@ -650,7 +650,7 @@ Create a data frame using vectors `symbol`, `element`, `chemical_group`
 and `atomic_no`, following that order. Assign the result data frame to
 `first_ten_elements`.
 
-Hint: Use the `data.frame()` function on the vectors.
+**HINT** 💡**:**  Use the `data.frame()` function on the vectors.
 :::
 
 ```{webr-teachr}
@@ -725,7 +725,7 @@ the sorted dataframe to `sorted_df`.
 
 Complete the code below to complete the tasks indicated in the comments.
 
-Hint: Use `order(first_ten_elements$atomic_no)` to create positions.
+**HINT** 💡**:**  Use `order(first_ten_elements$atomic_no)` to create positions.
 Then, use 'positions' with square brackets: `first_ten_elements[...]`;
 can you fill in the ...? Do not forget that 'positions' indicates the
 order of the rows in the data frame.
@@ -853,7 +853,7 @@ Write a for loop that takes the nominal GDP (in trillion) for each
 country in 2017 and divided it by the population (in million) in the
 same year. Assign the result to the variable `my_result`.
 
-Hint: To extract the i-th element of `nominalGDP_trilion_2017`, you can
+**HINT** 💡**:**  To extract the i-th element of `nominalGDP_trilion_2017`, you can
 use `nominalGDP_trilion_2017[i]`. You can extract the i-th element of
 `population_million_2017` using square bracket as well.
 :::
@@ -1082,7 +1082,7 @@ Write a function that takes no input argument and return a random
 outcome choosing from 1 to 6, just like rolling a die in R. Name that
 function `roll_a_die`.
 
-Hint: You can obtain a random integer from 1 to 6 using
+**HINT** 💡**:**  You can obtain a random integer from 1 to 6 using
 `sample(1:6, size = 1)`. Have you try putting that in the function body?
 :::
 
