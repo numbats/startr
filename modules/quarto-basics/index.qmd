@@ -35,9 +35,7 @@ R Markdown is a another file format for creating documents with R. It can be con
 
 # Quarto Fundamentals
 
-Quarto offers a seamless framework for integrating code, text, and visualisations into a single document, enabling the creation of interactive and reproducible reports. Written in `Markdown`, Quarto documents are straightforward to learn and use, yet powerful enough for complex document creation.
-
-Built on the R Markdown ecosystem, Quarto allows you to embed R code chunks directly within your documents. This facilitates the creation of reports that are easy to share and update and facilitates in many existing `Rmd` files executable with minimal modifications.
+Quarto provides a seamless framework for integrating code, text, and visualisations into a single, interactive, and reproducible document. Written in `Markdown`, Quarto is easy to learn yet powerful enough for complex document creation. Built on the R Markdown ecosystem, it supports embedding R code chunks, making reports easy to share, update, and compatible with many existing `Rmd` files with minimal modifications.
 
 
 ::: callout-tip
@@ -72,7 +70,7 @@ Once you have installed the Quarto package, you can create a new Quarto document
 
 A Quarto file is a plain text file with the extension `.qmd`.
 
-Now that you've got your first `quarto` document up and ready, let's explore some *key components!* These include:
+Now that you've got your first `quarto` document up and ready, let's explore some **key components!** These include:
 
 * A YAML header
 
