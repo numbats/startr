@@ -344,6 +344,25 @@ Lets try slicing and extracting elements from a vector!
 :::
 
 
+```{webr-teachr}
+# Extract the 6th element from the vector y
+x = c(5,6,3,4,5,8,23,4,6,4,3,23,7,5,4,23,7,90)
+<<x[6]>>
+
+# Extract the 2nd to 4th element from the vector y
+y = c(1,2,3,4,5,6,7,8,9,10)
+<<y[2:4]>>
+
+???
+
+c(
+  "Did you extract the 6th element using its index in square brackets?" = !search_ast(.code, .expr = x[6]),
+  "Did you access elements 2 to 4 using their indices in square brackets?" = !search_ast(.code, .expr = y[2:4])
+)
+
+```
+
+
 Nothing here (yet)!
 <!-- <exercise id='3' title='Vectors' type="slides"> -->
 
