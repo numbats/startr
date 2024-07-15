@@ -84,9 +84,23 @@ c(
 
 ```
 
-# Basic Data Types in R
+## Introduction to Pipes
 
-## Basic Data Types in R
+Pipes allow you to sequence a series of operations in a clear and readable way. There are two types of pipe operators in R. `%>%`, which is part of the `magrittr` package and native pipe operator `|>` introduced in R 4.1.0. The pipe operator takes the output of the operation on its left and feeds it as the first argument to the function on its right. For example:
+
+```{r}
+result <- 1:10 |> sum()
+result
+```
+
+Here the pipe takes the sequence from 1 to 10 and passes it to the sum() function, which calculates the total sum.
+
+For further information on the pipe operators and their differences, refer [here](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/).
+
+
+# Basic Objects in R
+
+## Basic Objects in R
 
 There are numerous data types in R. Here are some of the basic ones:
 
