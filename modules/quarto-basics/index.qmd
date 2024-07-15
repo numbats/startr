@@ -157,11 +157,46 @@ These are only a couple examples of options for chunk options, and there are man
 To set global options for all code chunks, add them in the YAML header under `execute:`. Indent the options you want to apply by pressing tab on the next line.
 :::
 
+# Markdown text
+
+In a Quarto document, you can write text using Markdown syntax. Markdown is a lightweight markup language that allows you to format text using simple and intuitive syntax. You can use Markdown to create headings, lists, links, images, and more.
+
+## Headings
+
+Headings are created using the `#` symbol followed by the heading text. The number of `#` symbols indicates the level of the heading. For example, `#` creates a first-level heading, `##` creates a second-level heading, and so on.
+
+## Text Formatting
+Just like in any other word processors, you can also format your text. Here are some examples:
+
+- **Bold**: `**bold**` or `__bold__`
+- *Italic*: `*italic*` or `_italic_`
+- ~~Strikethrough~~: `~~strikethrough~~`
+- `Code`: `` `code` ``
+
+## Lists
+
+Lists can be created using `*`. You can also create nested lists by indenting the items with spaces.
+
+::: callout-tip
+## Checklist
+You can also create checklists in Quarto! This can be done by using `- [ ]` for an empty box and `- [x]` for a checked box.
+:::
 
 ## Test ur knowledge
 
 ** potentially a multiple choice question here about different common chunk options and what they do ??**
 
 ** interactive component to edit a basic yaml / include things in yaml -- pain point: warnings, messages = false, toc **
+
+
+# Additional Resources
+
+These are the more basic of the quarto markdown syntax. For more on how to communicate with quarto, refer to Communicating with Quarto. Additionally, the following resources may be helpful:
+
+- [Get Started with Quarto](https://quarto.org/docs/get-started/)
+- [Quarto Tutorial](https://quarto.org/docs/get-started/hello/rstudio.html)
+- [R for Data Science - Quarto](https://quarto.org/docs/get-started/hello/rstudio.html)
+- [Markdown Basics](https://quarto.org/docs/authoring/markdown-basics.html)
+
 
 
