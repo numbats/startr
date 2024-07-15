@@ -77,14 +77,13 @@ learnR
 |   └── analysis.R
 |
 └── plots
- └── linear.png
+    └── linear.png
 ```
 
 :::{.callout-important}
 # Path
 
-Remember, all paths should be relative to the project folder. In this case, the learnR directory.
-
+Remember, all paths should be relative to the project folder. For example, `./data/penguins.csv`.
 :::
 
 
