@@ -9,13 +9,13 @@ filters:
 
 # Paths
 
-The **paths** are use to identify a location of a file, computer, device, or web page. You could think of it as a direction on the maps that pointing to the destination.
+The **paths** are used to identify the location of a file, computer, device, or web page. You could think of it as a direction pointing to the destination.
 
 ## What does it look like?
 
 ### File path
 
-The path may looks different depending on the system you are using. If we want to locate a folder called **learnR**, this is what it may look likes.
+The path may look different depending on the system you are using. If we want to locate a folder called **learnR**, this is what it may look like.
 
 **Windows:**
 
@@ -27,47 +27,45 @@ The path may looks different depending on the system you are using. If we want t
 
 ### Webpage
 
-For locating the webpage, we use what is called URL (Uniform Resource Locator) to identify any resource on the internet.
+To locate the webpage, we use the URL (Uniform Resource Locator) to identify any resource on the internet.
 
 `https://learnr.numbat.space/data/mtcars.csv`
 
 
 ## Absolute and Relative Paths
 
-Now we know what is the paths and what it look like, we need to understand the different between the absolute and relative paths.
-
 :::{.callout-note}
 # Absolute path
 
-It is a full location of the file or directory specified starting from the lowest level.
+It is a full location of the file or directory specified, starting from the lowest level.
 :::
 
 :::{.callout-note}
 # Relative path
 
-It is a location of a file or directory specified relative to your current working directory.
+It is the location of a file or directory specified relative to your current working directory.
 :::
 
-Let's said you are trying to get to your lecture hall inside a campus. An absolute path would be the series of building you pass starting from the campus entrance. But, if you currently at the campus centre, you would only need the direction starting from the campus centre, not the entrance. This is what we called relative path.
+Let's say you are trying to get to your lecture hall inside a campus. An absolute path would be the series of buildings you pass, starting from the campus entrance. But, if you are currently at the campus center, you would only need the direction starting from the campus center, not the entrance. This is what we call relative path.
 
-You should always use the **relative path** when working on a project. It allows anyone who has your project to run the code without changing file paths as it is unlikely that all the users will have the same absolute path.
+You should always use the **relative path** when working on a project. It allows anyone who has your project to run the code without changing file paths, as it is unlikely that all the users will have the same absolute path.
 
 # Here package
 
 
 # Files organisation
 
-There are many ways you can organise your files. The one principle you should follow is that make sure all the files you used in your analysis are stored within one project folder.
+There are many ways you can organise your files. The one principle you should follow is to make sure all the files you used in your analysis are stored within one project folder.
 
-The folder names that you use is a personal choice, and there is no best approach. A project’s folders should organise the files and have names that adequately describes its contents. Often a project contains many files with different purposes, including scripts, data, reports, documents, and other outputs.
+The folder names you use are a personal choice, and there is no best approach. A project’s folders should organise the files and have names that adequately describe its contents. Often, a project contains many files with different purposes, including scripts, data, reports, documents, and other outputs.
 
-There are some common folder names that are used in analysis projects that you might like to use.
+Some common folder names you might like to use in the analysis projects.
 
-- Data is commonly stored in the ‘data’ folder, like we created in the slides. If you work with lots of data of different types, you could also use more folders inside your ‘data’ folder. For example, if the data you are working with need pre-processing and cleaning, you could have a ‘data/original’ and ‘data/cleaned’ folders to further organise the data files.
+- Data is commonly stored in the ‘data’ folder, like we created in the slides. If you work with lots of data of different types, you could also use more folders inside your ‘data’ folder. For example, if the data you are working with needs pre-processing and cleaning, you could have ‘data/original’ and ‘data/cleaned’ folders to further organise the data files.
     
-- Scripts are commonly stored in folders of many different names. For R projects, an ‘R’ folder is commonly used (from the structure of an R package). Many data analysis projects use a ‘scripts’ folder, and more language agnostic projects might use a ‘src’ or ‘code’ folder. Often your code will be split across several scripts that perform different tasks, such as cleaning data, producing plots, and generating reports.
+- Scripts are commonly stored in folders of many different names. For R projects, an ‘R’ folder is commonly used (from the structure of an R package). Many data analysis projects use a ‘scripts’ folder, and more language-agnostic projects might use a ‘src’ or ‘code’ folder. Your codes are often split across several scripts that perform different tasks, such as cleaning data, producing plots, and generating reports.
    
-- Outputs can be stored in many different folders which describe the type of output. For example, you may like to use a ‘results’ folder for analysis results, a ‘plots’ folder for plots, and a ‘reports’ folder for reports.
+- Outputs can be stored in many different folders, which describe the type of output. For example, you may use a ‘results’ folder for analysis results, a ‘plots’ folder for plots, and a ‘reports’ folder for reports.
 
 ```
 learnR
@@ -79,15 +77,16 @@ learnR
 |   └── analysis.R
 |
 └── plots
-    └── linear.png
+ └── linear.png
 ```
 
 :::{.callout-important}
 # Path
 
-Remember, all paths should be relative to the project folder. In this case, learnR directory.
+Remember, all paths should be relative to the project folder. In this case, the learnR directory.
 
 :::
+
 
 
 
