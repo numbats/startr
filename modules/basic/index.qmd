@@ -426,6 +426,85 @@ Nothing here (yet)!
 
 # Matrices
 
+A **matrix** is a rectangular array of numbers written between rectagular brackets (or large parentheses). 
+
+In R, you can construct a matrix using the `matrix()` function.
+
+```{r}
+A <- matrix(c(4,3,2,7,4,2,6,3,4,3,0,0,2,-2,-3), byrow=TRUE, nrow=5)
+A
+```
+In this R code:
+
+- `c(4,3,2,7,4,2,6,3,4,3,0,0,2,-2,-3)` is the data that we want to put in the matrix.
+
+- `byrow=TRUE` means that the matrix is filled by rows. If `byrow=FALSE`, the matrix is filled by columns.
+
+- `nrow=5` means that the matrix has 5 rows.
+
+## Matrix Operations
+
+Similar to what you have learned with vectors, the standard operators like `+`, `-`, `*`, `/` can be used to perform element-wise operations on matrices. For example:
+
+```{r}
+2 * A
+```
+which multiplies each element of the matrix `A` by 2.
+
+Consider another matrix `B` defined as
+```{r}
+B <- matrix(c(1,1,1,2,2,2,0,0,0,-1,-1,-1,0,0,0), byrow=TRUE, nrow=5)
+```
+
+`A*B` creates a matrix where each element is the product of the corresponding elements in matrix `A` and matrix `b`.
+
+```{r}
+A*B
+```
+::: {.callout-important}
+## Matrix Multiplication
+Remember `A*B` is element-wise multiplication, **not** matrix multiplication. If you want to perform matrix multiplication, you can use the `%*%` operator. For example, `A %*% B` performs matrix multiplication.
+:::
+
+## Add rows or columns to a matrix
+
+Sometimes we may want to add new data or information to a matrix with more rows or columns.
+
+You can use `cbind()` function, which merges matrices and/or vectors by columns, to add a column to a matrix. For example:
+
+```{r}
+A <- matrix(c(4,3,2,7,4,2,6,3,4,3,0,0,2,-2,-3), byrow=TRUE, nrow=5)
+B <- matrix(c(1,1,1,2,2,2,0,0,0,-1,-1,-1,0,0,0), byrow=TRUE, nrow=5)
+big_matrix <- cbind(A, B)
+# Matrix A
+A
+# Matrix B
+B
+
+# Binding the two matrices
+big_matrix
+```
+
+You can see the resulting matrix of merging `A` and `B` has 5 rows and 6 columns.
+
+Similarly, you can use `rbind()` function to add a row to a matrix. For example:
+
+```{r}
+big_matrix2 <- rbind(A,B)
+big_matrix2
+```
+
+Where `big_matrix2 <- rbind(A,B)` returns a bigger matrix by putting matrix `A` on top of matrix `B`. The resulting matrix has 10 rows and 3 columns.
+
+## Indexing
+
+You can use square brackets ([]) and a comma (,) to select one or multiple elements from a matrix. While vectors have one dimension, matrices have two. Therefore, you need to specify both the row and column indices, separated by a comma, to select an element.
+
+For example, `A[1:4, 3:5]` returns a matrix with the data on the rows 1,2,3,4 and columns 3,4,5. If you want to select all elements of a row or a column, you can do the following:
+
+- `A[,1]` selects all elements of the first column of matrix A.
+
+
 <!-- <exercise id='5' title='Matrices' type = "slides"> -->
 
 ```{=html}
