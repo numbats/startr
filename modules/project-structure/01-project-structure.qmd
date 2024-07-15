@@ -90,7 +90,7 @@ Remember, all paths should be relative to the project folder. In this case, the 
 
 # R project
 
-In @sec-abs-rela-path, we talk about the different types of paths, and that we should always use a **relative path**. An R project will allow RStudio to set the working directory correctly, handling all of the relative paths for us. It also encourages you to organise the file structure properly by putting all the files used by that project inside the same folder.
+In @sec-abs-rela-path, we talk about the different types of paths and that we should always use a **relative path**. An R project will allow RStudio to set the working directory correctly, handling all of the relative paths for us. It also encourages you to organise the file structure properly by putting all the files used by that project inside the same folder.
 
 ## New R project
 
@@ -101,11 +101,11 @@ knitr::include_graphics(here::here("modules/project-structure/pictures/01-projec
 ```
 
 2. It will show you three options.
-    * If you want to start a new R project in a new location on your computer, select "New Directory"
+    * If you want to start a new R project in a new location on your computer, select "New Directory".
     * If you want to start a new R project in a location where all the files already exist, select "Existing Directory".
-    * If you want to start a new R project by cloning a version control (Git or Subversion) repository, select "Version Control"
+    * If you want to start a new R project by cloning a version control (Git or Subversion) repository, select "Version Control".
 
-    For your very first R project, let's start by selecting "New Directory"
+    For your very first R project, let's start by selecting "New Directory".
 
 ```{r}
 knitr::include_graphics(here::here("modules/project-structure/pictures/01-project-structure/project_2.png"))
@@ -115,7 +115,7 @@ knitr::include_graphics(here::here("modules/project-structure/pictures/01-projec
 
 <!-- update the picture -->
 
-4. Give your project (and the folder that will contain it) a name using the "Directory name:" field. You can also choose where the project will exist on your computer. It can be done by clicking on the "Browse..." button. If you do not choose, it will be in your home directory. You can leave the rest unticked for now.
+4. Give your project (and the folder containing it) a name using the "Directory name:" field. You can also choose where the project will exist on your computer by clicking on the "Browse..." button. If you do not choose, it will be in your home directory. You can leave the rest unticked for now.
 
 ```{r}
 knitr::include_graphics(here::here("modules/project-structure/pictures/01-project-structure/project_4.png"))
@@ -132,17 +132,17 @@ You should be able to see the project file with .Rproj extension inside the proj
 :::{.callout-important}
 # Self contained
 
-Projects should be self-contained, meaning that all files and data should exist inside the project directory.
+Projects should be self-contained, meaning all files and data should exist inside the project directory.
 :::
 
 
 ## Workspace image
 
-When closing RStudio you might be greeted with this popup asking you to save workspace images.
+When closing RStudio, you might be greeted with this popup asking you to save workspace images.
 
 **You should select "Don't Save"**
 
-Save the workspace means that it stores all of the objects you've created for the next time you open the project. It may sound tempting to do it, but it is bad for reproducibility. All objects in the environment should be produced with code, and the code should be saved in the project
+Save the workspace means storing all of the objects you've created for the next time you open the project. It may sound tempting to do it, but it is bad for reproducibility. We should use code to reproduce the objects in the R environment and save them inside the project directory.
 
 You can prevent the popup messages by going to the "Global Options" and inside "General", changing "Save workspace to .RData on exit" to "Never".
 
