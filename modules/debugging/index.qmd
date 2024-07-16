@@ -336,10 +336,27 @@ Sometimes the error is specific to the version of R, or the packages you are usi
 
 ## Using the `reprex` package for producing examples
 
-the [`reprex`](https://reprex.tidyverse.org/) package is a useful tool that can help you make a reproducible example. It can be used to run the code in your example in a clean environment, which is a good way to test if you've included everything necessary for others to reproduce the error. It'll also copy a neatly formatted version of your example, which includes images and console output from the example as it runs on your computer. It can even include a collapsible summary of your session information.
+the [`reprex`](https://reprex.tidyverse.org/) package is a useful tool that can help you make a reproducible example. It can be used to run the code in your example in a clean environment, which is a good way to test if you've included everything necessary for others to reproduce the error. It'll also copy a neatly formatted version of your example which will also display in your **Viewer** window and includes images and console output from the example as it runs on your computer. It can even include a collapsible summary of your session information.
 
--   add images
--   potentially a video here
+To use `reprex`:
+
+1.  Install it from CRAN using `install.packages("reprex")`.
+2.  Once installed, load in the reprex package using `library(reprex)`
+3.  You can use the `reprex()` function to create a reproducible example.
+
+You can also use the `reprex()` function in RStudio by selecting the code you want to include in the example, and clicking the "Reprex" button in the Addins menu.
+
+
+```{=html}
+<div class="image-container">
+    <img src="images/addin_reprex.png" width="260">
+    <img src="images/popup_reprex.png" width="385">
+</div>
+```
+
+After clicking `Render reprex...` in the Addins menu, a new window will pop up with the reprex output (left image). As you've copied the example, you can use the 'on the clipboard' source. Choose a venue for where you're planning to post the question, and tick 'Append session info'. Finally, press **Render** to run the code and see if it's reproducible.
+
+View this [short clip](https://www.youtube.com/watch?v=35suhGR53wQ) to see how to use the `reprex` package.
 
 # Asking for help checklist ☑️
 
