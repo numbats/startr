@@ -276,6 +276,7 @@ a <- c(1,2,3)
 b <- c(100,200,300)
 a+b
 ```
+
 ```{r}
 a-b
 ```
@@ -458,6 +459,7 @@ Nothing here (yet)!
 
 A **matrix** is a rectangular array of numbers written between rectagular brackets (or large parentheses). 
 
+$$T = \begin{bmatrix}2&2\\4&3\end{bmatrix}$$
 In R, you can construct a matrix using the `matrix()` function.
 
 ```{r}
