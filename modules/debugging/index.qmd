@@ -6,10 +6,11 @@ engine: knitr
 filters:
   - webr-teachr
 webr:
-  packages: ["palmerpenguins"]
+  packages: 
 format:
   html:
     toc: true
+    css: style.css
 ---
 
 ```{r setup, include = FALSE}
@@ -78,7 +79,9 @@ When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="c
 
 ```{webr-teachr}
 # One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset 
+# Let's try to have a look at the structure of the cars dataset
+install.packages("palmerpenguins")
+library(palmerpenguins)
 str(<<penguins>>)
   
 ???
@@ -305,7 +308,7 @@ You can then copy this generated code, and make it part of your example to creat
 
 Alternatively you can save this minimal dataset to a file, and attach the file in your question.
 
-When you read that file in, make sure you avoid absolute paths to it. Not everyone has the same file structure as you, so they won't be able to access your dataset if it is stored at `/home/learnr/Documents/My Job/project_2040/data/example.csv`. Instead provide a short relative oath, such as `example.csv` or `data/example.csv`. If you're uploading files, it's also nice to provide a zip that contains a R script of your minimal reproducible code, along with the data in the folders referenced by the script.
+When you read that file in, make sure you avoid absolute paths to it. Not everyone has the same file structure as you, so they won't be able to access your dataset if it is stored at `/home/learnr/Documents/My Job/project_2040/data/housing_prices.csv`. Instead provide a short relative oath, such as `housing_prices.csv` or `data/housing_prices.csv`. If you're uploading files, it's also nice to provide a zip that contains a R script of your minimal reproducible code, along with the data in the folders referenced by the script.
 
 -- potentially a multiple choice question here on relative paths? ---
 
@@ -342,15 +345,15 @@ the [`reprex`](https://reprex.tidyverse.org/) package is a useful tool that can 
 
 This is **not an exhaustive check-list.** What needs to be included and checked is very question specific, but this checklist should apply to most questions.
 
--   [ ] Is the problem [**clearly**]{style="background-color: yellow;"} and [**succinctly described**]{style="background-color: yellow;"}?
--   [ ] Is the [**expected solution or behaviour**]{style="background-color: yellow;"} outlined?
--   [ ] Has [**nobody asked this question**]{style="background-color: yellow;"} before? (Search the web!)
--   [ ] Are you asking the [**right people**]{style="background-color: yellow;"} at the [**right place**]{style="background-color: yellow;"}?
--   [ ] Have you added [**appropriate tags**]{style="background-color: yellow;"} or [**keywords**]{style="background-color: yellow;"} to reach the right experts?
--   [ ] Have you prepared your example using the [**reprex package**]{style="background-color: yellow;"} to ensure the problem is easily reproduced on other computers?
--   [ ] Have you [**minimised your problem**]{style="background-color: yellow;"} as much as possible, [**removing irrelevant packages, data and code**]{style="background-color: yellow;"}?
+-   [ ] Is the problem [**clearly**]{.highlight} and [**succinctly described?**]{.highlight}
+-   [ ] Is the [**expected solution or behaviour**]{.highlight} outlined?
+-   [ ] Has [**nobody asked this question**]{.highlight} before? (Search the web!)
+-   [ ] Are you asking the [**right people**]{.highlight} at the [**right place?**]{.highlight}
+-   [ ] Have you added [**appropriate tags**]{.highlight} or [**keywords**]{.highlight} to reach the right experts?
+-   [ ] Have you prepared your example using the [**reprex package**]{.highlight} to ensure the problem is easily reproduced on other computers?
+-   [ ] Have you [**minimised your problem**]{.highlight} as much as possible, [**removing irrelevant packages, data and code**]{.highlight}?
 
 **If your questions involve a dataset**
 
 -   [ ] Is the data supplied
--   [ ] If the data is big, [**could you cull your data further**]{style="background-color: yellow;"} to communicate or reproduce the problem?
+-   [ ] If the data is big, [**could you cull your data further**]{.highlight} to communicate or reproduce the problem?
