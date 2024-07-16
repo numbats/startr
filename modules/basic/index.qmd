@@ -89,15 +89,31 @@ c(
 Pipes allow you to sequence a series of operations in a clear and readable way. There are two types of pipe operators in R. `%>%`, which is part of the `magrittr` package and native pipe operator `|>` introduced in R 4.1.0. The pipe operator takes the output of the operation on its left and feeds it as the first argument to the function on its right. For example:
 
 ```{r}
-result <- 1:10 |> sum()
+result <- 1:10 |> mean()
 result
 ```
 
-Here the pipe takes the sequence from 1 to 10 and passes it to the sum() function, which calculates the total sum.
+Here the pipe takes the sequence from 1 to 10 and passes it to the `mean()` function, which calculates the mean.
 
 For further information on the pipe operators and their differences, refer [here](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/).
 
+::: callout-caution
+## Your turn!
 
+Try using the pipe operator to calculate the sum of the sequence from 1 to 10 and assign the result to the variable `result`.
+
+**HINT** 💡**:** You can use the `|>` operator to pass the sequence from 1 to 10 to the `sum()` function and assign it to `result` with `<-`.
+:::
+
+```{webr-teachr}
+# Calculate the sum of sequence 1:10 and assign to `result`.
+<<result <- 1:10 |> sum()>>
+
+???
+
+c("Did you correctly pipe 1:10 to sum() and assign it to result?" = !search_ast(.code, .expr = result <- 1:10 |> sum()))
+
+```
 # Basic Objects in R
 
 ## Basic Objects in R
