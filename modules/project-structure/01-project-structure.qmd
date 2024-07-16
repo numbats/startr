@@ -9,6 +9,13 @@ execute:
   echo: false
 ---
 
+```{r}
+knitr::opts_chunk$set(
+    fig.width = 8,
+    fig.height = 8,
+    fig.align = "center")
+```
+
 # Paths
 
 The **paths** are used to identify the location of a file, computer, device, or web page. You could think of it as a direction pointing to the destination.
@@ -112,7 +119,9 @@ knitr::include_graphics(here::here("modules/project-structure/pictures/01-projec
 
 3. There are many different types of R projects that you can create. For a data analysis project, we would select "New Project" for an empty folder.
 
-<!-- update the picture -->
+```{r}
+knitr::include_graphics(here::here("modules/project-structure/pictures/01-project-structure/project_3.png"))
+```
 
 4. Give your project (and the folder containing it) a name using the "Directory name:" field. You can also choose where the project will exist on your computer by clicking on the "Browse..." button. If you do not choose, it will be in your home directory. You can leave the rest unticked for now.
 
