@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
     fig.align = "center")
 ```
 
-# Paths
+# Paths {#sec-path}
 
 The **paths** are used to identify the location of a file, computer, device, or web page. You could think of it as a direction pointing to the destination.
 
@@ -41,7 +41,7 @@ To locate the webpage, we use the URL (Uniform Resource Locator) to identify any
 `https://learnr.numbat.space/data/penguins.csv`
 
 
-## Absolute and Relative Paths {#sec-abs-rela-path}
+## Abolute Paths {#sec-abs-path}
 
 :::{.callout-note}
 # Absolute path
@@ -49,11 +49,32 @@ To locate the webpage, we use the URL (Uniform Resource Locator) to identify any
 It is a full location of the file or directory specified, starting from the lowest level.
 :::
 
+:::{.callout-important}
+# Use of absolute path
+
+Absolute paths should never be used in projects, as others will not be able to run the code you provide. This is because absolute paths to a project vary with operating systems and where the project is stored.
+
+In @sec-path, we can see that MacOS and Windows have completely different path structures.
+:::
+
+## Relative Paths {#sec-rela-path}
+
 :::{.callout-note}
 # Relative path
 
-It is the location of a file or directory specified relative to your current working directory.
+It is the location of a file or directory specified relative to your current working directory (the folder you are currently working on).
 :::
+
+To understand a bit more about the current working directory, let me introduce the `here` package. It allows you to find your base folder or root directory for you to start on. The `here()` function dynamically identifies the root directory based on the user systems. It allows using a relative path where we only need to specify where in your project folder you are trying to point to.
+
+```{r}
+#| echo: true
+#| fig-cap: "Illustration by Allison Horst"
+
+here::here("modules/project-structure/pictures/01-project-structure/here.png")
+
+knitr::include_graphics(here::here("modules/project-structure/pictures/01-project-structure/here.png"))
+```
 
 Let's say you are trying to get to your lecture hall inside a campus. An absolute path would be the series of buildings you pass, starting from the campus entrance. But, if you are currently at the campus center, you would only need the direction starting from the campus center, not the entrance. This is what we call relative path.
 
@@ -96,7 +117,7 @@ Remember, all paths should be relative to the project folder. For example, `./da
 
 # R project
 
-In @sec-abs-rela-path, we talk about the different types of paths and that we should always use a **relative path**. An R project will allow RStudio to set the working directory correctly, handling all of the relative paths for us. It also encourages you to organise the file structure properly by putting all the files used by that project inside the same folder.
+In @sec-abs-path, we talk about the different types of paths and that we should always use a **relative path**. An R project will allow RStudio to set the working directory correctly, handling all of the relative paths for us. It also encourages you to organise the file structure properly by putting all the files used by that project inside the same folder.
 
 ## New R project
 
