@@ -7,7 +7,7 @@ filters:
   - webr-teachr
 execute: 
   echo: true
-  eval: false
+  eval: true
 ---
 
 # File types and importing function
@@ -23,7 +23,9 @@ To import:
 .csv can be read with `read_csv()` from the `readr` package.
 
 ```{r}
-csv_data <- readr::read_csv("data/penguins.csv")
+csv_data <- readr::read_csv(here::here("modules/project-structure/data/penguins.csv"))
+
+csv_data
 ```
 
 :::{.callout-note}
@@ -42,7 +44,9 @@ To import:
 The readr package does not allow us to import Excel spreadsheets, so we need to use a different package. The `readxl` package is a common package used for reading data from the Excel spreadsheet file. To specify the sheet, use the `sheet = sheet_number` argument.
 
 ```{r}
-xlsx_data <- readxl::read_excel("data/penguins.xlsx")
+xlsx_data <- readxl::read_excel(here::here("modules/project-structure/data/penguins.xlsx"))
+
+xlsx_data
 ```
 
 
@@ -55,13 +59,27 @@ To import:
 .RDS can be read with `read_rds()` from the readr package.
 
 ```{r}
-rds_data <- readr::read_rds("data/penguins.RDS")
+rds_data <- readr::read_rds(here::here("modules/project-structure/data/penguins.rds"))
+
+rds_data
 ```
 
 
 ## Online sources
 
+So far, we only learned how to import data locally (from our computer). Now, we are going to look at how we can read data from online sources. A good starting place is from [TidyTuesday](https://github.com/rfordatascience/tidytuesday) project. We can download the data by providing the URL inside the read function. For example, if we want to download a CSV file from the TidyTuesday website, here is what the code would look like:
 
+```{r}
+#| eval: true
+
+URL <- "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-07/rainfall.csv"
+
+data <- readr::read_csv(URL)
+
+data
+```
+
+It is the same idea as how to import data locally, but instead of providing the computer paths to the function, we use URL instead.
 
 
 ## Additional types
@@ -89,7 +107,9 @@ To make a change to your original data file, you would need to export the data i
 The function name for writing the data in the readr package is simply replacing the `read_*()` with `write_*()`. Here is an example of writing a file to CSV.
 
 ```{r}
-write_csv(penguins, "data/penguins_clean.csv")
+penguins <- palmerpenguins::penguins
+
+readr::write_csv(penguins, here::here("modules/project-structure/data/penguins_clean.csv"))
 ```
 
 :::{.callout-tip}
