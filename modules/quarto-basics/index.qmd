@@ -15,28 +15,32 @@ format:
 
 ::: {.alert .alert-block .alert-warning}
 # What is Quarto?
-
-Quarto is a **open-source, technical publishing system** that allows you to create **interactive and reproducible** documents with ease.
+Quarto is a **free, open-source** system that helps you create **interactive** and **reproducible** documents easily.
 :::
 
 ::: {.callout-note collapse="true"}
-# A Brief History Lesson: Sweave to Quarto
-
-Before delving into the basics of `Quarto`, it may be worthwhile to know the *brief* history of its predecessors.
+# A Brief History Of Literate Programming
+**Literate programming** combines code and documentation in a single, readable document. Before delving into the basics of `Quarto`, it may be worthwhile to know the *brief* history of its predecessors.
 
 ## Sweave
 
-`Sweave` is a tool that allows you to embed `R` code in LaTeX documents and was developed as one of the earlier tools for literate programming in `R`. `Sweave` integrates the statistical power of `R` with the typesetting capabilities of LaTex, laying the groundwork for more flexible and user-friendly tools like `R Markdown` and `Quarto`.
+Sweave was one of the first tools for literate programming in R, allowing users to embed R code in LaTeX documents, combining R's statistical power with LaTeX's typesetting.
 
 ## R Markdown
 
-R Markdown is a another file format for creating documents with R. It can be considered a modern approach to `sweave`. It allows a combination of text and R code in a single document to create reports, presentations, and websites. A primary difference between R Markdown and Sweave is that R Markdown is not tied to LaTeX, and can be used with other output formats like HTML, PDF, and Word.
+R Markdown is a modern alternative to Sweave, enabling the integration of text and R code in various output formats like HTML, PDF, and Word, not just LaTeX.
+
+## Quarto
+Which leads us to Quarto, a new system that enhances the R Markdown ecosystem. Quarto provides a seamless framework for integrating code, text, and visualisations into a single, interactive, and reproducible document.
+
 :::
 
 # Quarto Fundamentals
 
-Quarto provides a seamless framework for integrating code, text, and visualisations into a single, interactive, and reproducible document. Written in `Markdown`, Quarto is easy to learn yet powerful enough for complex document creation. Built on the R Markdown ecosystem, it supports embedding R code chunks, making reports easy to share, update, and compatible with many existing `Rmd` files with minimal modifications.
+![](images/quarto_fundamentals.png){width="500" fig-align="center"}
 
+
+Quarto provides a seamless framework for integrating code, text, and visualisations into a single, interactive, and reproducible document. Written in `Markdown`, Quarto is easy to learn yet powerful enough for complex document creation. 
 
 ::: callout-tip
 ## Quarto: Multi-Language and Multi-Engine
@@ -180,11 +184,33 @@ Lists can be created using `*`. You can also create nested lists by indenting th
 You can also create checklists in Quarto! This can be done by using `- [ ]` for an empty box and `- [x]` for a checked box.
 :::
 
+
+# Rendering Your Document
+
+Once you have written your document, you can render it to see the output. To render your document you can:
+
+1. click the `Render` button in the toolbar
+2. use the keyboard shortcut `Ctrl + Shift + K` (Windows) or `Cmd + Shift + K` (Mac)
+3. run the `quarto::render()` function in the console
+
+![](images/console_render.png){width="700" fig-align="center"}
+
+4. In the Terminal via `quarto render`:
+
+![](images/terminal_render.png){width="700" fig-align="center"}
+
+When you render your document, Quarto will execute the code chunks and generate the output. The output will be displayed in the Viewer pane in RStudio, and you can also view the output in a web browser by clicking cog icon next to `Render` and ticking the `Preview in window` box.
+
+
 ## Test ur knowledge
 
 ** potentially a multiple choice question here about different common chunk options and what they do ??**
 
 ** interactive component to edit a basic yaml / include things in yaml -- pain point: warnings, messages = false, toc **
+
+
+
+
 
 
 # Additional Resources
@@ -195,6 +221,9 @@ These are the more basic of the quarto markdown syntax. For more on how to commu
 - [Quarto Tutorial](https://quarto.org/docs/get-started/hello/rstudio.html)
 - [R for Data Science - Quarto](https://quarto.org/docs/get-started/hello/rstudio.html)
 - [Markdown Basics](https://quarto.org/docs/authoring/markdown-basics.html)
+
+
+
 
 
 
