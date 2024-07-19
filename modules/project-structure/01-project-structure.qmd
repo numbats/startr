@@ -162,7 +162,7 @@ You should be able to see the project file with .Rproj extension inside the proj
 :::{.callout-important}
 # Self contained
 
-Projects should be self-contained, meaning all files and data should exist inside the project directory.
+Projects should be self-contained, meaning all files and data should exist inside the project directory. It makes sharing the work easy since all the files required to reproduce the analysis are relative to the project folder.
 :::
 
 
