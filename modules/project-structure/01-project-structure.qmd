@@ -118,7 +118,7 @@ Remember, all paths should be relative to the project folder. For example, `./da
 
 # R project
 
-In @sec-abs-path, we talk about the different types of paths and that we should always use a **relative path**. An R project will allow RStudio to set the working directory correctly, handling all of the relative paths for us. It also encourages you to organise the file structure properly by putting all the files used by that project inside the same folder.
+An R project will allow RStudio to set the working directory correctly, handling all of the relative paths to the project folder for us. It also encourages you to organise the file structure properly by putting all the files used by that project inside the same folder.
 
 ## New R project
 
