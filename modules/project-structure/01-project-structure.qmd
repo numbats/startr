@@ -22,9 +22,15 @@ The **paths** are used to identify the location of a file, computer, device, or 
 
 ## File path
 
-### What does it look like?
+There are two main ways of defining the paths to a file: absolute and relative.
 
-The path may look different depending on the system you are using. If we want to locate a folder called **learnR**, this is what it may look like.
+### Absolute Paths {#sec-abs-path}
+
+It is a full location of the file or directory specified, starting from the home directory.
+
+#### What does it look like?
+
+The path may look different depending on the system you are using. If we want to locate a penguin's data inside the folder called **learnR**, this is what it may look like.
 
 **Windows:**
 
@@ -34,39 +40,26 @@ The path may look different depending on the system you are using. If we want to
 
 `/Users/Desktop/learnR/data/penguins.csv`
 
-### Webpage
-
-To locate the webpage, we use the URL (Uniform Resource Locator) to identify any resource on the internet.
-
-`https://learnr.numbat.space/data/penguins.csv`
-
-
-## Abolute Paths {#sec-abs-path}
-
-:::{.callout-note}
-# Absolute path
-
-It is a full location of the file or directory specified, starting from the lowest level.
-:::
-
 :::{.callout-important}
 # Use of absolute path
 
 Absolute paths should never be used in projects, as others will not be able to run the code you provide. This is because absolute paths to a project vary with operating systems and where the project is stored.
 
-In @sec-path, we can see that MacOS and Windows have completely different path structures.
+As we can see, MacOS and Windows have completely different path structures.
 :::
 
-## Relative Paths {#sec-rela-path}
 
-:::{.callout-note}
-# Relative path
+### Relative Paths {#sec-rela-path}
 
-It is the location of a file or directory specified relative to your current working directory (the folder you are currently working on).
-:::
+It is the location of a file or directory specified relative to your current working directory.
 
-To understand a bit more about the current working directory, let me introduce the `here` package. It enables easy file referencing in project-oriented workflows. The `here()` function helps you build a path to your specified files. For example, if you want to access panguins data in your project folder instead of `read_csv("Users/Desktop/learnR/data/penguins.csv")`, you can just `read_csv(here::here("data/penguins"))`. It only works because your current working directory is in the learnR folder through the `here()` function.
+#### Working directory
 
+The working directory is the default location R is looking at when loading the file or where it will store the files. If you want to check where your current working directory is, you can run the `getwd()` function. To understand a bit more about the current working directory, let me introduce the `here` package.
+
+#### here package
+
+It enables easy file referencing in project-oriented workflows. The `here()` function helps you build a path to your specified files. For example, if you want to access panguins data in your project folder instead of `read_csv("Users/Desktop/learnR/data/penguins.csv")`, you can just `read_csv(here::here("data/penguins"))`. It only works because your current working directory is in the learnR folder through the `here()` function.
 
 ```{r}
 #| echo: true
@@ -80,6 +73,18 @@ knitr::include_graphics(here::here("modules/project-structure/pictures/01-projec
 Let's say you are trying to get to the Campus center. An **absolute path** would direct you absolutely, starting from Earth, Australia, Melbourne, Monash Clayton, and then Campus Center. However, the **relative path** to Monash Clayton is the path from the Monash Clayton Campus to the Campus Center.
 
 You should always use the **relative path** when working on a project. It allows anyone who has your project to run the code without changing file paths, as it is unlikely that all the users will have the same absolute path.
+
+
+:::{.callout-tip}
+# Webpage
+
+So far, we only see how to reference files on our computers. However, we can also reference places on other computers, for example, when we want to get data from the internet.
+
+To locate the webpage, we use the URL (Uniform Resource Locator) to identify any resource on the internet.
+
+`https://learnr.numbat.space/data/penguins.csv`
+
+:::
 
 
 # Files organisation
