@@ -15,7 +15,7 @@ The default appearances of the RStudio user interface contains 4 primary panes:
 - Source pane
 - Console pane
 - Environment pane
-- Outut pane
+- Output pane
 
 The first time you open the RStudio, you will be greeted by the three panes console, environment, and output. We will talk about the Source pane later in the chapter.
 
