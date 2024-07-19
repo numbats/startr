@@ -20,9 +20,9 @@ knitr::opts_chunk$set(
 
 The **paths** are used to identify the location of a file, computer, device, or web page. You could think of it as a direction pointing to the destination.
 
-## What does it look like?
+## File path
 
-### File path
+### What does it look like?
 
 The path may look different depending on the system you are using. If we want to locate a folder called **learnR**, this is what it may look like.
 
