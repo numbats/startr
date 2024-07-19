@@ -62,9 +62,7 @@ There is a shortcut key for creating a new R Script, which is **ctrl + shift + N
 
 # R packages installation and loading
 
-An R package bundles all useful functions, help files, and data sets into a package. The installation process of the packages is like purchasing a book (package) and storing it in a bookshelf (library folder), and you grab it when you want to read it.
-
-Let's start by purchasing a book (install the package). Through the interface, navigate to the "Packages" tab in the **Output** pane. It will show you what packages you currently have. Next, click "Install", and you should be able to see the pop-up window. Type the package name you want to install in the "Packages" field. You need to make sure that you install all the dependencies by clicking on the box labeled "Install dependencies". Then click "Install", you are now ready to start reading a book.
+An R package bundles all useful functions, help files, and data sets that help extend the functionality into a package. To start installing the package, navigate to the "Packages" tab in the **Output** pane. It will show you what packages you currently have. Next, click "Install", and you should be able to see the pop-up window. Type the package name you want to install in the "Packages" field. You need to make sure that you install all the dependencies by clicking on the box labeled "Install dependencies". Then click "Install", you are now ready to start using the new package.
 
 Alternatively, you can install the package by running `install.packages("package_name")` in the **Console** pane.
 
