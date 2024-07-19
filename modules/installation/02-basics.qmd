@@ -66,7 +66,7 @@ An R package bundles all useful functions, help files, and data sets into a pack
 
 Let's start by purchasing a book (install the package). Through the interface, navigate to the "Packages" tab in the **Output** pane. It will show you what packages you currently have. Next, click "Install", and you should be able to see the pop-up window. Type the package name you want to install in the "Packages" field. You need to make sure that you install all the dependencies by clicking on the box labeled "Install dependencies". Then click "Install", you are now ready to start reading a book.
 
-Alternatively, you can install the package by running `install.packages("package_name")` in the ***Console** pane.
+Alternatively, you can install the package by running `install.packages("package_name")` in the **Console** pane.
 
 :::{.callout-note}
 You will hear people talk about the "base R". It refers to the pre-installed functions in R that get loaded every time you start R. It provides you with the basic functions. For example, the `sum()` function adds all the numerics inside the function.
