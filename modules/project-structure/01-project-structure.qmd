@@ -65,7 +65,8 @@ In @sec-path, we can see that MacOS and Windows have completely different path s
 It is the location of a file or directory specified relative to your current working directory (the folder you are currently working on).
 :::
 
-To understand a bit more about the current working directory, let me introduce the `here` package. It allows you to find your base folder or root directory for you to start on. The `here()` function dynamically identifies the root directory based on the user systems. It allows using a relative path where we only need to specify where in your project folder you are trying to point to.
+To understand a bit more about the current working directory, let me introduce the `here` package. It enables easy file referencing in project-oriented workflows. The `here()` function helps you build a path to your specified files. For example, if you want to access panguins data in your project folder instead of `read_csv("Users/Desktop/learnR/data/penguins.csv")`, you can just `read_csv(here::here("data/penguins"))`. It only works because your current working directory is in the learnR folder through the `here()` function.
+
 
 ```{r}
 #| echo: true
