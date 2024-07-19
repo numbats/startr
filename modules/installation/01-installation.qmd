@@ -13,10 +13,8 @@ execute:
 
 ## Why do we want to learn and use R and RStudio
 
-- R and RStudio are powerful tools for creating a statistical analysis
-- It is open-sourced and user-friendly
-- It provides reproducible code and report
-- Easy data cleaning and visualisation
+R and Rstudio are powerful tools for statistical analysis. R is an open-source language, meaning it is both free and supported by a large, active community. RStudio provides an intuitive and user-friendly interface, making using R more productive. The R package (more on this later) ecosystem allows users to extend its functionality for various types of analysis. Additionally, it facilitates reproducible code and reports and allows researchers to share their work with others.
+
 
 ## What is R and RStudio
 
