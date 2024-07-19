@@ -118,7 +118,9 @@ Remember, all paths should be relative to the project folder. For example, `./da
 
 # R project
 
-An R project will allow RStudio to set the working directory correctly, handling all of the relative paths to the project folder for us. It also encourages you to organise the file structure properly by putting all the files used by that project inside the same folder.
+An R project will allow RStudio to set the working directory correctly, handling all of the relative paths to the project folder for us. It encourages you to organise the file structure properly by putting all the files used by that project inside the same folder.
+
+It also allows quick switching between projects within the RStudio, tabs restoring from the last use when opening the project, and effortless collaboration.
 
 ## New R project
 
