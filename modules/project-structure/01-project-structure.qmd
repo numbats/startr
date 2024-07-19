@@ -166,15 +166,16 @@ Projects should be self-contained, meaning all files and data should exist insid
 :::
 
 
-## Workspace image
+:::{.callout-tip}
+# Do not save the workspace image
 
-When closing RStudio, you might be greeted with this popup asking you to save workspace images.
-
-**You should select "Don't Save"**
+When closing RStudo, you might be greeted with this pop-up asking you to save workspace images. **You should select "Don't Save"**.
 
 Save the workspace means storing all of the objects you've created for the next time you open the project. It may sound tempting to do it, but it is bad for reproducibility. We should use code to reproduce the objects in the R environment and save them inside the project directory.
 
 You can prevent the popup messages by going to the "Global Options" and inside "General", changing "Save workspace to .RData on exit" to "Never".
+:::
+
 
 ```{r}
 knitr::include_graphics(here::here("modules/project-structure/pictures/01-project-structure/disable_store.png"))
