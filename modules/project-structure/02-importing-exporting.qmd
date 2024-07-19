@@ -14,6 +14,12 @@ execute:
 
 Data can come in many formats, and their file extension typically provides clues into how to import the data into the R environment.
 
+:::{.callout-note}
+# Paths
+
+Remember, we should always use a relative path instead of an absolute path. Refer to the Project Structure module to understand why it is important.
+:::
+
 ## Comma Separated Values
 
 CSV or Comma Separated Values is one of the most common data files you will be working with. The value inside the file is separated by `,` and rows are separated by new lines.
@@ -27,12 +33,6 @@ csv_data <- readr::read_csv(here::here("modules/project-structure/data/penguins.
 
 csv_data
 ```
-
-:::{.callout-note}
-# Paths
-
-Remember, we should always use a relative path instead of an absolute path. Your working directory will be set to the project folder when you open it using R projects. It means you can reference the data file straight from the data folder inside the project directory.
-:::
 
 
 ## Excel spreadsheets
