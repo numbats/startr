@@ -67,7 +67,9 @@ An R package bundles all useful functions, help files, and data sets that help e
 Alternatively, you can install the package by running `install.packages("package_name")` in the **Console** pane.
 
 :::{.callout-note}
-You will hear people talk about the "base R". It refers to the pre-installed functions in R that get loaded every time you start R. It provides you with the basic functions. For example, the `sum()` function adds all the numerics inside the function.
+
+R, by default, comes bundled with some basic packages that are always loaded, including `base` (for basic things like `+` and `log()`), utils (for utility functions like `install.packages()`), and stats (for statistical models like `lm()` and `arima()`).
+
 :::
 
 ```{r}
