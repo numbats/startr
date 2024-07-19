@@ -9,6 +9,11 @@ execute:
     echo: false
 ---
 
+# Background
+
+RStudio is an Integrated Development Environment (IDE) developed by Posit for R programming language. It includes tools for script editing, R console output, data viewing, and plotting, making it easier for an analyst to explore, visualise, and conduct analysis on the data in a single environment.
+
+
 # What does it look like?
 The default appearances of the RStudio user interface contains 4 primary panes:
 
