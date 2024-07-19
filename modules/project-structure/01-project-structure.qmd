@@ -77,7 +77,7 @@ here::here("modules/project-structure/pictures/01-project-structure/here.png")
 knitr::include_graphics(here::here("modules/project-structure/pictures/01-project-structure/here.png"))
 ```
 
-Let's say you are trying to get to your lecture hall inside a campus. An absolute path would be the series of buildings you pass, starting from the campus entrance. But, if you are currently at the campus center, you would only need the direction starting from the campus center, not the entrance. This is what we call relative path.
+Let's say you are trying to get to the Campus center. An **absolute path** would direct you absolutely, starting from Earth, Australia, Melbourne, Monash Clayton, and then Campus Center. However, the **relative path** to Monash Clayton is the path from the Monash Clayton Campus to the Campus Center.
 
 You should always use the **relative path** when working on a project. It allows anyone who has your project to run the code without changing file paths, as it is unlikely that all the users will have the same absolute path.
 
