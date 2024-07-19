@@ -96,7 +96,7 @@ There are many more data file types, and the ways to import them can differ. Her
 :::{.callout-note}
 # readr package
 
-We encourage you to use the readr package since it is faster than their base equivalents and creates a tibble instead of a data.frame. The tibble is a preferred choice when storing our data, as it has a nicer formatted print output and features to prevent some surprising (and likely incorrect) results.
+We encourage you to use the readr package since it is faster than their base equivalents and creates a tibble instead of a data.frame. The tibble is a preferred choice when storing our data, as it has a nicer formatted print output and features to prevent some surprising (and likely incorrect) results. For example, it will identify dates/datetimes and parse them appropriately.
 :::
 
 
