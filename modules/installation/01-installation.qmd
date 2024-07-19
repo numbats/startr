@@ -20,7 +20,13 @@ execute:
 
 ## What is R and RStudio
 
-R is a free software environment for statistical computing and graphics. RStudio is an integrated development environment (IDE) for R. To understand why we might want to use R with RStudio. We will use the analogy from [Modern Dive book](https://moderndive.com/1-getting-started.html#r-rstudio). Think of R as a car's engine, while the RStudio is like a car's dashboard. We use R to run all the computations and RStudio to provide an interface with convenient features and tools.
+R is a free software environment for statistical computing and graphics. RStudio is an integrated development environment (IDE) for R. To understand why we might want to use R with RStudio. We will use the analogy from [Modern Dive book](https://moderndive.com/1-getting-started.html#r-rstudio). 
+
+>  At its simplest, R is like a car’s engine while RStudio is like a car’s dashboard
+
+```{r}
+knitr::include_graphics(here::here("modules/installation/pictures/01-installation/R_vs_RStudio.png"))
+```
 
 
 # R installation
