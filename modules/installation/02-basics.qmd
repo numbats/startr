@@ -56,7 +56,7 @@ knitr::include_graphics(here::here("modules/installation/pictures/02-basics/RStu
 In an R Script, you can write code and add comments. Also, you can run each line of code by pressing **ctrl + enter/return** on Windows and Linux or **cmd + enter/return** on Macs. The code messages will shown in the **Console**.
 
 :::{.callout-tip}
-There is a shortcut key for creating a new R Script, which is **shift + ctrl + N** for Windows and Linux or **shift + cmd + N** for Macs.
+There is a shortcut key for creating a new R Script, which is **ctrl + shift + N** for Windows and Linux or **cmd + shift + N** for Macs.
 :::
 
 
