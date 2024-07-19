@@ -157,7 +157,7 @@ knitr::include_graphics(here::here("modules/project-structure/pictures/01-projec
 knitr::include_graphics(here::here("modules/project-structure/pictures/01-project-structure/project_5.png"))
 ```
 
-You should be able to see the project file with .Rproj extension inside the project directory. You have now successfully created the R project. This file extension will allow us to use it as a shortcut for opening the project directly.
+You should be able to see the project file with .Rproj extension inside the project directory. You have now successfully created the R project. Clicking on the .Rproj file will open the project directly in RStudio.
 
 :::{.callout-important}
 # Self contained
