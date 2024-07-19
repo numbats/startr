@@ -22,7 +22,7 @@ The default appearances of the RStudio user interface contains 4 primary panes:
 - Environment pane
 - Output pane
 
-The first time you open the RStudio, you will be greeted by the three panes console, environment, and output. We will talk about the Source pane later in the chapter.
+The first time you open the RStudio, you will be greeted by the three panes: console, environment, and output. We will talk about the Source pane later in the chapter.
 
 ```{r}
 knitr::include_graphics(here::here("modules/installation/pictures/02-basics/RStudio_interface_3p.png"))
@@ -56,6 +56,8 @@ knitr::include_graphics(here::here("modules/installation/pictures/02-basics/RStu
 In an R Script, you can write code and add comments. Also, you can run each line of code by pressing **ctrl + enter/return** on Windows and Linux or **cmd + enter/return** on Macs. The code messages will shown in the **Console**.
 
 :::{.callout-tip}
+# Create R script
+
 There is a shortcut key for creating a new R Script, which is **ctrl + shift + N** for Windows and Linux or **cmd + shift + N** for Macs.
 :::
 
@@ -67,6 +69,7 @@ An R package bundles all useful functions, help files, and data sets that help e
 Alternatively, you can install the package by running `install.packages("package_name")` in the **Console** pane. The packages only need to be installed once, and `install.packages()` should not be kept or commented out in the R code.
 
 :::{.callout-note}
+# Default packages
 
 R, by default, comes bundled with some basic packages that are always loaded, including `base` (for basic things like `+` and `log()`), utils (for utility functions like `install.packages()`), and stats (for statistical models like `lm()` and `arima()`).
 
@@ -80,7 +83,7 @@ knitr::include_graphics(here::here("modules/installation/pictures/02-basics/RStu
 knitr::include_graphics(here::here("modules/installation/pictures/02-basics/RStudio_Install_pkg.png"))
 ```
 
-Now that you have the book (package) on the bookshelf, to bring it out to your current working environment, type `library(package_name)` in the **Console** pane. All of the package's functions, data sets, and help files are now available for you to use until you close your current R session. So, if you have closed it, you will need to load the R packages again.
+Now that you have a package installed, you can bring it to your current working environment by typing `library(package_name)` in the **Console** pane. All of the package's functions, data sets, and help files are now available for you to use until you close your current R session. So, if you have closed it, you will need to load the R packages again.
 
 You should load the packages you used at the top of the R Script. This way, you do not need to remember which packages you need in the script. It is also a good practice to do.
 
