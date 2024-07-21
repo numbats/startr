@@ -75,12 +75,11 @@ str(penguins)
 
 Oh no! An error message: ["Error: object 'palmerpenguins' not found"]{style="color: red;"}!
 
-When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="color: red;"}, it usually means there is a typo or the object wasn't loaded in correctly. In this instance, we havent used the correct object. Let's look at how we can fix this.
+When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="color: red;"}, it usually means there is a typo or the object wasn't loaded in correctly. In this instance, we haven't used the correct object. Let's look at how we can fix this.
 
 ```{webr-teachr}
-# One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset
-install.packages("palmerpenguins")
+# Let's try to have a look at the structure of the penguins data set
+# We will first load in the palmerpenguins package
 library(palmerpenguins)
 str(<<penguins>>)
   
@@ -100,31 +99,35 @@ detach_package(tidyverse)
 ```
 
 ```{webr-teachr}
-# One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset 
-# Instead of the base R function of checking structure for your dataset, let's use tidyverse function glance to do that. 
+# Let's try to have a look at the structure of the penguins dataset
+# Instead of the base R function of checking structure for your dataset, let's use dplyr function glance to do that. 
 
-glance(cars)
+glimpse(penguins)
   
 ???
   
 ```
 
-Oh no, we could not find the function of `glance()`! We've checked the spelling, so what could be the problem now?
+Oh no, we could not find the function of `glimpse()`! We've checked the spelling, so what could be the problem now?
 
 When you see the error message ["Error: could not find function "\_\_\_\_\_"]{style="color: red;"}, it usually means the required package hasn't been loaded into environment.
 
-Let's try add in the required package `tidyverse`
+Let's try add in the required package `dplyr`
 
 ```{webr-teachr}
-# One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset 
-# Instead of the base R function of checking structure for your dataset, let's use tidyverse function glance to do that. 
 
-library(<<tidyverse>>)
-glance(cars)
+# Let's try to have a look at the structure of the penguins dataset 
+# Instead of the base R function of checking structure for your dataset, let's use dplyr function glimpse to do that. 
+
+library(<<dplyr>>)
+glimpse(penguins)
   
 ???
+
+  c(
+  "Did you load in the dplyr package in library()?" = !search_ast(.code, .expr = library(dplyr)
+)
+
   
 ```
 
