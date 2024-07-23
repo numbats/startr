@@ -86,7 +86,7 @@ Now that you've got your first `quarto` document up and ready, let's explore som
 
 When you open up your first `quarto` document, you will notice a block of text up the top that looks something like this:
 
-![](images/yaml.png){width="347" fig-align="center"}
+![](images/yaml.png){width="550" fig-align="center"}
 
 This is the YAML header, which contains metadata about your document, including the title, author, and editor. It allows you to edit the document's title (currently “Untitled”), specifies that the output will be in `HTML format`, and indicates that the document will open in the `visual editor` by default.
 
@@ -124,10 +124,7 @@ Code chunks refer to sections in the document where you can write and execute co
 
 3. Typing the code chunk manually:
 
-![](images/code_chunk.png){width="300" fig-align="center"}
-
-
-
+![](images/code_chunk.png){width="550" fig-align="center"}
 
 
 
@@ -141,7 +138,8 @@ Code doesn't have to be in a chunk! You can also include `inline code` by using 
 
 You can also add options to the code chunk to control how the code is executed and displayed. For example, you can specify the output format, the width and height of plots, and whether the code should be displayed in the output. 
 
-![](images/chunk_options.png){width="347" fig-align="center"}
+![](images/chunk_options.png){width="550" fig-align="center"}
+
 
 Look at the image of the code chunk above, you can see that the chunk has the following options:
 
@@ -202,7 +200,7 @@ Once you have written your document, you can render it to see the output. To ren
 When you render your document, Quarto will execute the code chunks and generate the output. The output will be displayed in the Viewer pane in RStudio, and you can also view the output in a web browser by clicking cog icon next to `Render` and ticking the `Preview in window` box.
 
 
-## Test ur knowledge
+## Test your knowledge
 
 ** potentially a multiple choice question here about different common chunk options and what they do ??**
 
