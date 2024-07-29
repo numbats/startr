@@ -54,13 +54,9 @@ Quarto also provides a range of [**built-in templates**](https://quarto.org/docs
 
 ## Setting Up Quarto
 
-To get started with Quarto, you will need to **install the Quarto package** in R. You can do this by running the following command in the R console:
+To get started with Quarto, you will need to **install Quarto**. You can do this by [here](https://quarto.org/docs/get-started/).
 
-```{r eval=FALSE}
-install.packages("quarto")
-```
-
-Once you have installed the Quarto package, you can create a new Quarto document by:
+Once you have installed Quarto, you can create a new Quarto document by:
 
 1.  Go to the File menu in RStudio
 
