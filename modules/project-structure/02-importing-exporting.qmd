@@ -1,0 +1,128 @@
+---
+title: Importing and Exporting data file
+subtitle: 'In this topic, you will learn how to import data from different sources, including CSV files, excel files, and files hosted online. You will also learn how to export the data from R'
+title-block-banner: yes
+engine: knitr
+filters:
+  - webr-teachr
+execute: 
+  echo: true
+  eval: true
+---
+
+# File types and importing function
+
+Data can come in many formats, and their file extension typically provides clues into how to import the data into the R environment.
+
+:::{.callout-note}
+# Paths
+
+Remember, we should always use a relative path instead of an absolute path. Refer to the Project Structure module to understand why it is important.
+:::
+
+## Comma Separated Values
+
+CSV or Comma Separated Values is one of the most common data files you will be working with. The value inside the file is separated by `,` and rows are separated by new lines.
+
+:::{.callout-note}
+# Import CSV:
+
+.csv can be read with `read_csv()` from the `readr` package.
+
+```{r}
+csv_data <- readr::read_csv(here::here("modules/project-structure/data/penguins.csv"))
+
+csv_data
+```
+
+:::
+
+
+## Excel spreadsheets
+
+The .xls and .xlsx are Excel spreadsheets. These could contain anything and require a careful inspection to import it correctly. The file will often contain a different sheet, so you need to specify the sheet you want to import.
+
+:::{.callout-note}
+# Import Excel
+
+The readr package does not allow us to import Excel spreadsheets, so we need to use a different package. The `readxl` package is a common package used for reading data from the Excel spreadsheet file. To specify the sheet, use the `sheet = sheet_number` argument.
+
+```{r}
+xlsx_data <- readxl::read_excel(here::here("modules/project-structure/data/penguins.xlsx"))
+
+xlsx_data
+```
+
+:::
+
+
+## RDS
+
+The RDS or R Data Serialization files are a common format for saving R objects in RStudio to a file.
+
+:::{.callout-note}
+# Import RDS
+
+.RDS can be read with `read_rds()` from the readr package.
+
+```{r}
+rds_data <- readr::read_rds(here::here("modules/project-structure/data/penguins.rds"))
+
+rds_data
+```
+
+:::
+
+
+## Online sources
+
+So far, we only learned how to import data locally (from our computer). Now, we are going to look at how we can read data from online sources. A good starting place is from [TidyTuesday](https://github.com/rfordatascience/tidytuesday) project. We can download the data by providing the URL inside the read function. For example, if we want to download a CSV file from the TidyTuesday website, here is what the code would look like:
+
+```{r}
+#| eval: true
+
+URL <- "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-07/rainfall.csv"
+
+data <- readr::read_csv(URL)
+
+data
+```
+
+It is the same idea as how to import data locally, but instead of providing the computer paths to the function, we use URL instead.
+
+
+## Additional types
+
+There are many more data file types, and the ways to import them can differ. Here are some of an example:
+
+* .tsv: Tab Separated Values. These files can be read with `read_tsv()` from the `readr` package.
+
+* .fwf: Fixed Width File. These files can be read with `read_fwf()` from the `readr` package.
+
+* .txt: Text files. These files can be read differently based on how it was structured. If the data is stored in a consistent table-like structure, you might be able to read it with `read_table()` from the `readr` package. If the structure is complex, you likely need to read the data line by line with `read_lines()` and process the format yourself.
+
+
+:::{.callout-note}
+# readr package
+
+We encourage you to use the readr package since it is faster than their base equivalents and creates a tibble instead of a data.frame. The tibble is a preferred choice when storing our data, as it has a nicer formatted print output and features to prevent some surprising (and likely incorrect) results. For example, it will identify dates/datetimes and parse them appropriately.
+:::
+
+
+# Exporting data
+
+To make a change to your original data file, you would need to export the data inside the R environment. To export it, you can use the `readr` package, which comes with a function to write the data. We recommend you save the data using a standard data file format like CSV, even though you can export it into different formats
+
+The function name for writing the data in the readr package is simply replacing the `read_*()` with `write_*()`. Here is an example of writing a file to CSV.
+
+```{r}
+penguins <- palmerpenguins::penguins
+
+readr::write_csv(penguins, here::here("modules/project-structure/data/penguins_clean.csv"))
+```
+
+:::{.callout-tip}
+# Save file
+
+A good practice is to leave the original data untouched and export the data under a different name. In case you need to use the original data again later on.
+:::
