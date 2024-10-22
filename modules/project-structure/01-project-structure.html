@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Monash EBS LearnR modules</title>
+<title>Project structure</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,26 +20,58 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -67,65 +99,13 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
+<style>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-title"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
+      .quarto-title-block .quarto-title-banner {
+        background: yes;
       }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
+</style>
+
 
 </head>
 
@@ -136,7 +116,8 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Monash EBS LearnR modules</h1>
+      <h1 class="title">Project structure</h1>
+            <p class="subtitle lead">In this topic, you will learn about the project structure and how to manage your project in R properly.</p>
                       </div>
   </div>
     
@@ -160,117 +141,234 @@ window.Quarto = {
 
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-       <option value="" disabled="" selected="" hidden="">Order By</option>
-       <option value="index" data-direction="asc">Default</option>
-         <option value="listing-title-sort" data-direction="asc">
-          Title
-        </option>
-     </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
+<section id="sec-path" class="level1">
+<h1>Paths</h1>
+<p>The <strong>paths</strong> are used to identify the location of a file, computer, device, or web page. You could think of it as a direction pointing to the destination.</p>
+<section id="file-path" class="level2">
+<h2 class="anchored" data-anchor-id="file-path">File path</h2>
+<p>There are two main ways of defining the paths to a file: absolute and relative.</p>
+<section id="sec-abs-path" class="level3">
+<h3 class="anchored" data-anchor-id="sec-abs-path">Absolute Paths</h3>
+<p>It is a full location of the file or directory specified, starting from the home directory.</p>
+<section id="what-does-it-look-like" class="level4">
+<h4 class="anchored" data-anchor-id="what-does-it-look-like">What does it look like?</h4>
+<p>The path may look different depending on the system you are using. If we want to locate a penguin’s data inside the folder called <strong>learnR</strong>, this is what it may look like.</p>
+<p><strong>Windows:</strong></p>
+<p><code>C:\Desktop\learnR\data\penguins.csv</code></p>
+<p><strong>MacOS &amp; Linux:</strong></p>
+<p><code>/Users/Desktop/learnR/data/penguins.csv</code></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<table class="quarto-listing-table table">
-<thead>
-<tr>
-<th>
-<a class="sort" data-sort="listing-title-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Title</a>
-</th>
-<th>
-Categories
-</th>
-</tr>
-</thead>
-<tbody class="list">
-<tr data-index="0" data-listing-file-modified-sort="1721166807399" data-listing-reading-time-sort="3" data-listing-word-count-sort="481" data-listing-title-sort="Data wrangling with R" data-listing-filename-sort="index.qmd">
-<td>
-<a href="./modules/data-wrangling/index.html" class="title listing-title">Data wrangling with R</a>
-</td>
-<td>
-<span class="listing-categories">&nbsp;</span>
-</td>
-</tr>
-<tr data-index="1" data-listing-file-modified-sort="1722483580312" data-listing-reading-time-sort="3" data-listing-word-count-sort="465" data-listing-title-sort="Getting started with R and RStudio" data-listing-filename-sort="01-installation.qmd">
-<td>
-<a href="./modules/installation/01-installation.html" class="title listing-title">Getting started with R and RStudio</a>
-</td>
-<td>
-<span class="listing-categories">&nbsp;</span>
-</td>
-</tr>
-<tr data-index="2" data-listing-file-modified-sort="1722483766846" data-listing-reading-time-sort="4" data-listing-word-count-sort="618" data-listing-title-sort="Importing and Exporting data file" data-listing-filename-sort="02-importing-exporting.qmd">
-<td>
-<a href="./modules/project-structure/02-importing-exporting.html" class="title listing-title">Importing and Exporting data file</a>
-</td>
-<td>
-<span class="listing-categories">&nbsp;</span>
-</td>
-</tr>
-<tr data-index="3" data-listing-file-modified-sort="1718284925413" data-listing-reading-time-sort="3" data-listing-word-count-sort="551" data-listing-title-sort="Linear regression with R" data-listing-filename-sort="index.qmd">
-<td>
-<a href="./modules/linear-regression/index.html" class="title listing-title">Linear regression with R</a>
-</td>
-<td>
-<span class="listing-categories">&nbsp;</span>
-</td>
-</tr>
-<tr data-index="4" data-listing-file-modified-sort="1722483766842" data-listing-reading-time-sort="6" data-listing-word-count-sort="1177" data-listing-title-sort="Project structure" data-listing-filename-sort="01-project-structure.qmd">
-<td>
-<a href="./modules/project-structure/01-project-structure.html" class="title listing-title">Project structure</a>
-</td>
-<td>
-<span class="listing-categories">&nbsp;</span>
-</td>
-</tr>
-<tr data-index="5" data-listing-file-modified-sort="1722483588128" data-listing-reading-time-sort="12" data-listing-word-count-sort="2367" data-listing-title-sort="Quarto Basics" data-listing-filename-sort="index.qmd">
-<td>
-<a href="./modules/quarto-basics/index.html" class="title listing-title">Quarto Basics</a>
-</td>
-<td>
-<span class="listing-categories">&nbsp;</span>
-</td>
-</tr>
-<tr data-index="6" data-listing-file-modified-sort="1722483735414" data-listing-reading-time-sort="25" data-listing-word-count-sort="4975" data-listing-title-sort="R programming basics" data-listing-filename-sort="index.qmd">
-<td>
-<a href="./modules/basic/index.html" class="title listing-title">R programming basics</a>
-</td>
-<td>
-<span class="listing-categories">&nbsp;</span>
-</td>
-</tr>
-<tr data-index="7" data-listing-file-modified-sort="1722483580312" data-listing-reading-time-sort="4" data-listing-word-count-sort="783" data-listing-title-sort="RStudio basics" data-listing-filename-sort="02-basics.qmd">
-<td>
-<a href="./modules/installation/02-basics.html" class="title listing-title">RStudio basics</a>
-</td>
-<td>
-<span class="listing-categories">&nbsp;</span>
-</td>
-</tr>
-<tr data-index="8" data-listing-file-modified-sort="1722483699866" data-listing-reading-time-sort="47" data-listing-word-count-sort="9363" data-listing-title-sort="Troubleshooting and asking for help" data-listing-filename-sort="index.qmd">
-<td>
-<a href="./modules/debugging/index.html" class="title listing-title">Troubleshooting and asking for help</a>
-</td>
-<td>
-<span class="listing-categories">&nbsp;</span>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="listing-no-matching d-none">
-No matching items
+<div class="callout-title-container flex-fill">
+Use of absolute path
 </div>
-</div></main> <!-- /main -->
+</div>
+<div class="callout-body-container callout-body">
+<p>Absolute paths should never be used in projects, as others will not be able to run the code you provide. This is because absolute paths to a project vary with operating systems and where the project is stored.</p>
+<p>As we can see, MacOS and Windows have completely different path structures.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-rela-path" class="level3">
+<h3 class="anchored" data-anchor-id="sec-rela-path">Relative Paths</h3>
+<p>It is the location of a file or directory specified relative to your current working directory.</p>
+<section id="working-directory" class="level4">
+<h4 class="anchored" data-anchor-id="working-directory">Working directory</h4>
+<p>The working directory is the default location R is looking at when loading the file or where it will store the files. If you want to check where your current working directory is, you can run the <code>getwd()</code> function. To understand a bit more about the current working directory, let me introduce the <code>here</code> package.</p>
+</section>
+<section id="here-package" class="level4">
+<h4 class="anchored" data-anchor-id="here-package">here package</h4>
+<p>It enables easy file referencing in project-oriented workflows. The <code>here()</code> function helps you build a path to your specified files. For example, if you want to access panguins data in your project folder instead of <code>read_csv("Users/Desktop/learnR/data/penguins.csv")</code>, you can just <code>read_csv(here::here("data/penguins"))</code>. It only works because your current working directory is in the learnR folder through the <code>here()</code> function.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"modules/project-structure/pictures/01-project-structure/here.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "/home/mitchell/github/monash-learnr-modules/modules/project-structure/pictures/01-project-structure/here.png"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"modules/project-structure/pictures/01-project-structure/here.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pictures/01-project-structure/here.png" class="img-fluid figure-img" width="1386"></p>
+<figcaption>Illustration by Allison Horst</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s say you are trying to get to the Campus center. An <strong>absolute path</strong> would direct you absolutely, starting from Earth, Australia, Melbourne, Monash Clayton, and then Campus Center. However, the <strong>relative path</strong> to Monash Clayton is the path from the Monash Clayton Campus to the Campus Center.</p>
+<p>You should always use the <strong>relative path</strong> when working on a project. It allows anyone who has your project to run the code without changing file paths, as it is unlikely that all the users will have the same absolute path.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Webpage
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>So far, we only see how to reference files on our computers. However, we can also reference places on other computers, for example, when we want to get data from the internet.</p>
+<p>To locate the webpage, we use the URL (Uniform Resource Locator) to identify any resource on the internet.</p>
+<p><code>https://learnr.numbat.space/data/penguins.csv</code></p>
+</div>
+</div>
+</section>
+</section>
+</section>
+</section>
+<section id="files-organisation" class="level1">
+<h1>Files organisation</h1>
+<p>There are many ways you can organise your files. The one principle you should follow is to make sure all the files you used in your analysis are stored within one project folder.</p>
+<p>The folder names you use are a personal choice, and there is no best approach. A project’s folders should organise the files and have names that adequately describe its contents. Often, a project contains many files with different purposes, including scripts, data, reports, documents, and other outputs.</p>
+<p>Some common folder names you might like to use in the analysis projects.</p>
+<ul>
+<li><p>Data is commonly stored in the ‘data’ folder, like we created in the slides. If you work with lots of data of different types, you could also use more folders inside your ‘data’ folder. For example, if the data you are working with needs pre-processing and cleaning, you could have ‘data/original’ and ‘data/cleaned’ folders to further organise the data files.</p></li>
+<li><p>Scripts are commonly stored in folders of many different names. For R projects, an ‘R’ folder is commonly used (from the structure of an R package). Many data analysis projects use a ‘scripts’ folder, and more language-agnostic projects might use a ‘src’ or ‘code’ folder. Your codes are often split across several scripts that perform different tasks, such as cleaning data, producing plots, and generating reports.</p></li>
+<li><p>Outputs can be stored in many different folders, which describe the type of output. For example, you may use a ‘results’ folder for analysis results, a ‘plots’ folder for plots, and a ‘reports’ folder for reports.</p></li>
+</ul>
+<pre><code>learnR
+├── data
+|   └── penguins.csv
+|
+├── R
+|   ├── cleaning.R
+|   └── analysis.R
+|
+└── plots
+    └── linear.png</code></pre>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Path
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Remember, all paths should be relative to the project folder. For example, <code>./data/penguins.csv</code>.</p>
+</div>
+</div>
+</section>
+<section id="r-project" class="level1">
+<h1>R project</h1>
+<p>An R project will allow RStudio to set the working directory correctly, handling all of the relative paths to the project folder for us. It encourages you to organise the file structure properly by putting all the files used by that project inside the same folder.</p>
+<p>It also allows quick switching between projects within the RStudio, tabs restoring from the last use when opening the project, and effortless collaboration.</p>
+<section id="new-r-project" class="level2">
+<h2 class="anchored" data-anchor-id="new-r-project">New R project</h2>
+<ol type="1">
+<li>To create a new project, click the project selector in the top-right corner. Then click on the “New Project…”.</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pictures/01-project-structure/project_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1045"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="2" type="1">
+<li>It will show you three options.
+<ul>
+<li>If you want to start a new R project in a new location on your computer, select “New Directory”.</li>
+<li>If you want to start a new R project in a location where all the files already exist, select “Existing Directory”.</li>
+<li>If you want to start a new R project by cloning a version control (Git or Subversion) repository, select “Version Control”.</li>
+</ul>
+For your very first R project, let’s start by selecting “New Directory”.</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pictures/01-project-structure/project_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="589"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="3" type="1">
+<li>There are many different types of R projects that you can create. For a data analysis project, we would select “New Project” for an empty folder.</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pictures/01-project-structure/project_3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="294"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="4" type="1">
+<li>Give your project (and the folder containing it) a name using the “Directory name:” field. You can also choose where the project will exist on your computer by clicking on the “Browse…” button. If you do not choose, it will be in your home directory. You can leave the rest unticked for now.</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pictures/01-project-structure/project_4.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="568"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="5" type="1">
+<li>Click “Create Project”.</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pictures/01-project-structure/project_5.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="568"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>You should be able to see the project file with .Rproj extension inside the project directory. You have now successfully created the R project. Clicking on the .Rproj file will open the project directly in RStudio.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Self contained
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Projects should be self-contained, meaning all files and data should exist inside the project directory. It makes sharing the work easy since all the files required to reproduce the analysis are relative to the project folder.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Do not save the workspace image
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When closing RStudo, you might be greeted with this pop-up asking you to save workspace images. <strong>You should select “Don’t Save”</strong>.</p>
+<p>Save the workspace means storing all of the objects you’ve created for the next time you open the project. It may sound tempting to do it, but it is bad for reproducibility. We should use code to reproduce the objects in the R environment and save them inside the project directory.</p>
+<p>You can prevent the popup messages by going to the “Global Options” and inside “General”, changing “Save workspace to .RData on exit” to “Never”.</p>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pictures/01-project-structure/disable_store.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="641"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

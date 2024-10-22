@@ -3,8 +3,13 @@
     "listing": "/index.html",
     "items": [
       "/modules/data-wrangling/index.html",
+      "/modules/installation/01-installation.html",
+      "/modules/project-structure/02-importing-exporting.html",
       "/modules/linear-regression/index.html",
+      "/modules/project-structure/01-project-structure.html",
+      "/modules/quarto-basics/index.html",
       "/modules/basic/index.html",
+      "/modules/installation/02-basics.html",
       "/modules/debugging/index.html"
     ]
   }

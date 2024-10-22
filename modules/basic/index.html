@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.5.47">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -375,6 +375,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 
 
+  // Override the existing install.packages() to use webr::install()
+  await globalThis.webR.evalRVoid('webr::shim_install()'); 
+
+
   // Check to see if any packages need to be installed
   if (setupRPackages) {
     // Obtain only a unique list of packages
@@ -412,13 +416,53 @@ capture_printed <- function(x) {
   if(x_vis$visible) print(x_vis$value) else invisible()
 }
 
+compare_args <- function(x, y) {
+  val <- match(x, y)
+  if(any(is.na(val))) return(FALSE)
+  identical(names(x), names(y)[val])
+}
+
+search_ast_impl <- function(.code, fn = NULL, fn_args = list()) {
+  if(!(is.call(.code) || is.expression(.code))) return(FALSE)
+  args <- as.list(.code[-1])
+  if(compare_args(fn_args, args)) {
+    if(is.null(fn) || identical(fn, .code[[1]])) return(TRUE)
+  }
+  
+  any(vapply(args, search_ast_impl, logical(1L), fn = fn, fn_args = fn_args))
+}
+
+search_ast <- function(.code, .fn = NULL, ..., .expr = NULL) {
+  .expr <- substitute(.expr)
+  if(!is.null(.expr)) {
+    .fn <- .expr[[1]]
+    fn_args <- as.list(.expr[-1])
+  } else {
+    .fn <- substitute(.fn)
+    fn_args <- as.list(substitute(...()))
+  }
+  
+  if(is.expression(.code)) .code <- as.list(.code)
+  any(vapply(.code, search_ast_impl, logical(1L), fn = .fn, fn_args = fn_args))
+}
+
+exists_in <- function(.x, .f, ..., .require = any) {
+  if(inherits(.f, "formula")) {
+    f <- .f
+    .f <- function(.x, .y, ..., . = .x) {}
+    body(.f) <- f[[length(f)]]
+  }
+  .require(vapply(.x, .f, logical(1L), ...))
+}
+
 check_answer <- function(.code) {
   .printed <<- list()
   .errored <<- character()
   .warned <<- character()
   .src <- .code
-  .code <- as.expression(lapply(parse(text = .code), function(l) call("capture_printed", l)))
-  eval(.code, envir = .GlobalEnv)
+  .code <- parse(text = .src)
+  .exec <- as.expression(lapply(.code, function(l) call("capture_printed", l)))
+  eval(.exec, envir = .GlobalEnv)
   results <- teachr_tests(.code, .printed, .errored, .warned)
   if(all(!results)) {
     cat("✅ That's correct! Well done 🎉", "\n", sep = "", file = stdout(), append = TRUE)
@@ -455,7 +499,7 @@ check_answer <- function(.code) {
   };
 </script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -533,7 +577,7 @@ window.Quarto = {
 <h1>Arithmetic and Variable Assignment</h1>
 <section id="arithmetic-operations" class="level2">
 <h2 class="anchored" data-anchor-id="arithmetic-operations">Arithmetic Operations</h2>
-<p>One of the simplest thing that you can do with R is to use it as a calculator. Here are some common arithmetic operations:</p>
+<p>One of the simplest thing that you can do with R is to <strong>use it as a calculator.</strong> Here are some common arithmetic operations:</p>
 <ul>
 <li>Addition: <code>+</code></li>
 <li>Subtraction: <code>-</code></li>
@@ -543,14 +587,26 @@ window.Quarto = {
 <li>Modulo: <code>%%</code></li>
 </ul>
 <p>The <code>^</code> operator raises the number to its left to the power of the number to its right. For example, if you enter <code>2^3</code>, you will get the answer of 2 to the power 3, which is 8.</p>
-<p>The <code>%%</code> operator gives the remainder of the division of the number to the left by the number on its right. For example, if you enter <code>7 %% 3</code>, you will get the answer of 7 modulo 3 (7 = 3*2 + 1), which is 1.</p>
+<p>The <code>%%</code> operator returns the remainder when the number on the left is divided by the number on the right. For example, <code>7 %% 3</code> results in 1 because 7 divided by 3 leaves a remainder of 1.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Adding comments
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>Note that you can add comment to your code using the <code>#</code> symbol. This is helpful when you want to take notes as you go, so that you can follow your R code when you come back to revise in a few weeks time!</p>
+</div>
+</div>
 </section>
 <section id="variable-assignment" class="level2">
 <h2 class="anchored" data-anchor-id="variable-assignment">Variable Assignment</h2>
-<p>A basic concept in programming is called a variable. A variable allows you to store a value (e.g.&nbsp;8) or an object (e.g.&nbsp;a piece of string) in R. You can then later use this variable’s name to easily access the value or the object that is stored within this variable.</p>
+<p>A basic concept in programming is called a <strong>variable.</strong> A variable allows you to store a value (e.g.&nbsp;8) or an object (e.g.&nbsp;a piece of string) in R. You can then later use this variable’s name to easily access the value or the object that is stored within this variable.</p>
 <p>We can <strong>assign</strong> the result of our arithmetic operations (which is a value), for instance, <code>2^3</code> to a variable named <code>my_result</code> using the following command: <code>my_result &lt;- 2^3</code></p>
-<p>Now when you evaluate the value of the variable <code>my_reuslt</code>, you will get the value of 8.</p>
+<p>Now, when you evaluate the value of the variable <code>my_result</code> by running it, you will get the value of 8.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -562,8 +618,8 @@ Your turn!
 </div>
 <div class="callout-body-container callout-body">
 <p>Now it’s your turn to try variable assignment and some simple arithmetic operations in R!</p>
-<p>Hint: Let’s say you would like to assign the result of summing from 1 to 5 to a variable named <code>sum_to_five</code>. You can do: <code>sum_to_five &lt;- 1+2+3+4+5</code></p>
-<p>Now if you would like to divide <code>sum_to_five</code> by 5 and assign the result to <code>average</code>, you can do: <code>average &lt;- sum_to_five/5</code></p>
+<p><strong>HINT</strong> 💡<strong>:</strong> Let’s say you would like to <strong>assign the result of summing</strong> from 1 to 5 to a variable named <code>sum_to_five</code>. You can do: <code>sum_to_five &lt;- 1+2+3+4+5</code></p>
+<p>Now if you would like to <strong>divide</strong> <code>sum_to_five</code> by 5 and <strong>assign the result</strong> to <code>average</code>, you can do: <code>average &lt;- sum_to_five/5</code></p>
 </div>
 </div>
 <div id="qwebr-interactive-area-1" class="qwebr-interactive-area">
@@ -863,8 +919,8 @@ y <- ___
 `teachr_tests <- function(.code, .printed, .errored, .warned) {
   
 c(
-  "Are you using the correct numbers and symbols? Have you try the hint?" = x!=25,
-  "Are you using the correct numbers and symbols? Have you try the hint?" = y!=75
+  "Are you using the correct numbers and symbols? Have you tried the hint?" = x!=25,
+  "Are you using the correct numbers and symbols? Have you tried the hint?" = y!=75
 )
 
 }
@@ -886,39 +942,18 @@ y <- x*3
   };
 </script>
 </section>
-</section>
-<section id="basic-data-types-in-r" class="level1">
-<h1>Basic Data Types in R</h1>
-<section id="basic-data-types-in-r-1" class="level2">
-<h2 class="anchored" data-anchor-id="basic-data-types-in-r-1">Basic Data Types in R</h2>
-<p>There are numerous data types in R. Here are some of the basic ones:</p>
-<ul>
-<li><strong>numerics</strong>: numerical values</li>
-<li><strong>logical</strong>: boolean values (<code>TRUE</code> or <code>FALSE</code>)</li>
-<li><strong>characters</strong>: String (a piece of text) like ‘some text’ or “some text”. Note that we use quotation marks to indicate if a value is a string.</li>
-</ul>
-<section id="checking-the-data-types" class="level3">
-<h3 class="anchored" data-anchor-id="checking-the-data-types">Checking the data types</h3>
-<p>You can check the data type of a variable with the <code>class()</code> function. This is a useful function since often you need matching data types when you perform operations in R. For example, you will get an error message if you try to evaluate <code>5 + "6"</code>.</p>
-</section>
-<section id="more-on-numerics-integer-vs-double" class="level3">
-<h3 class="anchored" data-anchor-id="more-on-numerics-integer-vs-double">More on numerics: Integer vs Double</h3>
-<p>The two most common numeric classes are “integer” and “double” (for double precision floating point numbers). “Integers” are whole numbers like <code>7</code>. “Double” are decimal values like <code>5.217</code>. R uses double precision numeric values by default.</p>
+<section id="introduction-to-pipes" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-pipes">Introduction to Pipes</h2>
+<p>Pipes allow you to sequence a series of operations in a clear and readable way. There are two types of pipe operators in R. <code>%&gt;%</code>, which is part of the <code>magrittr</code> package and native pipe operator <code>|&gt;</code> introduced in R 4.1.0. The pipe operator takes the output of the operation on its left and feeds it as the first argument to the function on its right. For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>db_var <span class="ot">&lt;-</span> <span class="dv">7</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(db_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">|&gt;</span> <span class="fu">mean</span>()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "numeric"</code></pre>
+<pre><code>[1] 5.5</code></pre>
 </div>
 </div>
-<p>To create integer values, you can add <code>L</code> after the number.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>int_var <span class="ot">&lt;-</span> <span class="dv">7</span>L</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(int_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "integer"</code></pre>
-</div>
-</div>
+<p>Here the pipe takes the sequence from 1 to 10 and passes it to the <code>mean()</code> function, which calculates the mean.</p>
+<p>For further information on the pipe operators and their differences, refer <a href="https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/">here</a>.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -929,8 +964,8 @@ Your turn!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Play around with different variable types!</p>
-<p>Hint: Replace the values in the R code with values that are provided in the instructions (the line with the comment <code>#</code>). For example, <code>weather &lt;- "sunny"</code> assigns the string “sunny” to the variable <code>weather</code>.</p>
+<p>Try using the pipe operator to calculate the sum of the sequence from 1 to 10 and assign the result to the variable <code>result</code>.</p>
+<p><strong>HINT</strong> 💡<strong>:</strong> You can use the <code>|&gt;</code> operator to pass the sequence from 1 to 10 to the <code>sum()</code> function and assign it to <code>result</code> with <code>&lt;-</code>.</p>
 </div>
 </div>
 <div id="qwebr-interactive-area-2" class="qwebr-interactive-area">
@@ -957,13 +992,7 @@ Your turn!
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-2");
   const editorDiv = document.getElementById("qwebr-editor-2");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-2");
-  const webrCode = `# Set weather to be "sunny"
-weather <- ___
-
-# Set brolly_needed to be FALSE
-brolly_needed <- ___
-
-# Set \`temperature\` to be 27
+  const webrCode = `# Calculate the sum of sequence 1:10 and assign to \`result\`.
 ___
 `
 
@@ -1232,25 +1261,16 @@ ___
     executeCode(
 `teachr_tests <- function(.code, .printed, .errored, .warned) {
   
-c(
-  "Have you spelt 'sunny' correctly? Look at the hint." = weather!="sunny",
-  "Have you spelt the logical value correctly? Note that logical values should be all capital letter (i.e. \`TRUE\` not \`true\`)." = brolly_needed,
-  "Have you assign the numeric correctly?" = temperature != 27
-)
+c("Did you correctly pipe 1:10 to sum() and assign it to result?" = !search_ast(.code, .expr = result <- 1:10 |> sum()))
+
 }
 check_answer(r"(` + editor.getValue() + `)")`
     );
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`# Set weather to be "sunny"
-weather <- "sunny"
-
-# Set brolly_needed to be FALSE
-brolly_needed <- FALSE
-
-# Set \`temperature\` to be 27
-temperature <- 27
+    editor.setValue(`# Calculate the sum of sequence 1:10 and assign to \`result\`.
+result <- 1:10 |> sum()
 `);
   };
   
@@ -1260,93 +1280,51 @@ temperature <- 27
 </script>
 </section>
 </section>
-<section id="missing-values" class="level2">
-<h2 class="anchored" data-anchor-id="missing-values">Missing Values</h2>
-<p>There are several special values in R, including <code>NA</code>, <code>NaN</code>, and <code>Inf</code>.</p>
-<p><strong>NA</strong></p>
-<p><code>NA</code> (short for ‘Not Available’), is a logical constant of length 1 which contains a missing value indicator. We use <code>NA</code> to replace an entry of a vector when such value is unknown or missing. There are different types of <code>NA</code> for different class, including <code>NA_integer_</code>, <code>NA_real_</code>, <code>NA_complex_</code> and <code>NA_character_</code>. <code>NA_integer</code> is of the integer class and so on.</p>
-<p>Most operations on an <code>NA</code> becomes an <code>NA</code>. For instance,</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>, <span class="dv">4</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] NA</code></pre>
+<section id="basic-objects-in-r" class="level1">
+<h1>Basic Objects in R</h1>
+<section id="basic-objects-in-r-1" class="level2">
+<h2 class="anchored" data-anchor-id="basic-objects-in-r-1">Basic Objects in R</h2>
+<p>There are numerous data types in R. Here are some of the basic ones:</p>
+<ul>
+<li><strong>numerics</strong>: numerical values</li>
+<li><strong>logical</strong>: boolean values (<code>TRUE</code> or <code>FALSE</code>)</li>
+<li><strong>characters</strong>: String (a piece of text) like ‘some text’ or “some text”.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Characters and Strings
 </div>
 </div>
-<p>However, there is an exception - when we use the <code>paste()</code> function to concatenate <code>NA</code> with other strings. The operation will be performed with the <code>NA</code>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>some_string <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Apple"</span>,<span class="st">"Banana"</span>, <span class="cn">NA</span>, <span class="st">"Orange"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(some_string, <span class="st">" is good for you."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Apple  is good for you."  "Banana  is good for you."
-[3] "NA  is good for you."     "Orange  is good for you."</code></pre>
+<div class="callout-body-container callout-body">
+<p>Note that we use quotation marks to indicate if a value is a string.</p>
 </div>
 </div>
-<p>We can use <code>is.na()</code> to test if a values is <code>NA</code>. The function is.na(x) returns a boolean vector of the same size as <code>x</code> with value TRUE if the corresponding element in <code>x</code> is <code>NA</code>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] FALSE FALSE  TRUE FALSE</code></pre>
-</div>
-</div>
-<p><strong>NaN</strong></p>
-<p><code>NaN</code> (short for ‘Not A Number’) is for arithmetic purposes. <code>NaN</code> usually comes from arithmetic operations that create undefined values such as 0/0, hence <code>NaN</code> is numeric. You can also use <code>is.na()</code> to check if a value is <code>NaN</code>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span>, <span class="dv">3</span>,<span class="dv">5</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] FALSE  TRUE FALSE FALSE</code></pre>
-</div>
-</div>
-<p><strong>Inf</strong></p>
-<p><code>Inf</code> (short for <code>Infinite</code>), like <code>NaN</code>, also stems from numerical operations and thus is of numeric class. It usually comes operations like 1/0 where the result is a very very large number (larger than other numeric). Note that <code>Inf</code> is not a type of <code>NA</code>. You can use <code>is.infinite()</code> to check if a value is <code>Inf</code>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.infinite</span>(<span class="dv">23</span><span class="sc">/</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] TRUE</code></pre>
-</div>
-</div>
+<section id="checking-the-data-types" class="level3">
+<h3 class="anchored" data-anchor-id="checking-the-data-types">Checking the data types</h3>
+<p>You can check the data type of a variable with the <code>class()</code> function. This is a useful function because matching data types are often necessary when performing operations in R. For example, you will get an error message if you try to evaluate <code>5 + "6"</code> since the quotation marks would make 6 a character.</p>
 </section>
-</section>
-<section id="vectors" class="level1">
-<h1>Vectors</h1>
-<p>Nothing here (yet)! <!-- <exercise id='3' title='Vectors' type="slides"> --></p>
-<!-- slides("chapter2_03_vectors") -->
-<!-- </exercise> -->
-<!-- <exercise id='4' title='Check Your Understanding on Vectors'> -->
-<!-- **Problem 1**  -->
-<!-- Given the following vector `y` in R, -->
-<!-- ``` -->
-<!-- y = c(2,4,6,8,1,3,5,7) -->
-<!-- ``` -->
-<!-- which of the following is the output of `y-2`? -->
-<!-- ```{r, echo = FALSE, results = "asis"} -->
-<!-- cat(mc_opts("<code> 0  4  6  8  1  3  5  7 </code>" = "Try again! Check your calculation in R!", -->
-<!--          "<code> 0  2  4  6 -1  1  3  5 </code>" = "That's correct!", -->
-<!--          "<code> 2  4  6  8  1  3  5  7 -2 </code>" = "Try again! Check your calculation in R!", -->
-<!--          "<code> -4  -8 -12 -16  -2  -6 -10 -14 </code>" = "Try again! Check your calculation in R!", -->
-<!--          correct = 2)) -->
-<!-- ``` -->
-<!-- **Problem 2**  -->
-<!-- Given the following vector `y` in R, -->
-<!-- ``` -->
-<!-- y = c(2,4,6,8,1,3,5,7) -->
-<!-- ``` -->
-<!-- which of the following is the output of `y[4:7]`? -->
-<!-- ```{r, echo = FALSE, results = "asis"} -->
-<!-- cat(mc_opts("<code> 8 1 3 5 </code>" = "That's correct!", -->
-<!--          "<code> 8 1 3 </code>" = "Try again! Check your calculation in R!", -->
-<!--          "<code> 6 8 1 3 </code>" = "Try again! Check your calculation in R!", -->
-<!--          "<code> 1 3 5 </code>" = "Try again! Check your calculation in R!", -->
-<!--          correct = 1)) -->
-<!-- ``` -->
-</section>
-<section id="matrices" class="level1">
-<h1>Matrices</h1>
-<!-- <exercise id='5' title='Matrices' type = "slides"> -->
-<!-- slides("chapter2_05_matrices")`
-
-<!-- </exercise> -->
+<section id="more-on-numerics-integer-vs-double" class="level3">
+<h3 class="anchored" data-anchor-id="more-on-numerics-integer-vs-double">More on numerics: Integer vs Double</h3>
+<p>The two most common numeric classes are “integer” and “double” (for double precision floating point numbers). “Integers” are whole numbers like <code>7</code>. “Double” are decimal values like <code>5.217</code>. R uses double precision numeric values by default.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>db_var <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(db_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "numeric"</code></pre>
+</div>
+</div>
+<p>To create integer values, you can add <code>L</code> after the number.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>int_var <span class="ot">&lt;-</span> <span class="dv">7</span>L</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(int_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
+</div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1357,13 +1335,8 @@ Your turn!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Consider the following matrices S and T:</p>
-<p><span class="math display">\[S = \begin{bmatrix}1&amp;0\\0&amp;1\end{bmatrix}, T = \begin{bmatrix}2&amp;2\\4&amp;3\end{bmatrix}\]</span></p>
-<ul>
-<li><p>Construct a matrix M by stacking S on top of T. Assign your result to the variable <code>M_mat</code>.</p></li>
-<li><p>Select a sub-matrix of M with the data on the rows 1, 2, 3 and columns 2. Assign the result to the variable <code>part_of_M</code>.</p></li>
-</ul>
-<p>Hint 1: To stack one matrix on top of another, we can use the <code>rbind()</code> command. Hint 2: For example, B[1,2] selects the element at the first row and second column of matrix B. B[1:3,2:4] results in a matrix with the data on the rows 1, 2, 3 and columns 2, 3, 4.</p>
+<p>Play around with different variable types!</p>
+<p><strong>HINT</strong> 💡<strong>:</strong> Replace the values in the R code with values that are provided in the instructions (the line with the comment <code>#</code>). For example, <code>weather &lt;- "sunny"</code> assigns the string “sunny” to the variable <code>weather</code>.</p>
 </div>
 </div>
 <div id="qwebr-interactive-area-3" class="qwebr-interactive-area">
@@ -1390,13 +1363,14 @@ Your turn!
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-3");
   const editorDiv = document.getElementById("qwebr-editor-3");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-3");
-  const webrCode = `S_mat <- matrix(c(1,0,0,1), byrow=TRUE, nrow=2)
-T_mat <- matrix(c(2,2,4,3), byrow=TRUE, nrow=2)
-# Construct a matrix M by stacking S on top of T
-M_mat <- ___
+  const webrCode = `# Set weather to be "sunny"
+weather <- ___
 
-# Select a sub-matrix of M with the data on the rows 1, 2, 3 and columns 2.
-part_of_M <- ___
+# Set brolly_needed to be FALSE
+brolly_needed <- ___
+
+# Set \`temperature\` to be 27
+___
 `
 
   // Load the Monaco Editor and create an instance
@@ -1664,29 +1638,25 @@ part_of_M <- ___
     executeCode(
 `teachr_tests <- function(.code, .printed, .errored, .warned) {
   
-S_mat <- matrix(c(1,0,0,1), byrow=TRUE, nrow=2)
-T_mat <- matrix(c(2,2,4,3), byrow=TRUE, nrow=2)
-M_sol <- rbind(S_mat,T_mat)
-part_of_M_sol <- M_sol[1:3,2]
-
 c(
-  "The \`M\` object does not contain the matrix we expected. Are you using the function that we have introduced?" = !identical(M_mat, M_sol),
-  "Have you got the indexing right?" = !identical(part_of_M, part_of_M_sol)
+  "Have you spelt 'sunny' correctly? Look at the hint." = weather!="sunny",
+  "Have you spelt the logical value correctly? Note that logical values should be all capital letter (i.e. \`TRUE\` not \`true\`) and do not require brackets!" = brolly_needed,
+  "Have you assign the numeric correctly?" = temperature != 27
 )
-
 }
 check_answer(r"(` + editor.getValue() + `)")`
     );
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`S_mat <- matrix(c(1,0,0,1), byrow=TRUE, nrow=2)
-T_mat <- matrix(c(2,2,4,3), byrow=TRUE, nrow=2)
-# Construct a matrix M by stacking S on top of T
-M_mat <- rbind(S_mat,T_mat)
+    editor.setValue(`# Set weather to be "sunny"
+weather <- "sunny"
 
-# Select a sub-matrix of M with the data on the rows 1, 2, 3 and columns 2.
-part_of_M <- M_mat[1:3,2]
+# Set brolly_needed to be FALSE
+brolly_needed <- FALSE
+
+# Set \`temperature\` to be 27
+temperature <- 27
 `);
   };
   
@@ -1695,11 +1665,90 @@ part_of_M <- M_mat[1:3,2]
   };
 </script>
 </section>
-<section id="data-frames" class="level1">
-<h1>Data Frames</h1>
-<section id="data-frames-1" class="level2">
-<h2 class="anchored" data-anchor-id="data-frames-1">Data Frames</h2>
-<p>A data frame has the variables of a dataset as columns and the observations as rows.</p>
+</section>
+<section id="missing-values" class="level2">
+<h2 class="anchored" data-anchor-id="missing-values">Missing Values</h2>
+<p>There are several special values in R, including <code>NA</code>, <code>NaN</code>, and <code>Inf</code>.</p>
+<p><strong>NA</strong></p>
+<p><code>NA</code> (short for ‘Not Available’), is a logical constant of length 1 which contains a missing value indicator. We use <code>NA</code> to replace an entry of a vector when such value is unknown or missing. There are different types of <code>NA</code> for different class, including <code>NA_integer_</code>, <code>NA_real_</code>, <code>NA_complex_</code> and <code>NA_character_</code>. <code>NA_integer</code> is of the integer class and so on.</p>
+<p>Most operations on an <code>NA</code> becomes an <code>NA</code>. For instance,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>, <span class="dv">4</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+</div>
+<p>However, there is an exception - when we use the <code>paste()</code> function to concatenate <code>NA</code> with other strings. The operation will be performed with the <code>NA</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>some_string <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Apple"</span>,<span class="st">"Banana"</span>, <span class="cn">NA</span>, <span class="st">"Orange"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(some_string, <span class="st">" is good for you."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Apple  is good for you."  "Banana  is good for you."
+[3] "NA  is good for you."     "Orange  is good for you."</code></pre>
+</div>
+</div>
+<p>We can use <code>is.na()</code> to test if a values is <code>NA</code>. The function is.na(x) returns a boolean vector of the same size as <code>x</code> with value TRUE if the corresponding element in <code>x</code> is <code>NA</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE FALSE  TRUE FALSE</code></pre>
+</div>
+</div>
+<p><strong>NaN</strong></p>
+<p><code>NaN</code> (short for ‘Not A Number’) is for arithmetic purposes. <code>NaN</code> usually comes from arithmetic operations that create undefined values such as 0/0, hence <code>NaN</code> is numeric. You can also use <code>is.na()</code> to check if a value is <code>NaN</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span>, <span class="dv">3</span>,<span class="dv">5</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE  TRUE FALSE FALSE</code></pre>
+</div>
+</div>
+<p><strong>Inf</strong></p>
+<p><code>Inf</code> (short for <code>Infinite</code>), like <code>NaN</code>, also stems from numerical operations and thus is of numeric class. It usually comes operations like 1/0 where the result is a very very large number (larger than other numeric). Note that <code>Inf</code> is not a type of <code>NA</code>. You can use <code>is.infinite()</code> to check if a value is <code>Inf</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.infinite</span>(<span class="dv">23</span><span class="sc">/</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="vectors" class="level1">
+<h1>Vectors</h1>
+<p>A <strong>vector</strong> is an ordered finite list of numbers. Vectors (and matrices) are used a lot in equations, models and mathematical optimisation problems. Learning how to read and use them allows you to:</p>
+<ul>
+<li>Understand complex operations.</li>
+<li>Express operations that you want to perform in a compact and elegant way.</li>
+</ul>
+<p>A vector <code>x</code> can be written in R as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3 4 5</code></pre>
+</div>
+</div>
+<p>Where the combine function <code>c()</code> is used to create the vector and each element in the vector is separated by a comma.</p>
+<section id="vector-operations" class="level2">
+<h2 class="anchored" data-anchor-id="vector-operations">Vector Operations</h2>
+<section id="vector-addition-and-subtraction" class="level3">
+<h3 class="anchored" data-anchor-id="vector-addition-and-subtraction">Vector addition and subtraction</h3>
+<p>If <code>a</code> and <code>b</code> are vectors of the same size, <code>a+b</code> and <code>a-b</code> give their sum and difference, respectively.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">200</span>,<span class="dv">300</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>a<span class="sc">+</span>b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 101 202 303</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>a<span class="sc">-</span>b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  -99 -198 -297</code></pre>
+</div>
+</div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1710,8 +1759,8 @@ Your turn!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Let’s look at an example. Just run the code and you will see what a data frame looks like in R.</p>
-<p>Hint: Simply run the code!</p>
+<p>Try adding and subtracting vectors!</p>
+<p><strong>HINT</strong> 💡<strong>:</strong> Make sure you’re assigning a variable with the elements you want in your vector. For example, if you want to create a vector <code>y</code> with elements 1, 2, 3, and 4, you can do <code>y &lt;- c(1, 2, 3, 4)</code> and likewise with the vector you’re adding or subtracting by.</p>
 </div>
 </div>
 <div id="qwebr-interactive-area-4" class="qwebr-interactive-area">
@@ -1738,7 +1787,13 @@ Your turn!
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-4");
   const editorDiv = document.getElementById("qwebr-editor-4");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-4");
-  const webrCode = `iris
+  const webrCode = `# Lets try adding two vectors!
+# Create a vector y with elements 1, 2, 3, 4
+y <- ___
+# Create a vector z with elements 5, 6, 7, 8
+z <- ___
+# Add y and z
+___
 `
 
   // Load the Monaco Editor and create an instance
@@ -2007,15 +2062,24 @@ Your turn!
 `teachr_tests <- function(.code, .printed, .errored, .warned) {
   
 c(
-  "Just reset and run the code!" = !identical(iris, .printed[[1]])
+  "Did you assign the correct values for y?" = !search_ast(.code, .expr = y <- c(1, 2, 3, 4)),
+  "Did you assign the correct values for z?" = !search_ast(.code, .expr = z <- c(5, 6, 7, 8)),
+  "Did you add y and z?" = !search_ast(.code, .expr = y+z)
 )
+  
 }
 check_answer(r"(` + editor.getValue() + `)")`
     );
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`iris
+    editor.setValue(`# Lets try adding two vectors!
+# Create a vector y with elements 1, 2, 3, 4
+y <- c(1, 2, 3, 4)
+# Create a vector z with elements 5, 6, 7, 8
+z <- c(5, 6, 7, 8)
+# Add y and z
+y+z
 `);
   };
   
@@ -2023,29 +2087,6 @@ check_answer(r"(` + editor.getValue() + `)")`
     editor.setValue(webrCode);
   };
 </script>
-<p>The iris data set gives the measurements in centimeters of the variables sepal length, sepal width, petal length and petal width, respectively, for 50 flowers from each of 3 species of iris. The species are Iris setosa, versicolor, and virginica.</p>
-<section id="quick-look-at-the-data-frame" class="level3">
-<h3 class="anchored" data-anchor-id="quick-look-at-the-data-frame">Quick Look at the Data Frame</h3>
-<p>Often it is useful to show only a small part of the entire dataset, especially when we are working with very big data set where showing the entire dataset is not easy. Here are a few useful commands that helps you understand the data frame very quickly.</p>
-<ul>
-<li><code>head()</code> shows the first few observations of a data frame.</li>
-<li><code>tail()</code> shows the last few observations of a data frame.</li>
-<li><code>str()</code> shows the structure of the dataset.</li>
-</ul>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Your turn!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Investigate the structure of the example dataframe. Have a look at the first and last few observations!</p>
-<p>Hint: Try <code>head(df)</code>.</p>
-</div>
-</div>
 <div id="qwebr-interactive-area-5" class="qwebr-interactive-area">
   <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-5">🟡 Loading
     webR...</button>
@@ -2070,8 +2111,12 @@ Your turn!
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-5");
   const editorDiv = document.getElementById("qwebr-editor-5");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-5");
-  const webrCode = `df <- ToothGrowth
-# Have a quick look at the first few observations of df
+  const webrCode = `# Lets try subtracting two vectors!
+# Create a vector a with elements 1, 4, 3, 5
+a <- ___
+# Create a vector b with elements 2, 1, 3, 4
+b <- ___
+# Subtract a and b
 ___
 `
 
@@ -2340,19 +2385,25 @@ ___
     executeCode(
 `teachr_tests <- function(.code, .printed, .errored, .warned) {
   
-ans_df <- .printed[[which(vapply(.printed, is.data.frame, logical(1L)))]]
 c(
-  "Use the head() function to preview the first few rows of the data." = nrow(ans_df) >= nrow(df)
+  "Did you use c() and assign the correct values for a?" = !search_ast(.code, .expr = a <- c(1, 4, 3, 5)),
+  "Did you use c() and assign the correct values for b?" = !search_ast(.code, .expr = b <- c(2, 1, 3, 4)),
+  "Did you subtract a and b?" = !search_ast(.code, .expr = a-b)
 )
+
 }
 check_answer(r"(` + editor.getValue() + `)")`
     );
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`df <- ToothGrowth
-# Have a quick look at the first few observations of df
-head(df)
+    editor.setValue(`# Lets try subtracting two vectors!
+# Create a vector a with elements 1, 4, 3, 5
+a <- c(1, 4, 3, 5)
+# Create a vector b with elements 2, 1, 3, 4
+b <- c(2, 1, 3, 4)
+# Subtract a and b
+a-b
 `);
   };
   
@@ -2360,32 +2411,82 @@ head(df)
     editor.setValue(webrCode);
   };
 </script>
-<!--
-**Answer the following question**
-
-What is the data type of the variable 'dose'?
-
-
-
-
-
--->
 </section>
-<section id="creating-data-frame" class="level3">
-<h3 class="anchored" data-anchor-id="creating-data-frame">Creating Data Frame</h3>
-<p>You can construct your own data frame using data that you have with the <code>data.frame()</code> function. You can include different vectors as argument in the function and they will become different columns of your data frame. Note that you should make sure the vectors that you pass have same length (i.e.&nbsp;same number of observations for each column).</p>
+<section id="scalar-vector-multiplication-and-division" class="level3">
+<h3 class="anchored" data-anchor-id="scalar-vector-multiplication-and-division">Scalar-vector multiplication and division</h3>
+<p>If <code>c</code> is a number and <code>a</code> is a vector, you can express the scalar-vector product either as <code>c*a</code> or <code>a*c</code>. For example, if you do a <code>3*a</code> and <code>a*3</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span><span class="sc">*</span>a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 6 9</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>a<span class="sc">*</span><span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 6 9</code></pre>
+</div>
+</div>
+</section>
+<section id="scalar-vector-addition" class="level3">
+<h3 class="anchored" data-anchor-id="scalar-vector-addition">Scalar-vector addition</h3>
+<p>In R, you can add a scalar to a vector. This means that the scalar is added to each element of the vector. For example, if you do <code>3+a</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span><span class="sc">+</span>a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4 5 6</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note this is <strong>NOT</strong> a standard mathematical notation.</p>
+</div>
+</div>
+</section>
+<section id="indexing-and-slicing" class="level3">
+<h3 class="anchored" data-anchor-id="indexing-and-slicing">Indexing and Slicing</h3>
+<section id="indexing" class="level4">
+<h4 class="anchored" data-anchor-id="indexing">Indexing</h4>
+<p>A specific element <span class="math inline">\(x_i\)</span> where <span class="math inline">\(i\)</span> is the index.</p>
+<p>Say we would like to obtain the 5th entry from the following vector <span class="math inline">\(x\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">23</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">23</span>,<span class="dv">7</span>,<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">23</span>,<span class="dv">7</span>,<span class="dv">90</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Extracting the 5th entry from the vector</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+</section>
+<section id="slicing" class="level4">
+<h4 class="anchored" data-anchor-id="slicing">Slicing</h4>
+<p><span class="math inline">\(x_{r:s}\)</span> denotes the slice of the vector from index <span class="math inline">\(i\)</span> to <span class="math inline">\(s\)</span>. For instance, <code>x[1:4]</code> selects the element from index 1 to 4.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5 6 3 4</code></pre>
+</div>
+</div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Your turn
+Your turn!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Create a data frame using vectors <code>symbol</code>, <code>element</code>, <code>chemical_group</code> and <code>atomic_no</code>, following that order. Assign the result data frame to <code>first_ten_elements</code>.</p>
-<p>Hint: Use the <code>data.frame()</code> function on the vectors.</p>
+<p>Lets try slicing and extracting elements from a vector!</p>
+<p><strong>HINT</strong> 💡<strong>:</strong> If you would like to extract the 3rd element from the vector <code>y</code>, you can do <code>y[3]</code>. If you would like to extract the 2nd to 4th element from the vector <code>y</code>, you can do <code>y[2:4]</code>.</p>
 </div>
 </div>
 <div id="qwebr-interactive-area-6" class="qwebr-interactive-area">
@@ -2412,14 +2513,14 @@ Your turn
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-6");
   const editorDiv = document.getElementById("qwebr-editor-6");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-6");
-  const webrCode = `symbol <- c('N','O','H','He','B','C','F','Ne','Li','Be')
-element <- c('Nitrogen','Oxygen','Hydrogen','Helium','Boron','Carbon','Fluorine','Neon','Lithium','Beryllium')
-chemical_group <- c('Nonmetal','Nonmetal','Nonmetal','Noble Gas','Metalloid','Nonmetal','Halogen','Noble Gas','Alkali Metal','Alkaline Earth Metal')
-atomic_no <- c(7,8,1,2,5,6,9,10,3,4)
+  const webrCode = `# Extract the 6th element from the vector y
+x = c(5,6,3,4,5,8,23,4,6,4,3,23,7,5,4,23,7,90)
+___
 
-first_ten_elements <- ___
-first_ten_elements
-  `
+# Extract the 2nd to 4th element from the vector y
+y = c(1,2,3,4,5,6,7,8,9,10)
+___
+`
 
   // Load the Monaco Editor and create an instance
   let editor;
@@ -2686,78 +2787,220 @@ first_ten_elements
     executeCode(
 `teachr_tests <- function(.code, .printed, .errored, .warned) {
   
-symbol <- c('N','O','H','He','B','C','F','Ne','Li','Be')
-element <- c('Nitrogen','Oxygen','Hydrogen','Helium','Boron','Carbon','Fluorine','Neon','Lithium','Beryllium')
-chemical_group <- c('Nonmetal','Nonmetal','Nonmetal','Noble Gas','Metalloid','Nonmetal','Halogen','Noble Gas','Alkali Metal','Alkaline Earth Metal')
-atomic_no <- c(7,8,1,2,5,6,9,10,3,4)
-solution <- data.frame(symbol, element, chemical_group, atomic_no)
-
 c(
-  "Did you follow the order of columns as stated in the instruction?" = !identical(first_ten_elements, solution)
+  "Did you extract the 6th element using its index in square brackets?" = !search_ast(.code, .expr = x[6]),
+  "Did you access elements 2 to 4 using their indices in square brackets?" = !search_ast(.code, .expr = y[2:4])
 )
+
 }
 check_answer(r"(` + editor.getValue() + `)")`
     );
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`symbol <- c('N','O','H','He','B','C','F','Ne','Li','Be')
-element <- c('Nitrogen','Oxygen','Hydrogen','Helium','Boron','Carbon','Fluorine','Neon','Lithium','Beryllium')
-chemical_group <- c('Nonmetal','Nonmetal','Nonmetal','Noble Gas','Metalloid','Nonmetal','Halogen','Noble Gas','Alkali Metal','Alkaline Earth Metal')
-atomic_no <- c(7,8,1,2,5,6,9,10,3,4)
+    editor.setValue(`# Extract the 6th element from the vector y
+x = c(5,6,3,4,5,8,23,4,6,4,3,23,7,5,4,23,7,90)
+x[6]
 
-first_ten_elements <- data.frame(symbol, element, chemical_group, atomic_no)
-first_ten_elements
-  `);
+# Extract the 2nd to 4th element from the vector y
+y = c(1,2,3,4,5,6,7,8,9,10)
+y[2:4]
+`);
   };
   
   resetButton.onclick = function () {
     editor.setValue(webrCode);
   };
 </script>
+<p>Nothing here (yet)! <!-- <exercise id='3' title='Vectors' type="slides"> --></p>
+<!-- slides("chapter2_03_vectors") -->
+<!-- </exercise> -->
+<!-- <exercise id='4' title='Check Your Understanding on Vectors'> -->
+<!-- **Problem 1**  -->
+<!-- Given the following vector `y` in R, -->
+<!-- ``` -->
+<!-- y = c(2,4,6,8,1,3,5,7) -->
+<!-- ``` -->
+<!-- which of the following is the output of `y-2`? -->
+<!-- ```{r, echo = FALSE, results = "asis"} -->
+<!-- cat(mc_opts("<code> 0  4  6  8  1  3  5  7 </code>" = "Try again! Check your calculation in R!", -->
+<!--          "<code> 0  2  4  6 -1  1  3  5 </code>" = "That's correct!", -->
+<!--          "<code> 2  4  6  8  1  3  5  7 -2 </code>" = "Try again! Check your calculation in R!", -->
+<!--          "<code> -4  -8 -12 -16  -2  -6 -10 -14 </code>" = "Try again! Check your calculation in R!", -->
+<!--          correct = 2)) -->
+<!-- ``` -->
+<!-- **Problem 2**  -->
+<!-- Given the following vector `y` in R, -->
+<!-- ``` -->
+<!-- y = c(2,4,6,8,1,3,5,7) -->
+<!-- ``` -->
+<!-- which of the following is the output of `y[4:7]`? -->
+<!-- ```{r, echo = FALSE, results = "asis"} -->
+<!-- cat(mc_opts("<code> 8 1 3 5 </code>" = "That's correct!", -->
+<!--          "<code> 8 1 3 </code>" = "Try again! Check your calculation in R!", -->
+<!--          "<code> 6 8 1 3 </code>" = "Try again! Check your calculation in R!", -->
+<!--          "<code> 1 3 5 </code>" = "Try again! Check your calculation in R!", -->
+<!--          correct = 1)) -->
+<!-- ``` -->
 </section>
-<section id="indexing-selecting-columns-and-subset" class="level3">
-<h3 class="anchored" data-anchor-id="indexing-selecting-columns-and-subset">Indexing, Selecting Columns and Subset</h3>
-<p>Similar to vectors and matrices, you select elements from a data frame using square brackets <code>[ ]</code>.</p>
+</section>
+</section>
+</section>
+<section id="matrices" class="level1">
+<h1>Matrices</h1>
+<p>A <strong>matrix</strong> is a rectangular array of numbers written between rectagular brackets (or large parentheses).</p>
+<p><span class="math display">\[T = \begin{bmatrix}2&amp;2\\4&amp;3\end{bmatrix}\]</span> In R, you can construct a matrix using the <code>matrix()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">7</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">2</span>,<span class="sc">-</span><span class="dv">2</span>,<span class="sc">-</span><span class="dv">3</span>), <span class="at">byrow=</span><span class="cn">TRUE</span>, <span class="at">nrow=</span><span class="dv">5</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    4    3    2
+[2,]    7    4    2
+[3,]    6    3    4
+[4,]    3    0    0
+[5,]    2   -2   -3</code></pre>
+</div>
+</div>
+<p>In this R code:</p>
 <ul>
-<li>For example, if you would like to select row 2 to 4 and column 3 to 5 from a data frame called <code>my_df</code>, you can do <code>my_df[2:4, 3:5]</code>.</li>
-<li>When you want to select the entire first row of a data frame, you can use `my_df[1, ]</li>
-<li>When you want to select the entire first column of a data frame, you can use <code>my_df[,1]</code></li>
+<li><p><code>c(4,3,2,7,4,2,6,3,4,3,0,0,2,-2,-3)</code> is the data that we want to put in the matrix.</p></li>
+<li><p><code>byrow=TRUE</code> means that the matrix is filled by rows. If <code>byrow=FALSE</code>, the matrix is filled by columns.</p></li>
+<li><p><code>nrow=5</code> means that the matrix has 5 rows.</p></li>
 </ul>
-<p>Note that when you select a single column (e.g.&nbsp;<code>my_df[,1]</code>), it turns into a vector. If you would like it to remain as a data frame, you can use <code>my_df[, 1, drop = FALSE]</code>.</p>
-<p>Alternatively, if you would like to select a certain variable from the data frame, you can use the column name in the square bracket directly or use <code>$</code> instead: <code>my_df[ , "column_name"]</code> or <code>my_df$column_name</code>.</p>
+<section id="matrix-operations" class="level2">
+<h2 class="anchored" data-anchor-id="matrix-operations">Matrix Operations</h2>
+<p>Similar to what you have learned with vectors, the standard operators like <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> can be used to perform element-wise operations on matrices. For example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    8    6    4
+[2,]   14    8    4
+[3,]   12    6    8
+[4,]    6    0    0
+[5,]    4   -4   -6</code></pre>
+</div>
+</div>
+<p>which multiplies each element of the matrix <code>A</code> by 2.</p>
+<p>Consider another matrix <code>B</code> defined as</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">byrow=</span><span class="cn">TRUE</span>, <span class="at">nrow=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>A*B</code> creates a matrix where each element is the product of the corresponding elements in matrix <code>A</code> and matrix <code>b</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>A<span class="sc">*</span>B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    4    3    2
+[2,]   14    8    4
+[3,]    0    0    0
+[4,]   -3    0    0
+[5,]    0    0    0</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Matrix Multiplication
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Remember <code>A*B</code> is element-wise multiplication, <strong>not</strong> matrix multiplication. If you want to perform matrix multiplication, you can use the <code>%*%</code> operator. For example, <code>A %*% B</code> performs matrix multiplication.</p>
+</div>
+</div>
 </section>
-<section id="sorting" class="level3">
-<h3 class="anchored" data-anchor-id="sorting">Sorting</h3>
-<p>Sometimes we may want to sort the data according to a certain variable in the dataset. In R, we can use the <code>order()</code> function which gives the ranked position of each element when it is applied on a variable. For example,</p>
+<section id="add-rows-or-columns-to-a-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="add-rows-or-columns-to-a-matrix">Add rows or columns to a matrix</h2>
+<p>Sometimes we may want to add new data or information to a matrix with more rows or columns.</p>
+<p>You can use <code>cbind()</code> function, which merges matrices and/or vectors by columns, to add a column to a matrix. For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">200</span>,<span class="dv">300</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">order</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">7</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">2</span>,<span class="sc">-</span><span class="dv">2</span>,<span class="sc">-</span><span class="dv">3</span>), <span class="at">byrow=</span><span class="cn">TRUE</span>, <span class="at">nrow=</span><span class="dv">5</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">byrow=</span><span class="cn">TRUE</span>, <span class="at">nrow=</span><span class="dv">5</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>big_matrix <span class="ot">&lt;-</span> <span class="fu">cbind</span>(A, B)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Matrix A</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2 1 3</code></pre>
+<pre><code>     [,1] [,2] [,3]
+[1,]    4    3    2
+[2,]    7    4    2
+[3,]    6    3    4
+[4,]    3    0    0
+[5,]    2   -2   -3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Matrix B</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    1    1    1
+[2,]    2    2    2
+[3,]    0    0    0
+[4,]   -1   -1   -1
+[5,]    0    0    0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Binding the two matrices</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>big_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5] [,6]
+[1,]    4    3    2    1    1    1
+[2,]    7    4    2    2    2    2
+[3,]    6    3    4    0    0    0
+[4,]    3    0    0   -1   -1   -1
+[5,]    2   -2   -3    0    0    0</code></pre>
 </div>
 </div>
-<p>The output above is the ranked positions and we can use that to sort the vector <code>x</code>.</p>
+<p>You can see the resulting matrix of merging <code>A</code> and <code>B</code> has 5 rows and 6 columns.</p>
+<p>Similarly, you can use <code>rbind()</code> function to add a row to a matrix. For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>x[<span class="fu">order</span>(x)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>big_matrix2 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(A,B)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>big_matrix2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -200  100  300</code></pre>
+<pre><code>      [,1] [,2] [,3]
+ [1,]    4    3    2
+ [2,]    7    4    2
+ [3,]    6    3    4
+ [4,]    3    0    0
+ [5,]    2   -2   -3
+ [6,]    1    1    1
+ [7,]    2    2    2
+ [8,]    0    0    0
+ [9,]   -1   -1   -1
+[10,]    0    0    0</code></pre>
 </div>
 </div>
-<p>The above R code gives an ordered version of <code>x</code>.</p>
-<p>Now that we know how to use the <code>order()</code>, let’s sort the first_ten_element data frame in ascending order of <code>atomic_no</code>, assign the sorted dataframe to <code>sorted_df</code>.</p>
+<p>Where <code>big_matrix2 &lt;- rbind(A,B)</code> returns a bigger matrix by putting matrix <code>A</code> on top of matrix <code>B</code>. The resulting matrix has 10 rows and 3 columns.</p>
+</section>
+<section id="indexing-1" class="level2">
+<h2 class="anchored" data-anchor-id="indexing-1">Indexing</h2>
+<p>You can use square brackets ([]) and a comma (,) to select one or multiple elements from a matrix. While vectors have one dimension, matrices have two. Therefore, you need to specify both the row and column indices, separated by a comma, to select an element.</p>
+<p>For example, <code>A[1:4, 3:5]</code> returns a matrix with the data on the rows 1,2,3,4 and columns 3,4,5. If you want to select all elements of a row or a column, you can do the following:</p>
+<ul>
+<li><code>A[,1]</code> selects all elements of the first column of matrix A.</li>
+</ul>
+<!-- <exercise id='5' title='Matrices' type = "slides"> -->
+<!-- slides("chapter2_05_matrices")`
+
+<!-- </exercise> -->
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Your turn
+Your turn!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Complete the code below to complete the tasks indicated in the comments.</p>
-<p>Hint: Use <code>order(first_ten_elements$atomic_no)</code> to create positions. Then, use ‘positions’ with square brackets: <code>first_ten_elements[...]</code>; can you fill in the …? Do not forget that ‘positions’ indicates the order of the rows in the data frame.</p>
+<p>Consider the following matrices S and T:</p>
+<p><span class="math display">\[S = \begin{bmatrix}1&amp;0\\0&amp;1\end{bmatrix}, T = \begin{bmatrix}2&amp;2\\4&amp;3\end{bmatrix}\]</span></p>
+<ul>
+<li><p>Construct a matrix M by stacking S on top of T. Assign your result to the variable <code>M_mat</code>.</p></li>
+<li><p>Select a sub-matrix of M with the data on the rows 1, 2, 3 and columns 2. Assign the result to the variable <code>part_of_M</code>.</p></li>
+</ul>
+<p><strong>HINT</strong> 💡<strong>:</strong> To stack one matrix on top of another, we can use the <code>rbind()</code> command. <strong>HINT 2</strong> 💡<strong>:</strong> For example, B[1,2] selects the element at the first row and second column of matrix B. B[1:3,2:4] results in a matrix with the data on the rows 1, 2, 3 and columns 2, 3, 4.</p>
 </div>
 </div>
 <div id="qwebr-interactive-area-7" class="qwebr-interactive-area">
@@ -2784,20 +3027,13 @@ Your turn
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-7");
   const editorDiv = document.getElementById("qwebr-editor-7");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-7");
-  const webrCode = `symbol <- c('N','O','H','He','B','C','F','Ne','Li','Be')
-element <- c('Nitrogen','Oxygen','Hydrogen','Helium','Boron','Carbon','Fluorine','Neon','Lithium','Beryllium')
-chemical_group <- c('Nonmetal','Nonmetal','Nonmetal','Noble Gas','Metalloid','Nonmetal','Halogen','Noble Gas','Alkali Metal','Alkaline Earth Metal')
-atomic_no <- c(7,8,1,2,5,6,9,10,3,4)
+  const webrCode = `S_mat <- matrix(c(1,0,0,1), byrow=TRUE, nrow=2)
+T_mat <- matrix(c(2,2,4,3), byrow=TRUE, nrow=2)
+# Construct a matrix M by stacking S on top of T
+M_mat <- ___
 
-first_ten_elements <- data.frame(symbol, element, chemical_group, atomic_no)
-
-# Use order() to create positions
-positions <- ___
-positions
-
-# Use positions to create a sort the first_ten_elements
-sorted_df <- ___
-sorted_df
+# Select a sub-matrix of M with the data on the rows 1, 2, 3 and columns 2.
+part_of_M <- ___
 `
 
   // Load the Monaco Editor and create an instance
@@ -3065,36 +3301,29 @@ sorted_df
     executeCode(
 `teachr_tests <- function(.code, .printed, .errored, .warned) {
   
-symbol <- c('N','O','H','He','B','C','F','Ne','Li','Be')
-element <- c('Nitrogen','Oxygen','Hydrogen','Helium','Boron','Carbon','Fluorine','Neon','Lithium','Beryllium')
-chemical_group <- c('Nonmetal','Nonmetal','Nonmetal','Noble Gas','Metalloid','Nonmetal','Halogen','Noble Gas','Alkali Metal','Alkaline Earth Metal')
-atomic_no <- c(7,8,1,2,5,6,9,10,3,4)
-first_ten_elements <- data.frame(symbol, element, chemical_group, atomic_no)
-solution <- first_ten_elements[order(first_ten_elements$atomic_no), ]
+S_mat <- matrix(c(1,0,0,1), byrow=TRUE, nrow=2)
+T_mat <- matrix(c(2,2,4,3), byrow=TRUE, nrow=2)
+M_sol <- rbind(S_mat,T_mat)
+part_of_M_sol <- M_sol[1:3,2]
 
 c(
-  "Did you follow the order of columns as stated in the instruction?" = !identical(sorted_df, solution)
+  "The \`M\` object does not contain the matrix we expected. Are you using the function that we have introduced?" = !identical(M_mat, M_sol),
+  "Have you got the indexing right?" = !identical(part_of_M, part_of_M_sol)
 )
+
 }
 check_answer(r"(` + editor.getValue() + `)")`
     );
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`symbol <- c('N','O','H','He','B','C','F','Ne','Li','Be')
-element <- c('Nitrogen','Oxygen','Hydrogen','Helium','Boron','Carbon','Fluorine','Neon','Lithium','Beryllium')
-chemical_group <- c('Nonmetal','Nonmetal','Nonmetal','Noble Gas','Metalloid','Nonmetal','Halogen','Noble Gas','Alkali Metal','Alkaline Earth Metal')
-atomic_no <- c(7,8,1,2,5,6,9,10,3,4)
+    editor.setValue(`S_mat <- matrix(c(1,0,0,1), byrow=TRUE, nrow=2)
+T_mat <- matrix(c(2,2,4,3), byrow=TRUE, nrow=2)
+# Construct a matrix M by stacking S on top of T
+M_mat <- rbind(S_mat,T_mat)
 
-first_ten_elements <- data.frame(symbol, element, chemical_group, atomic_no)
-
-# Use order() to create positions
-positions <- order(first_ten_elements$atomic_no)
-positions
-
-# Use positions to create a sort the first_ten_elements
-sorted_df <- first_ten_elements[positions, ]
-sorted_df
+# Select a sub-matrix of M with the data on the rows 1, 2, 3 and columns 2.
+part_of_M <- M_mat[1:3,2]
 `);
   };
   
@@ -3102,80 +3331,25 @@ sorted_df
     editor.setValue(webrCode);
   };
 </script>
-<!-- <exercise id='8' title='Conditional Statements' type="slides"> -->
-<!-- slides("chapter2_08_conditionalstatements")`
-
-<!-- </exercise> -->
 </section>
 </section>
-</section>
-<section id="check-your-understanding-on-conditional-statements" class="level1">
-<h1>Check Your Understanding on Conditional Statements</h1>
-<p>Consider the following syntax:</p>
-<pre><code>if (x &lt; 50) {
-  if (x &lt; 20) {
-    result &lt;- "Low to None"
-  } else {
-    result &lt;- "Low"
-  }
-} else if (x == 100) {
-  result &lt;- "Full"
-} else {
-  result &lt;- "High"
-}
-print(result)</code></pre>
-<p>Take a look at the following statements:</p>
-<ol type="1">
-<li><p>If <code>x</code> is set to 75, “High” gets printed to the console.</p></li>
-<li><p>If <code>x</code> is set to 18, “Low” gets printed to the console.</p></li>
-<li><p>If <code>x</code> is set to 100, R prints out “Full”</p></li>
-<li><p>If <code>x</code> is set to 21, “Low” gets printed to the console.</p></li>
-</ol>
-<p>Select the option that lists <strong>all</strong> the true statements.</p>
-</section>
-<section id="loops" class="level1">
-<h1>Loops</h1>
-<p>In data analytics, often we need to perform the same operation repeatedly on the data and <strong>loops</strong> can come in handy on these occasions. There are 2 types of loops: - The ‘for loop’ is designed to iterate over all elements in a sequence - The ‘while loop’ is designed to repeat the operations until certain condition is satisfied</p>
-<section id="for-loops" class="level2">
-<h2 class="anchored" data-anchor-id="for-loops">For loops</h2>
-<p>A simple for loop in R looks like this:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sequence <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> sequence) {</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(i)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1
-[1] 3
-[1] 5</code></pre>
-</div>
-</div>
-<p>Here, we first defined a vector called <code>sequence</code>, then <strong>for</strong> every <span class="math inline">\(i\)</span> in sequence, we print the value of <span class="math inline">\(i\)</span>. From the output, you can see from the output that each element <code>i</code> in the sequence was printed in each iteration.</p>
-<p>The same loop can be written in another way:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>sequence <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(sequence)) {</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(sequence[i])</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1
-[1] 3
-[1] 5</code></pre>
-</div>
-</div>
-<p>In the R code above, we use the <code>length()</code> function to measure the length/size of <code>sequence</code>, i.e.&nbsp;3. Then we construct a for loop where <span class="math inline">\(i\)</span> iterates from 1 to 3, inside the for loop <code>i</code> represents the index of the sequence and putting the index inside the square brackets allows us to select the <span class="math inline">\(i\)</span>th element from <code>sequence</code>.</p>
+<section id="data-frames" class="level1">
+<h1>Data Frames</h1>
+<section id="data-frames-1" class="level2">
+<h2 class="anchored" data-anchor-id="data-frames-1">Data Frames</h2>
+<p>A data frame has the variables of a dataset as columns and the observations as rows.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Your turn: write your first loop!
+Your turn!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Write a for loop that takes the nominal GDP (in trillion) for each country in 2017 and divided it by the population (in million) in the same year. Assign the result to the variable <code>my_result</code>.</p>
-<p>Hint: To extract the i-th element of <code>nominalGDP_trilion_2017</code>, you can use <code>nominalGDP_trilion_2017[i]</code>. You can extract the i-th element of <code>population_million_2017</code> using square bracket as well.</p>
+<p>Let’s look at an example. Just run the code and you will see what a data frame looks like in R.</p>
+<p><strong>HINT</strong> 💡<strong>:</strong> Simply run the code!</p>
 </div>
 </div>
 <div id="qwebr-interactive-area-8" class="qwebr-interactive-area">
@@ -3202,15 +3376,7 @@ Your turn: write your first loop!
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-8");
   const editorDiv = document.getElementById("qwebr-editor-8");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-8");
-  const webrCode = `countries <- c('US', 'China','Japan', 'Germany','India')
-nominalGDP_trilion_2017 <- c(19.485, 12.238, 4.872, 3.693, 2.651)
-population_million_2017 <- c(325, 1421, 127, 82, 1338)
-
-my_result <- c(0,0,0,0,0)
-for (i in 1:length(countries)) {
-  my_result[i] <- ___
-}
-my_result
+  const webrCode = `iris
 `
 
   // Load the Monaco Editor and create an instance
@@ -3478,10 +3644,8 @@ my_result
     executeCode(
 `teachr_tests <- function(.code, .printed, .errored, .warned) {
   
-solution <- c(0.0599538461538461, 0.00861224489795918, 0.0383622047244094, 
-0.0450365853658537, 0.0019813153961136)
 c(
-  "The solution isn't close enough." = abs(my_result - solution) > 0.01
+  "Just reset and run the code!" = !identical(iris, .printed[[1]])
 )
 }
 check_answer(r"(` + editor.getValue() + `)")`
@@ -3489,15 +3653,7 @@ check_answer(r"(` + editor.getValue() + `)")`
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`countries <- c('US', 'China','Japan', 'Germany','India')
-nominalGDP_trilion_2017 <- c(19.485, 12.238, 4.872, 3.693, 2.651)
-population_million_2017 <- c(325, 1421, 127, 82, 1338)
-
-my_result <- c(0,0,0,0,0)
-for (i in 1:length(countries)) {
-  my_result[i] <- nominalGDP_trilion_2017[i]/population_million_2017[i]
-}
-my_result
+    editor.setValue(`iris
 `);
   };
   
@@ -3505,127 +3661,27 @@ my_result
     editor.setValue(webrCode);
   };
 </script>
-<p>We can do a lot more than when we use for loop together with the control flow statements (if, else if, else) we learnt before. For example,</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>customer_rating <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">5</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (rating <span class="cf">in</span> customer_rating) {</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (rating <span class="sc">&gt;=</span> <span class="dv">4</span>) {</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">'Happy Customer!'</span>)</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (rating <span class="sc">&lt;=</span> <span class="dv">2</span>) {</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">'Angry Customer!'</span>)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">'Neutral Customer!'</span>)</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Angry Customer!"
-[1] "Neutral Customer!"
-[1] "Angry Customer!"
-[1] "Happy Customer!"
-[1] "Happy Customer!"
-[1] "Happy Customer!"</code></pre>
-</div>
-</div>
-<p>The R code above prints different messages depending on the values in customer_rating.</p>
-<p><strong>Check your understanding</strong></p>
-<p>Consider the following syntax:</p>
-<pre><code>for (result in student_result) {
-  if (result &gt;= 79 &amp; result &lt; 99) {
-  print('Superb!')
-  } else if (result &lt; 50) {
-  print('Try again!')
-  } else if (result &gt;= 99) {
-  print('Perfect!')
-  } else {
-  print('Well done!')
-  }
-}</code></pre>
-<p>Here is the output from the above syntax after we have defined a vector variable <code>student_result</code>.</p>
-<pre><code>[1] "Superb!"
-[1] "Well done!"
-[1] "Try again!"
-[1] "Perfect!"
-[1] "Well done!"
-[1] "Superb!"</code></pre>
-<p>Based on the output from the for-loop, which of the following is <code>student_result</code>?</p>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">mc_opts</span>(<span class="st">"&lt;code&gt;student_result &lt;- c(99,77,35,97,67,85)&lt;/code&gt;"</span> <span class="ot">=</span><span class="st">"Try again! Copy the code and try it with some numbers in R!"</span>,</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"&lt;code&gt;student_result &lt;- c(77,99,35,97,67,85)&lt;/code&gt;"</span> <span class="ot">=</span><span class="st">"Try again! Copy the code and try it with some numbers in R!"</span>,</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">"&lt;code&gt;student_result &lt;- c(97,77,35,99,67,85)&lt;/code&gt;"</span> <span class="ot">=</span> <span class="st">"That's correct!"</span>,</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">"&lt;code&gt;student_result &lt;- c(100,77,35,99,67,85)&lt;/code&gt;"</span><span class="ot">=</span><span class="st">"Try again! Copy the code and try it with some numbers in R!"</span>,</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">correct =</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="while-loops" class="level2">
-<h2 class="anchored" data-anchor-id="while-loops">While loops</h2>
-<p>A while loop in R has the following structure:</p>
-<pre><code>while (condition) {
-  do_something
-}</code></pre>
-<p>In the while loop, R will keep running the code between the brackets <code>{ }</code> repeated until the condition become <code>FALSE</code> at some point during the execution. If the condition is never changed, the while loop will go on indefinitely.</p>
-<p>For example, we create a while loop that will go on subtracting 28.5 (as weekly_spending) to the variable <code>bank_balance</code> until <code>bank_balance</code> is less than <code>weekly_spending</code>. If you execute the R code, you will notice the loop stopped at the 7th iteration.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>bank_balance <span class="ot">&lt;-</span> <span class="dv">200</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>weekly_spending <span class="ot">&lt;-</span> <span class="fl">28.5</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (bank_balance <span class="sc">&gt;=</span> weekly_spending) {</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  bank_balance <span class="ot">=</span> bank_balance <span class="sc">-</span> weekly_spending</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(bank_balance)</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 171.5
-[1] 143
-[1] 114.5
-[1] 86
-[1] 57.5
-[1] 29
-[1] 0.5</code></pre>
-</div>
-</div>
-</section>
-<section id="break-statement" class="level2">
-<h2 class="anchored" data-anchor-id="break-statement">Break statement</h2>
-<p>There are occasions where breaking the loop during execution is a good idea. The break statement can be used in for loops and while loops.</p>
-<p>For example, if we are to set up a early warning system when <code>bank_balance</code> is less than or equal to 4 times <code>weekly spending</code>, we can do the following:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>bank_balance <span class="ot">&lt;-</span> <span class="dv">200</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>weekly_spending <span class="ot">&lt;-</span> <span class="fl">28.5</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (bank_balance<span class="sc">&gt;=</span> weekly_spending) {</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  bank_balance <span class="ot">&lt;-</span> bank_balance <span class="sc">-</span> weekly_spending</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(bank_balance)</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (bank_balance <span class="sc">&lt;=</span> <span class="dv">4</span><span class="sc">*</span>weekly_spending){</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">"Find a job and cut weekly spending!"</span>)</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 171.5
-[1] 143
-[1] 114.5
-[1] 86
-[1] "Find a job and cut weekly spending!"</code></pre>
-</div>
-</div>
-</section>
-</section>
-<section id="functions" class="level1">
-<h1>Functions</h1>
-<p>Functions are an extremely important concept in almost every programming language, including R! You can think of functions as a black box: you give some values as an input, the function processes this input and generates an output. In R, the function arguments are matched by position or by name. You can set a default value for some function arguments, and you can overwrite the default value when you need to.</p>
-<p>Here is a simple skeleton of a function in R:</p>
-<pre><code>my_fun_name &lt;- function(arg1, arg2) {
-  body
-}</code></pre>
-<p>The keyword <code>function</code> tells R you are defining a function. The arguments in the parentheses <code>( )</code> are the input of your function, the inputs can be data and parameters. The operations that you want to perform (the <code>body</code>) should be written inside the curly brackets <code>{ }</code>.</p>
-<p>Finally, you assign the function defining statement and body to the variable <code>my_fun_name</code>, which is the name of your function. To call (use) the function, you will need to enter <code>my_fun_name(arg1, arg2)</code> in your code after you defined the function.</p>
+<p>The iris data set gives the measurements in centimeters of the variables sepal length, sepal width, petal length and petal width, respectively, for 50 flowers from each of 3 species of iris. The species are Iris setosa, versicolor, and virginica.</p>
+<section id="quick-look-at-the-data-frame" class="level3">
+<h3 class="anchored" data-anchor-id="quick-look-at-the-data-frame">Quick Look at the Data Frame</h3>
+<p>Often it is useful to show only a small part of the entire dataset, especially when we are working with very big data set where showing the entire dataset is not easy. Here are a few useful commands that helps you understand the data frame very quickly.</p>
+<ul>
+<li><code>head()</code> shows the first few observations of a data frame.</li>
+<li><code>tail()</code> shows the last few observations of a data frame.</li>
+<li><code>str()</code> shows the structure of the dataset.</li>
+</ul>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Your turn: write your own function!
+Your turn!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Create a function <code>power_three()</code>: it takes one argument and returns that number cubed (that number times itself and times itself again). Call this newly defined function with 12 as input.</p>
+<p>Investigate the structure of the example dataframe. Have a look at the first and last few observations!</p>
+<p><strong>HINT</strong> 💡<strong>:</strong> Try <code>head(df)</code>.</p>
 </div>
 </div>
 <div id="qwebr-interactive-area-9" class="qwebr-interactive-area">
@@ -3652,10 +3708,9 @@ Your turn: write your own function!
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-9");
   const editorDiv = document.getElementById("qwebr-editor-9");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-9");
-  const webrCode = `# Create a function power_three()
-power_three <- ___
-# Use the function
-power_three(___)
+  const webrCode = `df <- ToothGrowth
+# Have a quick look at the first few observations of df
+___
 `
 
   // Load the Monaco Editor and create an instance
@@ -3923,20 +3978,19 @@ power_three(___)
     executeCode(
 `teachr_tests <- function(.code, .printed, .errored, .warned) {
   
+ans_df <- .printed[[which(vapply(.printed, is.data.frame, logical(1L)))]]
 c(
-  "Did you correctly define the function power_three()? Check the function body. Are you taking the input argument to the power three?" = !identical(power_three(20), 20^3) 
+  "Use the head() function to preview the first few rows of the data." = nrow(ans_df) >= nrow(df)
 )
-
 }
 check_answer(r"(` + editor.getValue() + `)")`
     );
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`# Create a function power_three()
-power_three <- function(x){x^3}
-# Use the function
-power_three(3)
+    editor.setValue(`df <- ToothGrowth
+# Have a quick look at the first few observations of df
+head(df)
 `);
   };
   
@@ -3944,52 +3998,30 @@ power_three(3)
     editor.setValue(webrCode);
   };
 </script>
-<p>It is also possible to run a function without an input argument.</p>
-<p>In the following example, the function will print the statement “Hello World!” when the function is called without any inputs.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>hello_world <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">'Hello World!'</span>)</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>This can also be useful sometimes when we would like to have random outcomes from the function. The <code>sample()</code> function comes in handy when we would like to draw a number from a particular range of values.</p>
-<p>For example:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>flip_a_coin <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  outcome <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">size =</span> <span class="dv">1</span>)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (outcome <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">"Head"</span>)} <span class="cf">else</span> {</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">print</span>(<span class="st">"Tail"</span>) }</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Flip the coin the first time</span></span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">flip_a_coin</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Tail"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Flip the coin second time</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">flip_a_coin</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Head"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Flip the coin once again</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">flip_a_coin</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Tail"</code></pre>
-</div>
-</div>
-<p>You will get a different outcome (“Head” or “Tail”) every time when you call the function <code>flip_a_coin</code>.</p>
+<!--
+**Answer the following question**
+
+What is the data type of the variable 'dose'?
+
+
+
+-->
+</section>
+<section id="creating-data-frame" class="level3">
+<h3 class="anchored" data-anchor-id="creating-data-frame">Creating Data Frame</h3>
+<p>You can construct your own data frame using data that you have with the <code>data.frame()</code> function. You can include different vectors as argument in the function and they will become different columns of your data frame. Note that you should make sure the vectors that you pass have same length (i.e.&nbsp;same number of observations for each column).</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Your turn: Write your code to roll a die!
+Your turn
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Write a function that takes no input argument and return a random outcome choosing from 1 to 6, just like rolling a die in R. Name that function <code>roll_a_die</code>.</p>
-<p>Hint: You can obtain a random integer from 1 to 6 using <code>sample(1:6, size = 1)</code>. Have you try putting that in the function body?</p>
+<p>Create a data frame using vectors <code>symbol</code>, <code>element</code>, <code>chemical_group</code> and <code>atomic_no</code>, following that order. Assign the result data frame to <code>first_ten_elements</code>.</p>
+<p><strong>HINT</strong> 💡<strong>:</strong> Use the <code>data.frame()</code> function on the vectors.</p>
 </div>
 </div>
 <div id="qwebr-interactive-area-10" class="qwebr-interactive-area">
@@ -4016,10 +4048,14 @@ Your turn: Write your code to roll a die!
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-10");
   const editorDiv = document.getElementById("qwebr-editor-10");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-10");
-  const webrCode = `# Write some code to roll a die
+  const webrCode = `symbol <- c('N','O','H','He','B','C','F','Ne','Li','Be')
+element <- c('Nitrogen','Oxygen','Hydrogen','Helium','Boron','Carbon','Fluorine','Neon','Lithium','Beryllium')
+chemical_group <- c('Nonmetal','Nonmetal','Nonmetal','Noble Gas','Metalloid','Nonmetal','Halogen','Noble Gas','Alkali Metal','Alkaline Earth Metal')
+atomic_no <- c(7,8,1,2,5,6,9,10,3,4)
 
-roll_a_die <- ___
-`
+first_ten_elements <- ___
+first_ten_elements
+  `
 
   // Load the Monaco Editor and create an instance
   let editor;
@@ -4286,6 +4322,1606 @@ roll_a_die <- ___
     executeCode(
 `teachr_tests <- function(.code, .printed, .errored, .warned) {
   
+symbol <- c('N','O','H','He','B','C','F','Ne','Li','Be')
+element <- c('Nitrogen','Oxygen','Hydrogen','Helium','Boron','Carbon','Fluorine','Neon','Lithium','Beryllium')
+chemical_group <- c('Nonmetal','Nonmetal','Nonmetal','Noble Gas','Metalloid','Nonmetal','Halogen','Noble Gas','Alkali Metal','Alkaline Earth Metal')
+atomic_no <- c(7,8,1,2,5,6,9,10,3,4)
+solution <- data.frame(symbol, element, chemical_group, atomic_no)
+
+c(
+  "Did you follow the order of columns as stated in the instruction?" = !identical(first_ten_elements, solution)
+)
+}
+check_answer(r"(` + editor.getValue() + `)")`
+    );
+  };
+  
+  solveButton.onclick = function () {
+    editor.setValue(`symbol <- c('N','O','H','He','B','C','F','Ne','Li','Be')
+element <- c('Nitrogen','Oxygen','Hydrogen','Helium','Boron','Carbon','Fluorine','Neon','Lithium','Beryllium')
+chemical_group <- c('Nonmetal','Nonmetal','Nonmetal','Noble Gas','Metalloid','Nonmetal','Halogen','Noble Gas','Alkali Metal','Alkaline Earth Metal')
+atomic_no <- c(7,8,1,2,5,6,9,10,3,4)
+
+first_ten_elements <- data.frame(symbol, element, chemical_group, atomic_no)
+first_ten_elements
+  `);
+  };
+  
+  resetButton.onclick = function () {
+    editor.setValue(webrCode);
+  };
+</script>
+</section>
+<section id="indexing-selecting-columns-and-subset" class="level3">
+<h3 class="anchored" data-anchor-id="indexing-selecting-columns-and-subset">Indexing, Selecting Columns and Subset</h3>
+<p>Similar to vectors and matrices, you select elements from a data frame using square brackets <code>[ ]</code>.</p>
+<ul>
+<li>For example, if you would like to select row 2 to 4 and column 3 to 5 from a data frame called <code>my_df</code>, you can do <code>my_df[2:4, 3:5]</code>.</li>
+<li>When you want to select the entire first row of a data frame, you can use `my_df[1, ]</li>
+<li>When you want to select the entire first column of a data frame, you can use <code>my_df[,1]</code></li>
+</ul>
+<p>Note that when you select a single column (e.g.&nbsp;<code>my_df[,1]</code>), it turns into a vector. If you would like it to remain as a data frame, you can use <code>my_df[, 1, drop = FALSE]</code>.</p>
+<p>Alternatively, if you would like to select a certain variable from the data frame, you can use the column name in the square bracket directly or use <code>$</code> instead: <code>my_df[ , "column_name"]</code> or <code>my_df$column_name</code>.</p>
+</section>
+<section id="sorting" class="level3">
+<h3 class="anchored" data-anchor-id="sorting">Sorting</h3>
+<p>Sometimes we may want to sort the data according to a certain variable in the dataset. In R, we can use the <code>order()</code> function which gives the ranked position of each element when it is applied on a variable. For example,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">200</span>,<span class="dv">300</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">order</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2 1 3</code></pre>
+</div>
+</div>
+<p>The output above is the ranked positions and we can use that to sort the vector <code>x</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>x[<span class="fu">order</span>(x)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -200  100  300</code></pre>
+</div>
+</div>
+<p>The above R code gives an ordered version of <code>x</code>.</p>
+<p>Now that we know how to use the <code>order()</code>, let’s sort the first_ten_element data frame in ascending order of <code>atomic_no</code>, assign the sorted dataframe to <code>sorted_df</code>.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Your turn
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Complete the code below to complete the tasks indicated in the comments.</p>
+<p><strong>HINT</strong> 💡<strong>:</strong> Use <code>order(first_ten_elements$atomic_no)</code> to create positions. Then, use ‘positions’ with square brackets: <code>first_ten_elements[...]</code>; can you fill in the …? Do not forget that ‘positions’ indicates the order of the rows in the data frame.</p>
+</div>
+</div>
+<div id="qwebr-interactive-area-11" class="qwebr-interactive-area">
+  <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-11">🟡 Loading
+    webR...</button>
+  <button class="btn btn-default qwebr-button qwebr-button-check" disabled="" type="button" id="qwebr-button-check-11">💡 Check answer</button>
+  <button class="btn btn-default qwebr-button qwebr-button-solve" type="button" id="qwebr-button-solve-11">✅ Show solution</button>
+  <button class="btn btn-default qwebr-button qwebr-button-reset" type="button" id="qwebr-button-reset-11">💥 Reset code</button>
+  <div id="qwebr-console-area-11" class="qwebr-console-area">
+    <div id="qwebr-editor-11" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-11" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
+  </div>
+  <div id="qwebr-output-graph-area-11" class="qwebr-output-graph-area">
+  </div>
+</div>
+<script type="module">
+  // Retrieve webR code cell information
+  const runButton = document.getElementById("qwebr-button-run-11");
+  const checkButton = document.getElementById("qwebr-button-check-11");
+  const solveButton = document.getElementById("qwebr-button-solve-11");
+  const resetButton = document.getElementById("qwebr-button-reset-11");
+  const outputCodeDiv = document.getElementById("qwebr-output-code-area-11");
+  const editorDiv = document.getElementById("qwebr-editor-11");
+  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-11");
+  const webrCode = `symbol <- c('N','O','H','He','B','C','F','Ne','Li','Be')
+element <- c('Nitrogen','Oxygen','Hydrogen','Helium','Boron','Carbon','Fluorine','Neon','Lithium','Beryllium')
+chemical_group <- c('Nonmetal','Nonmetal','Nonmetal','Noble Gas','Metalloid','Nonmetal','Halogen','Noble Gas','Alkali Metal','Alkaline Earth Metal')
+atomic_no <- c(7,8,1,2,5,6,9,10,3,4)
+
+first_ten_elements <- data.frame(symbol, element, chemical_group, atomic_no)
+
+# Use order() to create positions
+positions <- ___
+positions
+
+# Use positions to create a sort the first_ten_elements
+sorted_df <- ___
+sorted_df
+`
+
+  // Load the Monaco Editor and create an instance
+  let editor;
+  require(['vs/editor/editor.main'], function () {
+    editor = monaco.editor.create(editorDiv, {
+      value: webrCode,
+      language: 'r',
+      theme: 'vs-light',
+      automaticLayout: true,           // TODO: Could be problematic for slide decks
+      scrollBeyondLastLine: false,
+      minimap: {
+        enabled: false
+      },
+      fontSize: '17.5pt',               // Bootstrap is 1 rem
+      renderLineHighlight: "none",     // Disable current line highlighting
+      hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
+    });
+
+    // Dynamically modify the height of the editor window if new lines are added.
+    let ignoreEvent = false;
+    const updateHeight = () => {
+      const contentHeight = editor.getContentHeight();
+      // We're avoiding a width change
+      //editorDiv.style.width = `${width}px`;
+      editorDiv.style.height = `${contentHeight}px`;
+      try {
+        ignoreEvent = true;
+
+        // The key to resizing is this call
+        editor.layout();
+      } finally {
+        ignoreEvent = false;
+      }
+    };
+
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        executeCode(editor.getValue());
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          executeCode(currentLine);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          executeCode(selectedText);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
+    // Register an on change event for when new code is added to the editor window
+    editor.onDidContentSizeChange(updateHeight);
+
+    // Manually re-update height to account for the content we inserted into the call
+    updateHeight();
+  });
+
+  // Function to execute the code (accepts code as an argument)
+  async function executeCode(codeToRun) {
+
+    // Disallowing execution of other code cells
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = true;
+    });
+
+    // Create a canvas variable for graphics
+    let canvas = undefined;
+
+    // Create a pager variable for help/file contents
+    let pager = [];
+
+    // Process 
+    async function parseTypePager(msg) { 
+
+        // Split out the event data
+        const { path, title, deleteFile } = msg.data; 
+
+        // Process the pager data by reading the information from disk
+        const paged_data = await webR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+            content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+        });
+
+        // Unlink file if needed
+        if (deleteFile) { 
+          await webR.FS.unlink(path); 
+        } 
+
+        // Return extracted data with spaces
+        return paged_data;
+    } 
+
+    // Initialize webR
+    await webR.init();
+
+    // Setup a webR canvas by making a namespace call into the {webr} package
+    await webR.evalRVoid("webr::canvas(width=504, height=360)");
+
+    // Capture output data from evaluating the code
+    const result = await webRCodeShelter.captureR(codeToRun, {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false//,
+      // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
+    });
+
+    // Start attempting to parse the result data
+    try {
+
+      // Stop creating images
+      await webR.evalRVoid("dev.off()");
+
+      // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
+      const out = result.output
+        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
+        .map((evt, index) => {
+          const className = `qwebr-output-code-${evt.type}`;
+          return `<code id="${className}-editor-11-result-${index + 1}" class="${className}">${qwebrEscapeHTMLCharacters(evt.data)}</code>`;
+        })
+        .join("\n");
+
+
+      // Clean the state
+      const msgs = await webR.flush();
+
+      // Output each image event stored
+      msgs.forEach((msg) => {
+        // Determine if old canvas can be used or a new canvas is required.
+        if (msg.type === 'canvas'){
+          // Add image to the current canvas
+          if (msg.data.event === 'canvasImage') {
+            canvas.getContext('2d').drawImage(msg.data.image, 0, 0);
+          } else if (msg.data.event === 'canvasNewPage') {
+            // Generate a new canvas element
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
+            canvas.style.width = "700px";
+            canvas.style.display = "block";
+            canvas.style.margin = "auto";
+          }
+        } 
+      });
+
+      // Use `map` to process the filtered "pager" events asynchronously
+      const pager = await Promise.all(
+        msgs.filter(msg => msg.type === 'pager').map(
+          async (msg) => {
+            return await parseTypePager(msg);
+          }
+        )
+      );
+
+      // Nullify the output area of content
+      outputCodeDiv.innerHTML = "";
+      outputGraphDiv.innerHTML = "";
+
+      // Design an output object for messages
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        // Display results as HTML elements to retain output styling
+        const div = document.createElement("div");
+        div.innerHTML = out;
+        pre.appendChild(div);
+      } else {
+        // If nothing is present, hide the element.
+        pre.style.visibility = "hidden";
+      }
+      outputCodeDiv.appendChild(pre);
+
+      // Place the graphics on the canvas
+      if (canvas) {
+        outputGraphDiv.appendChild(canvas);
+      }
+
+      // Display the pager data
+      if (pager) {
+        // Use the `pre` element to preserve whitespace.
+        pager.forEach((paged_data, index) => {
+          let pre_pager = document.createElement("pre");
+          pre_pager.innerText = paged_data;
+          pre_pager.classList.add("qwebr-output-code-pager");
+          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-11-result-" + (index + 1));
+          outputCodeDiv.appendChild(pre_pager);
+        });
+      }
+    } finally {
+      // Clean up the remaining code
+      webRCodeShelter.purge();
+    }
+
+    // Switch to allowing execution of code
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = false;
+    });
+    
+    // Revert to the initial code cell state
+    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run code</span>';
+    checkButton.innerHTML = '💡 Check answer';
+  }
+
+  // Add a click event listener to the run button
+  runButton.onclick = function () {
+    // Emphasize the active code cell
+    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run code</span>';
+    executeCode(editor.getValue());
+  };
+  
+  checkButton.onclick = function () {
+    // Emphasize the active code cell
+    checkButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Check answer</span>';
+    executeCode(
+`teachr_tests <- function(.code, .printed, .errored, .warned) {
+  
+symbol <- c('N','O','H','He','B','C','F','Ne','Li','Be')
+element <- c('Nitrogen','Oxygen','Hydrogen','Helium','Boron','Carbon','Fluorine','Neon','Lithium','Beryllium')
+chemical_group <- c('Nonmetal','Nonmetal','Nonmetal','Noble Gas','Metalloid','Nonmetal','Halogen','Noble Gas','Alkali Metal','Alkaline Earth Metal')
+atomic_no <- c(7,8,1,2,5,6,9,10,3,4)
+first_ten_elements <- data.frame(symbol, element, chemical_group, atomic_no)
+solution <- first_ten_elements[order(first_ten_elements$atomic_no), ]
+
+c(
+  "Did you follow the order of columns as stated in the instruction?" = !identical(sorted_df, solution)
+)
+}
+check_answer(r"(` + editor.getValue() + `)")`
+    );
+  };
+  
+  solveButton.onclick = function () {
+    editor.setValue(`symbol <- c('N','O','H','He','B','C','F','Ne','Li','Be')
+element <- c('Nitrogen','Oxygen','Hydrogen','Helium','Boron','Carbon','Fluorine','Neon','Lithium','Beryllium')
+chemical_group <- c('Nonmetal','Nonmetal','Nonmetal','Noble Gas','Metalloid','Nonmetal','Halogen','Noble Gas','Alkali Metal','Alkaline Earth Metal')
+atomic_no <- c(7,8,1,2,5,6,9,10,3,4)
+
+first_ten_elements <- data.frame(symbol, element, chemical_group, atomic_no)
+
+# Use order() to create positions
+positions <- order(first_ten_elements$atomic_no)
+positions
+
+# Use positions to create a sort the first_ten_elements
+sorted_df <- first_ten_elements[positions, ]
+sorted_df
+`);
+  };
+  
+  resetButton.onclick = function () {
+    editor.setValue(webrCode);
+  };
+</script>
+<!-- <exercise id='8' title='Conditional Statements' type="slides"> -->
+<!-- slides("chapter2_08_conditionalstatements")`
+
+<!-- </exercise> -->
+</section>
+</section>
+</section>
+<section id="check-your-understanding-on-conditional-statements" class="level1">
+<h1>Check Your Understanding on Conditional Statements</h1>
+<p>Consider the following syntax:</p>
+<pre><code>if (x &lt; 50) {
+  if (x &lt; 20) {
+    result &lt;- "Low to None"
+  } else {
+    result &lt;- "Low"
+  }
+} else if (x == 100) {
+  result &lt;- "Full"
+} else {
+  result &lt;- "High"
+}
+print(result)</code></pre>
+<p>Take a look at the following statements:</p>
+<ol type="1">
+<li><p>If <code>x</code> is set to 75, “High” gets printed to the console.</p></li>
+<li><p>If <code>x</code> is set to 18, “Low” gets printed to the console.</p></li>
+<li><p>If <code>x</code> is set to 100, R prints out “Full”</p></li>
+<li><p>If <code>x</code> is set to 21, “Low” gets printed to the console.</p></li>
+</ol>
+<p>Select the option that lists <strong>all</strong> the true statements.</p>
+</section>
+<section id="loops" class="level1">
+<h1>Loops</h1>
+<p>In data analytics, often we need to perform the same operation repeatedly on the data and <strong>loops</strong> can come in handy on these occasions. There are 2 types of loops: - The ‘for loop’ is designed to iterate over all elements in a sequence - The ‘while loop’ is designed to repeat the operations until certain condition is satisfied</p>
+<section id="for-loops" class="level2">
+<h2 class="anchored" data-anchor-id="for-loops">For loops</h2>
+<p>A simple for loop in R looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>sequence <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> sequence) {</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(i)</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+[1] 3
+[1] 5</code></pre>
+</div>
+</div>
+<p>Here, we first defined a vector called <code>sequence</code>, then <strong>for</strong> every <span class="math inline">\(i\)</span> in sequence, we print the value of <span class="math inline">\(i\)</span>. From the output, you can see from the output that each element <code>i</code> in the sequence was printed in each iteration.</p>
+<p>The same loop can be written in another way:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>sequence <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(sequence)) {</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(sequence[i])</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+[1] 3
+[1] 5</code></pre>
+</div>
+</div>
+<p>In the R code above, we use the <code>length()</code> function to measure the length/size of <code>sequence</code>, i.e.&nbsp;3. Then we construct a for loop where <span class="math inline">\(i\)</span> iterates from 1 to 3, inside the for loop <code>i</code> represents the index of the sequence and putting the index inside the square brackets allows us to select the <span class="math inline">\(i\)</span>th element from <code>sequence</code>.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Your turn: write your first loop!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Write a for loop that takes the nominal GDP (in trillion) for each country in 2017 and divided it by the population (in million) in the same year. Assign the result to the variable <code>my_result</code>.</p>
+<p><strong>HINT</strong> 💡<strong>:</strong> To extract the i-th element of <code>nominalGDP_trilion_2017</code>, you can use <code>nominalGDP_trilion_2017[i]</code>. You can extract the i-th element of <code>population_million_2017</code> using square bracket as well.</p>
+</div>
+</div>
+<div id="qwebr-interactive-area-12" class="qwebr-interactive-area">
+  <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-12">🟡 Loading
+    webR...</button>
+  <button class="btn btn-default qwebr-button qwebr-button-check" disabled="" type="button" id="qwebr-button-check-12">💡 Check answer</button>
+  <button class="btn btn-default qwebr-button qwebr-button-solve" type="button" id="qwebr-button-solve-12">✅ Show solution</button>
+  <button class="btn btn-default qwebr-button qwebr-button-reset" type="button" id="qwebr-button-reset-12">💥 Reset code</button>
+  <div id="qwebr-console-area-12" class="qwebr-console-area">
+    <div id="qwebr-editor-12" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-12" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
+  </div>
+  <div id="qwebr-output-graph-area-12" class="qwebr-output-graph-area">
+  </div>
+</div>
+<script type="module">
+  // Retrieve webR code cell information
+  const runButton = document.getElementById("qwebr-button-run-12");
+  const checkButton = document.getElementById("qwebr-button-check-12");
+  const solveButton = document.getElementById("qwebr-button-solve-12");
+  const resetButton = document.getElementById("qwebr-button-reset-12");
+  const outputCodeDiv = document.getElementById("qwebr-output-code-area-12");
+  const editorDiv = document.getElementById("qwebr-editor-12");
+  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-12");
+  const webrCode = `countries <- c('US', 'China','Japan', 'Germany','India')
+nominalGDP_trilion_2017 <- c(19.485, 12.238, 4.872, 3.693, 2.651)
+population_million_2017 <- c(325, 1421, 127, 82, 1338)
+
+my_result <- c(0,0,0,0,0)
+for (i in 1:length(countries)) {
+  my_result[i] <- ___
+}
+my_result
+`
+
+  // Load the Monaco Editor and create an instance
+  let editor;
+  require(['vs/editor/editor.main'], function () {
+    editor = monaco.editor.create(editorDiv, {
+      value: webrCode,
+      language: 'r',
+      theme: 'vs-light',
+      automaticLayout: true,           // TODO: Could be problematic for slide decks
+      scrollBeyondLastLine: false,
+      minimap: {
+        enabled: false
+      },
+      fontSize: '17.5pt',               // Bootstrap is 1 rem
+      renderLineHighlight: "none",     // Disable current line highlighting
+      hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
+    });
+
+    // Dynamically modify the height of the editor window if new lines are added.
+    let ignoreEvent = false;
+    const updateHeight = () => {
+      const contentHeight = editor.getContentHeight();
+      // We're avoiding a width change
+      //editorDiv.style.width = `${width}px`;
+      editorDiv.style.height = `${contentHeight}px`;
+      try {
+        ignoreEvent = true;
+
+        // The key to resizing is this call
+        editor.layout();
+      } finally {
+        ignoreEvent = false;
+      }
+    };
+
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        executeCode(editor.getValue());
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          executeCode(currentLine);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          executeCode(selectedText);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
+    // Register an on change event for when new code is added to the editor window
+    editor.onDidContentSizeChange(updateHeight);
+
+    // Manually re-update height to account for the content we inserted into the call
+    updateHeight();
+  });
+
+  // Function to execute the code (accepts code as an argument)
+  async function executeCode(codeToRun) {
+
+    // Disallowing execution of other code cells
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = true;
+    });
+
+    // Create a canvas variable for graphics
+    let canvas = undefined;
+
+    // Create a pager variable for help/file contents
+    let pager = [];
+
+    // Process 
+    async function parseTypePager(msg) { 
+
+        // Split out the event data
+        const { path, title, deleteFile } = msg.data; 
+
+        // Process the pager data by reading the information from disk
+        const paged_data = await webR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+            content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+        });
+
+        // Unlink file if needed
+        if (deleteFile) { 
+          await webR.FS.unlink(path); 
+        } 
+
+        // Return extracted data with spaces
+        return paged_data;
+    } 
+
+    // Initialize webR
+    await webR.init();
+
+    // Setup a webR canvas by making a namespace call into the {webr} package
+    await webR.evalRVoid("webr::canvas(width=504, height=360)");
+
+    // Capture output data from evaluating the code
+    const result = await webRCodeShelter.captureR(codeToRun, {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false//,
+      // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
+    });
+
+    // Start attempting to parse the result data
+    try {
+
+      // Stop creating images
+      await webR.evalRVoid("dev.off()");
+
+      // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
+      const out = result.output
+        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
+        .map((evt, index) => {
+          const className = `qwebr-output-code-${evt.type}`;
+          return `<code id="${className}-editor-12-result-${index + 1}" class="${className}">${qwebrEscapeHTMLCharacters(evt.data)}</code>`;
+        })
+        .join("\n");
+
+
+      // Clean the state
+      const msgs = await webR.flush();
+
+      // Output each image event stored
+      msgs.forEach((msg) => {
+        // Determine if old canvas can be used or a new canvas is required.
+        if (msg.type === 'canvas'){
+          // Add image to the current canvas
+          if (msg.data.event === 'canvasImage') {
+            canvas.getContext('2d').drawImage(msg.data.image, 0, 0);
+          } else if (msg.data.event === 'canvasNewPage') {
+            // Generate a new canvas element
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
+            canvas.style.width = "700px";
+            canvas.style.display = "block";
+            canvas.style.margin = "auto";
+          }
+        } 
+      });
+
+      // Use `map` to process the filtered "pager" events asynchronously
+      const pager = await Promise.all(
+        msgs.filter(msg => msg.type === 'pager').map(
+          async (msg) => {
+            return await parseTypePager(msg);
+          }
+        )
+      );
+
+      // Nullify the output area of content
+      outputCodeDiv.innerHTML = "";
+      outputGraphDiv.innerHTML = "";
+
+      // Design an output object for messages
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        // Display results as HTML elements to retain output styling
+        const div = document.createElement("div");
+        div.innerHTML = out;
+        pre.appendChild(div);
+      } else {
+        // If nothing is present, hide the element.
+        pre.style.visibility = "hidden";
+      }
+      outputCodeDiv.appendChild(pre);
+
+      // Place the graphics on the canvas
+      if (canvas) {
+        outputGraphDiv.appendChild(canvas);
+      }
+
+      // Display the pager data
+      if (pager) {
+        // Use the `pre` element to preserve whitespace.
+        pager.forEach((paged_data, index) => {
+          let pre_pager = document.createElement("pre");
+          pre_pager.innerText = paged_data;
+          pre_pager.classList.add("qwebr-output-code-pager");
+          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-12-result-" + (index + 1));
+          outputCodeDiv.appendChild(pre_pager);
+        });
+      }
+    } finally {
+      // Clean up the remaining code
+      webRCodeShelter.purge();
+    }
+
+    // Switch to allowing execution of code
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = false;
+    });
+    
+    // Revert to the initial code cell state
+    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run code</span>';
+    checkButton.innerHTML = '💡 Check answer';
+  }
+
+  // Add a click event listener to the run button
+  runButton.onclick = function () {
+    // Emphasize the active code cell
+    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run code</span>';
+    executeCode(editor.getValue());
+  };
+  
+  checkButton.onclick = function () {
+    // Emphasize the active code cell
+    checkButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Check answer</span>';
+    executeCode(
+`teachr_tests <- function(.code, .printed, .errored, .warned) {
+  
+solution <- c(0.0599538461538461, 0.00861224489795918, 0.0383622047244094, 
+0.0450365853658537, 0.0019813153961136)
+c(
+  "The solution isn't close enough." = abs(my_result - solution) > 0.01
+)
+}
+check_answer(r"(` + editor.getValue() + `)")`
+    );
+  };
+  
+  solveButton.onclick = function () {
+    editor.setValue(`countries <- c('US', 'China','Japan', 'Germany','India')
+nominalGDP_trilion_2017 <- c(19.485, 12.238, 4.872, 3.693, 2.651)
+population_million_2017 <- c(325, 1421, 127, 82, 1338)
+
+my_result <- c(0,0,0,0,0)
+for (i in 1:length(countries)) {
+  my_result[i] <- nominalGDP_trilion_2017[i]/population_million_2017[i]
+}
+my_result
+`);
+  };
+  
+  resetButton.onclick = function () {
+    editor.setValue(webrCode);
+  };
+</script>
+<p>We can do a lot more than when we use for loop together with the control flow statements (if, else if, else) we learnt before. For example,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>customer_rating <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">5</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (rating <span class="cf">in</span> customer_rating) {</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (rating <span class="sc">&gt;=</span> <span class="dv">4</span>) {</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">'Happy Customer!'</span>)</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (rating <span class="sc">&lt;=</span> <span class="dv">2</span>) {</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">'Angry Customer!'</span>)</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">'Neutral Customer!'</span>)</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Angry Customer!"
+[1] "Neutral Customer!"
+[1] "Angry Customer!"
+[1] "Happy Customer!"
+[1] "Happy Customer!"
+[1] "Happy Customer!"</code></pre>
+</div>
+</div>
+<p>The R code above prints different messages depending on the values in customer_rating.</p>
+<p><strong>Check your understanding</strong></p>
+<p>Consider the following syntax:</p>
+<pre><code>for (result in student_result) {
+  if (result &gt;= 79 &amp; result &lt; 99) {
+  print('Superb!')
+  } else if (result &lt; 50) {
+  print('Try again!')
+  } else if (result &gt;= 99) {
+  print('Perfect!')
+  } else {
+  print('Well done!')
+  }
+}</code></pre>
+<p>Here is the output from the above syntax after we have defined a vector variable <code>student_result</code>.</p>
+<pre><code>[1] "Superb!"
+[1] "Well done!"
+[1] "Try again!"
+[1] "Perfect!"
+[1] "Well done!"
+[1] "Superb!"</code></pre>
+<p>Based on the output from the for-loop, which of the following is <code>student_result</code>?</p>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">mc_opts</span>(<span class="st">"&lt;code&gt;student_result &lt;- c(99,77,35,97,67,85)&lt;/code&gt;"</span> <span class="ot">=</span><span class="st">"Try again! Copy the code and try it with some numbers in R!"</span>,</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"&lt;code&gt;student_result &lt;- c(77,99,35,97,67,85)&lt;/code&gt;"</span> <span class="ot">=</span><span class="st">"Try again! Copy the code and try it with some numbers in R!"</span>,</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">"&lt;code&gt;student_result &lt;- c(97,77,35,99,67,85)&lt;/code&gt;"</span> <span class="ot">=</span> <span class="st">"That's correct!"</span>,</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">"&lt;code&gt;student_result &lt;- c(100,77,35,99,67,85)&lt;/code&gt;"</span><span class="ot">=</span><span class="st">"Try again! Copy the code and try it with some numbers in R!"</span>,</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">correct =</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="while-loops" class="level2">
+<h2 class="anchored" data-anchor-id="while-loops">While loops</h2>
+<p>A while loop in R has the following structure:</p>
+<pre><code>while (condition) {
+  do_something
+}</code></pre>
+<p>In the while loop, R will keep running the code between the brackets <code>{ }</code> repeated until the condition become <code>FALSE</code> at some point during the execution. If the condition is never changed, the while loop will go on indefinitely.</p>
+<p>For example, we create a while loop that will go on subtracting 28.5 (as weekly_spending) to the variable <code>bank_balance</code> until <code>bank_balance</code> is less than <code>weekly_spending</code>. If you execute the R code, you will notice the loop stopped at the 7th iteration.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>bank_balance <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>weekly_spending <span class="ot">&lt;-</span> <span class="fl">28.5</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (bank_balance <span class="sc">&gt;=</span> weekly_spending) {</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  bank_balance <span class="ot">=</span> bank_balance <span class="sc">-</span> weekly_spending</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(bank_balance)</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 171.5
+[1] 143
+[1] 114.5
+[1] 86
+[1] 57.5
+[1] 29
+[1] 0.5</code></pre>
+</div>
+</div>
+</section>
+<section id="break-statement" class="level2">
+<h2 class="anchored" data-anchor-id="break-statement">Break statement</h2>
+<p>There are occasions where breaking the loop during execution is a good idea. The break statement can be used in for loops and while loops.</p>
+<p>For example, if we are to set up a early warning system when <code>bank_balance</code> is less than or equal to 4 times <code>weekly spending</code>, we can do the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>bank_balance <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>weekly_spending <span class="ot">&lt;-</span> <span class="fl">28.5</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (bank_balance<span class="sc">&gt;=</span> weekly_spending) {</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>  bank_balance <span class="ot">&lt;-</span> bank_balance <span class="sc">-</span> weekly_spending</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(bank_balance)</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (bank_balance <span class="sc">&lt;=</span> <span class="dv">4</span><span class="sc">*</span>weekly_spending){</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">"Find a job and cut weekly spending!"</span>)</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 171.5
+[1] 143
+[1] 114.5
+[1] 86
+[1] "Find a job and cut weekly spending!"</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="functions" class="level1">
+<h1>Functions</h1>
+<p>Functions are an extremely important concept in almost every programming language, including R! You can think of functions as a black box: you give some values as an input, the function processes this input and generates an output. In R, the function arguments are matched by position or by name. You can set a default value for some function arguments, and you can overwrite the default value when you need to.</p>
+<p>Here is a simple skeleton of a function in R:</p>
+<pre><code>my_fun_name &lt;- function(arg1, arg2) {
+  body
+}</code></pre>
+<p>The keyword <code>function</code> tells R you are defining a function. The arguments in the parentheses <code>( )</code> are the input of your function, the inputs can be data and parameters. The operations that you want to perform (the <code>body</code>) should be written inside the curly brackets <code>{ }</code>.</p>
+<p>Finally, you assign the function defining statement and body to the variable <code>my_fun_name</code>, which is the name of your function. To call (use) the function, you will need to enter <code>my_fun_name(arg1, arg2)</code> in your code after you defined the function.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Your turn: write your own function!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Create a function <code>power_three()</code>: it takes one argument and returns that number cubed (that number times itself and times itself again). Call this newly defined function with 12 as input.</p>
+</div>
+</div>
+<div id="qwebr-interactive-area-13" class="qwebr-interactive-area">
+  <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-13">🟡 Loading
+    webR...</button>
+  <button class="btn btn-default qwebr-button qwebr-button-check" disabled="" type="button" id="qwebr-button-check-13">💡 Check answer</button>
+  <button class="btn btn-default qwebr-button qwebr-button-solve" type="button" id="qwebr-button-solve-13">✅ Show solution</button>
+  <button class="btn btn-default qwebr-button qwebr-button-reset" type="button" id="qwebr-button-reset-13">💥 Reset code</button>
+  <div id="qwebr-console-area-13" class="qwebr-console-area">
+    <div id="qwebr-editor-13" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-13" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
+  </div>
+  <div id="qwebr-output-graph-area-13" class="qwebr-output-graph-area">
+  </div>
+</div>
+<script type="module">
+  // Retrieve webR code cell information
+  const runButton = document.getElementById("qwebr-button-run-13");
+  const checkButton = document.getElementById("qwebr-button-check-13");
+  const solveButton = document.getElementById("qwebr-button-solve-13");
+  const resetButton = document.getElementById("qwebr-button-reset-13");
+  const outputCodeDiv = document.getElementById("qwebr-output-code-area-13");
+  const editorDiv = document.getElementById("qwebr-editor-13");
+  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-13");
+  const webrCode = `# Create a function power_three()
+power_three <- ___
+# Use the function
+power_three(___)
+`
+
+  // Load the Monaco Editor and create an instance
+  let editor;
+  require(['vs/editor/editor.main'], function () {
+    editor = monaco.editor.create(editorDiv, {
+      value: webrCode,
+      language: 'r',
+      theme: 'vs-light',
+      automaticLayout: true,           // TODO: Could be problematic for slide decks
+      scrollBeyondLastLine: false,
+      minimap: {
+        enabled: false
+      },
+      fontSize: '17.5pt',               // Bootstrap is 1 rem
+      renderLineHighlight: "none",     // Disable current line highlighting
+      hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
+    });
+
+    // Dynamically modify the height of the editor window if new lines are added.
+    let ignoreEvent = false;
+    const updateHeight = () => {
+      const contentHeight = editor.getContentHeight();
+      // We're avoiding a width change
+      //editorDiv.style.width = `${width}px`;
+      editorDiv.style.height = `${contentHeight}px`;
+      try {
+        ignoreEvent = true;
+
+        // The key to resizing is this call
+        editor.layout();
+      } finally {
+        ignoreEvent = false;
+      }
+    };
+
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        executeCode(editor.getValue());
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          executeCode(currentLine);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          executeCode(selectedText);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
+    // Register an on change event for when new code is added to the editor window
+    editor.onDidContentSizeChange(updateHeight);
+
+    // Manually re-update height to account for the content we inserted into the call
+    updateHeight();
+  });
+
+  // Function to execute the code (accepts code as an argument)
+  async function executeCode(codeToRun) {
+
+    // Disallowing execution of other code cells
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = true;
+    });
+
+    // Create a canvas variable for graphics
+    let canvas = undefined;
+
+    // Create a pager variable for help/file contents
+    let pager = [];
+
+    // Process 
+    async function parseTypePager(msg) { 
+
+        // Split out the event data
+        const { path, title, deleteFile } = msg.data; 
+
+        // Process the pager data by reading the information from disk
+        const paged_data = await webR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+            content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+        });
+
+        // Unlink file if needed
+        if (deleteFile) { 
+          await webR.FS.unlink(path); 
+        } 
+
+        // Return extracted data with spaces
+        return paged_data;
+    } 
+
+    // Initialize webR
+    await webR.init();
+
+    // Setup a webR canvas by making a namespace call into the {webr} package
+    await webR.evalRVoid("webr::canvas(width=504, height=360)");
+
+    // Capture output data from evaluating the code
+    const result = await webRCodeShelter.captureR(codeToRun, {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false//,
+      // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
+    });
+
+    // Start attempting to parse the result data
+    try {
+
+      // Stop creating images
+      await webR.evalRVoid("dev.off()");
+
+      // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
+      const out = result.output
+        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
+        .map((evt, index) => {
+          const className = `qwebr-output-code-${evt.type}`;
+          return `<code id="${className}-editor-13-result-${index + 1}" class="${className}">${qwebrEscapeHTMLCharacters(evt.data)}</code>`;
+        })
+        .join("\n");
+
+
+      // Clean the state
+      const msgs = await webR.flush();
+
+      // Output each image event stored
+      msgs.forEach((msg) => {
+        // Determine if old canvas can be used or a new canvas is required.
+        if (msg.type === 'canvas'){
+          // Add image to the current canvas
+          if (msg.data.event === 'canvasImage') {
+            canvas.getContext('2d').drawImage(msg.data.image, 0, 0);
+          } else if (msg.data.event === 'canvasNewPage') {
+            // Generate a new canvas element
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
+            canvas.style.width = "700px";
+            canvas.style.display = "block";
+            canvas.style.margin = "auto";
+          }
+        } 
+      });
+
+      // Use `map` to process the filtered "pager" events asynchronously
+      const pager = await Promise.all(
+        msgs.filter(msg => msg.type === 'pager').map(
+          async (msg) => {
+            return await parseTypePager(msg);
+          }
+        )
+      );
+
+      // Nullify the output area of content
+      outputCodeDiv.innerHTML = "";
+      outputGraphDiv.innerHTML = "";
+
+      // Design an output object for messages
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        // Display results as HTML elements to retain output styling
+        const div = document.createElement("div");
+        div.innerHTML = out;
+        pre.appendChild(div);
+      } else {
+        // If nothing is present, hide the element.
+        pre.style.visibility = "hidden";
+      }
+      outputCodeDiv.appendChild(pre);
+
+      // Place the graphics on the canvas
+      if (canvas) {
+        outputGraphDiv.appendChild(canvas);
+      }
+
+      // Display the pager data
+      if (pager) {
+        // Use the `pre` element to preserve whitespace.
+        pager.forEach((paged_data, index) => {
+          let pre_pager = document.createElement("pre");
+          pre_pager.innerText = paged_data;
+          pre_pager.classList.add("qwebr-output-code-pager");
+          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-13-result-" + (index + 1));
+          outputCodeDiv.appendChild(pre_pager);
+        });
+      }
+    } finally {
+      // Clean up the remaining code
+      webRCodeShelter.purge();
+    }
+
+    // Switch to allowing execution of code
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = false;
+    });
+    
+    // Revert to the initial code cell state
+    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run code</span>';
+    checkButton.innerHTML = '💡 Check answer';
+  }
+
+  // Add a click event listener to the run button
+  runButton.onclick = function () {
+    // Emphasize the active code cell
+    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run code</span>';
+    executeCode(editor.getValue());
+  };
+  
+  checkButton.onclick = function () {
+    // Emphasize the active code cell
+    checkButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Check answer</span>';
+    executeCode(
+`teachr_tests <- function(.code, .printed, .errored, .warned) {
+  
+c(
+  "Did you correctly define the function power_three()? Check the function body. Are you taking the input argument to the power three?" = !identical(power_three(20), 20^3) 
+)
+
+}
+check_answer(r"(` + editor.getValue() + `)")`
+    );
+  };
+  
+  solveButton.onclick = function () {
+    editor.setValue(`# Create a function power_three()
+power_three <- function(x){x^3}
+# Use the function
+power_three(3)
+`);
+  };
+  
+  resetButton.onclick = function () {
+    editor.setValue(webrCode);
+  };
+</script>
+<p>It is also possible to run a function without an input argument.</p>
+<p>In the following example, the function will print the statement “Hello World!” when the function is called without any inputs.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>hello_world <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">'Hello World!'</span>)</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This can also be useful sometimes when we would like to have random outcomes from the function. The <code>sample()</code> function comes in handy when we would like to draw a number from a particular range of values.</p>
+<p>For example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>flip_a_coin <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  outcome <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">size =</span> <span class="dv">1</span>)</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (outcome <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">"Head"</span>)} <span class="cf">else</span> {</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">print</span>(<span class="st">"Tail"</span>) }</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Flip the coin the first time</span></span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="fu">flip_a_coin</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Head"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Flip the coin second time</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">flip_a_coin</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Head"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Flip the coin once again</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">flip_a_coin</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Tail"</code></pre>
+</div>
+</div>
+<p>You will get a different outcome (“Head” or “Tail”) every time when you call the function <code>flip_a_coin</code>.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Your turn: Write your code to roll a die!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Write a function that takes no input argument and return a random outcome choosing from 1 to 6, just like rolling a die in R. Name that function <code>roll_a_die</code>.</p>
+<p><strong>HINT</strong> 💡<strong>:</strong> You can obtain a random integer from 1 to 6 using <code>sample(1:6, size = 1)</code>. Have you try putting that in the function body?</p>
+</div>
+</div>
+<div id="qwebr-interactive-area-14" class="qwebr-interactive-area">
+  <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-14">🟡 Loading
+    webR...</button>
+  <button class="btn btn-default qwebr-button qwebr-button-check" disabled="" type="button" id="qwebr-button-check-14">💡 Check answer</button>
+  <button class="btn btn-default qwebr-button qwebr-button-solve" type="button" id="qwebr-button-solve-14">✅ Show solution</button>
+  <button class="btn btn-default qwebr-button qwebr-button-reset" type="button" id="qwebr-button-reset-14">💥 Reset code</button>
+  <div id="qwebr-console-area-14" class="qwebr-console-area">
+    <div id="qwebr-editor-14" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-14" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
+  </div>
+  <div id="qwebr-output-graph-area-14" class="qwebr-output-graph-area">
+  </div>
+</div>
+<script type="module">
+  // Retrieve webR code cell information
+  const runButton = document.getElementById("qwebr-button-run-14");
+  const checkButton = document.getElementById("qwebr-button-check-14");
+  const solveButton = document.getElementById("qwebr-button-solve-14");
+  const resetButton = document.getElementById("qwebr-button-reset-14");
+  const outputCodeDiv = document.getElementById("qwebr-output-code-area-14");
+  const editorDiv = document.getElementById("qwebr-editor-14");
+  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-14");
+  const webrCode = `# Write some code to roll a die
+
+roll_a_die <- ___
+`
+
+  // Load the Monaco Editor and create an instance
+  let editor;
+  require(['vs/editor/editor.main'], function () {
+    editor = monaco.editor.create(editorDiv, {
+      value: webrCode,
+      language: 'r',
+      theme: 'vs-light',
+      automaticLayout: true,           // TODO: Could be problematic for slide decks
+      scrollBeyondLastLine: false,
+      minimap: {
+        enabled: false
+      },
+      fontSize: '17.5pt',               // Bootstrap is 1 rem
+      renderLineHighlight: "none",     // Disable current line highlighting
+      hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
+    });
+
+    // Dynamically modify the height of the editor window if new lines are added.
+    let ignoreEvent = false;
+    const updateHeight = () => {
+      const contentHeight = editor.getContentHeight();
+      // We're avoiding a width change
+      //editorDiv.style.width = `${width}px`;
+      editorDiv.style.height = `${contentHeight}px`;
+      try {
+        ignoreEvent = true;
+
+        // The key to resizing is this call
+        editor.layout();
+      } finally {
+        ignoreEvent = false;
+      }
+    };
+
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        executeCode(editor.getValue());
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          executeCode(currentLine);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          executeCode(selectedText);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
+    // Register an on change event for when new code is added to the editor window
+    editor.onDidContentSizeChange(updateHeight);
+
+    // Manually re-update height to account for the content we inserted into the call
+    updateHeight();
+  });
+
+  // Function to execute the code (accepts code as an argument)
+  async function executeCode(codeToRun) {
+
+    // Disallowing execution of other code cells
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = true;
+    });
+
+    // Create a canvas variable for graphics
+    let canvas = undefined;
+
+    // Create a pager variable for help/file contents
+    let pager = [];
+
+    // Process 
+    async function parseTypePager(msg) { 
+
+        // Split out the event data
+        const { path, title, deleteFile } = msg.data; 
+
+        // Process the pager data by reading the information from disk
+        const paged_data = await webR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+            content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+        });
+
+        // Unlink file if needed
+        if (deleteFile) { 
+          await webR.FS.unlink(path); 
+        } 
+
+        // Return extracted data with spaces
+        return paged_data;
+    } 
+
+    // Initialize webR
+    await webR.init();
+
+    // Setup a webR canvas by making a namespace call into the {webr} package
+    await webR.evalRVoid("webr::canvas(width=504, height=360)");
+
+    // Capture output data from evaluating the code
+    const result = await webRCodeShelter.captureR(codeToRun, {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false//,
+      // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
+    });
+
+    // Start attempting to parse the result data
+    try {
+
+      // Stop creating images
+      await webR.evalRVoid("dev.off()");
+
+      // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
+      const out = result.output
+        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
+        .map((evt, index) => {
+          const className = `qwebr-output-code-${evt.type}`;
+          return `<code id="${className}-editor-14-result-${index + 1}" class="${className}">${qwebrEscapeHTMLCharacters(evt.data)}</code>`;
+        })
+        .join("\n");
+
+
+      // Clean the state
+      const msgs = await webR.flush();
+
+      // Output each image event stored
+      msgs.forEach((msg) => {
+        // Determine if old canvas can be used or a new canvas is required.
+        if (msg.type === 'canvas'){
+          // Add image to the current canvas
+          if (msg.data.event === 'canvasImage') {
+            canvas.getContext('2d').drawImage(msg.data.image, 0, 0);
+          } else if (msg.data.event === 'canvasNewPage') {
+            // Generate a new canvas element
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
+            canvas.style.width = "700px";
+            canvas.style.display = "block";
+            canvas.style.margin = "auto";
+          }
+        } 
+      });
+
+      // Use `map` to process the filtered "pager" events asynchronously
+      const pager = await Promise.all(
+        msgs.filter(msg => msg.type === 'pager').map(
+          async (msg) => {
+            return await parseTypePager(msg);
+          }
+        )
+      );
+
+      // Nullify the output area of content
+      outputCodeDiv.innerHTML = "";
+      outputGraphDiv.innerHTML = "";
+
+      // Design an output object for messages
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        // Display results as HTML elements to retain output styling
+        const div = document.createElement("div");
+        div.innerHTML = out;
+        pre.appendChild(div);
+      } else {
+        // If nothing is present, hide the element.
+        pre.style.visibility = "hidden";
+      }
+      outputCodeDiv.appendChild(pre);
+
+      // Place the graphics on the canvas
+      if (canvas) {
+        outputGraphDiv.appendChild(canvas);
+      }
+
+      // Display the pager data
+      if (pager) {
+        // Use the `pre` element to preserve whitespace.
+        pager.forEach((paged_data, index) => {
+          let pre_pager = document.createElement("pre");
+          pre_pager.innerText = paged_data;
+          pre_pager.classList.add("qwebr-output-code-pager");
+          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-14-result-" + (index + 1));
+          outputCodeDiv.appendChild(pre_pager);
+        });
+      }
+    } finally {
+      // Clean up the remaining code
+      webRCodeShelter.purge();
+    }
+
+    // Switch to allowing execution of code
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = false;
+    });
+    
+    // Revert to the initial code cell state
+    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run code</span>';
+    checkButton.innerHTML = '💡 Check answer';
+  }
+
+  // Add a click event listener to the run button
+  runButton.onclick = function () {
+    // Emphasize the active code cell
+    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run code</span>';
+    executeCode(editor.getValue());
+  };
+  
+  checkButton.onclick = function () {
+    // Emphasize the active code cell
+    checkButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Check answer</span>';
+    executeCode(
+`teachr_tests <- function(.code, .printed, .errored, .warned) {
+  
 rolls <- vapply(seq_len(1000), function(x) roll_a_die(), integer(1L))
 c(
   "Your function should return an integer" = !is.integer(rolls),
@@ -4352,18 +5988,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -4395,7 +6020,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/numbats\.github\.io\/monash-learnr-modules\/");
@@ -4403,7 +6050,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

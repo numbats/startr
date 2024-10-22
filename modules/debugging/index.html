@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.5.47">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -186,7 +220,7 @@ ul.task-list li input[type="checkbox"] {
   const initializeWebRTimerStart = performance.now();
 
   // Determine if we need to install R packages
-  var installRPackagesList = ['tidyverse'];
+  var installRPackagesList = [''];
   // Check to see if we have an empty array, if we do set to skip the installation.
   var setupRPackages = !(installRPackagesList.indexOf("") !== -1);
   var autoloadRPackages = true;
@@ -341,6 +375,10 @@ ul.task-list li input[type="checkbox"] {
   }
 
 
+  // Override the existing install.packages() to use webr::install()
+  await globalThis.webR.evalRVoid('webr::shim_install()'); 
+
+
   // Check to see if any packages need to be installed
   if (setupRPackages) {
     // Obtain only a unique list of packages
@@ -378,13 +416,53 @@ capture_printed <- function(x) {
   if(x_vis$visible) print(x_vis$value) else invisible()
 }
 
+compare_args <- function(x, y) {
+  val <- match(x, y)
+  if(any(is.na(val))) return(FALSE)
+  identical(names(x), names(y)[val])
+}
+
+search_ast_impl <- function(.code, fn = NULL, fn_args = list()) {
+  if(!(is.call(.code) || is.expression(.code))) return(FALSE)
+  args <- as.list(.code[-1])
+  if(compare_args(fn_args, args)) {
+    if(is.null(fn) || identical(fn, .code[[1]])) return(TRUE)
+  }
+  
+  any(vapply(args, search_ast_impl, logical(1L), fn = fn, fn_args = fn_args))
+}
+
+search_ast <- function(.code, .fn = NULL, ..., .expr = NULL) {
+  .expr <- substitute(.expr)
+  if(!is.null(.expr)) {
+    .fn <- .expr[[1]]
+    fn_args <- as.list(.expr[-1])
+  } else {
+    .fn <- substitute(.fn)
+    fn_args <- as.list(substitute(...()))
+  }
+  
+  if(is.expression(.code)) .code <- as.list(.code)
+  any(vapply(.code, search_ast_impl, logical(1L), fn = .fn, fn_args = fn_args))
+}
+
+exists_in <- function(.x, .f, ..., .require = any) {
+  if(inherits(.f, "formula")) {
+    f <- .f
+    .f <- function(.x, .y, ..., . = .x) {}
+    body(.f) <- f[[length(f)]]
+  }
+  .require(vapply(.x, .f, logical(1L), ...))
+}
+
 check_answer <- function(.code) {
   .printed <<- list()
   .errored <<- character()
   .warned <<- character()
   .src <- .code
-  .code <- as.expression(lapply(parse(text = .code), function(l) call("capture_printed", l)))
-  eval(.code, envir = .GlobalEnv)
+  .code <- parse(text = .src)
+  .exec <- as.expression(lapply(.code, function(l) call("capture_printed", l)))
+  eval(.exec, envir = .GlobalEnv)
   results <- teachr_tests(.code, .printed, .errored, .warned)
   if(all(!results)) {
     cat("✅ That's correct! Well done 🎉", "\n", sep = "", file = stdout(), append = TRUE)
@@ -422,9 +500,10 @@ check_answer <- function(.code) {
 </script>
 
 
+<link rel="stylesheet" href="style.css">
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-search-results"></div>
 <!-- content -->
@@ -448,7 +527,37 @@ check_answer <- function(.code) {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-are-error-messages" id="toc-what-are-error-messages" class="nav-link active" data-scroll-target="#what-are-error-messages">What are error messages?</a></li>
+  <li><a href="#read-the-error" id="toc-read-the-error" class="nav-link" data-scroll-target="#read-the-error">Read the error</a>
+  <ul class="collapse">
+  <li><a href="#lets-have-a-look-at-some-common-error-messages" id="toc-lets-have-a-look-at-some-common-error-messages" class="nav-link" data-scroll-target="#lets-have-a-look-at-some-common-error-messages">Let’s have a look at some common error messages</a></li>
+  <li><a href="#what-if-we-cannot-find-the-function" id="toc-what-if-we-cannot-find-the-function" class="nav-link" data-scroll-target="#what-if-we-cannot-find-the-function">What if we cannot find the function?!</a></li>
+  <li><a href="#search-the-message" id="toc-search-the-message" class="nav-link" data-scroll-target="#search-the-message">Search the message 🔎</a></li>
+  <li><a href="#divide-and-conquer" id="toc-divide-and-conquer" class="nav-link" data-scroll-target="#divide-and-conquer">Divide and conquer 💪</a></li>
+  <li><a href="#turn-it-off-and-on-again" id="toc-turn-it-off-and-on-again" class="nav-link" data-scroll-target="#turn-it-off-and-on-again">Turn it off and on again 🔄</a></li>
+  </ul></li>
+  <li><a href="#asking-for-help" id="toc-asking-for-help" class="nav-link" data-scroll-target="#asking-for-help">Asking for help</a>
+  <ul class="collapse">
+  <li><a href="#describe-the-problem" id="toc-describe-the-problem" class="nav-link" data-scroll-target="#describe-the-problem">Describe the problem</a></li>
+  <li><a href="#provide-a-minimal-reproducible-example" id="toc-provide-a-minimal-reproducible-example" class="nav-link" data-scroll-target="#provide-a-minimal-reproducible-example">Provide a minimal reproducible example</a></li>
+  <li><a href="#where-to-ask-for-help" id="toc-where-to-ask-for-help" class="nav-link" data-scroll-target="#where-to-ask-for-help">Where to ask for help</a></li>
+  </ul></li>
+  <li><a href="#minimal-reproducible-examples" id="toc-minimal-reproducible-examples" class="nav-link" data-scroll-target="#minimal-reproducible-examples">Minimal Reproducible Examples</a>
+  <ul class="collapse">
+  <li><a href="#providing-minimal-datasets" id="toc-providing-minimal-datasets" class="nav-link" data-scroll-target="#providing-minimal-datasets">Providing minimal datasets</a></li>
+  <li><a href="#create-minimal-reproducible-examples" id="toc-create-minimal-reproducible-examples" class="nav-link" data-scroll-target="#create-minimal-reproducible-examples">Create minimal reproducible examples</a></li>
+  <li><a href="#provide-session-information" id="toc-provide-session-information" class="nav-link" data-scroll-target="#provide-session-information">Provide session information</a></li>
+  <li><a href="#using-the-reprex-package-for-producing-examples" id="toc-using-the-reprex-package-for-producing-examples" class="nav-link" data-scroll-target="#using-the-reprex-package-for-producing-examples">Using the <code>reprex</code> package for producing examples</a></li>
+  </ul></li>
+  <li><a href="#asking-for-help-checklist" id="toc-asking-for-help-checklist" class="nav-link" data-scroll-target="#asking-for-help-checklist">Asking for help checklist ☑️</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/loader.js"></script>
@@ -476,8 +585,8 @@ check_answer <- function(.code) {
 <section id="read-the-error" class="level1">
 <h1>Read the error</h1>
 <p>The first step is to carefully <strong>read</strong> the error message, it often contains clues into where and why the code didn’t run. With some time and experience, you’ll begin to identify these errors and fix your code quickly based on the message alone!</p>
-<section id="lets-have-a-look-one-of-the-most-common-error-message" class="level2">
-<h2 class="anchored" data-anchor-id="lets-have-a-look-one-of-the-most-common-error-message">Let’s have a look one of the most common error message</h2>
+<section id="lets-have-a-look-at-some-common-error-messages" class="level2">
+<h2 class="anchored" data-anchor-id="lets-have-a-look-at-some-common-error-messages">Let’s have a look at some common error messages</h2>
 <div id="qwebr-interactive-area-1" class="qwebr-interactive-area">
   <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-1">🟡 Loading
     webR...</button>
@@ -502,9 +611,9 @@ check_answer <- function(.code) {
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-1");
   const editorDiv = document.getElementById("qwebr-editor-1");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-1");
-  const webrCode = `# One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset 
-str(car)`
+  const webrCode = `# Lets look at the penguins data from the palmerpenguins package
+# Lets take a look at the structure
+str(penguins)`
 
   // Load the Monaco Editor and create an instance
   let editor;
@@ -777,17 +886,17 @@ check_answer(r"(` + editor.getValue() + `)")`
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`# One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset 
-str(car)`);
+    editor.setValue(`# Lets look at the penguins data from the palmerpenguins package
+# Lets take a look at the structure
+str(penguins)`);
   };
   
   resetButton.onclick = function () {
     editor.setValue(webrCode);
   };
 </script>
-<p>Oh no! An error message: <span style="color: red;">“Error: object ‘car’ not found”errors</span>!</p>
-<p>When the error message says that <span style="color: red;">“Error: object ‘something’ not found”errors</span>!, this is often the case that there might be a typo or you didn’t load the object loaded in correctly. Let’s see how we could fix this.</p>
+<p>Oh no! An error message: <span style="color: red;">“Error: object ‘palmerpenguins’ not found”</span>!</p>
+<p>When you see the error message <span style="color: red;">“Error: object ‘_____’ not found”</span>, it usually means there is a typo or the object wasn’t loaded in correctly. In this instance, we haven’t used the correct object. Let’s look at how we can fix this.</p>
 <div id="qwebr-interactive-area-2" class="qwebr-interactive-area">
   <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-2">🟡 Loading
     webR...</button>
@@ -812,8 +921,9 @@ str(car)`);
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-2");
   const editorDiv = document.getElementById("qwebr-editor-2");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-2");
-  const webrCode = `# One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset 
+  const webrCode = `# Let's try to have a look at the structure of the penguins data set
+# We will first load in the palmerpenguins package
+library(palmerpenguins)
 str(___)
   `
 
@@ -1084,16 +1194,17 @@ str(___)
   
 p <- .code[[1]][[2]][[2]]
   
-c("did you put in cars?" = !"cars" %in% all.vars(.code))
+c("did you put in penguins?" = !"penguins" %in% all.vars(.code))
 }
 check_answer(r"(` + editor.getValue() + `)")`
     );
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`# One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset 
-str(cars)
+    editor.setValue(`# Let's try to have a look at the structure of the penguins data set
+# We will first load in the palmerpenguins package
+library(palmerpenguins)
+str(penguins)
   `);
   };
   
@@ -1101,7 +1212,7 @@ str(cars)
     editor.setValue(webrCode);
   };
 </script>
-<p>Typo is a very common error that you could make. This could be a miss-type of the object name or miss-type of function name. When you see error messages suggesting <span style="color: red;">“Error: object ‘something’ not found”errors</span>!, please check and make sure that you have correctly typed everything.</p>
+<p>Typos are a common error, whether it’s in the object name or the function name. In this example, we accidentally used the package name, instead of the name of the data from within the package. When you see the error message <span style="color: red;">“Error: object ‘_____’ not found”</span>, please check and make sure that everything is inputted correctly and the relevant packages are loaded in.</p>
 </section>
 <section id="what-if-we-cannot-find-the-function" class="level2">
 <h2 class="anchored" data-anchor-id="what-if-we-cannot-find-the-function">What if we cannot find the function?!</h2>
@@ -1129,11 +1240,10 @@ str(cars)
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-3");
   const editorDiv = document.getElementById("qwebr-editor-3");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-3");
-  const webrCode = `# One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset 
-# Instead of the base R function of checking structure for your dataset, let's use tidyverse function glance to do that. 
+  const webrCode = `# Let's try to have a look at the structure of the penguins dataset
+# Instead of the base R function of checking structure for your dataset, let's use dplyr function glance to do that. 
 
-glimpse(cars)
+glimpse(penguins)
   `
 
   // Load the Monaco Editor and create an instance
@@ -1408,11 +1518,10 @@ check_answer(r"(` + editor.getValue() + `)")`
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`# One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset 
-# Instead of the base R function of checking structure for your dataset, let's use tidyverse function glance to do that. 
+    editor.setValue(`# Let's try to have a look at the structure of the penguins dataset
+# Instead of the base R function of checking structure for your dataset, let's use dplyr function glance to do that. 
 
-glimpse(cars)
+glimpse(penguins)
   `);
   };
   
@@ -1420,9 +1529,9 @@ glimpse(cars)
     editor.setValue(webrCode);
   };
 </script>
-<p>Oh no, we could not find the function of <code>glance()</code>! We made sure that the spelling is correct, what could be the problem now?</p>
-<p>When you see the error messages says that <span style="color: red;">“Error: could not find function”something” “errors</span>!,it normally means that the required package hasn’t been loaded to the environment.</p>
-<p>Let’s try add in the required package <code>tidyverse</code></p>
+<p>Oh no, we could not find the function of <code>glimpse()</code>! We’ve checked the spelling, so what could be the problem now?</p>
+<p>When you see the error message <span style="color: red;">“Error: could not find function”_____”</span>, it usually means the required package hasn’t been loaded into environment.</p>
+<p>Let’s try add in the required package <code>dplyr</code></p>
 <div id="qwebr-interactive-area-4" class="qwebr-interactive-area">
   <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-4">🟡 Loading
     webR...</button>
@@ -1447,12 +1556,12 @@ glimpse(cars)
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-4");
   const editorDiv = document.getElementById("qwebr-editor-4");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-4");
-  const webrCode = `# One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset 
-# Instead of the base R function of checking structure for your dataset, let's use tidyverse function glance to do that. 
+  const webrCode = `
+# Let's try to have a look at the structure of the penguins dataset 
+# Instead of the base R function of checking structure for your dataset, let's use dplyr function glimpse to do that. 
 
 library(___)
-glimpse(cars)
+glimpse(penguins)
   `
 
   // Load the Monaco Editor and create an instance
@@ -1720,6 +1829,10 @@ glimpse(cars)
     executeCode(
 `teachr_tests <- function(.code, .printed, .errored, .warned) {
   
+  c(
+  "Did you load in the dplyr package in library()?" = !search_ast(.code, .expr = library(dplyr)
+)
+
   
 }
 check_answer(r"(` + editor.getValue() + `)")`
@@ -1727,12 +1840,12 @@ check_answer(r"(` + editor.getValue() + `)")`
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`# One of the r built-in dataset is called "cars"
-# Let's try to have a look at the structure of the cars dataset 
-# Instead of the base R function of checking structure for your dataset, let's use tidyverse function glance to do that. 
+    editor.setValue(`
+# Let's try to have a look at the structure of the penguins dataset 
+# Instead of the base R function of checking structure for your dataset, let's use dplyr function glimpse to do that. 
 
-library(tidyverse)
-glimpse(cars)
+library(dplyr)
+glimpse(penguins)
   `);
   };
   
@@ -1740,9 +1853,897 @@ glimpse(cars)
     editor.setValue(webrCode);
   };
 </script>
-
-
+<p>Sometimes, reading the error message can be a bit tricky. If you’re not sure what the error message is trying to tell you, don’t worry! We’ll cover some other strategies.</p>
 </section>
+<section id="search-the-message" class="level2">
+<h2 class="anchored" data-anchor-id="search-the-message">Search the message 🔎</h2>
+<p><strong>Often,</strong> error messages can be confusing, and even after carefully reading the message it may be difficult to ascertain what the problem is.</p>
+<p>Chances are you’re not the first person to encounter this problem and there’s a well explained solution waiting for you on the internet - you just need to find it.</p>
+<p>Take this <a href="https://www.youtube.com/watch?v=vgYS-F8opgE">notoriously confusing error</a> for example. In this code, I want to see the first few values of my <code>sample</code> object. Try running the code below:</p>
+<div id="qwebr-interactive-area-5" class="qwebr-interactive-area">
+  <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-5">🟡 Loading
+    webR...</button>
+  <button class="btn btn-default qwebr-button qwebr-button-check" disabled="" type="button" id="qwebr-button-check-5">💡 Check answer</button>
+  <button class="btn btn-default qwebr-button qwebr-button-solve" type="button" id="qwebr-button-solve-5">✅ Show solution</button>
+  <button class="btn btn-default qwebr-button qwebr-button-reset" type="button" id="qwebr-button-reset-5">💥 Reset code</button>
+  <div id="qwebr-console-area-5" class="qwebr-console-area">
+    <div id="qwebr-editor-5" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-5" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
+  </div>
+  <div id="qwebr-output-graph-area-5" class="qwebr-output-graph-area">
+  </div>
+</div>
+<script type="module">
+  // Retrieve webR code cell information
+  const runButton = document.getElementById("qwebr-button-run-5");
+  const checkButton = document.getElementById("qwebr-button-check-5");
+  const solveButton = document.getElementById("qwebr-button-solve-5");
+  const resetButton = document.getElementById("qwebr-button-reset-5");
+  const outputCodeDiv = document.getElementById("qwebr-output-code-area-5");
+  const editorDiv = document.getElementById("qwebr-editor-5");
+  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-5");
+  const webrCode = `
+sample[1:3]
+  `
+
+  // Load the Monaco Editor and create an instance
+  let editor;
+  require(['vs/editor/editor.main'], function () {
+    editor = monaco.editor.create(editorDiv, {
+      value: webrCode,
+      language: 'r',
+      theme: 'vs-light',
+      automaticLayout: true,           // TODO: Could be problematic for slide decks
+      scrollBeyondLastLine: false,
+      minimap: {
+        enabled: false
+      },
+      fontSize: '17.5pt',               // Bootstrap is 1 rem
+      renderLineHighlight: "none",     // Disable current line highlighting
+      hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
+    });
+
+    // Dynamically modify the height of the editor window if new lines are added.
+    let ignoreEvent = false;
+    const updateHeight = () => {
+      const contentHeight = editor.getContentHeight();
+      // We're avoiding a width change
+      //editorDiv.style.width = `${width}px`;
+      editorDiv.style.height = `${contentHeight}px`;
+      try {
+        ignoreEvent = true;
+
+        // The key to resizing is this call
+        editor.layout();
+      } finally {
+        ignoreEvent = false;
+      }
+    };
+
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        executeCode(editor.getValue());
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          executeCode(currentLine);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          executeCode(selectedText);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
+    // Register an on change event for when new code is added to the editor window
+    editor.onDidContentSizeChange(updateHeight);
+
+    // Manually re-update height to account for the content we inserted into the call
+    updateHeight();
+  });
+
+  // Function to execute the code (accepts code as an argument)
+  async function executeCode(codeToRun) {
+
+    // Disallowing execution of other code cells
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = true;
+    });
+
+    // Create a canvas variable for graphics
+    let canvas = undefined;
+
+    // Create a pager variable for help/file contents
+    let pager = [];
+
+    // Process 
+    async function parseTypePager(msg) { 
+
+        // Split out the event data
+        const { path, title, deleteFile } = msg.data; 
+
+        // Process the pager data by reading the information from disk
+        const paged_data = await webR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+            content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+        });
+
+        // Unlink file if needed
+        if (deleteFile) { 
+          await webR.FS.unlink(path); 
+        } 
+
+        // Return extracted data with spaces
+        return paged_data;
+    } 
+
+    // Initialize webR
+    await webR.init();
+
+    // Setup a webR canvas by making a namespace call into the {webr} package
+    await webR.evalRVoid("webr::canvas(width=504, height=360)");
+
+    // Capture output data from evaluating the code
+    const result = await webRCodeShelter.captureR(codeToRun, {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false//,
+      // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
+    });
+
+    // Start attempting to parse the result data
+    try {
+
+      // Stop creating images
+      await webR.evalRVoid("dev.off()");
+
+      // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
+      const out = result.output
+        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
+        .map((evt, index) => {
+          const className = `qwebr-output-code-${evt.type}`;
+          return `<code id="${className}-editor-5-result-${index + 1}" class="${className}">${qwebrEscapeHTMLCharacters(evt.data)}</code>`;
+        })
+        .join("\n");
+
+
+      // Clean the state
+      const msgs = await webR.flush();
+
+      // Output each image event stored
+      msgs.forEach((msg) => {
+        // Determine if old canvas can be used or a new canvas is required.
+        if (msg.type === 'canvas'){
+          // Add image to the current canvas
+          if (msg.data.event === 'canvasImage') {
+            canvas.getContext('2d').drawImage(msg.data.image, 0, 0);
+          } else if (msg.data.event === 'canvasNewPage') {
+            // Generate a new canvas element
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
+            canvas.style.width = "700px";
+            canvas.style.display = "block";
+            canvas.style.margin = "auto";
+          }
+        } 
+      });
+
+      // Use `map` to process the filtered "pager" events asynchronously
+      const pager = await Promise.all(
+        msgs.filter(msg => msg.type === 'pager').map(
+          async (msg) => {
+            return await parseTypePager(msg);
+          }
+        )
+      );
+
+      // Nullify the output area of content
+      outputCodeDiv.innerHTML = "";
+      outputGraphDiv.innerHTML = "";
+
+      // Design an output object for messages
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        // Display results as HTML elements to retain output styling
+        const div = document.createElement("div");
+        div.innerHTML = out;
+        pre.appendChild(div);
+      } else {
+        // If nothing is present, hide the element.
+        pre.style.visibility = "hidden";
+      }
+      outputCodeDiv.appendChild(pre);
+
+      // Place the graphics on the canvas
+      if (canvas) {
+        outputGraphDiv.appendChild(canvas);
+      }
+
+      // Display the pager data
+      if (pager) {
+        // Use the `pre` element to preserve whitespace.
+        pager.forEach((paged_data, index) => {
+          let pre_pager = document.createElement("pre");
+          pre_pager.innerText = paged_data;
+          pre_pager.classList.add("qwebr-output-code-pager");
+          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-5-result-" + (index + 1));
+          outputCodeDiv.appendChild(pre_pager);
+        });
+      }
+    } finally {
+      // Clean up the remaining code
+      webRCodeShelter.purge();
+    }
+
+    // Switch to allowing execution of code
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = false;
+    });
+    
+    // Revert to the initial code cell state
+    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run code</span>';
+    checkButton.innerHTML = '💡 Check answer';
+  }
+
+  // Add a click event listener to the run button
+  runButton.onclick = function () {
+    // Emphasize the active code cell
+    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run code</span>';
+    executeCode(editor.getValue());
+  };
+  
+  checkButton.onclick = function () {
+    // Emphasize the active code cell
+    checkButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Check answer</span>';
+    executeCode(
+`teachr_tests <- function(.code, .printed, .errored, .warned) {
+  
+  
+}
+check_answer(r"(` + editor.getValue() + `)")`
+    );
+  };
+  
+  solveButton.onclick = function () {
+    editor.setValue(`
+sample[1:3]
+  `);
+  };
+  
+  resetButton.onclick = function () {
+    editor.setValue(webrCode);
+  };
+</script>
+<p><span style="color: red;">“Error: object of type ‘closure’ is not subsettable”</span></p>
+<p>What is a <em>‘closure’</em>? Why can’t I subset my data with <code>x[1:3]</code>?</p>
+<p>When confronted with an error you’ve never seen, and don’t understand - search the web! Just copy the error exactly, “object of type ‘closure’ is not subsettable”, add some relevant keywords like “R” and search!</p>
+<p>With some luck, you’ll be met with a series of StackOverflow threads, blog posts and other websites explaining the solution to the exact problem you’re facing. Here’s my top 3 search results:</p>
+<ul>
+<li><a href="https://coolbutuseless.github.io/2019/02/12/object-of-type-closure-is-not-subsettable/" class="uri">https://coolbutuseless.github.io/2019/02/12/object-of-type-closure-is-not-subsettable/</a></li>
+<li><a href="https://stackoverflow.com/questions/11308367/error-in-my-code-object-of-type-closure-is-not-subsettable" class="uri">https://stackoverflow.com/questions/11308367/error-in-my-code-object-of-type-closure-is-not-subsettable</a></li>
+<li><a href="https://www.r-bloggers.com/2019/02/object-of-type-closure-is-not-subsettable/" class="uri">https://www.r-bloggers.com/2019/02/object-of-type-closure-is-not-subsettable/</a></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tips for searching errors online
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>1.</strong> Add double quotes around the error message. This searches for those exact words in that exact order.</p>
+<p><strong>2.</strong> For long error messages, just search for the unique sounding parts (don’t include parts specific to your code, like a variable name)</p>
+<p><strong>3.</strong> Add keywords to describe your code’s language, like ‘R’.</p>
+<p><strong>4.</strong> If you’re looking for solutions on a specific website, add <code>site:&lt;domain&gt;</code> to the search. For example, <code>site:stackoverflow.com</code>.</p>
+</div>
+</div>
+</section>
+<section id="divide-and-conquer" class="level2">
+<h2 class="anchored" data-anchor-id="divide-and-conquer">Divide and conquer 💪</h2>
+<p>If you understand the message, but have no idea where the problem stems from - try running smaller sections of your code to see if that small section causes the error. Once you identify the small section of code causing the error, it should be slightly easier to find the issue in your code.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Running into this issue often?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you frequently use this strategy, it may indicate a code styling issue. Consider breaking your code into smaller pieces instead of trying to do everything in one line. For tips on good coding practices, see <a href="https://www.youtube.com/watch?v=7oyiPBjLAWY">Jenny Bryan’s presentation ’Code Smells and Feels</a>.</p>
+</div>
+</div>
+</section>
+<section id="turn-it-off-and-on-again" class="level2">
+<h2 class="anchored" data-anchor-id="turn-it-off-and-on-again">Turn it off and on again 🔄</h2>
+<p>The age old classic (but sometimes it really does work!).</p>
+<p>In R, you don’t necessarily need to restart your <em>whole</em> computer, but instead you can try restarting RStudio, or your R session. Usually I would restart R, which can be done in RStudio</p>
+<p>This can be done in two ways:</p>
+<ol type="1">
+<li>‘Session’ on the top menu bar, then ‘Restart R’</li>
+<li><code>Ctrl + Shift + F10</code> (Windows) or <code>Cmd + Shift + F10</code> (Mac)</li>
+</ol>
+<p>There are a few reasons why this can work. It allows you to re-run your code from a clean slate, with no extra packages loaded that you haven’t asked for and no extra objects in your environment.</p>
+</section>
+</section>
+<section id="asking-for-help" class="level1">
+<h1>Asking for help</h1>
+<p>Once you’ve carefully read the error, searched the web, and tried everything else you can think of, it’s time to ask for help. However for a stranger to take time out of their day to find the solution and write a good answer for you, you better have written a good question for them!</p>
+<div style="text-align: center;">
+<p><img src="images/bad_question.png" alt="Bad Question" width="600"></p>
+</div>
+<p>Read ahead to find out why this is an example of a <strong>bad question</strong>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Good Questions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A <strong>good question</strong> consists of a <strong>clear and concise</strong> description of your problem, and a <strong>small example</strong> that can be used to reproduce the issue.</p>
+</div>
+</div>
+<section id="describe-the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="describe-the-problem">Describe the problem</h2>
+<p>A good description provides some context to your question. When writing your question, think about what you are trying to achieve.</p>
+<p>Instead of writing generic phrases like “it doesn’t work” or “it shows errors,” provide more detailed information about your issue.</p>
+<ul>
+<li><p>Clearly state your goal and the expected output.</p></li>
+<li><p>Include the exact wording of any error messages you receive.</p></li>
+<li><p>Use a descriptive title that summarises your problem succinctly.</p></li>
+</ul>
+</section>
+<section id="provide-a-minimal-reproducible-example" class="level2">
+<h2 class="anchored" data-anchor-id="provide-a-minimal-reproducible-example">Provide a minimal reproducible example</h2>
+<p>A minimal reproducible example is the smallest amount of code that still produces the error. This step is so important that we’ve dedicated an entire section to writing good examples. An example allows the person helping you to quickly understand the issue you are facing, and make changes directly to your example to demonstrate the solution.</p>
+<p>The process of creating an example, and reducing it down into the minimal amount of code you can to produce the error, often results in you finding the solution yourself.</p>
+</section>
+<section id="where-to-ask-for-help" class="level2">
+<h2 class="anchored" data-anchor-id="where-to-ask-for-help">Where to ask for help</h2>
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td><a href="https://stackoverflow.com/questions/tagged/rstudio"><strong>Stack Overflow.</strong></a></td>
+<td>This is a platform where you can search for solutions and ask for help. Before asking a question on Stack Overflow, you can search some key words from your understanding of error messages. It is likely that people have already asked similar questions related to your error and you can try the solutions provided by others under the question.</td>
+</tr>
+<tr class="even">
+<td><a href="https://forum.posit.co/"><strong>RStudio Community.</strong></a></td>
+<td>This is a community channel for RStudio users. Similar to Stack Overflow, you can ask questions and also find solutions.</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/"><strong>GitHub.</strong></a></td>
+<td><p>If you’ve thoroughly investigated your error and believe the issue lies in the package rather than your code, you can contact the package’s developer. Most R packages are open-source and maintained on Github.</p>
+<p>1. Search for the package’s repository using its name along with “R” and “GitHub”.</p>
+<p>2. Use the “Issues” tab to report your problem.</p>
+<p>3. Make sure to check if the issue has already been reported before creating a new one.</p></td>
+</tr>
+<tr class="even">
+<td><strong>Discussion Forum on Moodle or</strong> <a href="http://edstem.org"><strong>Ed.</strong></a></td>
+<td><p>If you’re preparing for your Monash University course, a good place to ask for help is the discussion forum on Moodle. You can also seek assistance from your lecturers and tutors.</p>
+<ul>
+<li>If your unit uses Ed as a discussion space, use it to ask or answer questions. Some units may even allow you to post privately or anonymously if you feel shy posting publicly.</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><strong>Trusty (sometimes) AI.</strong></td>
+<td>There are many AI tools that can help you write code, and some can even help you debug it. However, AI should be used with caution. While it can assist in troubleshooting errors, it may not always provide the best solution. You should still try to understand what the code is doing and why it’s causing an error to avoid using code from AI which may be producing inaccurate results (despite running without error).</td>
+</tr>
+<tr class="even">
+<td><strong>Teachers and Tutors in Consultations.</strong></td>
+<td><p>Ask your lecturers and tutors for help during consultation sessions, which are available for any content-related difficulties, including debugging code.</p>
+<ul>
+<li>Prepare a small demonstration of your error beforehand to make the session more effective.</li>
+<li>The benefit of these sessions is that we can guide you closer to the solution until you figure it out yourself.</li>
+<li>Don’t be disheartened if your error, which you’ve struggled with for hours, is solved in minutes — we’ve had plenty of practice (also being stuck for hours) troubleshooting these errors.</li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Help and Learn
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Answering questions on the forum can help consolidate your understanding and prepare you for asking and answering questions in other forums such as Stack Overflow.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="minimal-reproducible-examples" class="level1">
+<h1>Minimal Reproducible Examples</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Remember
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A minimally reproducible example (often called an MRE) contains all of the code necessary for someone else to encounter the same error you’re facing.</p>
+</div>
+</div>
+<p>To create one, you need to provide the <strong>exact packages you’re using</strong>, some <strong>data</strong> if needed, and <strong>your code.</strong> A good example is also <strong>minimal</strong>, which means that you’ve taken the time to remove as much unrelated packages, code and data as possible to produce the error.</p>
+<section id="providing-minimal-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="providing-minimal-datasets">Providing minimal datasets</h2>
+<p>If your question involves using a dataset, you will need to provide a small dataset to demonstrate the problem. Often people say that the data is confidential and can’t be provided, but usually the problem isn’t specific to the data you are using. Taking the time to try your code on a different dataset is a good debugging step, and R provides many good datasets to use in these examples built in. You can find a complete list of datasets available to all R users with the <code>data(package = "datasets")</code> function.</p>
+<p>If you do need to use a custom dataset specific to your project, try reducing the size of the dataset before making your example. The error may only occur for some specific rows of your data. Once you’ve narrowed in on the issue, you can convert your minimal data object to code for producing it using the <code>dput()</code> function.</p>
+<p>For example you can use use the below code to provide the first 6 rows of the iris dataset.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dput</span>(<span class="fu">head</span>(iris))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>structure(list(Sepal.Length = c(5.1, 4.9, 4.7, 4.6, 5, 5.4), 
+    Sepal.Width = c(3.5, 3, 3.2, 3.1, 3.6, 3.9), Petal.Length = c(1.4, 
+    1.4, 1.3, 1.5, 1.4, 1.7), Petal.Width = c(0.2, 0.2, 0.2, 
+    0.2, 0.2, 0.4), Species = structure(c(1L, 1L, 1L, 1L, 1L, 
+    1L), levels = c("setosa", "versicolor", "virginica"), class = "factor")), row.names = c(NA, 
+6L), class = "data.frame")</code></pre>
+</div>
+</div>
+<p>Try it yourself! Create a minimal dataset using the <code>dput()</code> function for the <code>penguins</code> dataset.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We want to be putting the <code>penguins</code> data to create a minimal dataset.</p>
+</div>
+</div>
+<div id="qwebr-interactive-area-6" class="qwebr-interactive-area">
+  <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-6">🟡 Loading
+    webR...</button>
+  <button class="btn btn-default qwebr-button qwebr-button-check" disabled="" type="button" id="qwebr-button-check-6">💡 Check answer</button>
+  <button class="btn btn-default qwebr-button qwebr-button-solve" type="button" id="qwebr-button-solve-6">✅ Show solution</button>
+  <button class="btn btn-default qwebr-button qwebr-button-reset" type="button" id="qwebr-button-reset-6">💥 Reset code</button>
+  <div id="qwebr-console-area-6" class="qwebr-console-area">
+    <div id="qwebr-editor-6" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-6" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
+  </div>
+  <div id="qwebr-output-graph-area-6" class="qwebr-output-graph-area">
+  </div>
+</div>
+<script type="module">
+  // Retrieve webR code cell information
+  const runButton = document.getElementById("qwebr-button-run-6");
+  const checkButton = document.getElementById("qwebr-button-check-6");
+  const solveButton = document.getElementById("qwebr-button-solve-6");
+  const resetButton = document.getElementById("qwebr-button-reset-6");
+  const outputCodeDiv = document.getElementById("qwebr-output-code-area-6");
+  const editorDiv = document.getElementById("qwebr-editor-6");
+  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-6");
+  const webrCode = `
+# Load the penguins dataset
+library(palmerpenguins)
+# Use dput() to create a minimal dataset
+___
+  `
+
+  // Load the Monaco Editor and create an instance
+  let editor;
+  require(['vs/editor/editor.main'], function () {
+    editor = monaco.editor.create(editorDiv, {
+      value: webrCode,
+      language: 'r',
+      theme: 'vs-light',
+      automaticLayout: true,           // TODO: Could be problematic for slide decks
+      scrollBeyondLastLine: false,
+      minimap: {
+        enabled: false
+      },
+      fontSize: '17.5pt',               // Bootstrap is 1 rem
+      renderLineHighlight: "none",     // Disable current line highlighting
+      hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
+    });
+
+    // Dynamically modify the height of the editor window if new lines are added.
+    let ignoreEvent = false;
+    const updateHeight = () => {
+      const contentHeight = editor.getContentHeight();
+      // We're avoiding a width change
+      //editorDiv.style.width = `${width}px`;
+      editorDiv.style.height = `${contentHeight}px`;
+      try {
+        ignoreEvent = true;
+
+        // The key to resizing is this call
+        editor.layout();
+      } finally {
+        ignoreEvent = false;
+      }
+    };
+
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        executeCode(editor.getValue());
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          executeCode(currentLine);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          executeCode(selectedText);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
+    // Register an on change event for when new code is added to the editor window
+    editor.onDidContentSizeChange(updateHeight);
+
+    // Manually re-update height to account for the content we inserted into the call
+    updateHeight();
+  });
+
+  // Function to execute the code (accepts code as an argument)
+  async function executeCode(codeToRun) {
+
+    // Disallowing execution of other code cells
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = true;
+    });
+
+    // Create a canvas variable for graphics
+    let canvas = undefined;
+
+    // Create a pager variable for help/file contents
+    let pager = [];
+
+    // Process 
+    async function parseTypePager(msg) { 
+
+        // Split out the event data
+        const { path, title, deleteFile } = msg.data; 
+
+        // Process the pager data by reading the information from disk
+        const paged_data = await webR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+            content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+        });
+
+        // Unlink file if needed
+        if (deleteFile) { 
+          await webR.FS.unlink(path); 
+        } 
+
+        // Return extracted data with spaces
+        return paged_data;
+    } 
+
+    // Initialize webR
+    await webR.init();
+
+    // Setup a webR canvas by making a namespace call into the {webr} package
+    await webR.evalRVoid("webr::canvas(width=504, height=360)");
+
+    // Capture output data from evaluating the code
+    const result = await webRCodeShelter.captureR(codeToRun, {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false//,
+      // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
+    });
+
+    // Start attempting to parse the result data
+    try {
+
+      // Stop creating images
+      await webR.evalRVoid("dev.off()");
+
+      // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
+      const out = result.output
+        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
+        .map((evt, index) => {
+          const className = `qwebr-output-code-${evt.type}`;
+          return `<code id="${className}-editor-6-result-${index + 1}" class="${className}">${qwebrEscapeHTMLCharacters(evt.data)}</code>`;
+        })
+        .join("\n");
+
+
+      // Clean the state
+      const msgs = await webR.flush();
+
+      // Output each image event stored
+      msgs.forEach((msg) => {
+        // Determine if old canvas can be used or a new canvas is required.
+        if (msg.type === 'canvas'){
+          // Add image to the current canvas
+          if (msg.data.event === 'canvasImage') {
+            canvas.getContext('2d').drawImage(msg.data.image, 0, 0);
+          } else if (msg.data.event === 'canvasNewPage') {
+            // Generate a new canvas element
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
+            canvas.style.width = "700px";
+            canvas.style.display = "block";
+            canvas.style.margin = "auto";
+          }
+        } 
+      });
+
+      // Use `map` to process the filtered "pager" events asynchronously
+      const pager = await Promise.all(
+        msgs.filter(msg => msg.type === 'pager').map(
+          async (msg) => {
+            return await parseTypePager(msg);
+          }
+        )
+      );
+
+      // Nullify the output area of content
+      outputCodeDiv.innerHTML = "";
+      outputGraphDiv.innerHTML = "";
+
+      // Design an output object for messages
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        // Display results as HTML elements to retain output styling
+        const div = document.createElement("div");
+        div.innerHTML = out;
+        pre.appendChild(div);
+      } else {
+        // If nothing is present, hide the element.
+        pre.style.visibility = "hidden";
+      }
+      outputCodeDiv.appendChild(pre);
+
+      // Place the graphics on the canvas
+      if (canvas) {
+        outputGraphDiv.appendChild(canvas);
+      }
+
+      // Display the pager data
+      if (pager) {
+        // Use the `pre` element to preserve whitespace.
+        pager.forEach((paged_data, index) => {
+          let pre_pager = document.createElement("pre");
+          pre_pager.innerText = paged_data;
+          pre_pager.classList.add("qwebr-output-code-pager");
+          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-6-result-" + (index + 1));
+          outputCodeDiv.appendChild(pre_pager);
+        });
+      }
+    } finally {
+      // Clean up the remaining code
+      webRCodeShelter.purge();
+    }
+
+    // Switch to allowing execution of code
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = false;
+    });
+    
+    // Revert to the initial code cell state
+    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run code</span>';
+    checkButton.innerHTML = '💡 Check answer';
+  }
+
+  // Add a click event listener to the run button
+  runButton.onclick = function () {
+    // Emphasize the active code cell
+    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run code</span>';
+    executeCode(editor.getValue());
+  };
+  
+  checkButton.onclick = function () {
+    // Emphasize the active code cell
+    checkButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Check answer</span>';
+    executeCode(
+`teachr_tests <- function(.code, .printed, .errored, .warned) {
+  
+c("Did you use dput() with head(penguins)?" =  !search_ast(.code, .expr = dput(head(penguins))))
+
+}
+check_answer(r"(` + editor.getValue() + `)")`
+    );
+  };
+  
+  solveButton.onclick = function () {
+    editor.setValue(`
+# Load the penguins dataset
+library(palmerpenguins)
+# Use dput() to create a minimal dataset
+dput(head(penguins))
+  `);
+  };
+  
+  resetButton.onclick = function () {
+    editor.setValue(webrCode);
+  };
+</script>
+<p>You can then copy this generated code, and make it part of your example to create your example data.</p>
+<p>Alternatively you can save this minimal dataset to a file, and attach the file in your question.</p>
+<p>When you read that file in, make sure you avoid absolute paths to it. Not everyone has the same file structure as you, so they won’t be able to access your dataset if it is stored at <code>/home/learnr/Documents/My Job/project_2040/data/housing_prices.csv</code>. Instead provide a short relative oath, such as <code>housing_prices.csv</code> or <code>data/housing_prices.csv</code>. If you’re uploading files, it’s also nice to provide a zip that contains a R script of your minimal reproducible code, along with the data in the folders referenced by the script.</p>
+<p>– potentially a multiple choice question here on relative paths? —</p>
+</section>
+<section id="create-minimal-reproducible-examples" class="level2">
+<h2 class="anchored" data-anchor-id="create-minimal-reproducible-examples">Create minimal reproducible examples</h2>
+<p>As part of a data analysis you probably write a lot of code. You need to read in the data, tidy it up, run some calculations and make some plots. When you run into an error, providing your entire analysis just makes it more time consuming for helpers to run your code and identify the source of the error.</p>
+<p>A <em>minimal</em> reproducible example cuts out as much of the code as possible, keeping just a few essential lines for producing the error. If your error comes after the data cleaning, remove that code and start with a clean, minimal dataset.</p>
+<p>If your code includes any randomisation, it’s a good idea to set the random seed using the <code>set.seed()</code> function. This ensures that each time the code is ran, the same random results are obtained.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Reproducing random results
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>set.seed()</code> function in R ensures reproducible results in code involving random values. It guarantees the same random values are produced each time you run the code, aiding in debugging and consistency. The number in the brackets can be any integer.</p>
+</div>
+</div>
+<p>The process of cleaning up your code and reducing it down into a small example is another great exercise that often helps you identify the problem and fix it yourself.</p>
+<p>Remember, you need to provide <strong>all code necessary</strong> to <strong>load in packages you use</strong>, <strong>read in data</strong> and <strong>run functions</strong> that cause the error.</p>
+</section>
+<section id="provide-session-information" class="level2">
+<h2 class="anchored" data-anchor-id="provide-session-information">Provide session information</h2>
+<p>Sometimes the error is specific to the version of R, or the packages you are using. To help others help you, you can provide the session information using the <code>sessioninfo::sessionInfo()</code> function. This will print out the version of R you are using, and the versions of the packages you have loaded, which makes it easier to fix some version, language or OS specific problems. A good reproducible example should come with this session information output.</p>
+</section>
+<section id="using-the-reprex-package-for-producing-examples" class="level2">
+<h2 class="anchored" data-anchor-id="using-the-reprex-package-for-producing-examples">Using the <code>reprex</code> package for producing examples</h2>
+<p>the <a href="https://reprex.tidyverse.org/"><code>reprex</code></a> package is a useful tool that can help you make a reproducible example. It can be used to run the code in your example in a clean environment, which is a good way to test if you’ve included everything necessary for others to reproduce the error. It’ll also copy a neatly formatted version of your example which will also display in your <strong>Viewer</strong> window and includes images and console output from the example as it runs on your computer. It can even include a collapsible summary of your session information.</p>
+<p>To use <code>reprex</code>:</p>
+<ol type="1">
+<li>Install it from CRAN using <code>install.packages("reprex")</code>.</li>
+<li>Once installed, load in the reprex package using <code>library(reprex)</code></li>
+<li>You can use the <code>reprex()</code> function to create a reproducible example.</li>
+</ol>
+<p>You can also use the <code>reprex()</code> function in RStudio by selecting the code you want to include in the example, and clicking the “Reprex” button in the Addins menu.</p>
+<div class="image-container">
+    <img src="images/addin_reprex.png" width="260">
+    <img src="images/popup_reprex.png" width="385">
+</div>
+<p>After clicking <code>Render reprex...</code> in the Addins menu, a new window will pop up with the reprex output (left image). As you’ve copied the example, you can use the ‘on the clipboard’ source. Choose a venue for where you’re planning to post the question, and tick ‘Append session info’. Finally, press <strong>Render</strong> to run the code and see if it’s reproducible.</p>
+<p>View this <a href="https://www.youtube.com/watch?v=35suhGR53wQ">short clip</a> to see how to use the <code>reprex</code> package.</p>
+</section>
+</section>
+<section id="asking-for-help-checklist" class="level1">
+<h1>Asking for help checklist ☑️</h1>
+<p>This is <strong>not an exhaustive check-list.</strong> What needs to be included and checked is very question specific, but this checklist should apply to most questions.</p>
+<ul class="task-list">
+<li><label><input type="checkbox">Is the problem <span class="highlight"><strong>clearly</strong></span> and <span class="highlight"><strong>succinctly described?</strong></span></label></li>
+<li><label><input type="checkbox">Is the <span class="highlight"><strong>expected solution or behaviour</strong></span> outlined?</label></li>
+<li><label><input type="checkbox">Has <span class="highlight"><strong>nobody asked this question</strong></span> before? (Search the web!)</label></li>
+<li><label><input type="checkbox">Are you asking the <span class="highlight"><strong>right people</strong></span> at the <span class="highlight"><strong>right place?</strong></span></label></li>
+<li><label><input type="checkbox">Have you added <span class="highlight"><strong>appropriate tags</strong></span> or <span class="highlight"><strong>keywords</strong></span> to reach the right experts?</label></li>
+<li><label><input type="checkbox">Have you prepared your example using the <span class="highlight"><strong>reprex package</strong></span> to ensure the problem is easily reproduced on other computers?</label></li>
+<li><label><input type="checkbox">Have you <span class="highlight"><strong>minimised your problem</strong></span> as much as possible, <span class="highlight"><strong>removing irrelevant packages, data and code</strong></span>?</label></li>
+</ul>
+<p><strong>If your questions involve a dataset</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox">Is the data supplied</label></li>
+<li><label><input type="checkbox">If the data is big, <span class="highlight"><strong>could you cull your data further</strong></span> to communicate or reproduce the problem?</label></li>
+</ul>
+
+
 </section>
 
 </main> <!-- /main -->
@@ -1781,18 +2782,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1824,7 +2814,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/numbats\.github\.io\/monash-learnr-modules\/");
@@ -1832,7 +2844,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
