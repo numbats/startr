@@ -1,0 +1,23 @@
+<ul class="track-list-container">
+  <% for (const item of items) { %>
+  <li class="track-list-item">
+    <a style="
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+  " class="track-list-title" href="<%- item.path %>">
+      <%= item.title %>
+      </a>
+    <span class="track-list-desc"> <%= item.description %></span>
+    <span>
+      <img 
+        src="assets/schedule-icon.svg" 
+        style="filter: brightness(0%)" 
+      />
+      <span class="track-list-time" style="font-weight: bold;"> 
+        <%= item.time %>
+      </span> <span class="<%- item.difficulty == 'Beginner' ? 'beginner': item.difficulty == 'Intermediate' ? 'intermediate' : 'advanced' %>"> <% for (const i in Array(3).fill(0)) { %> <span></span> <% } %> </span> <span class="track-list-diff"> <%= item.difficulty %> </span> 
+    </span>
+  </li>
+  <% } %>
+</ul>

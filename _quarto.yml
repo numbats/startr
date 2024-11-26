@@ -1,2 +1,17 @@
 project:
   type: website
+  preview:
+    port: 4200
+    browser: false
+
+website:
+  navbar:
+    title: "Stats Code"
+    search: false
+    right:
+      - text: "Courses"
+        href: track.qmd
+      - text: "Contribute"
+        href: contribute.qmd
+      - text: "About"
+        href: about.qmd

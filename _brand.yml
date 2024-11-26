@@ -1,0 +1,44 @@
+meta:
+  name:
+    short: statscode
+    full: Stats Code
+
+color:
+  palette:
+    main: "#006CAB"
+    alt: "#231F20"
+    # l1 indicates lighter by 1 step
+    # d1 indicates darker by 1 step
+    neutral_dark_l1: "#666768"
+    neutral_dark: "#423F40"
+    neutral_light_l1: "#EEF1F2"
+    neutral_light: "#D1D3D4"
+    neutral_light_d1: "#939598"
+    trans_white: "#FFFFFF00"
+    white: "#FFF"
+    black: "#000"
+
+  foreground: alt
+  background: "#FFFFFF"
+  primary: main
+  secondary: alt
+  tertiary: neutral_dark
+
+  success: "#72994E"
+  info: "#419599"
+  warning: "#EE6331"
+  danger: "#9A4665"
+  light: neutral_light_l1
+  dark: neutral_dark
+
+typography:
+  fonts:
+    - family: DM Sans
+      source: google
+    - family: Josefin Sans
+      source: google
+    - family: Fira Code
+      source: google
+  base: DM Sans
+  headings: Josefin Sans
+  monospace: Fira Code
