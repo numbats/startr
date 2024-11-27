@@ -67,6 +67,27 @@
     "href": "index.html",
     "title": "Monash EBS LearnR modules",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nTitle\n\n\nCategories\n\n\n\n\n\n\nR programming basics\n\n\n \n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\nCategories\n\n\n\n\n\n\nR programming basics\n\n\nundefined\n\n\n\n\nTroubleshooting and asking for help\n\n\nundefined\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "modules/debugging/index.html",
+    "href": "modules/debugging/index.html",
+    "title": "Troubleshooting and asking for help",
+    "section": "",
+    "text": "Eek! There’s a bug   in my code and it’s causing lots of scary red errors!\nDon’t panic - believe it or not, this error is just trying to help you! It also may have just saved you from invalid results that you may not have have noticed.\nErrors can be frustrating, essentially you’ve just asked the computer to do something and it has said no!\nThere are a few troubleshooting techniques that we can use to find the source of the error, modify your code, and get the results you’re looking for."
+  },
+  {
+    "objectID": "modules/debugging/index.html#lets-have-a-look-one-of-the-most-common-error-message",
+    "href": "modules/debugging/index.html#lets-have-a-look-one-of-the-most-common-error-message",
+    "title": "Troubleshooting and asking for help",
+    "section": "Let’s have a look one of the most common error message",
+    "text": "Let’s have a look one of the most common error message\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code\n  \n    \n    \n      \n    \n  \n  \n  \n\n\nOh no! An error message: “Error: object ‘car’ not found”errors!\nWhen the error message says that “Error: object ‘something’ not found”errors!, this is often the case that there might be a typo or you didn’t load the object loaded in correctly. Let’s see how we could fix this.\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code\n  \n    \n    \n      \n    \n  \n  \n  \n\n\nTypo is a very common error that you could make. This could be a miss-type of the object name or miss-type of function name. When you see error messages suggesting “Error: object ‘something’ not found”errors!, please check and make sure that you have correctly typed everything."
+  },
+  {
+    "objectID": "modules/debugging/index.html#what-if-we-cannot-find-the-function",
+    "href": "modules/debugging/index.html#what-if-we-cannot-find-the-function",
+    "title": "Troubleshooting and asking for help",
+    "section": "What if we cannot find the function?!",
+    "text": "What if we cannot find the function?!\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code\n  \n    \n    \n      \n    \n  \n  \n  \n\n\nOh no, we could not find the function of glance()! We made sure that the spelling is correct, what could be the problem now?\nWhen you see the error messages says that “Error: could not find function”something” “errors!,it normally means that the required package hasn’t been loaded to the environment.\nLet’s try add in the required package tidyverse\n\n  🟡 Loading\n    webR...\n  💡 Check answer\n  ✅ Show solution\n  💥 Reset code"
   }
 ]
