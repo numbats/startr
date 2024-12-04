@@ -10,8 +10,13 @@ website:
     search: false
     right:
       - text: "Courses"
-        href: track.qmd
+        href: index.qmd
       - text: "Contribute"
         href: contribute.qmd
       - text: "About"
         href: about.qmd
+format:
+  html:
+    theme:
+      - default
+      - styles/main.scss
