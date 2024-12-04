@@ -37,8 +37,8 @@ typography:
       source: google
     - family: Josefin Sans
       source: google
-    - family: Fira Code
+    - family: DM Mono
       source: google
   base: DM Sans
   headings: Josefin Sans
-  monospace: Fira Code
+  monospace: DM Mono
