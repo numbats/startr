@@ -8,6 +8,8 @@ filters:
 execute: 
   echo: true
   eval: true
+difficulty: "Beginner"
+time: "10 minutes"
 ---
 
 # File types and importing function

@@ -10,6 +10,8 @@ filters:
     - webr-teachr
 webr:
     packages: [palmerpenguins, rlang, dplyr, tidyr]
+difficulty: "Beginner"
+time: "30 minutes"
 ---
 
 ```{r}

@@ -11,6 +11,8 @@ format:
   html:
     toc: true
     css: style.css
+difficulty: "Advanced"
+time: "1 hour"
 ---
 
 ```{r setup, include = FALSE}

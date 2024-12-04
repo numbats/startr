@@ -5,10 +5,32 @@ title-block-banner: yes
 engine: knitr
 filters:
   - webr-teachr
+webr:
+  show-startup-message: true
 editor: 
   markdown: 
     wrap: 72
+difficulty: "Beginner"
+time: "20 minutes"
+format:
+  html:
+    theme:
+      - default
+      - ../../styles/module.scss
 ---
+
+:::{.webr-area}
+
+:::{#qwebr-status-message-area}
+:::
+
+:::{#qwebr-status-message-title}
+:::
+
+:::{#qwebr-status-message-body}
+:::
+
+:::
 
 # Arithmetic and Variable Assignment
 

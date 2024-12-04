@@ -11,6 +11,8 @@ css: style.css
 format:
   html:
     toc: true
+difficulty: "Beginner"
+time: "30 minutes"
 ---
 
 ::: {.alert .alert-block .alert-warning}

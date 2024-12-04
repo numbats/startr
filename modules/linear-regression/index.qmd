@@ -7,6 +7,8 @@ filters:
   - webr-teachr
 webr:
   packages: ['ggplot2']
+difficulty: "Intermediate"
+time: "40 minutes"
 ---
 
 # Simple linear regression
