@@ -1,5 +1,5 @@
 ---
-title: "Monash EBS LearnR modules"
+title: "Courses"
 listing:
   - id: monash
     contents: modules
@@ -17,7 +17,7 @@ format:
 ```{=html}
 <input type="checkbox" class = "track-chkbox">
 <div class="track-header-card">
-  <span> Courses </span>
+  <span> Monash EBS LearnR Modules </span>
   <i></i>
 </div>
 ```
