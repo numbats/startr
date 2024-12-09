@@ -8,7 +8,7 @@
   " class="track-list-title" href="<%- item.path %>">
       <%= item.title %>
       </a>
-    <span class="track-list-desc"> <%= item.description %></span>
+    <span class="track-list-desc"> <%= item.subtitle.length  > 256 ? item.subtitle.substring(0, 256) + "..." : item.subtitle %></span>
     <span>
       <img 
         src="assets/schedule-icon.svg" 
