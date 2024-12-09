@@ -16,21 +16,11 @@ format:
   html:
     theme:
       - default
-      - ../../styles/module.scss
+      - ../../styles/lesson.scss
+    toc: true
+    toc-level: 2
+    toc-location: left
 ---
-
-:::{.webr-area}
-
-:::{#qwebr-status-message-area}
-:::
-
-:::{#qwebr-status-message-title}
-:::
-
-:::{#qwebr-status-message-body}
-:::
-
-:::
 
 # Arithmetic and Variable Assignment
 

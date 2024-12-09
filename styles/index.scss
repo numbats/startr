@@ -1,4 +1,5 @@
 /*-- scss:defaults --*/
+$card-radius: 0.25em;
 
 /*-- scss:rules --*/
 $difficulty-size: 0.5rem;
@@ -48,7 +49,7 @@ $difficulty-radius: 0.5rem;
 .track-header-card {
   padding: 1em;
   background-color: $brand-main;
-  border-radius: 15px;
+  border-radius: $card-radius;
   color: $brand-white;
 }
 
@@ -61,7 +62,7 @@ $difficulty-radius: 0.5rem;
 .track-list-item {
   padding: 1em;
   background-color: $brand-neutral_light_l1;
-  border-radius: 15px;
+  border-radius: $card-radius;
   list-style-type: none;
   margin-top: 1em;
 }
@@ -71,7 +72,7 @@ $difficulty-radius: 0.5rem;
 }
 
 .track .listing {
-  margin-left: 5rem;
+  margin-left: 1rem;
 }
 
 .track-list-item span {
@@ -88,8 +89,8 @@ $difficulty-radius: 0.5rem;
 
 .track-list-container {
   position: relative;
-  overflow: hidden;
-  max-height: 800px;
+  overflow: scroll;
+  max-height: 90vh;
   opacity: 1;
   transform: translate(0, 0);
   margin-top: 14px;
