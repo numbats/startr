@@ -1,6 +1,0 @@
----
-title: "Monash post 3"
-description: "This chapter will teach you about many cool things about R and RStudio and help you get start with RStudio."
-time: "20 minutes"
-difficulty: "Intermediate"
----
