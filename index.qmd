@@ -1,8 +1,14 @@
 ---
 title: "Courses"
 listing:
-  - id: monash
-    contents: modules
+  - id: starter
+    contents: modules/starter
+    template: partials/track-listing.ejs
+  - id: analysis
+    contents: modules/analysis
+    template: partials/track-listing.ejs
+  - id: writing
+    contents: modules/writing
     template: partials/track-listing.ejs
 format:
   html:
@@ -17,12 +23,46 @@ format:
 ```{=html}
 <input type="checkbox" class = "track-chkbox">
 <div class="track-header-card">
-  <span> Monash EBS LearnR Modules </span>
+  <span> Getting started </span>
   <i></i>
 </div>
 ```
 
-:::{#monash .listing}
+:::{#starter .listing}
+:::
+
+:::
+:::
+
+:::{.track-listing}
+
+:::{.track}
+```{=html}
+<input type="checkbox" class = "track-chkbox">
+<div class="track-header-card">
+  <span> Tidy data analysis </span>
+  <i></i>
+</div>
+```
+
+:::{#analysis .listing}
+:::
+
+:::
+:::
+
+:::{.track-listing}
+
+:::{.track}
+```{=html}
+<input type="checkbox" class = "track-chkbox">
+<div class="track-header-card">
+  <span> Document writing </span>
+  <i></i>
+</div>
+```
+
+:::{#writing .listing}
 :::
 
 :::

@@ -1,0 +1,23 @@
+---
+title: Monash Quarto templates
+subtitle: 'A collection of monash templates for your assignments, projects, papers, and more.'
+title-block-banner: yes
+engine: knitr
+filters:
+  - webr-teachr
+webr:
+  packages: 
+format:
+  html:
+    theme:
+      - default
+      - ../../styles/lesson.scss
+    css: style.css
+    toc: true
+    toc-level: 2
+    toc-location: left
+difficulty: "Beginner"
+time: "30 minutes"
+---
+
+<!-- TODO: Consider expanding scope to non-monash templates -->
