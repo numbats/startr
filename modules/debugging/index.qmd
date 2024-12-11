@@ -9,7 +9,6 @@ webr:
   packages: 
 format:
   html:
-    toc: true
     theme:
       - default
       - ../../styles/lesson.scss

@@ -28,3 +28,12 @@ format:
 :::
 :::
 
+:::{.footer}
+[The team]()
+
+[Contribute]()
+ 
+[About]()
+
+[Built with Quarto]()
+:::
