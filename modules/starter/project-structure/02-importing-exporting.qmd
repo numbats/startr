@@ -11,13 +11,7 @@ execute:
 difficulty: "Beginner"
 time: "10 minutes"
 format:
-  html:
-    theme:
-      - default
-      - ../../styles/lesson.scss
-    toc: true
-    toc-level: 2
-    toc-location: left
+  lesson-html: default
 ---
 
 # File types and importing function

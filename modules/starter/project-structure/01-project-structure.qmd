@@ -10,13 +10,7 @@ execute:
 difficulty: "Beginner"
 time: "20 minutes"
 format:
-  html:
-    theme:
-      - default
-      - ../../styles/lesson.scss
-    toc: true
-    toc-level: 2
-    toc-location: left
+  lesson-html: default
 ---
 
 ```{r}
