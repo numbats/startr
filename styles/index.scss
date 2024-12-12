@@ -215,6 +215,8 @@ $difficulty-radius: 0.5rem;
   margin-right: auto;
   font-size: 0.8rem;
   font-weight: bold;
+  z-index: 4;
+  position: relative;
 }
 
 .footer a {
