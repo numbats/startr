@@ -6,10 +6,18 @@ engine: knitr
 format:
   html:
     from: markdown+emoji
+    theme:
+      - default
+      - ../../styles/lesson.scss
+    toc: true
+    toc-level: 2
+    toc-location: left
 filters:
     - webr-teachr
 webr:
     packages: [palmerpenguins, rlang, dplyr, tidyr]
+difficulty: "Beginner"
+time: "30 minutes"
 ---
 
 ```{r}

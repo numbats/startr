@@ -1,10 +1,39 @@
 ---
-title: "Monash EBS LearnR modules"
-title-block-banner: true
+title: "Courses"
 listing:
-  contents: modules
-  type: table
-  fields: [title, categories]
-  filter-ui: [title]
-  page-size: 100
+  - id: monash
+    contents: modules
+    template: partials/track-listing.ejs
+format:
+  html:
+    theme:
+      - default
+      - styles/index.scss
 ---
+
+:::{.track-listing}
+
+:::{.track}
+```{=html}
+<input type="checkbox" class = "track-chkbox">
+<div class="track-header-card">
+  <span> Monash EBS LearnR Modules </span>
+  <i></i>
+</div>
+```
+
+:::{#monash .listing}
+:::
+
+:::
+:::
+
+:::{.footer}
+[The team](https://github.com/numbats/monash-learnr-modules/graphs/contributors)
+
+[Contribute](https://github.com/numbats/monash-learnr-modules)
+ 
+[About](https://numbat.space/)
+
+[Built with Quarto](https://quarto.org/)
+:::

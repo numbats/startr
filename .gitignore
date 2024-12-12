@@ -44,3 +44,7 @@ Temporary Items
 .RData
 .Ruserdata
 revdep/
+
+
+*_files/
+renv/

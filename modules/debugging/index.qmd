@@ -9,8 +9,15 @@ webr:
   packages: 
 format:
   html:
-    toc: true
+    theme:
+      - default
+      - ../../styles/lesson.scss
     css: style.css
+    toc: true
+    toc-level: 2
+    toc-location: left
+difficulty: "Advanced"
+time: "1 hour"
 ---
 
 ```{r setup, include = FALSE}

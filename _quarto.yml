@@ -1,2 +1,24 @@
 project:
   type: website
+  preview:
+    port: 4200
+    browser: false
+
+website:
+  navbar:
+    title: "Stats Code"
+    search: false
+    right:
+      - text: "Courses"
+        href: index.qmd
+      # Navbar link commented out until 
+      # content for contributing guidelines is ready
+      # - text: "Contribute" 
+      #   href: contribute.qmd
+      - text: "About"
+        href: about.qmd
+format:
+  html:
+    theme:
+      - default
+      - styles/main.scss
