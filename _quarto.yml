@@ -11,8 +11,10 @@ website:
     right:
       - text: "Courses"
         href: index.qmd
-      - text: "Contribute"
-        href: contribute.qmd
+      # Navbar link commented out until 
+      # content for contributing guidelines is ready
+      # - text: "Contribute" 
+      #   href: contribute.qmd
       - text: "About"
         href: about.qmd
 format:

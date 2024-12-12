@@ -29,11 +29,11 @@ format:
 :::
 
 :::{.footer}
-[The team]()
+[The team](https://github.com/numbats/monash-learnr-modules/graphs/contributors)
 
-[Contribute]()
+[Contribute](https://github.com/numbats/monash-learnr-modules)
  
-[About]()
+[About](https://numbat.space/)
 
-[Built with Quarto]()
+[Built with Quarto](https://quarto.org/)
 :::
