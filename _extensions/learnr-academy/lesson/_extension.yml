@@ -1,0 +1,15 @@
+title: Stats Code lesson template
+author: Mitchell O'Hara-Wild
+version: 0.1.0
+contributes:
+  formats:
+    html:
+      from: markdown+emoji
+      theme: [default, lesson.scss]
+      date: today
+      date-format: "D MMMM YYYY"
+      # format-resources:
+      #   - lesson.scss
+      toc: true
+      toc-level: 2
+      toc-location: left
