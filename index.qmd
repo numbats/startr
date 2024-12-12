@@ -1,5 +1,5 @@
 ---
-title: "Courses"
+title: "Monash EBS Modules"
 listing:
   - id: starter
     contents: modules/starter
