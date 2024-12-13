@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2024-12-13">
 
-<title>Monash EBS Modules</title>
+<title>Getting started with R and RStudio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +24,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-b358f982273499bf44fe150d2d5bb68e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-b4b23f8e0e91bb8398fbc0420c67a4bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-b358f982273499bf44fe150d2d5bb68e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-063184aebfab9007d66d79ca7847062f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,132 +67,24 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
+<style>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-starter .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-project','listing-website','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-filters','listing-execute','listing-difficulty','listing-time','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count','listing-webr','listing-editor',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
-      
-      searchColumns: ["listing-project","listing-website","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-filters","listing-execute","listing-difficulty","listing-time","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-webr","listing-editor"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-starter'] = new List('listing-starter', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-analysis .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-project','listing-website','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-filters','listing-webr','listing-difficulty','listing-time','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
-      
-      searchColumns: ["listing-project","listing-website","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-filters","listing-webr","listing-difficulty","listing-time","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-analysis'] = new List('listing-analysis', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-writing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-project','listing-website','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-filters','listing-webr','listing-difficulty','listing-time','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
-      
-      searchColumns: ["listing-project","listing-website","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-filters","listing-webr","listing-difficulty","listing-time","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-writing'] = new List('listing-writing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
+      .quarto-title-block .quarto-title-banner {
+        background: yes;
       }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
+</style>
+
 
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Stats Code</span>
     </a>
   </div>
@@ -204,11 +95,11 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Courses</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -219,159 +110,200 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
-<!-- sidebar -->
-<!-- margin-sidebar -->
-    
-<!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Monash EBS Modules</h1>
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Getting started with R and RStudio</h1>
+            <p class="subtitle lead">This chapter will show you how to install R and RStudio.</p>
+                      </div>
   </div>
+    
   
+  <div class="quarto-title-meta">
 
-
-</header>
-
-
-<div class="track-listing">
-<div class="track">
-<input type="checkbox" class="track-chkbox">
-<div class="track-header-card">
-  <span> Getting started </span>
-  <i></i>
-</div>
-<div id="listing-starter" class="listing quarto-listing quarto-listing-container-custom">
-<ul class="track-list-container">
-<li class="track-list-item">
-<a style="
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/installation/01-installation.html"> Getting started with R and RStudio </a> <span class="track-list-desc"> This chapter will show you how to install R and RStudio.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
-</li>
-<li class="track-list-item">
-<a style="
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/project-structure/02-importing-exporting.html"> Importing and Exporting data file </a> <span class="track-list-desc"> In this topic, you will learn how to import data from different sources, including CSV files, excel files, and files hosted online. You will also learn how to export the data from R</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 10 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
-</li>
-<li class="track-list-item">
-<a style="
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/project-structure/01-project-structure.html"> Project structure </a> <span class="track-list-desc"> In this topic, you will learn about the project structure and how to manage your project in R properly.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
-</li>
-<li class="track-list-item">
-<a style="
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/r-basics/index.html"> R programming basics </a> <span class="track-list-desc"> In this topic you will learn the basic operations of this popular open source language. You will also learn to perform simple algebraic operations on vectors and matrices. You will also learn about data frames, conditional statements, loops, and functions …</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
-</li>
-<li class="track-list-item">
-<a style="
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/rstudio-basics/02-basics.html"> RStudio basics </a> <span class="track-list-desc"> In this chapter, you will learn how to use R and how to use it with RStudio.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
-</li>
-<li class="track-list-item">
-<a style="
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/debugging/index.html"> Troubleshooting and asking for help </a> <span class="track-list-desc"> With coding comes bugs and errors that need troubleshooting. In this chapter, you will learn how to decipher errors, find help for fixing them, and practice asking clear questions with minimally reproducible examples.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 1 hour </span> <span class="advanced"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Advanced </span> </span>
-</li>
-</ul>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div>
-</div>
-</div>
-<div class="track-listing">
-<div class="track">
-<input type="checkbox" class="track-chkbox">
-<div class="track-header-card">
-  <span> Tidy data analysis </span>
-  <i></i>
-</div>
-<div id="listing-analysis" class="listing quarto-listing quarto-listing-container-custom">
-<ul class="track-list-container">
-<li class="track-list-item">
-<a style="
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-  " class="track-list-title" href="./modules/analysis/data-wrangling/index.html"> Data wrangling with R </a> <span class="track-list-desc"> In this chapter, you will learn to use tidyr and dplyr from the tidyverse in R for tidying your data set and data maniplulation.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 30 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
-</li>
-<li class="track-list-item">
-<a style="
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-  " class="track-list-title" href="./modules/analysis/linear-regression/index.html"> Linear regression with R </a> <span class="track-list-desc"> Welcome to the LearR Academy module on Linear Regression! This module is designed to introduce you to the concepts and techniques of linear regression, an widely used tool in the field of statistics, data science, and machine learning. Through this module,…</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 40 minutes </span> <span class="intermediate"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Intermediate </span> </span>
-</li>
-</ul>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div>
-</div>
-</div>
-<div class="track-listing">
-<div class="track">
-<input type="checkbox" class="track-chkbox">
-<div class="track-header-card">
-  <span> Document writing </span>
-  <i></i>
-</div>
-<div id="listing-writing" class="listing quarto-listing quarto-listing-container-custom">
-<ul class="track-list-container">
-<li class="track-list-item">
-<a style="
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-  " class="track-list-title" href="./modules/writing/monash-templates/index.html"> Monash Quarto templates </a> <span class="track-list-desc"> A collection of monash templates for your assignments, projects, papers, and more.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 30 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
-</li>
-<li class="track-list-item">
-<a style="
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-  " class="track-list-title" href="./modules/writing/quarto-basics/index.html"> Quarto Basics </a> <span class="track-list-desc"> With Quarto, creating documents and reports becomes a breeze. In this chapter, you will learn how to set up Quarto, explore its key features, and start creating your own quarto documents with ease.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 30 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
-</li>
-</ul>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div>
-</div>
-</div>
-<div class="footer">
-<p><a href="https://github.com/numbats/monash-learnr-modules/graphs/contributors">The team</a></p>
-<p><a href="https://github.com/numbats/monash-learnr-modules">Contribute</a></p>
-<p><a href="https://numbat.space/">About</a></p>
-<p><a href="https://quarto.org/">Built with Quarto</a></p>
-</div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">13 December 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a>
+  <ul class="collapse">
+  <li><a href="#why-do-we-want-to-learn-and-use-r-and-rstudio" id="toc-why-do-we-want-to-learn-and-use-r-and-rstudio" class="nav-link" data-scroll-target="#why-do-we-want-to-learn-and-use-r-and-rstudio">Why do we want to learn and use R and RStudio</a></li>
+  <li><a href="#what-is-r-and-rstudio" id="toc-what-is-r-and-rstudio" class="nav-link" data-scroll-target="#what-is-r-and-rstudio">What is R and RStudio</a></li>
+  </ul></li>
+  <li><a href="#r-installation" id="toc-r-installation" class="nav-link" data-scroll-target="#r-installation">R installation</a>
+  <ul class="collapse">
+  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a></li>
+  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos">MacOS</a></li>
+  <li><a href="#linux" id="toc-linux" class="nav-link" data-scroll-target="#linux">Linux</a></li>
+  </ul></li>
+  <li><a href="#rstudio-installation" id="toc-rstudio-installation" class="nav-link" data-scroll-target="#rstudio-installation">RStudio installation</a>
+  <ul class="collapse">
+  <li><a href="#windows-1" id="toc-windows-1" class="nav-link" data-scroll-target="#windows-1">Windows</a></li>
+  <li><a href="#macos-1" id="toc-macos-1" class="nav-link" data-scroll-target="#macos-1">MacOS</a></li>
+  <li><a href="#linux-1" id="toc-linux-1" class="nav-link" data-scroll-target="#linux-1">Linux</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
+
+
+<section id="background" class="level1">
+<h1>Background</h1>
+<section id="why-do-we-want-to-learn-and-use-r-and-rstudio" class="level2">
+<h2 class="anchored" data-anchor-id="why-do-we-want-to-learn-and-use-r-and-rstudio">Why do we want to learn and use R and RStudio</h2>
+<p>R and Rstudio are powerful tools for statistical analysis. R is an open-source language, meaning it is both free and supported by a large, active community. RStudio provides an intuitive and user-friendly interface, making using R more productive. The R package (more on this later) ecosystem allows users to extend its functionality for various types of analysis. Additionally, it facilitates reproducible code and reports and allows researchers to share their work with others.</p>
+</section>
+<section id="what-is-r-and-rstudio" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-r-and-rstudio">What is R and RStudio</h2>
+<p>R is a free software environment for statistical computing and graphics. RStudio is an integrated development environment (IDE) for R. To understand why we might want to use R with RStudio. We will use the analogy from <a href="https://moderndive.com/1-getting-started.html#r-rstudio">Modern Dive book</a>.</p>
+<blockquote class="blockquote">
+<p>At its simplest, R is like a car’s engine while RStudio is like a car’s dashboard</p>
+</blockquote>
+<p><img src="resources/R_vs_RStudio.png" class="img-fluid"></p>
+</section>
+</section>
+<section id="r-installation" class="level1">
+<h1>R installation</h1>
+<p>First, install R. The R language is available through the <a href="http://cran.r-project.org/">The Comprehensive R Archive Network</a> website. In the next sections, we will show how to install R for different operating systems: Windows, MacOS, and Linux.</p>
+<section id="windows" class="level2">
+<h2 class="anchored" data-anchor-id="windows">Windows</h2>
+<p>Steps:</p>
+<ol type="1">
+<li>Click <em>“Download R for Windows”</em></li>
+</ol>
+<p><img src="resources/R_install_windows_1.png" class="img-fluid"></p>
+<ol start="2" type="1">
+<li>Click <em>“base”</em></li>
+</ol>
+<p><img src="resources/R_install_windows_2.png" class="img-fluid"></p>
+<ol start="3" type="1">
+<li>Click the link at the top of the page. It should say something like <em>“Download R-4.4.1 for Windows”</em>, where the numbers would change to the latest version.</li>
+</ol>
+<p><img src="resources/R_install_windows_3.png" class="img-fluid"></p>
+<ol start="4" type="1">
+<li>Run the downloaded executable file.</li>
+</ol>
+<p><img src="resources/R_install_windows_4.png" class="img-fluid"></p>
+<ol start="5" type="1">
+<li>Allow the installer to change your device.</li>
+</ol>
+<p><img src="resources/R_install_windows_5.png" class="img-fluid"></p>
+<ol start="6" type="1">
+<li>Follow the prompt instructions. You do not need to customise the startup.</li>
+</ol>
+</section>
+<section id="macos" class="level2">
+<h2 class="anchored" data-anchor-id="macos">MacOS</h2>
+<p>Steps:</p>
+<ol type="1">
+<li>Click <em>“Download R for macOS”</em></li>
+</ol>
+<p><img src="resources/R_install_macos_1.png" class="img-fluid"></p>
+<ol start="2" type="1">
+<li>Under the <em>“Latest release:”</em>, click the .pkg base on your system architecture. If you are using <strong>Apple silicon (M1 onwards) Macs</strong>, click the <em>“R-4.41-arm64.pkg”</em>, <strong>otherwise</strong>, click the <em>“R-4.4.1-x86_64.pkg”</em>.</li>
+</ol>
+<p><img src="resources/R_install_macos_2.png" class="img-fluid"></p>
+<ol start="3" type="1">
+<li>After finishing downloading the .pkg, double-click on it.</li>
+</ol>
+<p><img src="resources/R_install_macos_3.png" class="img-fluid"></p>
+<ol start="4" type="1">
+<li>Follow the installer’s instructions. It will involve reading through some documents and clicking continue or install.</li>
+</ol>
+<p><img src="resources/R_install_macos_4.png" class="img-fluid"></p>
+<ol start="5" type="1">
+<li>Once the installation is complete, click <em>“Close”</em> to exit the installation process.</li>
+</ol>
+</section>
+<section id="linux" class="level2">
+<h2 class="anchored" data-anchor-id="linux">Linux</h2>
+<p>Steps:</p>
+<ol type="1">
+<li>Click <em>“Download R for Linux”</em>.</li>
+</ol>
+<p><img src="resources/R_install_linux_1.png" class="img-fluid"></p>
+<ol start="2" type="1">
+<li>Click on the directory based on the Linux version you have.</li>
+</ol>
+<p><img src="resources/R_install_linux_2.png" class="img-fluid"></p>
+<ol start="3" type="1">
+<li>Follow the instructions on the website.</li>
+</ol>
+</section>
+</section>
+<section id="rstudio-installation" class="level1">
+<h1>RStudio installation</h1>
+<p>The RStudio can be downloaded from the <a href="https://posit.co/download/rstudio-desktop/">Posit</a> website. Scroll down to <em>All Installers and Tarballs</em> and download the RStudio version for your operating system.</p>
+<section id="windows-1" class="level2">
+<h2 class="anchored" data-anchor-id="windows-1">Windows</h2>
+<p>Steps:</p>
+<ol type="1">
+<li>Click the .exe file. It should look similar to <em>“RSTUDIO-2024.04.2-764.EXE”</em>. The number will be different based on the latest version.</li>
+</ol>
+<p><img src="resources/RStudio_install_windows.png" class="img-fluid"></p>
+<ol start="2" type="1">
+<li>Run the executable file to install RStudio.</li>
+</ol>
+<p><img src="resources/RStudio_install_windows_1.png" class="img-fluid"></p>
+<ol start="3" type="1">
+<li>Allow the installer to make changes on your computer.</li>
+</ol>
+<p><img src="resources/RStudio_install_windows_2.png" class="img-fluid"></p>
+<ol start="4" type="1">
+<li><p>Follow the prompts.</p></li>
+<li><p>Search for RStudio on your computer and open it. You are now ready to learn R!</p></li>
+</ol>
+</section>
+<section id="macos-1" class="level2">
+<h2 class="anchored" data-anchor-id="macos-1">MacOS</h2>
+<p>Steps:</p>
+<ol type="1">
+<li>Click the .dmg file. It should look similar to <em>“RSTUDIO-2024.04.2-764.DMG”</em>. The number will be different based on the latest version.</li>
+</ol>
+<p><img src="resources/RStudio_install_Mac.png" class="img-fluid"></p>
+<ol start="2" type="1">
+<li>Drag RStudio.app into the Applications folder. Now you are ready to use R!</li>
+</ol>
+<p><img src="resources/RStudio_Install_Mac_1.png" class="img-fluid"></p>
+</section>
+<section id="linux-1" class="level2">
+<h2 class="anchored" data-anchor-id="linux-1">Linux</h2>
+<p>Steps:</p>
+<ol type="1">
+<li>Click download the file based on your Linux version.</li>
+</ol>
+<p><img src="resources/RStudio_install_linux.png" class="img-fluid"></p>
+<ol start="2" type="1">
+<li>Follow the instructions prompts.</li>
+</ol>
+
+
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.47">
+<meta name="generator" content="quarto-1.6.33">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2024-12-13">
 
 <title>Project structure</title>
 <style>
@@ -57,27 +58,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-b358f982273499bf44fe150d2d5bb68e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-063184aebfab9007d66d79ca7847062f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -109,11 +111,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="fullcontent">
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Stats Code</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Courses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Project structure</h1>
@@ -125,15 +156,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="quarto-title-meta">
 
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">13 December 2024</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#sec-path" id="toc-sec-path" class="nav-link active" data-scroll-target="#sec-path">Paths</a>
+  <ul class="collapse">
+  <li><a href="#file-path" id="toc-file-path" class="nav-link" data-scroll-target="#file-path">File path</a>
+  <ul class="collapse">
+  <li><a href="#sec-abs-path" id="toc-sec-abs-path" class="nav-link" data-scroll-target="#sec-abs-path">Absolute Paths</a></li>
+  <li><a href="#sec-rela-path" id="toc-sec-rela-path" class="nav-link" data-scroll-target="#sec-rela-path">Relative Paths</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#files-organisation" id="toc-files-organisation" class="nav-link" data-scroll-target="#files-organisation">Files organisation</a></li>
+  <li><a href="#r-project" id="toc-r-project" class="nav-link" data-scroll-target="#r-project">R project</a>
+  <ul class="collapse">
+  <li><a href="#new-r-project" id="toc-new-r-project" class="nav-link" data-scroll-target="#new-r-project">New R project</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
@@ -184,15 +244,15 @@ Use of absolute path
 <h4 class="anchored" data-anchor-id="here-package">here package</h4>
 <p>It enables easy file referencing in project-oriented workflows. The <code>here()</code> function helps you build a path to your specified files. For example, if you want to access panguins data in your project folder instead of <code>read_csv("Users/Desktop/learnR/data/penguins.csv")</code>, you can just <code>read_csv(here::here("data/penguins"))</code>. It only works because your current working directory is in the learnR folder through the <code>here()</code> function.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"modules/project-structure/pictures/01-project-structure/here.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"modules/starter/project-structure/resources/here.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "/home/mitchell/github/monash-learnr-modules/modules/project-structure/pictures/01-project-structure/here.png"</code></pre>
+<pre><code>[1] "/home/mitchell/github/monash-learnr-modules/modules/starter/project-structure/resources/here.png"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"modules/project-structure/pictures/01-project-structure/here.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"modules/starter/project-structure/resources/here.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="pictures/01-project-structure/here.png" class="img-fluid figure-img" width="1386"></p>
+<p><img src="resources/here.png" class="img-fluid figure-img" width="1386"></p>
 <figcaption>Illustration by Allison Horst</figcaption>
 </figure>
 </div>
@@ -266,7 +326,7 @@ Path
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="pictures/01-project-structure/project_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1045"></p>
+<p><img src="resources/project_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1045"></p>
 </figure>
 </div>
 </div>
@@ -284,7 +344,7 @@ For your very first R project, let’s start by selecting “New Directory”.</
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="pictures/01-project-structure/project_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="589"></p>
+<p><img src="resources/project_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="589"></p>
 </figure>
 </div>
 </div>
@@ -296,7 +356,7 @@ For your very first R project, let’s start by selecting “New Directory”.</
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="pictures/01-project-structure/project_3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="294"></p>
+<p><img src="resources/project_3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="294"></p>
 </figure>
 </div>
 </div>
@@ -308,7 +368,7 @@ For your very first R project, let’s start by selecting “New Directory”.</
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="pictures/01-project-structure/project_4.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="568"></p>
+<p><img src="resources/project_4.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="568"></p>
 </figure>
 </div>
 </div>
@@ -320,7 +380,7 @@ For your very first R project, let’s start by selecting “New Directory”.</
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="pictures/01-project-structure/project_5.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="568"></p>
+<p><img src="resources/project_5.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="568"></p>
 </figure>
 </div>
 </div>
@@ -358,7 +418,7 @@ Do not save the workspace image
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="pictures/01-project-structure/disable_store.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="641"></p>
+<p><img src="resources/disable_store.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="641"></p>
 </figure>
 </div>
 </div>

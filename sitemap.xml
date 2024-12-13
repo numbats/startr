@@ -1,43 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://numbats.github.io/monash-learnr-modules/modules/debugging/index.html</loc>
-    <lastmod>2024-08-01T03:41:39.866Z</lastmod>
+    <loc>https://numbats.github.io/monash-learnr-modules/about.html</loc>
+    <lastmod>2024-12-11T23:48:48.589Z</lastmod>
   </url>
   <url>
-    <loc>https://numbats.github.io/monash-learnr-modules/modules/project-structure/02-importing-exporting.html</loc>
-    <lastmod>2024-08-01T03:42:46.846Z</lastmod>
+    <loc>https://numbats.github.io/monash-learnr-modules/modules/starter/r-basics/index.html</loc>
+    <lastmod>2024-12-12T00:27:17.665Z</lastmod>
   </url>
   <url>
-    <loc>https://numbats.github.io/monash-learnr-modules/modules/installation/02-basics.html</loc>
-    <lastmod>2024-08-01T03:39:40.312Z</lastmod>
+    <loc>https://numbats.github.io/monash-learnr-modules/modules/starter/installation/01-installation.html</loc>
+    <lastmod>2024-12-12T00:27:17.665Z</lastmod>
   </url>
   <url>
-    <loc>https://numbats.github.io/monash-learnr-modules/modules/quarto-basics/index.html</loc>
-    <lastmod>2024-08-01T03:39:48.128Z</lastmod>
+    <loc>https://numbats.github.io/monash-learnr-modules/modules/starter/project-structure/01-project-structure.html</loc>
+    <lastmod>2024-12-12T00:27:17.665Z</lastmod>
   </url>
   <url>
-    <loc>https://numbats.github.io/monash-learnr-modules/modules/linear-regression/index.html</loc>
-    <lastmod>2024-06-13T13:22:05.413Z</lastmod>
+    <loc>https://numbats.github.io/monash-learnr-modules/modules/analysis/linear-regression/index.html</loc>
+    <lastmod>2024-12-12T00:27:17.664Z</lastmod>
+  </url>
+  <url>
+    <loc>https://numbats.github.io/monash-learnr-modules/modules/writing/quarto-basics/index.html</loc>
+    <lastmod>2024-12-12T00:27:17.665Z</lastmod>
+  </url>
+  <url>
+    <loc>https://numbats.github.io/monash-learnr-modules/contribute.html</loc>
+    <lastmod>2024-12-11T23:48:48.590Z</lastmod>
+  </url>
+  <url>
+    <loc>https://numbats.github.io/monash-learnr-modules/modules/writing/monash-templates/index.html</loc>
+    <lastmod>2024-12-12T00:27:17.665Z</lastmod>
+  </url>
+  <url>
+    <loc>https://numbats.github.io/monash-learnr-modules/modules/analysis/data-wrangling/index.html</loc>
+    <lastmod>2024-12-12T00:26:54.975Z</lastmod>
+  </url>
+  <url>
+    <loc>https://numbats.github.io/monash-learnr-modules/modules/starter/rstudio-basics/02-basics.html</loc>
+    <lastmod>2024-12-12T00:27:17.665Z</lastmod>
+  </url>
+  <url>
+    <loc>https://numbats.github.io/monash-learnr-modules/modules/starter/project-structure/02-importing-exporting.html</loc>
+    <lastmod>2024-12-12T01:13:11.248Z</lastmod>
+  </url>
+  <url>
+    <loc>https://numbats.github.io/monash-learnr-modules/modules/starter/debugging/index.html</loc>
+    <lastmod>2024-12-12T00:27:17.665Z</lastmod>
   </url>
   <url>
     <loc>https://numbats.github.io/monash-learnr-modules/index.html</loc>
-    <lastmod>2024-05-29T11:50:06.938Z</lastmod>
-  </url>
-  <url>
-    <loc>https://numbats.github.io/monash-learnr-modules/modules/basic/index.html</loc>
-    <lastmod>2024-08-01T03:42:15.414Z</lastmod>
-  </url>
-  <url>
-    <loc>https://numbats.github.io/monash-learnr-modules/modules/data-wrangling/index.html</loc>
-    <lastmod>2024-07-16T21:53:27.399Z</lastmod>
-  </url>
-  <url>
-    <loc>https://numbats.github.io/monash-learnr-modules/modules/installation/01-installation.html</loc>
-    <lastmod>2024-08-01T03:39:40.312Z</lastmod>
-  </url>
-  <url>
-    <loc>https://numbats.github.io/monash-learnr-modules/modules/project-structure/01-project-structure.html</loc>
-    <lastmod>2024-08-01T03:42:46.842Z</lastmod>
+    <lastmod>2024-12-12T00:27:17.667Z</lastmod>
   </url>
 </urlset>
