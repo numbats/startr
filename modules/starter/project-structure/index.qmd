@@ -1,0 +1,263 @@
+---
+title: Projects and paths
+subtitle: 'Establish good practices for organising and accessing project files. Essential for when you share your work with others.'
+title-block-banner: yes
+engine: knitr
+filters:
+  - live
+  - quiz-teachr
+execute: 
+  echo: false
+difficulty: "Beginner"
+time: "20 minutes"
+format:
+  lesson-html: default
+---
+
+Project organisation is vital in data analysis, especially when sharing the work with others. Good organisation is not just a courtesy; it is essential for collaboration, transparency, and reproducibility in any data analysis project.
+
+This module introduces practical strategies to organise your analysis and its files. It includes creating and using R Projects, understanding relative and absolute file paths, and structuring your work for clarity and reproducibility. A well organised project sets a strong foundation for reliable data analysis, ultimately saving you time and reducing the risk of errors.
+
+## R Projects
+
+An R Project is a powerful feature in RStudio that helps you organise your work. Using an R Project creates a self-contained workspace that includes all relevant scripts, data files, and outputs for your analysis.
+
+::: {.column-margin}
+![](resources/setwd.png){fig-alt="A cartoon of a cracked glass cube looking frustrated with casts on its arm and leg, with bandaids on it, containing “setwd”, looks on at a metal riveted cube labeled “R Proj” holding a skateboard looking sympathetic, and a smaller cube with a helmet on labeled “here” doing a trick on a skateboard."}
+
+[Artwork by @allison_horst](https://allisonhorst.com/).
+:::
+
+Using an R Project for your work offers several key benefits:
+
+1. **Setting the working directory**: When you open an R Project, RStudio automatically sets the working directory to the folder where the project is saved. You should *almost* never use `setwd()` to change the working directory, needing to change your working directory is a symptom of poorly organised projects.
+2. **Project settings**: R Projects also restore project-specific settings, and RStudio's tools and shortcuts will adjust to the type of project. Projects with version control (e.g. git) will have a git tab, R package projects will include shortcuts for package development, and writing projects (e.g. R Markdown and Quarto) will make it easy to knit/render your document.
+3. **Restoring workspace**: R Projects also preserve the state of your workspace, so when you reopen a project, previously opened scripts, unsaved changes, and the R console history are restored. This helps you pick up where you left off, reducing the time spent reloading or redoing work.
+4. **A home for project files**: With a clear project structure, other collaborators can easily access and understand your work - simply open the project file! The consistent folder structure and using relative paths make it easy for them to access the data and reproduce your analysis on their own systems.
+
+### Creating R projects
+
+1. Click the project drop-down in the top-right corner. Then click on the "New Project...".
+
+![](resources/project_1.png)
+
+2. It will show you three options.
+    * **New Directory**: Start from scratch with a new empty folder for your project.
+    * **Existing Directory**: If you're already started some work without a project, convert that folder into a project.
+    * **Version Control**: If your work already exists elsewhere as a [git](https://git-scm.com/) or [svn](https://subversion.apache.org/) repository (such as [GitHub](https://github.com/)), this will download the work and create a project for it.
+
+    For your very first R project, let's start by selecting "New Directory".
+
+![](resources/project_2.png)
+
+3. There are many different types of R projects that you can create. These various project types come bundled with a boilerplate file structure and some project settings (for shortcuts and build options). A standard project (without any boilerplate or settings) is suitable most projects - so simply select "New Project" for an empty folder.
+
+![](resources/project_3.png)
+
+4. Give your project (and the folder containing it) a name using the "Directory name:" field. You can also choose where the project will exist on your computer by clicking on the "Browse..." button. If you do not choose, it will be in your home directory. You can leave the rest (git and renv) unchecked for now.
+
+![](resources/project_4.png)
+
+5. Click "Create Project".
+
+![](resources/project_5.png)
+
+::: {.tada}
+
+## Project created!
+
+You have now successfully created the R project!
+
+Verify this by checking:
+
+* The project name in the top right project dropdown
+* The current working directory (`getwd()`) is the project folder
+* The files pane shows the content of your project folder
+
+:::
+
+### Using R projects
+
+There are multiple ways to open an R Project in RStudio:  
+
+1. **RStudio Project Selector**:  
+   In the top right corner of RStudio, you'll see a project selector dropdown. Clicking on it will display a list of recently opened R Projects, allowing you to quickly switch between projects you want to work on.  
+2. **Opening the `.Rproj` File**:  
+   You can also open an R Project directly by locating the `.Rproj` file on your computer and double-clicking it. This will open RStudio and automatically set the working directory to the project's folder. If you're already in RStudio, you can also open the `.Rproj` file via **File → Open Project**.  
+
+Any work you do while in this project will be restored when you next open the project (even unsaved files, but please don't rely on this and save your work!).
+
+You can close the project by simply closing RStudio (or via  **Project selector (top-right) → Close Project** to keep RStudio open). When you close your project you might be prompted to save your 'workspace image', to which we recommend you select **Don't Save**.
+
+![](resources/save_workspace.png)
+
+:::{.callout-important}
+# Saving the workspace image? No!
+
+While you should always save your work, it is best for reproducibility to not save your workspace image.
+
+When you work in RStudio, the workspace refers to all the objects (such as variables, data frames, functions, etc.) that are stored in your R environment during the session. RStudio offers to saves this workspace to a file called .RData when you close the project or RStudio itself. This file contains all the objects from your session, so when you reopen the project, RStudio will automatically load these objects back into the environment.
+
+Save the workspace means storing all of the objects you've created for the next time you open the project. It may sound tempting to do it, but it is bad for reproducibility. If you rely on previously saved objects, such as datasets or analysis results, you might skip the process of reloading or regenerating data, which undermines the reproducibility of your work. It’s always better to explicitly load data and scripts each time you open a project, ensuring that the analysis can be replicated by anyone, including your future self.
+
+You can prevent the popup messages by going to **Tools → Global Options**. Then select **General** on the side-bar and change "Save workspace to .RData on exit" to "Never".
+
+![](resources/save_workspace_preference.png)
+:::
+
+### Project organisation
+
+::: {.column-margin}
+![](resources/blame.png){fig-alt='A friendly monster has slipped on a banana peel, and says "I know it was you, code. It breaks my heart." Meanwhile, a little character labeled "CODE" looks on indignantly, pointing to evil characters labeled "mismanaged files," "navigating your computer", and "typing" hiding behind a bush holding a bunch of bananas. The point being: often folks blame code for data science problems that are often caused by other underlying issues.'}
+
+[Artwork by @allison_horst](https://allisonhorst.com/).
+:::
+
+While an R Project helps you quickly switch between projects, it is up to you to organise your project files into suitable folders. By structuring your files effectively, you can reduce the risk of losing important data, simplify the code for accessing your data, and make it easy to locate each script.
+
+::: {.callout-tip}
+## Project portability
+
+All files for the project should be contained within the project folder.
+
+When you share your project folder with others, it should contain all of the data, code, and other resources necessary for them to replicate your work.
+:::
+
+#### File folders
+
+A clear and consistent folder structure is essential for any project. The names of folders is a personal choice, however there are some commonly used folder names we recommend. Here's an example of a typical R Project directory structure:
+
+```
+my-awesome-project/
+├── data-raw/                   # Raw / unprocessed data files
+├── data/                       # Clean / processed data files
+├── R/                          # R scripts
+├── outputs/                    # Results, figures, tables, and other outputs
+│   ├── figures/                # Graphs and charts
+│   └── tables/                 # Data tables and results
+├── README.md                   # Project description and instructions
+└── my-awesome-project.Rproj    # R Project file
+```
+
+::: {.callout-note}
+## Folder Descriptions
+
+- **data-raw/**: This folder holds all original data files related to the project. Keeping raw and processed data separate ensures transparency and helps maintain data integrity.
+
+- **data/**: Save your tidy, clean and otherwise processed data here. This allows you to quickly read in analysis-ready data without needing to re-run your data cleaning script.
+  
+- **scripts/**: Store all your R scripts here. It's a good practice to separate scripts into different categories depending on their function (e.g., data cleaning, analysis, visualisation).
+
+- **outputs/**: This folder stores the outputs of your analysis, such as figures, tables, or models. You can have subfolders like `figures/` and `tables/` to separate the different types of results. This makes it easier to find specific outputs and ensures that your working directory isn't cluttered with unnecessary files.
+
+- **README.md**: A README file is essential for documenting the purpose of the project, how to run the analysis, and any specific instructions for collaborators. This file helps others (and yourself, in the future) understand the project structure, dependencies, and key steps involved.
+
+- **My_Project.Rproj**: This is the R Project file, which is crucial for maintaining the project's environment, settings, and relative file paths. It’s created when you first create an R Project in RStudio and should always be kept at the root of the project folder.
+
+:::
+
+Some common folder names you might like to use in the analysis projects.
+
+- Data is commonly stored in the ‘data’ folder, like we created in the slides. If you work with lots of data of different types, you could also use more folders inside your ‘data’ folder. For example, if the data you are working with needs pre-processing and cleaning, you could have ‘data/original’ and ‘data/cleaned’ folders to further organise the data files.
+    
+- Scripts are commonly stored in folders of many different names. For R projects, an ‘R’ folder is commonly used (from the structure of an R package). Many data analysis projects use a ‘scripts’ folder, and more language-agnostic projects might use a ‘src’ or ‘code’ folder. Your codes are often split across several scripts that perform different tasks, such as cleaning data, producing plots, and generating reports.
+   
+- Outputs can be stored in many different folders, which describe the type of output. For example, you may use a ‘results’ folder for analysis results, a ‘plots’ folder for plots, and a ‘reports’ folder for reports.
+
+```
+my-awesome-project
+├── data
+|   └── penguins.csv
+|
+├── R
+|   ├── cleaning.R
+|   └── analysis.R
+|
+└── plots
+    └── linear.png
+```
+
+:::{.callout-important}
+# Path
+
+Remember, all paths should be relative to the project folder. For example, `./data/penguins.csv`.
+:::
+
+:::{.callout-important}
+# Self contained
+
+Projects should be self-contained, meaning all files and data should exist inside the project directory. It makes sharing the work easy since all the files required to reproduce the analysis are relative to the project folder.
+:::
+
+
+
+# Paths {#sec-path}
+
+The **paths** are used to identify the location of a file, computer, device, or web page. You could think of it as a direction pointing to the destination.
+
+## File path
+
+There are two main ways of defining the paths to a file: absolute and relative.
+
+### Absolute Paths {#sec-abs-path}
+
+It is a full location of the file or directory specified, starting from the home directory.
+
+#### What does it look like?
+
+The path may look different depending on the system you are using. If we want to locate a penguin's data inside the folder called **my-awesome-project**, this is what it may look like.
+
+**Windows:**
+
+`C:\Desktop\my-awesome-project\data\penguins.csv`
+
+**MacOS & Linux:**
+
+`/Users/Desktop/my-awesome-project/data/penguins.csv`
+
+:::{.callout-important}
+# Use of absolute path
+
+Absolute paths should never be used in projects, as others will not be able to run the code you provide. This is because absolute paths to a project vary with operating systems and where the project is stored.
+
+As we can see, MacOS and Windows have completely different path structures.
+:::
+
+
+### Relative Paths {#sec-rela-path}
+
+It is the location of a file or directory specified relative to your current working directory.
+
+#### Working directory
+
+The working directory is the default location R is looking at when loading the file or where it will store the files. If you want to check where your current working directory is, you can run the `getwd()` function. To understand a bit more about the current working directory, let me introduce the `here` package.
+
+#### here package
+
+It enables easy file referencing in project-oriented workflows. The `here()` function helps you build a path to your specified files. For example, if you want to access panguins data in your project folder instead of `read_csv("Users/Desktop/my-awesome-project/data/penguins.csv")`, you can just `read_csv(here::here("data/penguins"))`. It only works because your current working directory is in the my-awesome-project folder through the `here()` function.
+
+```{r}
+#| echo: true
+#| fig-cap: "Illustration by Allison Horst"
+
+here::here("modules/starter/project-structure/resources/here.png")
+
+knitr::include_graphics(here::here("modules/starter/project-structure/resources/here.png"))
+```
+
+Let's say you are trying to get to the Campus center. An **absolute path** would direct you absolutely, starting from Earth, Australia, Melbourne, Monash Clayton, and then Campus Center. However, the **relative path** to Monash Clayton is the path from the Monash Clayton Campus to the Campus Center.
+
+You should always use the **relative path** when working on a project. It allows anyone who has your project to run the code without changing file paths, as it is unlikely that all the users will have the same absolute path.
+
+
+:::{.callout-tip}
+# Webpage
+
+So far, we only see how to reference files on our computers. However, we can also reference places on other computers, for example, when we want to get data from the internet.
+
+To locate the webpage, we use the URL (Uniform Resource Locator) to identify any resource on the internet.
+
+`https://my-awesome-project.numbat.space/data/penguins.csv`
+
+:::
+
