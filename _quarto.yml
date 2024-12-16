@@ -17,6 +17,15 @@ website:
       #   href: contribute.qmd
       - text: "About"
         href: about.qmd
+
+custom-callout:
+  tada:
+    title: "Congratulations!"
+    icon-symbol: "🎉"
+    color: "#008000"
+filters:
+- custom-callout
+
 format:
   html:
     theme:
