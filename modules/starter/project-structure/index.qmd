@@ -23,7 +23,7 @@ This module introduces practical strategies to organise your analysis and its fi
 An R Project is a powerful feature in RStudio that helps you organise your work. Using an R Project creates a self-contained workspace that includes all relevant scripts, data files, and outputs for your analysis.
 
 ::: {.column-margin}
-![](resources/setwd.png){fig-alt="A cartoon of a cracked glass cube looking frustrated with casts on its arm and leg, with bandaids on it, containing "setwd", looks on at a metal riveted cube labeled "R Proj" holding a skateboard looking sympathetic, and a smaller cube with a helmet on labeled "here" doing a trick on a skateboard."}
+![](resources/setwd.png){fig-alt='A cartoon of a cracked glass cube looking frustrated with casts on its arm and leg, with bandaids on it, containing "setwd", looks on at a metal riveted cube labeled "R Proj" holding a skateboard looking sympathetic, and a smaller cube with a helmet on labeled "here" doing a trick on a skateboard.'}
 
 [Artwork by @allison_horst](https://allisonhorst.com/).
 :::
