@@ -8,9 +8,6 @@ execute:
 difficulty: "Beginner"
 time: "20 minutes"
 ojs-engine: true
-filters: 
-  - live
-  - quiz-teachr
 format:
   lesson-html: default
 ---
