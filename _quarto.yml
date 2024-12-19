@@ -33,7 +33,7 @@ filters:
   - quiz-teachr # This is only depended on if a .quiz-* div is used
 
 format:
-  html:
+  lesson-html:
     theme:
       - default
       - styles/main.scss
