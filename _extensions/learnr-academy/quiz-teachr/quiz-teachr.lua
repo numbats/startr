@@ -52,7 +52,7 @@ function escapeControlSequences(str)
 end
 
 function prepSubstitutions(subs)
-  return escapeControlSequences(table.concat(subs, ","))
+  return escapeControlSequences(table.concat(subs, "!@!"))
 end
 
 question_counter = 0
