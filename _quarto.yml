@@ -27,7 +27,6 @@ filters:
 - custom-callout
 
 format:
-  html:
+  lesson-html:
     theme:
-      - default
       - styles/main.scss
