@@ -34,3 +34,7 @@ format:
     theme:
       - default
       - styles/main.scss
+  lesson-html:
+    theme:
+      - default
+      - styles/main.scss
