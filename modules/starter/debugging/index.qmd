@@ -29,7 +29,6 @@ knitr::opts_chunk$set(fig.retina = 2,
                       cache.path = "cache/",
                       message = FALSE,
                       warning = FALSE)
-library(icons)
 
 detach_package <- function(pkg, character.only = FALSE)
 {
@@ -48,7 +47,7 @@ detach_package <- function(pkg, character.only = FALSE)
 
 # What are error messages?
 
-Eek! There's a bug `r icon_style(fontawesome("bug", style = "solid"),fill = "red")` in my code and it's causing lots of [scary red errors]{style="color: red;"}!
+Eek! There's a bug in my code and it's causing lots of [scary red errors]{style="color: red;"}!
 
 Don't panic - believe it or not, this error is just trying to help you! It also may have just saved you from invalid results that you may not have have noticed.
 
