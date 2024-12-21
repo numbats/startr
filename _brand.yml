@@ -17,6 +17,10 @@ color:
     trans_white: "#FFFFFF00"
     white: "#FFF"
     black: "#000"
+    success_green: "#3A8261"
+    danger_red: "#E61F00"
+    warning_gold: "#FFC107"
+    info_blue: "#1A6991"
 
   foreground: alt
   background: "#FFFFFF"
@@ -24,10 +28,10 @@ color:
   secondary: alt
   tertiary: neutral_dark
 
-  success: "#72994E"
-  info: "#419599"
-  warning: "#EE6331"
-  danger: "#9A4665"
+  success: success_green
+  info: info_blue
+  warning: warning_gold
+  danger: danger_red
   light: neutral_light_l1
   dark: neutral_dark
 

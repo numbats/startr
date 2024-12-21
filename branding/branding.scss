@@ -1,0 +1,27 @@
+/*-- scss:defaults --*/
+
+
+/*-- scss:rules --*/
+.card {
+  padding: 2rem;
+  margin: 2rem;
+  border-radius: 0.25rem;
+  width: 10rem;
+  min-width: 8rem;
+  height: 10rem;
+  text-align: center;
+}
+
+.white { color: $brand-white;}
+
+.main { background-color: $brand-main}
+.alt { background-color: $brand-alt}
+.neutral_dark_l1 {background-color: $brand-neutral_dark_l1}
+.neutral_dark {background-color: $brand-neutral_dark}
+.neutral_light_l1 {background-color: $brand-neutral_light_l1}
+.neutral_light {background-color: $brand-neutral_light}
+.neutral_light_d1 {background-color: $brand-neutral_light_d1}
+.success {background-color: $brand-success_green;}
+.danger {background-color: $brand-danger_red;}
+.warning {background-color: $brand-warning_gold;}
+.info {background-color: $brand-info_blue;}

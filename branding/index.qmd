@@ -1,0 +1,190 @@
+---
+title: "Design guidelines"
+format:
+  html:
+    toc: true
+    toc-level: 2
+    toc-location: left
+    theme: 
+      - default
+      - ../styles/main.scss
+      - branding.scss
+---
+
+Here you will find everything you need to create content or contribute to the development of StatsCode in accordance with the brand identity.  
+
+# Design philosophy
+
+* The main design philosophy behind StatsCode is to keep the user interface minimal with less visual clutter and more breathing room.
+* `Josefin Sans` has rougher edges in upper case letters and therefore top level block elements should have less rounded corners (ideally 0.25rem).
+* Flat visual elements are preferred over raised 3d-esque elements with drop shadows. When needing to define depth use shades of the existing colors to define depth.
+* The font colors should be aiming to incite feelings of friendliness with professionalism.
+* Visual noise with multiple colors should be minimized by using colors sparingly to deliver the message.
+
+# Logo
+
+To be decided.
+
+# Stylesheet structure
+
+## Brand styles
+
+The brand colors and fonts are given in `_brand.yml`. This file contains the brand colors for StatsCode and should not contain the branding for partner organizations.
+
+There are two main compulsory parts to the `_brand.yml` file.
+
+  1. `color` : Contains color palette definitions and assignment.
+  2. `typography` : Contains font definitions and assignment.
+
+More information on how the `_brand.yml` file works can be found [here](https://quarto.org/docs/authoring/brand.html).
+
+## Site wide styles
+
+The styles that needs to be applied through out the entire site are kept in the `styles/main.scss` file. Each top-level page needs to set the `format: html` and include `styles/main.scss` as part of the theme.
+
+## Lesson specific styles
+
+The lesson specific styles have to be defined within the `_extensions/learnr-academy/lesson/lesson.scss`. These are global styles that will be applied to **all** the lessons. Styles necessary for each lesson should be contained in an `.scss` file (preferred) or `.css` file in the same directory as the lesson `.qmd` file.
+
+# Colors
+
+At the moment we are using a variant of the Monash University color scheme. 
+
+## Core Brand Colors
+
+These are the two colors to be used in top level elements and block elements.
+
+:::{.d-flex .flex-row}
+
+:::{.card .main .white}
+Main
+:::
+
+:::{.card .alt .white}
+Alternative
+:::
+
+:::
+
+## Neutrals
+
+These colors are to be used for defining backgrounds of visual elements and to reduce/highlight the importance of text. 
+
+### Darks
+
+:::{.d-flex .flex-row}
+
+:::{.card .neutral_dark_l1 .white}
+Dark -1
+:::
+
+:::{.card .neutral_dark .white}
+Dark
+:::
+
+:::
+
+### Lights
+
+:::{.d-flex .flex-row}
+
+:::{.card .neutral_light_l1}
+Light -1
+:::
+
+:::{.card .neutral_light}
+Light
+:::
+
+:::{.card .neutral_light_d1}
+Light +1
+:::
+
+:::
+
+## Informational colors
+
+These are the colors defined to convey messages through callouts or popups to the reader. The structure is inherited from Quarto through Bootstrap.
+
+:::{.d-flex .flex-row}
+
+:::{.card .success .white}
+Success
+:::
+
+:::{.card .danger .white}
+Danger
+:::
+
+:::{.card .warning .white}
+Warning
+:::
+
+:::{.card .info .white}
+Info
+:::
+
+:::
+ 
+## Contribution
+
+All colors should be defined in the color.palette section with the naming convention,
+
+  1. Neutral colors need to start with `neutral_`
+  2. Lighter colors need to have a suffix `_lx` where `x` refers to the level of lightness
+  3. Similarly darker colors need to have a suffix `_dx`.
+
+The colors used within Quarto (primary, secondary, tertiary etc.) should be given under the color section. 
+
+When picking colors use the [whocanuse.com](whocanuse.com) tool to assess the WCAG grading which will ensure readability in terms of contrast and color blind friendly. Aim for `AA` or higher in the WCAG grading system.
+
+The colors defined in the color palette can be used through out the site by using the SASS variables`$brand-<color.palette name>`. There might be issues on importing these variables based on where the rule is defined. For more information on this topic please refer to [Quarto's guide on Bootswatch layering](https://quarto.org/docs/output-formats/html-themes-more.html#bootstrap-bootswatch-layering)
+
+# Fonts
+
+The base font that we are using is `DM Sans` while the heading font that we are using is `Josefin Sans`. 
+
+## Heading font
+
+[Ceci n'est pas une pipe - H1]{.heading .h1}
+
+[Ceci n'est pas une pipe - H2]{.heading .h2}
+
+[Ceci n'est pas une pipe - H3]{.heading .h3}
+
+[Ceci n'est pas une pipe - H4]{.heading .h4}
+
+## Base font
+
+[**This is a demonstration of the base font.** Discover a new way to learn and grow with statsCode -  platform designed to make learning engaging, accessible, and personalized. Whether you're picking up a new skill, diving deeper into your favorite topics, or exploring something completely different, learnR is here to guide your journey.]{.base}
+
+## Monospace fonts
+
+For code related outputs we are using `DM Mono` font. 
+
+```{r}
+#| eval: false
+library(dplyr)
+library(nycflights13)
+
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay))
+
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(mean = mean(dep_delay))
+```
+
+## Contributing
+
+1. All fonts are available through Google Fonts. Since `_brand.yml` automatically loads the fonts, there's no need to import the fonts defined in the brand file.
+2. Font sizes needs to be given as `em` or `rem` units. 
+3. When in doubt always refer to the Bootstrap 5.0 (or whichever version is used in the current version of Quarto) [typography](https://getbootstrap.com/docs/5.0/content/typography/) system.
+
+## Writing content
+
+* The content written for the modules in StatsCode needs to be welcoming and less jargon-heavy for the user. 
+* Always refer users back to sections in other exercises where necessary to help them refresh their memory
+* Use callouts to indicate information and potential pitfalls.
+
+

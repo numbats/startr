@@ -1,5 +1,5 @@
 /*-- scss:defaults --*/
-$card-radius: 0.25em;
+$card-radius: 0.25rem;
 
 /*-- scss:rules --*/
 $difficulty-size: 0.5rem;
@@ -215,6 +215,8 @@ $difficulty-radius: 0.5rem;
   margin-right: auto;
   font-size: 0.8rem;
   font-weight: bold;
+  z-index: 4;
+  position: relative;
 }
 
 .footer a {
