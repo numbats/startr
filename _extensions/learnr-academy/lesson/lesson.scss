@@ -6,6 +6,12 @@
   color: $brand-black;
 }
 
+.radio-group {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .radio-row input[type="radio"] {
   position: absolute;
   clip: rect(0, 0, 0, 0); /* For older browsers */
@@ -19,7 +25,7 @@
   display: inline-block;
   padding: 0.5em 1em;
   border: 0.15em solid $brand-neutral_light_l1;
-  border-radius: 0.25em;
+  border-radius: 0.5em;
   cursor: pointer;
   transition: background-color 0.5s, border-color 0.5s;
   width: 100%;
