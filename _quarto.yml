@@ -37,7 +37,7 @@ format:
     theme:
       - default
       - styles/main.scss
-  lesson-html:
+  html:
     theme:
       - default
       - styles/main.scss
