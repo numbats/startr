@@ -17,13 +17,15 @@
 
   for([index, question] of questions.entries()) {
     var radio_row = document.createElement("div");
+    radio_row.setAttribute("class", "radio-row");
 
     var label = document.createElement("label");
     label.setAttribute("class", "radio-label");
-    label.setAttribute("for", question);
+    label.setAttribute("for", `qforms-quiz-id-{{QUIZCOUNTER}}-${index}`);
     label.textContent = question;
 
     var input_elem = document.createElement("input");
+    input_elem.setAttribute("id", `qforms-quiz-id-{{QUIZCOUNTER}}-${index}`)
     input_elem.setAttribute("type", "{{QUIZTYPE}}");
     input_elem.setAttribute("class", "quiz-radio");
     input_elem.setAttribute("name", `qforms-quiz-name-{{QUIZCOUNTER}}`);
