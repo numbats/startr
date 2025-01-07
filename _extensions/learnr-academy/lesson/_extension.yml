@@ -13,3 +13,8 @@ contributes:
       toc: true
       toc-level: 2
       toc-location: left
+      webr:
+        packages:
+          - qlcheckr
+        repos:
+          - https://learnr-academy.github.io/qlcheckr
