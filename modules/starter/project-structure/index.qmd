@@ -9,7 +9,11 @@ difficulty: "Beginner"
 time: "20 minutes"
 ojs-engine: true
 format:
-  lesson-html: default
+  lesson-html:
+    webr:
+      packages:
+        - here
+    
 ---
 
 {{< include /_extensions/r-wasm/live/_knitr.qmd >}}
@@ -199,7 +203,7 @@ When working with files in R, understanding and using file paths correctly is es
 
 File paths can be defined in two main ways: **absolute paths** and **relative paths**. Both approaches work to locate files, but they behave very differently when running your code on other computers. Understanding how to use these paths effectively is crucial for reproducibly accessing your files from scripts and keeping your project portable (shareable with others).
 
-### Absolute file paths
+### Absolute paths
 
 An **absolute path** specifies the full location of a file or folder on your system **starting from the root directory** (e.g., `C:/` on Windows or `/` on macOS/Linux). 
 
@@ -228,7 +232,7 @@ For this reason, **absolute paths are strongly discouraged** in R scripts.
 
 :::
 
-### Relative file paths
+### Relative paths
 
 A **relative path** specifies the location of a file or folder **relative to the current working directory**. The current working directory is your project folder (if you're working within an [R project](#sec-projects)). 
 
@@ -308,6 +312,32 @@ If you're writing scripts within an R Project, the `here()` function will give t
 
 <!-- TODO: here package example -->
 
+### External paths
+
+External paths refer to file locations external to the computer you are using but accessible over a network connection. An example of an external path is `https://learnr.numbat.space/data/survey_results.csv`. We use a URL (Uniform Resource Locator) to specify these paths, which consists of several parts:
+
+- **Protocol** (`https://`): The communication method used to access the resource. Most often this will be `http` or `https` (Hypertext Transfer Protocol Secure, the protocol for websites). Other protocols that are commonly used include `ftp` (File Transfer Protocol), or `s3` (Simply Storage Service).
+- **Address / Location** (`learnr.numbat.space`): The network address of the server hosting the resource. In this case, `learnr.numbat.space` is the address, identifying the specific server to connect to.  
+- **Path** (`/data/survey_results.csv`): The absolute path of the file or resource on the server.
+- **Other Information**: Sometimes additional details are needed to connect to the external server, commonly this is:
+  - A port number like `:8080` specifies a network port (`https://learnr.numbat.space:8080/...`).  
+  - Credentials like `username:password@` can provide login information (`https://user:pass@learnr.numbat.space/...`).  
+
+Many R functions allow you to directly use web URLs for accessing data, for example:
+
+- Reading data with `read.csv()` or `readr::read_csv()`
+  ```r
+  data <- read.csv("https://learnr.numbat.space/data/survey_results.csv")
+  ```  
+
+- Downloading files with `download.file()`, particularly useful if the function you want doesn't support external file paths.
+  ```r
+  download.file("https://learnr.numbat.space/data/survey_results.csv", destfile = "data/survey_results.csv")
+  data <- read.csv("data/survey_results.csv")
+  ```  
+
+<!-- More information about reading in data can be found in the <TODO> lesson. -->
+
 ### Check your understanding
 
 Which of the following is an example of an absolute path?
@@ -353,8 +383,49 @@ Which of the following is NOT true about relative paths?
 - [ ] [Relative paths can vary depending on the working directory.]{hint="This is true. changing the working directory can affect the interpretation of a relative path."}
 :::
 
+---
 
+Which part of the URL specifies the communication method for the external resource?  
 
+:::{.quiz-singlechoice}  
+- [ ] [The address.]{hint="The address specifies the server location, not the communication method."}  
+- [X] [The protocol.]{hint="Correct! The protocol determines how the resource is accessed, e.g., `https` or `ftp`."}  
+- [ ] [The path.]{hint="The path specifies the file location on the server, not the communication method."}  
+- [ ] [The port.]{hint="The port is used for specifying a network port, not the communication method."}  
+:::
+
+<!-- --- -->
+
+<!-- What is the purpose of the address in an external path?   -->
+
+<!-- :::{.quiz-singlechoice}   -->
+<!-- - [ ] To indicate the file's location on the server.{hint="This is the purpose of the path, not the address."}   -->
+<!-- - [X] To identify the server hosting the resource.{hint="Correct! The address specifies which server to connect to for the resource."}   -->
+<!-- - [ ] To provide login credentials for secure access.{hint="Credentials, if needed, are part of the optional info, not the address."}   -->
+<!-- - [ ] To specify the port number for the network connection.{hint="The port is a separate component, not part of the address."}   -->
+<!-- ::: -->
+
+<!-- --- -->
+
+<!-- Which of the following external paths includes a port number?   -->
+
+<!-- :::{.quiz-singlechoice}   -->
+<!-- - [ ] `https://example.com/data/file.csv`{hint="This path does not specify a port number."}   -->
+<!-- - [X] `https://example.com:8080/data/file.csv`{hint="Correct! The `:8080` indicates a port number in the path."}   -->
+<!-- - [ ] `ftp://user:pass@example.com/data/file.csv`{hint="This path includes login credentials but does not have a port number."}   -->
+<!-- - [ ] `http://example.com/data/file.csv`{hint="This path uses `http` but does not include a port number."}   -->
+<!-- ::: -->
+
+<!-- --- -->
+
+<!-- What does the path in an external URL represent?   -->
+
+<!-- :::{.quiz-singlechoice}   -->
+<!-- - [ ] The name of the server hosting the resource.{hint="This is the purpose of the address, not the path."}   -->
+<!-- - [ ] The protocol used to access the resource.{hint="The protocol is specified separately, such as `https` or `ftp`."}   -->
+<!-- - [X] The location of the file or resource on the server.{hint="Correct! The path identifies where the file is stored within the server's directory structure."}   -->
+<!-- - [ ] The port number used to connect to the server.{hint="The port is specified separately if needed, not part of the path."}   -->
+<!-- ::: -->
 
 
 

@@ -1,5 +1,7 @@
 project:
   type: website
+  resources:
+    - "data"
   preview:
     port: 4200
     browser: false
