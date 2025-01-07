@@ -1,0 +1,451 @@
+---
+title: Projects and paths
+subtitle: 'Establish good practices for organising and accessing project files. Essential for when you share your work with others.'
+title-block-banner: yes
+engine: knitr
+execute: 
+  echo: false
+difficulty: "Beginner"
+time: "20 minutes"
+ojs-engine: true
+format:
+  lesson-html: default
+---
+
+{{< include /_extensions/r-wasm/live/_knitr.qmd >}}
+
+Project organisation is vital in data analysis, especially when sharing the work with others. Good organisation is not just a courtesy; it is essential for collaboration, transparency, and reproducibility in any data analysis project.
+
+This module introduces practical strategies to organise your analysis and its files. It includes creating and using R Projects, understanding relative and absolute file paths, and structuring your work for clarity and reproducibility. A well organised project sets a strong foundation for reliable data analysis, ultimately saving you time and reducing the risk of errors.
+
+## R Projects {#sec-projects}
+
+An R Project is a powerful feature in RStudio that helps you organise your work. Using an R Project creates a self-contained workspace that includes all relevant scripts, data files, and outputs for your analysis.
+
+::: {.column-margin}
+![](resources/setwd.png){fig-alt='A cartoon of a cracked glass cube looking frustrated with casts on its arm and leg, with bandaids on it, containing "setwd", looks on at a metal riveted cube labeled "R Proj" holding a skateboard looking sympathetic, and a smaller cube with a helmet on labeled "here" doing a trick on a skateboard.'}
+
+[Artwork by @allison_horst](https://allisonhorst.com/).
+:::
+
+Using an R Project for your work offers several key benefits:
+
+1. **Setting the working directory**: When you open an R Project, RStudio automatically sets the working directory to the folder where the project is saved. You should *almost* never use `setwd()` to change the working directory, needing to change your working directory is a symptom of poorly organised projects.
+2. **Project settings**: R Projects also restore project-specific settings, and RStudio's tools and shortcuts will adjust to the type of project. Projects with version control (e.g. git) will have a git tab, R package projects will include shortcuts for package development, and writing projects (e.g. R Markdown and Quarto) will make it easy to knit/render your document.
+3. **Restoring workspace**: R Projects also preserve the state of your workspace, so when you reopen a project, previously opened scripts, unsaved changes, and the R console history are restored. This helps you pick up where you left off, reducing the time spent reloading or redoing work.
+4. **A home for project files**: With a clear project structure, other collaborators can easily access and understand your work - simply open the project file! The consistent folder structure and using relative paths make it easy for them to access the data and reproduce your analysis on their own systems.
+
+### Creating R projects
+
+1. Click the project drop-down in the top-right corner. Then click on the "New Project...".
+
+![](resources/project_1.png)
+
+2. It will show you three options.
+    * **New Directory**: Start from scratch with a new empty folder for your project.
+    * **Existing Directory**: If you're already started some work without a project, convert that folder into a project.
+    * **Version Control**: If your work already exists elsewhere as a [git](https://git-scm.com/) or [svn](https://subversion.apache.org/) repository (such as [GitHub](https://github.com/)), this will download the work and create a project for it.
+
+    For your very first R project, let's start by selecting "New Directory".
+
+![](resources/project_2.png)
+
+3. There are many different types of R projects that you can create. These various project types come bundled with a boilerplate file structure and some project settings (for shortcuts and build options). A standard project (without any boilerplate or settings) is suitable most projects - so simply select "New Project" for an empty folder.
+
+![](resources/project_3.png)
+
+4. Give your project (and the folder containing it) a name using the "Directory name:" field. You can also choose where the project will exist on your computer by clicking on the "Browse..." button. If you do not choose, it will be in your home directory. You can leave the rest (git and renv) unchecked for now.
+
+![](resources/project_4.png)
+
+5. Click "Create Project".
+
+![](resources/project_5.png)
+
+::: {.tada}
+
+## Project created!
+
+You have now successfully created the R project!
+
+Verify this by checking:
+
+* The project name in the top right project dropdown
+* The current working directory (`getwd()`) is the project folder
+* The files pane shows the content of your project folder
+
+:::
+
+### Using R projects
+
+There are multiple ways to open an R Project in RStudio:  
+
+1. **RStudio Project Selector**:  
+   In the top right corner of RStudio, you'll see a project selector dropdown. Clicking on it will display a list of recently opened R Projects, allowing you to quickly switch between projects you want to work on.  
+2. **Opening the `.Rproj` File**:  
+   You can also open an R Project directly by locating the `.Rproj` file on your computer and double-clicking it. This will open RStudio and automatically set the working directory to the project's folder. If you're already in RStudio, you can also open the `.Rproj` file via **File → Open Project**.  
+
+Any work you do while in this project will be restored when you next open the project (even unsaved files, but please don't rely on this and save your work!).
+
+You can close the project by simply closing RStudio (or via  **Project selector (top-right) → Close Project** to keep RStudio open). When you close your project you might be prompted to save your 'workspace image', to which we recommend you select **Don't Save**.
+
+![](resources/save_workspace.png)
+
+:::{.callout-important}
+# Saving the workspace image? No!
+
+While you should always save your work, it is best for reproducibility to not save your workspace image.
+
+When you work in RStudio, the workspace refers to all the objects (such as variables, data frames, functions, etc.) that are stored in your R environment during the session. RStudio offers to saves this workspace to a file called .RData when you close the project or RStudio itself. This file contains all the objects from your session, so when you reopen the project, RStudio will automatically load these objects back into the environment.
+
+Save the workspace means storing all of the objects you've created for the next time you open the project. It may sound tempting to do it, but it is bad for reproducibility. If you rely on previously saved objects, such as datasets or analysis results, you might skip the process of reloading or regenerating data, which undermines the reproducibility of your work. It’s always better to explicitly load data and scripts each time you open a project, ensuring that the analysis can be replicated by anyone, including your future self.
+
+You can prevent the popup messages by going to **Tools → Global Options**. Then select **General** on the side-bar and change "Save workspace to .RData on exit" to "Never".
+
+![](resources/save_workspace_preference.png)
+:::
+
+### Project organisation
+
+::: {.column-margin}
+![](resources/blame.png){fig-alt='A friendly monster has slipped on a banana peel, and says "I know it was you, code. It breaks my heart." Meanwhile, a little character labeled "CODE" looks on indignantly, pointing to evil characters labeled "mismanaged files," "navigating your computer", and "typing" hiding behind a bush holding a bunch of bananas. The point being: often folks blame code for data science problems that are often caused by other underlying issues.'}
+
+[Artwork by @allison_horst](https://allisonhorst.com/).
+:::
+
+While an R Project helps you quickly switch between projects, it is up to you to organise your project files into suitable folders. By structuring your files effectively, you can reduce the risk of losing important data, simplify the code for accessing your data, and make it easy to locate each script.
+
+::: {.callout-tip}
+## Project portability
+
+All files for the project should be contained within the project folder.
+
+When you share your project folder with others, it should contain all of the data, code, and other resources necessary for them to replicate your work.
+:::
+
+#### File folders
+
+A clear and consistent folder structure is essential for any project. The names of folders is a personal choice, however there are some commonly used folder names we recommend. Here's an example of a typical R Project directory structure:
+
+```bash
+my-awesome-project/
+├── data-raw/                   # Raw / unprocessed data files
+│   ├── survey_results_2024.csv
+│   ├── population_data.xlsx
+├── data/                       # Clean / processed data files
+│   ├── survey_cleaned_2024.csv
+│   ├── population_summary.csv
+├── R/                          # R scripts
+│   ├── data_cleaning.R
+│   ├── exploratory_analysis.R
+│   └── model_fitting.R
+├── outputs/                    # Results, figures, tables, and other outputs
+│   ├── figures/                # Graphs and charts
+│   │   ├── age_distribution_plot.png
+│   │   └── time_series_trends.jpeg
+│   └── tables/                 # Data tables and results
+│       ├── regression_summary.csv
+├── README.md                   # Project description and instructions
+└── my-awesome-project.Rproj    # R Project file
+```
+
+::: {.callout-note}
+## Folder Descriptions
+
+- **data-raw/**: This folder holds all original data files related to the project. Keeping raw and processed data separate ensures transparency and helps maintain data integrity.
+
+- **data/**: Save your tidy, clean and otherwise processed data here. This allows you to quickly read in analysis-ready data without needing to re-run your data cleaning script.
+  
+- **R/**: Store all your R scripts here, we recommend the folder name "R" (to match the structure of an R package). More language-agnostic projects might use a "src", "scripts", or "code" folder. It's a good practice to separate scripts into different categories depending on their function (e.g., data cleaning, analysis, modelling).
+
+- **outputs/**: This folder stores the outputs of your analysis, such as figures, tables, or models. You can have subfolders like `figures/` and `tables/` to separate the different types of results. This makes it easier to find specific outputs and ensures that your working directory isn't cluttered with unnecessary files.
+
+- **README.md**: A README file is essential for documenting the purpose of the project, how to run the analysis, and any specific instructions for collaborators. This file helps others (and yourself, in the future) understand the project structure, dependencies, and key steps involved.
+
+- **my-awesome-project.Rproj**: This is the R Project file, which we [created earlier](#sec-projects). Projects help maintain your project's workspace, settings, and set the working directory. It should always be kept at the root of the project folder.
+
+:::
+
+### Self-contained reproducible projects
+
+One of the key principles of maintaining an organised and reproducible workflow is to keep **all project-related files within the project folder**. This approach ensures that your project has:
+
+1. **Reproducibility**: By keeping everything in one place, you ensure that your code can easily locate all the necessary files (data, scripts, outputs) using relative paths. This makes your analysis reproducible for anyone who accesses the project.  
+
+2. **Portability**: A self-contained project is portable, meaning you can move it to another computer, share it with collaborators, or distribute it with version control platforms (e.g. GitHub) without breaking any links or dependencies.  
+
+3. **Organisation**: Storing all files in one structured location helps avoid confusion and ensures you can quickly locate the resources you need.  
+
+4. **Consistency**: External dependencies, such as files stored elsewhere on your computer, can change, be moved, or be deleted, breaking your workflow. Keeping everything within the project folder avoids this problem.
+
+::: {.callout-important}
+## R packages not included
+
+R projects usually include everything except the R packages it depends on, which are instead usually found in the system's global R environment.
+
+This can cause reproducibility issues if the project is used on a system where some packages are missing, incompatible, or at different versions with different functionality. To address this, you can use the [`renv`](https://rstudio.github.io/renv/) package, which bundles and manages package versions locally within the project folder. This ensures that your analysis always uses the correct versions of dependencies. 
+<!-- TODO See <renv lesson> for a detailed discussion on how to set up and use {renv}. -->
+:::
+
+
+## File Paths {#sec-path}
+
+When working with files in R, understanding and using file paths correctly is essential to ensure your scripts run seamlessly, whether on your computer or someone else’s.
+
+<!-- TODO: Insert pirate's map / drawing about file paths -->
+
+<!-- The **paths** are used to identify the location of a file, computer, device, or web page. You could think of it as a direction pointing to the destination. -->
+
+
+File paths can be defined in two main ways: **absolute paths** and **relative paths**. Both approaches work to locate files, but they behave very differently when running your code on other computers. Understanding how to use these paths effectively is crucial for reproducibly accessing your files from scripts and keeping your project portable (shareable with others).
+
+### Absolute paths
+
+An **absolute path** specifies the full location of a file or folder on your system **starting from the root directory** (e.g., `C:/` on Windows or `/` on macOS/Linux). 
+
+**Example:**
+```R
+# Windows
+data <- read.csv("C:/Users/Admin/Documents/my-awesome-project/data/survey_data.csv")
+
+# macOS/Linux
+data <- read.csv("/home/Admin/Documents/my-awesome-project/data/survey_data.csv")
+```
+
+Notice how the file path is differs between operating systems? This is bad for reproducibility.
+
+::: {.callout-important}
+
+## Absolute paths are NOT portable!
+
+While absolute paths work on your computer, they are not portable because:
+
+- They depend on the exact file structure of your system.
+- If you share your project with others, their systems may not have the same directory structure.
+- Moving your project to a new location can break the paths.
+
+For this reason, **absolute paths are strongly discouraged** in R scripts.
+
+:::
+
+### Relative paths
+
+A **relative path** specifies the location of a file or folder **relative to the current working directory**. The current working directory is your project folder (if you're working within an [R project](#sec-projects)). 
+
+When using R Projects, the working directory is automatically set to the root of the project, making relative paths the most reliable and portable option.
+
+**Example:**
+```R
+# Windows/macOS/Linux
+data <- read.csv("./data/survey_data.csv")
+```
+
+In this example:
+
+- `./` refers to the current working directory (the project folder). It is optional.
+- `./data/` navigates to the `data/` subfolder within the project folder.
+
+Relative paths ensure that your scripts work regardless of where the project folder is located, as long as the folder structure remains consistent. This makes them ideal for reproducible analysis. :tada:
+
+::: {.callout-tip}
+## Finding files
+
+When specifying file paths in R, you can use tab completion to quickly find and insert file paths. Inside quotation marks (""), start typing the folder or file name and press the {{< kbd Tab >}} key.
+
+RStudio will then show a list of matching files and folders, making it easier to navigate your project, find files and avoid typos.
+
+![](resources/tab-paths.mp4)
+:::
+
+#### Working directories
+
+
+The working directory in R is the folder where R looks for files using relative paths. The working directory is almost always your project folder.
+
+You can check your current working directory with the `getwd()` function.
+
+```{webr}
+#| exercise: getwd
+getwd()
+```
+
+```{webr}
+#| exercise: getwd
+#| check: true
+library(qlcheckr)
+apply_checks(
+  "Use the `getwd()` function." = search_ast(parse(text = .evaluate_result$.user_code), .fn = getwd),
+  "The correct working directory was not found, have you changed it? Try reloading the webpage." = exists_in(ql_results(), identical, "/home/web_user"),
+  .msg_correct = "That's correct!<br>Try running getwd() with your own R installation and compare the results.<br>What does this tell you about relative and absolute paths?"
+)
+```
+
+This function returns the absolute path of the current working directory.
+
+You can (but shouldn't) change your working directory with `setwd()`. Instead, we strongly recommend using R Projects and relative paths from the project folder.
+
+::: {.callout-important}
+## Working directory in R Markdown and Quarto
+
+When running R Markdown or Quarto documents, the working directory is instead the location of the document. You can think of these documents as being their own mini-projects, where files paths to images and data is relative to the document.
+
+If your document is in a sub-folder of an R project the relative paths can be confusing. R scripts will use the project folder, while your R documents will use the document folder!
+
+<!-- TODO -->
+<!-- For more information, see the "writing documents" modules. -->
+:::
+
+#### The here package
+
+::: {.column-margin}
+![](resources/here.png){fig-alt='A cartoon showing two paths side-by-side. On the left is a scary spooky forest, with spiderwebs and gnarled trees, with file paths written on the branches like "~/mmm/nope.csv" and "setwd("/haha/good/luck/"), with a scared looking cute fuzzy monster running out of it. On the right is a bright, colorful path with flowers, rainbow and sunshine, with signs saying "here!" and "it’s all right here!" A monster facing away from us in a backpack and walking stick is looking toward the right path. Stylized text reads "here: find your path." Learn more about [here](https://here.r-lib.org/).'}
+
+[Artwork by @allison_horst](https://allisonhorst.com/).
+:::
+
+The [here](https://here.r-lib.org/) package helps you create file paths relative to the project folder, ensuring that your scripts and analyses are portable and reproducible across different systems. The `here()` function automatically detects the project folder based on the location of your .Rproj file (or other indicators, like a README.md or .git folder).
+
+If you're writing scripts within an R Project, the `here()` function will give the same result as using relative paths. The key difference is that the `here()` function will also use the project folder for documents too.
+
+<!-- TODO: here package example -->
+
+### External paths
+
+External paths refer to file locations external to the computer you are using but accessible over a network connection. An example of an external path is `https://learnr.numbat.space/data/survey_results.csv`. We use a URL (Uniform Resource Locator) to specify these paths, which consists of several parts:
+
+- **Protocol** (`https://`): The communication method used to access the resource. Most often this will be `http` or `https` (Hypertext Transfer Protocol Secure, the protocol for websites). Other protocols that are commonly used include `ftp` (File Transfer Protocol), or `s3` (Simply Storage Service).
+- **Address / Location** (`learnr.numbat.space`): The network address of the server hosting the resource. In this case, `learnr.numbat.space` is the address, identifying the specific server to connect to.  
+- **Path** (`/data/survey_results.csv`): The absolute path of the file or resource on the server.
+- **Other Information**: Sometimes additional details are needed to connect to the external server, commonly this is:
+  - A port number like `:8080` specifies a network port (`https://learnr.numbat.space:8080/...`).  
+  - Credentials like `username:password@` can provide login information (`https://user:pass@learnr.numbat.space/...`).  
+
+Many R functions allow you to directly use web URLs for accessing data, for example:
+
+- Reading data with `read.csv()` or `readr::read_csv()`
+  ```r
+  data <- read.csv("https://learnr.numbat.space/data/survey_results.csv")
+  ```  
+
+- Downloading files with `download.file()`, particularly useful if the function you want doesn't support external file paths.
+  ```r
+  download.file("https://learnr.numbat.space/data/survey_results.csv", destfile = "data/survey_results.csv")
+  data <- read.csv("data/survey_results.csv")
+  ```  
+
+<!-- More information about reading in data can be found in the <TODO> lesson. -->
+
+### Check your understanding
+
+Which of the following is an example of an absolute path?
+
+:::{.quiz-singlechoice}
+- [ ] [`./data/survey_data.csv`]{hint="This is a relative path, not an absolute path."}
+- [X] [`C:/Users/YourName/Documents/data/survey_data.csv`]{hint="This is an absolute path, specifying the full location on the system."}
+- [ ] [`here('data', 'survey_data.csv')`]{hint="This uses the 'here' package to create paths relative to the project folder."}
+- [ ] [`data/survey_data.csv`]{hint="This is a relative path but it's missing the optional `./` to indicate the current directory."}
+:::
+
+---
+
+Why should you avoid using absolute paths in R scripts?  
+
+:::{.quiz-singlechoice}  
+- [ ] [They are too long.]{hint="The length of the path is not the issue, but the lack of portability is."}  
+- [X] [They only work on your system - not on others.]{hint="Absolute paths are specific to a system's directory structure, causing issues when sharing the project."}  
+- [ ] [They are slower to process in R.]{hint="R does not process absolute paths slower than relative ones."}
+- [ ] [They are hard to write in Windows.]{hint="Writing absolute paths in Windows is not particularly difficult, but they are less portable."}  
+:::
+
+---
+
+What does the `{here}` package do?  
+
+:::{.quiz-singlechoice}  
+- [ ] [Automatically downloads files into the project folder.]{hint="The 'here' package does not download files; it helps with path handling."}  
+- [X] [Helps build paths relative to the project folder.]{hint="The 'here' package locates the project root and helps construct relative paths from it."}  
+- [ ] [Converts absolute paths into relative paths.]{hint="The 'here' package does not convert absolute paths but ensures paths are always relative to the project root."}  
+- [ ] [Creates new folders within the project.]{hint="The 'here' package does not create folders but helps manage file paths."}  
+:::
+
+---
+
+Which of the following is NOT true about relative paths?  
+
+:::{.quiz-singlechoice}  
+- [ ] [They are more portable than absolute paths.]{hint="This is true. Relative paths are more portable."}  
+- [ ] [Relative paths are shorter and easier to read compared to absolute paths.]{hint="This is generally true for relative paths, as they don't include the full system directory structure."}  
+- [X] [They start from the root directory of your system.]{hint="Absolute paths start from the root of your system, unlike relative paths which depend on the current working directory."}  
+- [ ] [Relative paths are portable across different systems and environments.]{hint="This is true. Relative paths work as long as the project structure is preserved."}  
+- [ ] [Relative paths can vary depending on the working directory.]{hint="This is true. changing the working directory can affect the interpretation of a relative path."}
+:::
+
+---
+
+Which part of the URL specifies the communication method for the external resource?  
+
+:::{.quiz-singlechoice}  
+- [ ] [The address.]{hint="The address specifies the server location, not the communication method."}  
+- [X] [The protocol.]{hint="Correct! The protocol determines how the resource is accessed, e.g., `https` or `ftp`."}  
+- [ ] [The path.]{hint="The path specifies the file location on the server, not the communication method."}  
+- [ ] [The port.]{hint="The port is used for specifying a network port, not the communication method."}  
+:::
+
+<!-- --- -->
+
+<!-- What is the purpose of the address in an external path?   -->
+
+<!-- :::{.quiz-singlechoice}   -->
+<!-- - [ ] To indicate the file's location on the server.{hint="This is the purpose of the path, not the address."}   -->
+<!-- - [X] To identify the server hosting the resource.{hint="Correct! The address specifies which server to connect to for the resource."}   -->
+<!-- - [ ] To provide login credentials for secure access.{hint="Credentials, if needed, are part of the optional info, not the address."}   -->
+<!-- - [ ] To specify the port number for the network connection.{hint="The port is a separate component, not part of the address."}   -->
+<!-- ::: -->
+
+<!-- --- -->
+
+<!-- Which of the following external paths includes a port number?   -->
+
+<!-- :::{.quiz-singlechoice}   -->
+<!-- - [ ] `https://example.com/data/file.csv`{hint="This path does not specify a port number."}   -->
+<!-- - [X] `https://example.com:8080/data/file.csv`{hint="Correct! The `:8080` indicates a port number in the path."}   -->
+<!-- - [ ] `ftp://user:pass@example.com/data/file.csv`{hint="This path includes login credentials but does not have a port number."}   -->
+<!-- - [ ] `http://example.com/data/file.csv`{hint="This path uses `http` but does not include a port number."}   -->
+<!-- ::: -->
+
+<!-- --- -->
+
+<!-- What does the path in an external URL represent?   -->
+
+<!-- :::{.quiz-singlechoice}   -->
+<!-- - [ ] The name of the server hosting the resource.{hint="This is the purpose of the address, not the path."}   -->
+<!-- - [ ] The protocol used to access the resource.{hint="The protocol is specified separately, such as `https` or `ftp`."}   -->
+<!-- - [X] The location of the file or resource on the server.{hint="Correct! The path identifies where the file is stored within the server's directory structure."}   -->
+<!-- - [ ] The port number used to connect to the server.{hint="The port is specified separately if needed, not part of the path."}   -->
+<!-- ::: -->
+
+
+
+
+
+
+
+<!-- #### Working directory -->
+
+<!-- The working directory is the default location R is looking at when loading the file or where it will store the files. If you want to check where your current working directory is, you can run the `getwd()` function. To understand a bit more about the current working directory, let me introduce the `here` package. -->
+
+<!-- #### here package -->
+
+
+
+<!-- :::{.callout-tip} -->
+<!-- # Webpage -->
+
+<!-- So far, we only see how to reference files on our computers. However, we can also reference places on other computers, for example, when we want to get data from the internet. -->
+
+<!-- To locate the webpage, we use the URL (Uniform Resource Locator) to identify any resource on the internet. -->
+
+<!-- `https://my-awesome-project.numbat.space/data/penguins.csv` -->
+
+<!-- ::: -->
+
