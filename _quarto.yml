@@ -26,8 +26,11 @@ custom-callout:
     title: "Congratulations!"
     icon-symbol: "🎉"
     color: "#008000"
+    
 filters:
-- custom-callout
+  - custom-callout
+  - live # This is only depended on if a {webr} chunk is used
+  - quiz-teachr # This is only depended on if a .quiz-* div is used
 
 format:
   html:
