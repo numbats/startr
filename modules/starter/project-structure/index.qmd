@@ -9,11 +9,7 @@ difficulty: "Beginner"
 time: "20 minutes"
 ojs-engine: true
 format:
-  lesson-html:
-    webr:
-      packages:
-        - here
-    
+  lesson-html: default
 ---
 
 {{< include /_extensions/r-wasm/live/_knitr.qmd >}}
@@ -276,10 +272,11 @@ getwd()
 ```{webr}
 #| exercise: getwd
 #| check: true
-
-qlcheckr::apply_checks(
-  "Your math doesn't work correctly." = 1 + 1 != 2,
-  .debug = TRUE
+library(qlcheckr)
+apply_checks(
+  "Use the `getwd()` function." = search_ast(parse(text = .evaluate_result$.user_code), .fn = getwd),
+  "The correct working directory was not found, have you changed it? Try reloading the webpage." = exists_in(ql_results(), identical, "/home/web_user"),
+  .msg_correct = "That's correct!<br>Try running getwd() with your own R installation and compare the results.<br>What does this tell you about relative and absolute paths?"
 )
 ```
 
