@@ -3,8 +3,7 @@
     "listing": "/index.html",
     "items": [
       "/modules/starter/installation/01-installation.html",
-      "/modules/starter/project-structure/02-importing-exporting.html",
-      "/modules/starter/project-structure/01-project-structure.html",
+      "/modules/starter/project-structure/index.html",
       "/modules/starter/r-basics/index.html",
       "/modules/starter/rstudio-basics/02-basics.html",
       "/modules/starter/debugging/index.html",

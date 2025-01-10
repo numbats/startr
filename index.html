@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.33">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -37,10 +37,12 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-b358f982273499bf44fe150d2d5bb68e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2ade4c202a29add217eadf66f1be2696.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-b4b23f8e0e91bb8398fbc0420c67a4bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1da4abb18ede1aa9f18c3a54e1900ec6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -78,9 +80,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-project','listing-website','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-filters','listing-execute','listing-difficulty','listing-time','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count','listing-webr','listing-editor',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      valueNames: ['listing-project','listing-website','listing-custom-callout','listing-filters','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-webr','listing-difficulty','listing-time','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count','listing-execute','listing-editor','listing-ojs-engine',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-project","listing-website","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-filters","listing-execute","listing-difficulty","listing-time","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-webr","listing-editor"],
+      searchColumns: ["listing-project","listing-website","listing-custom-callout","listing-filters","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-webr","listing-difficulty","listing-time","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-execute","listing-editor","listing-ojs-engine"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -106,9 +108,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-project','listing-website','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-filters','listing-webr','listing-difficulty','listing-time','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      valueNames: ['listing-project','listing-website','listing-custom-callout','listing-filters','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-webr','listing-difficulty','listing-time','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-project","listing-website","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-filters","listing-webr","listing-difficulty","listing-time","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
+      searchColumns: ["listing-project","listing-website","listing-custom-callout","listing-filters","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-webr","listing-difficulty","listing-time","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -134,9 +136,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-project','listing-website','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-filters','listing-webr','listing-difficulty','listing-time','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      valueNames: ['listing-project','listing-website','listing-custom-callout','listing-filters','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-webr','listing-difficulty','listing-time','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-project","listing-website","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-filters","listing-webr","listing-difficulty","listing-time","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
+      searchColumns: ["listing-project","listing-website","listing-custom-callout","listing-filters","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-webr","listing-difficulty","listing-time","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -153,6 +155,30 @@ ul.task-list li input[type="checkbox"] {
     }
   })
   </script>
+<style>
+div.callout-tada.callout {
+  border-left-color: #008000;
+}
+div.callout-tada.callout-style-default > .callout-header {
+  background-color: rgba(0, 128, 0, 0.13);
+}
+div.callout-tada .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.callout-titled .callout-icon::before {
+  content: '🎉';
+  background-image: none;
+}
+div.callout-todo.callout {
+  border-left-color: pink;
+}
+div.callout-todo.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-todo .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.callout-titled .callout-icon::before {
+  content: '📝';
+  background-image: none;
+}
+</style>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -197,7 +223,6 @@ window.Quarto = {
     <span class="navbar-title">Stats Code</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -266,14 +291,7 @@ window.Quarto = {
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/project-structure/02-importing-exporting.html"> Importing and Exporting data file </a> <span class="track-list-desc"> In this topic, you will learn how to import data from different sources, including CSV files, excel files, and files hosted online. You will also learn how to export the data from R</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 10 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
-</li>
-<li class="track-list-item">
-<a style="
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/project-structure/01-project-structure.html"> Project structure </a> <span class="track-list-desc"> In this topic, you will learn about the project structure and how to manage your project in R properly.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
+  " class="track-list-title" href="./modules/starter/project-structure/index.html"> Projects and paths </a> <span class="track-list-desc"> Establish good practices for organising and accessing project files. Essential for when you share your work with others.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
 </li>
 <li class="track-list-item">
 <a style="
@@ -372,6 +390,20 @@ No matching items
 
 
 
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -456,8 +488,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -568,7 +598,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
