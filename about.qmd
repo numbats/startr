@@ -1,5 +1,10 @@
 ---
 title: "About Stats Code"
+format:
+  html:
+    theme:
+      - default
+      - styles/main.scss
 ---
 
 Stats Code is a website with materials to help you learn R and use it to explore data. No prior experience in programming, statistics, or data is required to work through these materials. These materials were developed to prepare our students for our courses that expect some familiarity of R and data analysis.

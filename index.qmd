@@ -14,7 +14,8 @@ format:
   html:
     theme:
       - default
-      - styles/index.scss
+      - styles/main.scss
+      - styles/listing.scss
 ---
 
 :::{.track-listing}

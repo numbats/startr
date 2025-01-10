@@ -1,5 +1,10 @@
 ---
 title: "Contribute to Stats Code"
+format:
+  html:
+    theme:
+      - default
+      - styles/main.scss
 ---
 
 ## Add your course to Stats Code
