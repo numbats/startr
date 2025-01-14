@@ -57,7 +57,7 @@ Using an R Project streamlines your work by:
 
 ![](resources/project_2.png)
 
-3. There are many different types of R projects that you can create. These various project types come bundled with starter code and settings (for shortcuts and build options). A standard project (without any boilerplate or settings) is suitable most projects - so simply select "New Project" for an empty folder.
+3. There are many different types of R projects that you can create. These various project types come bundled with starter code and settings (for shortcuts and build options). A standard project (without any starter code or settings) is suitable most projects - so simply select "New Project" for an empty folder.
 
 ![](resources/project_3.png)
 
