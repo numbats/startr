@@ -91,7 +91,7 @@ You can close the project by simply closing RStudio (or via  **Project selector 
 
 ![](resources/save_workspace.png)
 
-:::{.callout-important}
+:::{.callout-important collapse="false"}
 # Saving the workspace image? No!
 
 While you should always save your work, it is best for reproducibility to not save your workspace image.
@@ -115,7 +115,7 @@ You can prevent the popup messages by going to **Tools → Global Options**. The
 
 While an R Project helps you quickly switch between projects, it is up to you to organise your project files into suitable folders. By structuring your files effectively, you can reduce the risk of losing important data, simplify the code for accessing your data, and make it easy to locate each script.
 
-::: {.callout-tip}
+::: {.callout-tip collapse="false"}
 ## Project portability
 
 All files for the project should be contained within the project folder.
@@ -149,8 +149,8 @@ my-awesome-project/
 └── my-awesome-project.Rproj    # R Project file
 ```
 
-::: {.callout-note}
-## Folder Descriptions
+::: {.callout-note collapse="true"}
+## Expand For Folder Descriptions
 
 - **data-raw/**: This folder holds all original data files related to the project. Keeping raw and processed data separate ensures transparency and helps maintain data integrity.
 
@@ -178,7 +178,7 @@ One of the key principles of maintaining an organised and reproducible workflow 
 
 4. **Consistency**: External dependencies, such as files stored elsewhere on your computer, can change, be moved, or be deleted, breaking your workflow. Keeping everything within the project folder avoids this problem.
 
-::: {.callout-important}
+::: {.callout-important collapse="false"}
 ## R packages not included
 
 R projects usually include everything except the R packages it depends on, which are instead usually found in the system's global R environment.
@@ -214,7 +214,7 @@ data <- read.csv("/home/Admin/Documents/my-awesome-project/data/survey_data.csv"
 
 Notice how the file path is differs between operating systems? This is bad for reproducibility.
 
-::: {.callout-important}
+::: {.callout-important collapse="false"}
 
 ## Absolute paths are NOT portable!
 
@@ -247,7 +247,7 @@ In this example:
 
 Relative paths ensure that your scripts work regardless of where the project folder is located, as long as the folder structure remains consistent. This makes them ideal for reproducible analysis. :tada:
 
-::: {.callout-tip}
+::: {.callout-tip collapse="false"}
 ## Finding files
 
 When specifying file paths in R, you can use tab completion to quickly find and insert file paths. Inside quotation marks (""), start typing the folder or file name and press the {{< kbd Tab >}} key.
@@ -284,7 +284,7 @@ This function returns the absolute path of the current working directory.
 
 You can (but shouldn't) change your working directory with `setwd()`. Instead, we strongly recommend using R Projects and relative paths from the project folder.
 
-::: {.callout-important}
+::: {.callout-important collapse="false"}
 ## Working directory in R Markdown and Quarto
 
 When running R Markdown or Quarto documents, the working directory is instead the location of the document. You can think of these documents as being their own mini-projects, where files paths to images and data is relative to the document.
@@ -330,7 +330,7 @@ A URL consists of several parts:
   - A port number like `:8080` specifies a network port (`https://learnr.numbat.space:8080/...`).  
   - Credentials like `username:password@` can provide login information (`https://user:pass@learnr.numbat.space/...`).  
 
-::: {.callout-tip}
+::: {.callout-tip collapse="false"}
 ## Using external paths
 
 Many R functions allow you to directly use web URLs for accessing data, for example `read.csv()` shown earlier. If the function you want doesn't support external file paths, you can download the files with `download.file()`.
