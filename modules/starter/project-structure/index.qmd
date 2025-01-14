@@ -14,13 +14,13 @@ format:
 
 {{< include /_extensions/r-wasm/live/_knitr.qmd >}}
 
-Good project organisation is not just a courtesy; it is essential for collaboration, transparency, and reproducibility in any data analysis project.
+Good project organisation is essential for collaboration, transparency, and reproducibility in any data analysis project. A well organised project sets a strong foundation for reliable data analysis, ultimately saving you time and reducing the risk of errors.
 
-This module introduces practical strategies to organise your analysis files. It includes creating and using R Projects, understanding relative and absolute file paths, and structuring your work for clarity and reproducibility. A well organised project sets a strong foundation for reliable data analysis, ultimately saving you time and reducing the risk of errors.
+This module introduces practical strategies to organise your workflow and files. You will learn how to create and use R Projects, understand relative and absolute file paths, and structure your work for clarity and reproducibility. 
 
 ## R Projects {#sec-projects}
 
-An R Project is a powerful feature in RStudio that helps you organise your work. Using an R Project creates a self-contained workspace that includes all relevant scripts, data files, and outputs for your analysis.
+R Projects are an RStudio feature that can help you organise all files related to a single project folder and access them in a project specific workspace.
 
 ::: {.column-margin}
 ![](resources/setwd.png){fig-alt='A cartoon of a cracked glass cube looking frustrated with casts on its arm and leg, with bandaids on it, containing "setwd", looks on at a metal riveted cube labeled "R Proj" holding a skateboard looking sympathetic, and a smaller cube with a helmet on labeled "here" doing a trick on a skateboard.'}
@@ -28,12 +28,12 @@ An R Project is a powerful feature in RStudio that helps you organise your work.
 [Artwork by @allison_horst](https://allisonhorst.com/).
 :::
 
-Using an R Project streamlines your work by:
+Using an R Project in RStudio helps with:
 
-1. **Automatic working directory**: RStudio automatically sets the working directory to the project's folder. The working directory is the folder relative file paths are built from (more details [later](#sec-relative)).
-2. **Project settings**: RStudio projects restore project-specific settings and keyboard shortcuts (e.g., git, packages, or documents).
-3. **Workspace restoration**: Reopen projects with scripts, unsaved changes, and history exactly as you left them.
-4. **Organised structure**: Simplifies collaboration and reproducibility with clear folders and relative paths.
+1. **Automatic working directory**: When you open an R Project, RStudio automatically sets the working directory location to the project's folder. The working directory is the folder relative file paths are built from (more details [later](#sec-relative)).
+2. **Project settings**: The `.Rproj` file created when you make an R Project stores project-specific settings and keyboard shortcuts (e.g., git, packages, or documents). These settings are automatically loaded when you open the project in RStudio.
+3. **Workspace restoration**: When you reopen an R Project, Rstudio will reload your workspace (scripts, unsaved changes and history) exactly how you left it.
+4. **Folder structure**: R projects make it easy to access related files in the project folder with relative paths, making your analysis easier to share with others.
 
 <!-- Using an R Project for your work offers several key benefits: -->
 
@@ -103,7 +103,7 @@ When you close your project you might be prompted to save your 'workspace image'
 :::{.callout-important collapse="false"}
 # Saving the workspace image? No!
 
-While you should always save your work, it is best for reproducibility to not save your workspace image. Saving the workspace means storing all of the objects you've created for the next time you open the project. It's better to explicitly load data and scripts each time you open a project, ensuring that the analysis can be replicated by anyone, including your future self.
+While you should always save your work, it is best for reproducibility to not save your workspace image. Saving the workspace means next time you open the project, R Studio will also reload your last R session, along all of the variables and functions you previously created. While this seems convenient, it is better to explicitly load data and scripts each time you open a project to ensure that your analysis results can be re-run by anyone, including your future self.
 
 <!-- When you work in RStudio, the workspace refers to all the objects (such as variables, data frames, functions, etc.) that are stored in your R environment during the session. RStudio offers to saves this workspace to a file called .RData when you close the project or RStudio itself. This file contains all the objects from your session, so when you reopen the project, RStudio will automatically load these objects back into the environment. -->
 
@@ -122,7 +122,7 @@ You can prevent the popup messages by going to **Tools → Global Options**. The
 [Artwork by @allison_horst](https://allisonhorst.com/).
 :::
 
-While an R Project helps you quickly switch between projects, it is up to you to organise your project files into suitable folders. By structuring your files effectively, you can reduce the risk of losing important data, simplify the code for accessing your data, and make it easy to locate each script.
+While an R Project helps you quickly switch between projects, it is up to you to organise your files into suitable subfolders within the project folder. By structuring your files effectively, you can reduce the risk of losing important data, simplify the code for accessing your data, and make it easier to locate each script.
 
 <!-- ::: {.callout-tip collapse="false"} -->
 <!-- ## Project portability -->
@@ -134,7 +134,7 @@ While an R Project helps you quickly switch between projects, it is up to you to
 
 #### File folders
 
-A clear and consistent folder structure is essential for any project. The names of folders is a personal choice, however there are some commonly used folder names we recommend. Here's an example of a typical R Project directory structure:
+A clear and consistent folder structure starts with sensible folder names. Here's an example of a typical R Project directory structure:
 
 ```bash
 my-awesome-project/
@@ -158,8 +158,10 @@ my-awesome-project/
 └── my-awesome-project.Rproj    # R Project file
 ```
 
+This structure is suitable for most simple data analysis projects. We recommend you try to organise a few projects with this template before making modifications based on your personal preferences and project specific needs.
+
 ::: {.callout-note collapse="true"}
-## Expand For Folder Descriptions
+## Expand For Recommended Folder Uses
 
 - **data-raw/**: This folder holds all original data files related to the project. Keeping raw and processed data separate ensures transparency and helps maintain data integrity.
 
@@ -175,7 +177,7 @@ my-awesome-project/
 
 :::
 
-### Self-contained reproducible projects
+### Portable and reproducible projects
 
 One of the key principles of maintaining an organised and reproducible workflow is to keep **all project-related files within the project folder**. This approach ensures that your project has:
 
@@ -270,7 +272,7 @@ When working with files in R, understanding and using file paths correctly is es
 <!-- The **paths** are used to identify the location of a file, computer, device, or web page. You could think of it as a direction pointing to the destination. -->
 
 
-File paths can be defined in two main ways: **absolute paths** and **relative paths**. Both approaches work to locate files, but they behave very differently when running your code on other computers. Understanding how to use these paths effectively is crucial for reproducibly accessing your files from scripts and keeping your project portable (shareable with others).
+File paths can be specified in two main ways: **absolute paths** and **relative paths**. Both approaches work to locate files, but they behave very differently when running your code on other computers. Appropriately specified file paths ensure that your projects will be portable to other people's computers by enabling others to execute your analysis workflow without editing your scripts.
 
 ### Absolute paths {#sec-absolute}
 
@@ -285,7 +287,7 @@ data <- read.csv("C:/Users/Admin/Documents/my-awesome-project/data/survey_data.c
 data <- read.csv("/home/Admin/Documents/my-awesome-project/data/survey_data.csv")
 ```
 
-Notice how the file path is differs between operating systems? This is bad for reproducibility.
+Notice how the file path differs between operating systems? This is bad for reproducibility.
 
 ::: {.callout-important collapse="false"}
 
@@ -294,18 +296,16 @@ Notice how the file path is differs between operating systems? This is bad for r
 While absolute paths work on your computer, they are not portable because:
 
 - They depend on the exact file structure of your system.
-- If you share your project with others, their systems may not have the same directory structure.
+- If you share your project with others, their computer systems may not have the same directory structure.
 - Moving your project to a new location can break the paths.
 
-For this reason, **absolute paths are strongly discouraged** in R scripts.
+For these reasons, **using absolute paths is strongly discouraged**.
 
 :::
 
 ### Relative paths {#sec-relative}
 
-A **relative path** specifies the location of a file or folder **relative to the current working directory**. The current working directory is your project folder (if you're working within an [R project](#sec-projects)). 
-
-When using R Projects, the working directory is automatically set to the root of the project, making relative paths the most reliable and portable option.
+A **relative path** specifies the location of a file or folder **relative to the current working directory**. If you work within an [R Project]((#sec-projects), the current working directory is automatically set to the project folder, making relative paths the most reliable and portable option.
 
 **Example:**
 ```R
@@ -333,7 +333,7 @@ RStudio will then show a list of matching files and folders, making it easier to
 #### Working directories
 
 
-The working directory in R is the folder where R looks for files using relative paths. The working directory is almost always your project folder.
+The working directory in an R session is the folder from which R looks for files specified using relative paths. The working directory is almost always your project folder.
 
 You can check your current working directory with the `getwd()` function.
 
