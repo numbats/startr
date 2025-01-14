@@ -295,6 +295,8 @@ If your document is in a sub-folder of an R project the relative paths can be co
 <!-- For more information, see the "writing documents" modules. -->
 :::
 
+### Project paths
+
 #### The here package
 
 ::: {.column-margin}
@@ -311,7 +313,15 @@ If you're writing scripts within an R Project, the `here()` function will give t
 
 ### External paths
 
-External paths refer to file locations external to the computer you are using but accessible over a network connection. An example of an external path is `https://learnr.numbat.space/data/survey_results.csv`. We use a URL (Uniform Resource Locator) to specify these paths, which consists of several parts:
+External paths refer to file locations external to the computer you are using but accessible over a network connection. External paths are specified with a URL (Uniform Resource Locator).
+
+**Example:**
+```R
+# Windows/macOS/Linux
+data <- read.csv("https://learnr.numbat.space/data/survey_results.csv")
+```
+
+A URL consists of several parts:
 
 - **Protocol** (`https://`): The communication method used to access the resource. Most often this will be `http` or `https` (Hypertext Transfer Protocol Secure, the protocol for websites). Other protocols that are commonly used include `ftp` (File Transfer Protocol), or `s3` (Simply Storage Service).
 - **Address / Location** (`learnr.numbat.space`): The network address of the server hosting the resource. In this case, `learnr.numbat.space` is the address, identifying the specific server to connect to.  
@@ -320,18 +330,16 @@ External paths refer to file locations external to the computer you are using bu
   - A port number like `:8080` specifies a network port (`https://learnr.numbat.space:8080/...`).  
   - Credentials like `username:password@` can provide login information (`https://user:pass@learnr.numbat.space/...`).  
 
-Many R functions allow you to directly use web URLs for accessing data, for example:
+::: {.callout-tip}
+## Using external paths
 
-- Reading data with `read.csv()` or `readr::read_csv()`
-  ```r
-  data <- read.csv("https://learnr.numbat.space/data/survey_results.csv")
-  ```  
+Many R functions allow you to directly use web URLs for accessing data, for example `read.csv()` shown earlier. If the function you want doesn't support external file paths, you can download the files with `download.file()`.
 
-- Downloading files with `download.file()`, particularly useful if the function you want doesn't support external file paths.
-  ```r
-  download.file("https://learnr.numbat.space/data/survey_results.csv", destfile = "data/survey_results.csv")
-  data <- read.csv("data/survey_results.csv")
-  ```  
+```r
+download.file("https://learnr.numbat.space/data/survey_results.csv", destfile = "data/survey_results.csv")
+data <- read.csv("data/survey_results.csv")
+```
+:::
 
 <!-- More information about reading in data can be found in the <TODO> lesson. -->
 
