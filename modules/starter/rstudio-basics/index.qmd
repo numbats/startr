@@ -1,6 +1,6 @@
 ---
-title: RStudio basics
-subtitle: 'In this chapter, you will learn how to use R and how to use it with RStudio.'
+title: 2. RStudio basics
+subtitle: 'Learn how to use RStudio to write code and install packages.'
 title-block-banner: yes
 engine: knitr
 filters:

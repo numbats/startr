@@ -1,5 +1,5 @@
 ---
-title: Troubleshooting and asking for help
+title: 5. Strategies for troubleshooting in R
 subtitle: 'With coding comes bugs and errors that need troubleshooting. In this chapter, you will learn how to decipher errors, find help for fixing them, and practice asking clear questions with minimally reproducible examples.'
 title-block-banner: yes
 engine: knitr

@@ -1,5 +1,5 @@
 ---
-title: Projects and paths
+title: 4. Projects and paths
 subtitle: 'Establish good practices for organising and accessing project files. Essential for when you share your work with others.'
 title-block-banner: yes
 engine: knitr

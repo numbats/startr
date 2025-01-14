@@ -1,6 +1,6 @@
 ---
-title: Getting started with R and RStudio
-subtitle: 'This chapter will show you how to install R and RStudio.'
+title: 1. Installing R and RStudio
+subtitle: 'Install R and RStudio on Windows, macOS, or Linux.'
 title-block-banner: yes
 engine: knitr
 filters:

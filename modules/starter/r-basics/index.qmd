@@ -1,6 +1,6 @@
 ---
-title: R programming basics
-subtitle: 'In this topic you will learn the basic operations of this popular open source language. You will also learn to perform simple algebraic operations on vectors and matrices. You will also learn about data frames, conditional statements, loops, and functions to power your R code, making your work more efficient and elegant.'
+title: 3. R basics
+subtitle: 'Start writing R code with basic functions and mathematical operations. Learn code syntax, chain functions together with the pipe (|>), and understand the different types of data that can exist together in a dataset.'
 title-block-banner: yes
 engine: knitr
 filters:
