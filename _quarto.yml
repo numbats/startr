@@ -8,7 +8,7 @@ project:
 
 website:
   navbar:
-    title: "Stats Code"
+    title: "StartR"
     search: false
     right:
       - text: "Courses"

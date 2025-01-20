@@ -1,5 +1,5 @@
 ---
-title: "Contribute to Stats Code"
+title: "Contribute to StartR"
 format:
   html:
     theme:
@@ -7,6 +7,6 @@ format:
       - styles/main.scss
 ---
 
-## Add your course to Stats Code
+## Add your course to StartR
 
 ## Join the group of contributors
