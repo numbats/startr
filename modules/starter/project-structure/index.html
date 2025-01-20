@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-01-14">
+<meta name="dcterms.date" content="2025-01-20">
 
 <title>4. Projects and paths</title>
 <style>
@@ -189,7 +189,7 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">14 January 2025</p>
+        <p class="date">20 January 2025</p>
       </div>
     </div>
     
@@ -206,17 +206,19 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
   <ul>
   <li><a href="#sec-projects" id="toc-sec-projects" class="nav-link active" data-scroll-target="#sec-projects">R Projects</a>
   <ul class="collapse">
-  <li><a href="#creating-r-projects" id="toc-creating-r-projects" class="nav-link" data-scroll-target="#creating-r-projects">Creating R projects</a></li>
+  <li><a href="#create-an-r-project" id="toc-create-an-r-project" class="nav-link" data-scroll-target="#create-an-r-project">Create an R project</a></li>
   <li><a href="#using-r-projects" id="toc-using-r-projects" class="nav-link" data-scroll-target="#using-r-projects">Using R projects</a></li>
   <li><a href="#project-organisation" id="toc-project-organisation" class="nav-link" data-scroll-target="#project-organisation">Project organisation</a></li>
   <li><a href="#self-contained-reproducible-projects" id="toc-self-contained-reproducible-projects" class="nav-link" data-scroll-target="#self-contained-reproducible-projects">Self-contained reproducible projects</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding">Check your understanding</a></li>
   </ul></li>
   <li><a href="#sec-path" id="toc-sec-path" class="nav-link" data-scroll-target="#sec-path">File Paths</a>
   <ul class="collapse">
-  <li><a href="#absolute-paths" id="toc-absolute-paths" class="nav-link" data-scroll-target="#absolute-paths">Absolute paths</a></li>
-  <li><a href="#relative-paths" id="toc-relative-paths" class="nav-link" data-scroll-target="#relative-paths">Relative paths</a></li>
+  <li><a href="#sec-absolute" id="toc-sec-absolute" class="nav-link" data-scroll-target="#sec-absolute">Absolute paths</a></li>
+  <li><a href="#sec-relative" id="toc-sec-relative" class="nav-link" data-scroll-target="#sec-relative">Relative paths</a></li>
+  <li><a href="#project-paths" id="toc-project-paths" class="nav-link" data-scroll-target="#project-paths">Project paths</a></li>
   <li><a href="#external-paths" id="toc-external-paths" class="nav-link" data-scroll-target="#external-paths">External paths</a></li>
-  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding">Check your understanding</a></li>
+  <li><a href="#check-your-understanding-1" id="toc-check-your-understanding-1" class="nav-link" data-scroll-target="#check-your-understanding-1">Check your understanding</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -232,8 +234,8 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
 
 
 
-<p>Project organisation is vital in data analysis, especially when sharing the work with others. Good organisation is not just a courtesy; it is essential for collaboration, transparency, and reproducibility in any data analysis project.</p>
-<p>This module introduces practical strategies to organise your analysis and its files. It includes creating and using R Projects, understanding relative and absolute file paths, and structuring your work for clarity and reproducibility. A well organised project sets a strong foundation for reliable data analysis, ultimately saving you time and reducing the risk of errors.</p>
+<p>Good project organisation is not just a courtesy; it is essential for collaboration, transparency, and reproducibility in any data analysis project.</p>
+<p>This module introduces practical strategies to organise your analysis files. It includes creating and using R Projects, understanding relative and absolute file paths, and structuring your work for clarity and reproducibility. A well organised project sets a strong foundation for reliable data analysis, ultimately saving you time and reducing the risk of errors.</p>
 <section id="sec-projects" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="sec-projects">R Projects</h2>
 <p>An R Project is a powerful feature in RStudio that helps you organise your work. Using an R Project creates a self-contained workspace that includes all relevant scripts, data files, and outputs for your analysis.</p>
@@ -241,15 +243,20 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
 <div class="no-row-height column-margin column-container"><div class="">
 <p><img src="resources/setwd.png" class="img-fluid" alt="A cartoon of a cracked glass cube looking frustrated with casts on its arm and leg, with bandaids on it, containing &quot;setwd&quot;, looks on at a metal riveted cube labeled &quot;R Proj&quot; holding a skateboard looking sympathetic, and a smaller cube with a helmet on labeled &quot;here&quot; doing a trick on a skateboard."></p>
 <p><a href="https://allisonhorst.com/">Artwork by <span class="citation" data-cites="allison_horst">@allison_horst</span></a>.</p>
-</div></div><p>Using an R Project for your work offers several key benefits:</p>
+</div></div><p>Using an R Project streamlines your work by:</p>
 <ol type="1">
-<li><strong>Setting the working directory</strong>: When you open an R Project, RStudio automatically sets the working directory to the folder where the project is saved. You should <em>almost</em> never use <code>setwd()</code> to change the working directory, needing to change your working directory is a symptom of poorly organised projects.</li>
-<li><strong>Project settings</strong>: R Projects also restore project-specific settings, and RStudio’s tools and shortcuts will adjust to the type of project. Projects with version control (e.g.&nbsp;git) will have a git tab, R package projects will include shortcuts for package development, and writing projects (e.g.&nbsp;R Markdown and Quarto) will make it easy to knit/render your document.</li>
-<li><strong>Restoring workspace</strong>: R Projects also preserve the state of your workspace, so when you reopen a project, previously opened scripts, unsaved changes, and the R console history are restored. This helps you pick up where you left off, reducing the time spent reloading or redoing work.</li>
-<li><strong>A home for project files</strong>: With a clear project structure, other collaborators can easily access and understand your work - simply open the project file! The consistent folder structure and using relative paths make it easy for them to access the data and reproduce your analysis on their own systems.</li>
+<li><strong>Automatic working directory</strong>: RStudio automatically sets the working directory to the project’s folder. The working directory is the folder relative file paths are built from (more details <a href="#sec-relative">later</a>).</li>
+<li><strong>Project settings</strong>: RStudio projects restore project-specific settings and keyboard shortcuts (e.g., git, packages, or documents).</li>
+<li><strong>Workspace restoration</strong>: Reopen projects with scripts, unsaved changes, and history exactly as you left them.</li>
+<li><strong>Organised structure</strong>: Simplifies collaboration and reproducibility with clear folders and relative paths.</li>
 </ol>
-<section id="creating-r-projects" class="level3">
-<h3 class="anchored" data-anchor-id="creating-r-projects">Creating R projects</h3>
+<!-- Using an R Project for your work offers several key benefits: -->
+<!-- 1. **Setting the working directory**: When you open an R Project, RStudio automatically sets the working directory to the folder where the project is saved. You should *almost* never use `setwd()` to change the working directory, needing to change your working directory is a symptom of poorly organised projects. -->
+<!-- 2. **Project settings**: R Projects also restore project-specific settings, and RStudio's tools and shortcuts will adjust to the type of project. Projects with version control (e.g. git) will have a git tab, R package projects will include shortcuts for package development, and writing projects (e.g. R Markdown and Quarto) will make it easy to knit/render your document. -->
+<!-- 3. **Restoring workspace**: R Projects also preserve the state of your workspace, so when you reopen a project, previously opened scripts, unsaved changes, and the R console history are restored. This helps you pick up where you left off, reducing the time spent reloading or redoing work. -->
+<!-- 4. **A home for project files**: With a clear project structure, other collaborators can easily access and understand your work - simply open the project file! The consistent folder structure and using relative paths make it easy for them to access the data and reproduce your analysis on their own systems. -->
+<section id="create-an-r-project" class="level3">
+<h3 class="anchored" data-anchor-id="create-an-r-project">Create an R project</h3>
 <ol type="1">
 <li>Click the project drop-down in the top-right corner. Then click on the “New Project…”.</li>
 </ol>
@@ -265,11 +272,11 @@ For your very first R project, let’s start by selecting “New Directory”.</
 </ol>
 <p><img src="resources/project_2.png" class="img-fluid"></p>
 <ol start="3" type="1">
-<li>There are many different types of R projects that you can create. These various project types come bundled with a boilerplate file structure and some project settings (for shortcuts and build options). A standard project (without any boilerplate or settings) is suitable most projects - so simply select “New Project” for an empty folder.</li>
+<li>There are many different types of R projects that you can create. These various project types come bundled with starter code and settings (for shortcuts and build options). A standard project (without any starter code or settings) is suitable most projects - so simply select “New Project” for an empty folder.</li>
 </ol>
 <p><img src="resources/project_3.png" class="img-fluid"></p>
 <ol start="4" type="1">
-<li>Give your project (and the folder containing it) a name using the “Directory name:” field. You can also choose where the project will exist on your computer by clicking on the “Browse…” button. If you do not choose, it will be in your home directory. You can leave the rest (git and renv) unchecked for now.</li>
+<li>Give your project (and the folder containing it) a name using the “Directory name:” field. You can also choose where the project will exist on your computer by clicking on the “Browse…” button. If you do not choose, it will be in your home folder (<code>/home/&lt;username&gt;</code> on macOS, and <code>C:/Users/&lt;username&gt;</code> on Windows). You can leave the rest (git and renv) unchecked for now.</li>
 </ol>
 <p><img src="resources/project_4.png" class="img-fluid"></p>
 <ol start="5" type="1">
@@ -286,8 +293,7 @@ Project created!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You have now successfully created the R project!</p>
-<p>Verify this by checking:</p>
+<p>You have now successfully created the R project! Verify this by checking:</p>
 <ul>
 <li>The project name in the top right project dropdown</li>
 <li>The current working directory (<code>getwd()</code>) is the project folder</li>
@@ -301,29 +307,32 @@ Project created!
 <p>There are multiple ways to open an R Project in RStudio:</p>
 <ol type="1">
 <li><strong>RStudio Project Selector</strong>:<br>
-In the top right corner of RStudio, you’ll see a project selector dropdown. Clicking on it will display a list of recently opened R Projects, allowing you to quickly switch between projects you want to work on.<br>
-</li>
+Use the project selector dropdown in the top right corner to quicky switch between recent projects. <!-- In the top right corner of RStudio, you'll see a project selector dropdown. Clicking on it will display a list of recently opened R Projects, allowing you to quickly switch between projects you want to work on.   --></li>
 <li><strong>Opening the <code>.Rproj</code> File</strong>:<br>
-You can also open an R Project directly by locating the <code>.Rproj</code> file on your computer and double-clicking it. This will open RStudio and automatically set the working directory to the project’s folder. If you’re already in RStudio, you can also open the <code>.Rproj</code> file via <strong>File → Open Project</strong>.</li>
+Open the project’s <code>.Rproj</code> file from your file explorer. <!-- You can also open an R Project directly by locating the `.Rproj` file on your computer and double-clicking it. This will open RStudio and automatically set the working directory to the project's folder. If you're already in RStudio, you can also open the `.Rproj` file via **File → Open Project**.   --></li>
 </ol>
 <p>Any work you do while in this project will be restored when you next open the project (even unsaved files, but please don’t rely on this and save your work!).</p>
-<p>You can close the project by simply closing RStudio (or via <strong>Project selector (top-right) → Close Project</strong> to keep RStudio open). When you close your project you might be prompted to save your ‘workspace image’, to which we recommend you select <strong>Don’t Save</strong>.</p>
+<p>You can close the project by simply closing RStudio (or via <strong>Project selector (top-right) → Close Project</strong> to keep RStudio open).</p>
+<p>When you close your project you might be prompted to save your ‘workspace image’, to which we recommend you select <strong>Don’t Save</strong>.</p>
 <p><img src="resources/save_workspace.png" class="img-fluid"></p>
 <div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Saving the workspace image? No!
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<p>While you should always save your work, it is best for reproducibility to not save your workspace image.</p>
-<p>When you work in RStudio, the workspace refers to all the objects (such as variables, data frames, functions, etc.) that are stored in your R environment during the session. RStudio offers to saves this workspace to a file called .RData when you close the project or RStudio itself. This file contains all the objects from your session, so when you reopen the project, RStudio will automatically load these objects back into the environment.</p>
-<p>Save the workspace means storing all of the objects you’ve created for the next time you open the project. It may sound tempting to do it, but it is bad for reproducibility. If you rely on previously saved objects, such as datasets or analysis results, you might skip the process of reloading or regenerating data, which undermines the reproducibility of your work. It’s always better to explicitly load data and scripts each time you open a project, ensuring that the analysis can be replicated by anyone, including your future self.</p>
+<p>While you should always save your work, it is best for reproducibility to not save your workspace image. Saving the workspace means storing all of the objects you’ve created for the next time you open the project. It’s better to explicitly load data and scripts each time you open a project, ensuring that the analysis can be replicated by anyone, including your future self.</p>
+<!-- When you work in RStudio, the workspace refers to all the objects (such as variables, data frames, functions, etc.) that are stored in your R environment during the session. RStudio offers to saves this workspace to a file called .RData when you close the project or RStudio itself. This file contains all the objects from your session, so when you reopen the project, RStudio will automatically load these objects back into the environment. -->
+<!-- Save the workspace means storing all of the objects you've created for the next time you open the project. It may sound tempting to do it, but it is bad for reproducibility. If you rely on previously saved objects, such as datasets or analysis results, you might skip the process of reloading or regenerating data, which undermines the reproducibility of your work. It’s always better to explicitly load data and scripts each time you open a project, ensuring that the analysis can be replicated by anyone, including your future self. -->
 <p>You can prevent the popup messages by going to <strong>Tools → Global Options</strong>. Then select <strong>General</strong> on the side-bar and change “Save workspace to .RData on exit” to “Never”.</p>
 <p><img src="resources/save_workspace_preference.png" class="img-fluid"></p>
+</div>
 </div>
 </div>
 </section>
@@ -334,20 +343,11 @@ Saving the workspace image? No!
 <p><img src="resources/blame.png" class="img-fluid" alt="A friendly monster has slipped on a banana peel, and says &quot;I know it was you, code. It breaks my heart.&quot; Meanwhile, a little character labeled &quot;CODE&quot; looks on indignantly, pointing to evil characters labeled &quot;mismanaged files,&quot; &quot;navigating your computer&quot;, and &quot;typing&quot; hiding behind a bush holding a bunch of bananas. The point being: often folks blame code for data science problems that are often caused by other underlying issues."></p>
 <p><a href="https://allisonhorst.com/">Artwork by <span class="citation" data-cites="allison_horst">@allison_horst</span></a>.</p>
 </div></div><p>While an R Project helps you quickly switch between projects, it is up to you to organise your project files into suitable folders. By structuring your files effectively, you can reduce the risk of losing important data, simplify the code for accessing your data, and make it easy to locate each script.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Project portability
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>All files for the project should be contained within the project folder.</p>
-<p>When you share your project folder with others, it should contain all of the data, code, and other resources necessary for them to replicate your work.</p>
-</div>
-</div>
+<!-- ::: {.callout-tip collapse="false"} -->
+<!-- ## Project portability -->
+<!-- All files for the project should be contained within the project folder. This allows you to share your work with others by sharing the project folder. -->
+<!-- When you share your project folder with others, it should contain all of the data, code, and other resources necessary for them to replicate your work. -->
+<!-- ::: -->
 <section id="file-folders" class="level4">
 <h4 class="anchored" data-anchor-id="file-folders">File folders</h4>
 <p>A clear and consistent folder structure is essential for any project. The names of folders is a personal choice, however there are some commonly used folder names we recommend. Here’s an example of a typical R Project directory structure:</p>
@@ -371,14 +371,16 @@ Project portability
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> README.md                   <span class="co"># Project description and instructions</span></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> my-awesome-project.Rproj    <span class="co"># R Project file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Folder Descriptions
+Expand For Folder Descriptions
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><p><strong>data-raw/</strong>: This folder holds all original data files related to the project. Keeping raw and processed data separate ensures transparency and helps maintain data integrity.</p></li>
@@ -390,6 +392,7 @@ Folder Descriptions
 </ul>
 </div>
 </div>
+</div>
 </section>
 </section>
 <section id="self-contained-reproducible-projects" class="level3">
@@ -399,165 +402,29 @@ Folder Descriptions
 <li><p><strong>Reproducibility</strong>: By keeping everything in one place, you ensure that your code can easily locate all the necessary files (data, scripts, outputs) using relative paths. This makes your analysis reproducible for anyone who accesses the project.</p></li>
 <li><p><strong>Portability</strong>: A self-contained project is portable, meaning you can move it to another computer, share it with collaborators, or distribute it with version control platforms (e.g.&nbsp;GitHub) without breaking any links or dependencies.</p></li>
 <li><p><strong>Organisation</strong>: Storing all files in one structured location helps avoid confusion and ensures you can quickly locate the resources you need.</p></li>
-<li><p><strong>Consistency</strong>: External dependencies, such as files stored elsewhere on your computer, can change, be moved, or be deleted, breaking your workflow. Keeping everything within the project folder avoids this problem.</p></li>
 </ol>
+<!-- 4. **Consistency**: External dependencies, such as files stored elsewhere on your computer, can change, be moved, or be deleted, breaking your workflow. Keeping everything within the project folder avoids this problem. -->
 <div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 R packages not included
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <p>R projects usually include everything except the R packages it depends on, which are instead usually found in the system’s global R environment.</p>
 <p>This can cause reproducibility issues if the project is used on a system where some packages are missing, incompatible, or at different versions with different functionality. To address this, you can use the <a href="https://rstudio.github.io/renv/"><code>renv</code></a> package, which bundles and manages package versions locally within the project folder. This ensures that your analysis always uses the correct versions of dependencies. <!-- TODO See <renv lesson> for a detailed discussion on how to set up and use {renv}. --></p>
 </div>
 </div>
-</section>
-</section>
-<section id="sec-path" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="sec-path">File Paths</h2>
-<p>When working with files in R, understanding and using file paths correctly is essential to ensure your scripts run seamlessly, whether on your computer or someone else’s.</p>
-<!-- TODO: Insert pirate's map / drawing about file paths -->
-<!-- The **paths** are used to identify the location of a file, computer, device, or web page. You could think of it as a direction pointing to the destination. -->
-<p>File paths can be defined in two main ways: <strong>absolute paths</strong> and <strong>relative paths</strong>. Both approaches work to locate files, but they behave very differently when running your code on other computers. Understanding how to use these paths effectively is crucial for reproducibly accessing your files from scripts and keeping your project portable (shareable with others).</p>
-<section id="absolute-paths" class="level3">
-<h3 class="anchored" data-anchor-id="absolute-paths">Absolute paths</h3>
-<p>An <strong>absolute path</strong> specifies the full location of a file or folder on your system <strong>starting from the root directory</strong> (e.g., <code>C:/</code> on Windows or <code>/</code> on macOS/Linux).</p>
-<p><strong>Example:</strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"C:/Users/Admin/Documents/my-awesome-project/data/survey_data.csv"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS/Linux</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"/home/Admin/Documents/my-awesome-project/data/survey_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Notice how the file path is differs between operating systems? This is bad for reproducibility.</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-Absolute paths are NOT portable!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>While absolute paths work on your computer, they are not portable because:</p>
-<ul>
-<li>They depend on the exact file structure of your system.</li>
-<li>If you share your project with others, their systems may not have the same directory structure.</li>
-<li>Moving your project to a new location can break the paths.</li>
-</ul>
-<p>For this reason, <strong>absolute paths are strongly discouraged</strong> in R scripts.</p>
-</div>
-</div>
-</section>
-<section id="relative-paths" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="relative-paths">Relative paths</h3>
-<p>A <strong>relative path</strong> specifies the location of a file or folder <strong>relative to the current working directory</strong>. The current working directory is your project folder (if you’re working within an <a href="#sec-projects">R project</a>).</p>
-<p>When using R Projects, the working directory is automatically set to the root of the project, making relative paths the most reliable and portable option.</p>
-<p><strong>Example:</strong></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows/macOS/Linux</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/survey_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In this example:</p>
-<ul>
-<li><code>./</code> refers to the current working directory (the project folder). It is optional.</li>
-<li><code>./data/</code> navigates to the <code>data/</code> subfolder within the project folder.</li>
-</ul>
-<p>Relative paths ensure that your scripts work regardless of where the project folder is located, as long as the folder structure remains consistent. This makes them ideal for reproducible analysis. <span class="emoji" data-emoji="tada">🎉</span></p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Finding files
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>When specifying file paths in R, you can use tab completion to quickly find and insert file paths. Inside quotation marks (““), start typing the folder or file name and press the <kbd aria-hidden="true">Tab</kbd><span class="visually-hidden">Tab</span> key.</p>
-<p>RStudio will then show a list of matching files and folders, making it easier to navigate your project, find files and avoid typos.</p>
-<p><video src="resources/tab-paths.mp4" class="img-fluid" controls=""><a href="resources/tab-paths.mp4">Video</a></video></p>
-</div>
-</div>
-<section id="working-directories" class="level4">
-<h4 class="anchored" data-anchor-id="working-directories">Working directories</h4>
-<p>The working directory in R is the folder where R looks for files using relative paths. The working directory is almost always your project folder.</p>
-<p>You can check your current working directory with the <code>getwd()</code> function.</p>
-<div class="cell" data-exercise="getwd">
-<div>
-<div id="webr-1" class="exercise-cell">
-
-</div>
-<script type="webr-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZ2V0d2QifSwiY29kZSI6ImdldHdkKCkifQ==
-</script>
-</div>
-</div>
-<div class="cell" data-exercise="getwd" data-check="true">
-<script type="exercise-check-getwd-contents">
-eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImdldHdkIn0sImNvZGUiOiJsaWJyYXJ5KHFsY2hlY2tyKVxuYXBwbHlfY2hlY2tzKFxuICBcIlVzZSB0aGUgYGdldHdkKClgIGZ1bmN0aW9uLlwiID0gc2VhcmNoX2FzdChwYXJzZSh0ZXh0ID0gLmV2YWx1YXRlX3Jlc3VsdCQudXNlcl9jb2RlKSwgLmZuID0gZ2V0d2QpLFxuICBcIlRoZSBjb3JyZWN0IHdvcmtpbmcgZGlyZWN0b3J5IHdhcyBub3QgZm91bmQsIGhhdmUgeW91IGNoYW5nZWQgaXQ/IFRyeSByZWxvYWRpbmcgdGhlIHdlYnBhZ2UuXCIgPSBleGlzdHNfaW4ocWxfcmVzdWx0cygpLCBpZGVudGljYWwsIFwiL2hvbWUvd2ViX3VzZXJcIiksXG4gIC5tc2dfY29ycmVjdCA9IFwiVGhhdCdzIGNvcnJlY3QhPGJyPlRyeSBydW5uaW5nIGdldHdkKCkgd2l0aCB5b3VyIG93biBSIGluc3RhbGxhdGlvbiBhbmQgY29tcGFyZSB0aGUgcmVzdWx0cy48YnI+V2hhdCBkb2VzIHRoaXMgdGVsbCB5b3UgYWJvdXQgcmVsYXRpdmUgYW5kIGFic29sdXRlIHBhdGhzP1wiXG4pIn0=
-</script>
-</div>
-<p>This function returns the absolute path of the current working directory.</p>
-<p>You can (but shouldn’t) change your working directory with <code>setwd()</code>. Instead, we strongly recommend using R Projects and relative paths from the project folder.</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Working directory in R Markdown and Quarto
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>When running R Markdown or Quarto documents, the working directory is instead the location of the document. You can think of these documents as being their own mini-projects, where files paths to images and data is relative to the document.</p>
-<p>If your document is in a sub-folder of an R project the relative paths can be confusing. R scripts will use the project folder, while your R documents will use the document folder!</p>
-<!-- TODO -->
-<!-- For more information, see the "writing documents" modules. -->
-</div>
-</div>
-</section>
-<section id="the-here-package" class="level4 page-columns page-full">
-<h4 class="anchored" data-anchor-id="the-here-package">The here package</h4>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<p><img src="resources/here.png" class="img-fluid" alt="A cartoon showing two paths side-by-side. On the left is a scary spooky forest, with spiderwebs and gnarled trees, with file paths written on the branches like &quot;~/mmm/nope.csv&quot; and &quot;setwd(&quot;/haha/good/luck/&quot;), with a scared looking cute fuzzy monster running out of it. On the right is a bright, colorful path with flowers, rainbow and sunshine, with signs saying &quot;here!&quot; and &quot;it’s all right here!&quot; A monster facing away from us in a backpack and walking stick is looking toward the right path. Stylized text reads &quot;here: find your path.&quot; Learn more about [here](https://here.r-lib.org/)."></p>
-<p><a href="https://allisonhorst.com/">Artwork by <span class="citation" data-cites="allison_horst">@allison_horst</span></a>.</p>
-</div></div><p>The <a href="https://here.r-lib.org/">here</a> package helps you create file paths relative to the project folder, ensuring that your scripts and analyses are portable and reproducible across different systems. The <code>here()</code> function automatically detects the project folder based on the location of your .Rproj file (or other indicators, like a README.md or .git folder).</p>
-<p>If you’re writing scripts within an R Project, the <code>here()</code> function will give the same result as using relative paths. The key difference is that the <code>here()</code> function will also use the project folder for documents too.</p>
-<!-- TODO: here package example -->
-</section>
-</section>
-<section id="external-paths" class="level3">
-<h3 class="anchored" data-anchor-id="external-paths">External paths</h3>
-<p>External paths refer to file locations external to the computer you are using but accessible over a network connection. An example of an external path is <code>https://learnr.numbat.space/data/survey_results.csv</code>. We use a URL (Uniform Resource Locator) to specify these paths, which consists of several parts:</p>
-<ul>
-<li><strong>Protocol</strong> (<code>https://</code>): The communication method used to access the resource. Most often this will be <code>http</code> or <code>https</code> (Hypertext Transfer Protocol Secure, the protocol for websites). Other protocols that are commonly used include <code>ftp</code> (File Transfer Protocol), or <code>s3</code> (Simply Storage Service).</li>
-<li><strong>Address / Location</strong> (<code>learnr.numbat.space</code>): The network address of the server hosting the resource. In this case, <code>learnr.numbat.space</code> is the address, identifying the specific server to connect to.<br>
-</li>
-<li><strong>Path</strong> (<code>/data/survey_results.csv</code>): The absolute path of the file or resource on the server.</li>
-<li><strong>Other Information</strong>: Sometimes additional details are needed to connect to the external server, commonly this is:
-<ul>
-<li>A port number like <code>:8080</code> specifies a network port (<code>https://learnr.numbat.space:8080/...</code>).<br>
-</li>
-<li>Credentials like <code>username:password@</code> can provide login information (<code>https://user:pass@learnr.numbat.space/...</code>).</li>
-</ul></li>
-</ul>
-<p>Many R functions allow you to directly use web URLs for accessing data, for example:</p>
-<ul>
-<li><p>Reading data with <code>read.csv()</code> or <code>readr::read_csv()</code></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://learnr.numbat.space/data/survey_results.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>Downloading files with <code>download.file()</code>, particularly useful if the function you want doesn’t support external file paths.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://learnr.numbat.space/data/survey_results.csv"</span>, <span class="at">destfile =</span> <span class="st">"data/survey_results.csv"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/survey_results.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul>
-<!-- More information about reading in data can be found in the <TODO> lesson. -->
 </section>
 <section id="check-your-understanding" class="level3">
 <h3 class="anchored" data-anchor-id="check-your-understanding">Check your understanding</h3>
-<p>Which of the following is an example of an absolute path?</p>
+<p>What is the main benefit of using an RStudio Project?</p>
 <div id="qforms-quiz-1" class="radio-group">
 </div>
 
@@ -565,7 +432,7 @@ Working directory in R Markdown and Quarto
   var compareArrays = (a, b) =>
     a.length === b.length && a.every((element, index) => element === b[index]);
   var quiz_container = document.getElementById("qforms-quiz-1");
-  var questions = "./data/survey_data.csv!@!C:/Users/YourName/Documents/data/survey_data.csv!@!here('data', 'survey_data.csv')!@!data/survey_data.csv";
+  var questions = "It allows you to run R scripts on multiple computers simultaneously.!@!It organises your files and sets the working directory automatically.!@!It enables you to use R without installing it.!@!It prevents data loss in case of a power failure.";
   questions = questions.split("!@!");
   
   // console.log("hints", hints)
@@ -573,7 +440,7 @@ Working directory in R Markdown and Quarto
     var hints = []
     // Your variable is undefined
   }
-  hints[1 - 1] = "This is a relative path, not an absolute path.!@!This is an absolute path, specifying the full location on the system.!@!This uses the 'here' package to create paths relative to the project folder.!@!This is a relative path but it's missing the optional `./` to indicate the current directory.".split("!@!");
+  hints[1 - 1] = "This is not a feature of RStudio Projects.!@!Correct! RStudio Projects help keep your work organised and handle working directories for you.!@!RStudio Projects do not eliminate the need for R to be installed.!@!RStudio Projects do not directly address data recovery.".split("!@!");
 
   for([index, question] of questions.entries()) {
     var radio_row = document.createElement("div");
@@ -628,7 +495,7 @@ Working directory in R Markdown and Quarto
 
 
 <hr>
-<p>Why should you avoid using absolute paths in R scripts?</p>
+<p>How can you open an RStudio Project?</p>
 <div id="qforms-quiz-2" class="radio-group">
 </div>
 
@@ -636,7 +503,7 @@ Working directory in R Markdown and Quarto
   var compareArrays = (a, b) =>
     a.length === b.length && a.every((element, index) => element === b[index]);
   var quiz_container = document.getElementById("qforms-quiz-2");
-  var questions = "They are too long.!@!They only work on your system - not on others.!@!They are slower to process in R.!@!They are hard to write in Windows.";
+  var questions = "By clicking “New Script” in the File menu.!@!By opening the .Rproj file directly or using the project selector drop-down.!@!By using the source() function in R.";
   questions = questions.split("!@!");
   
   // console.log("hints", hints)
@@ -644,7 +511,7 @@ Working directory in R Markdown and Quarto
     var hints = []
     // Your variable is undefined
   }
-  hints[2 - 1] = "The length of the path is not the issue, but the lack of portability is.!@!Absolute paths are specific to a system's directory structure, causing issues when sharing the project.!@!R does not process absolute paths slower than relative ones.!@!Writing absolute paths in Windows is not particularly difficult, but they are less portable.".split("!@!");
+  hints[2 - 1] = "This creates a new R script, not a project.!@!Correct! These are the two main ways to open a project.!@!The `source()` function runs a script but doesn't open a project.".split("!@!");
 
   for([index, question] of questions.entries()) {
     var radio_row = document.createElement("div");
@@ -699,7 +566,7 @@ Working directory in R Markdown and Quarto
 
 
 <hr>
-<p>What does the <code>{here}</code> package do?</p>
+<p>What happens to the working directory when you open an RStudio Project?</p>
 <div id="qforms-quiz-3" class="radio-group">
 </div>
 
@@ -707,7 +574,7 @@ Working directory in R Markdown and Quarto
   var compareArrays = (a, b) =>
     a.length === b.length && a.every((element, index) => element === b[index]);
   var quiz_container = document.getElementById("qforms-quiz-3");
-  var questions = "Automatically downloads files into the project folder.!@!Helps build paths relative to the project folder.!@!Converts absolute paths into relative paths.!@!Creates new folders within the project.";
+  var questions = "It remains set to the previous directory you were working in.!@!It is set to the data/ folder within the project.!@!It is automatically set to the project folder.!@!It is not set and needs to be configured manually.";
   questions = questions.split("!@!");
   
   // console.log("hints", hints)
@@ -715,7 +582,7 @@ Working directory in R Markdown and Quarto
     var hints = []
     // Your variable is undefined
   }
-  hints[3 - 1] = "The 'here' package does not download files; it helps with path handling.!@!The 'here' package locates the project root and helps construct relative paths from it.!@!The 'here' package does not convert absolute paths but ensures paths are always relative to the project root.!@!The 'here' package does not create folders but helps manage file paths.".split("!@!");
+  hints[3 - 1] = "The working directory changes to match the project folder.!@!The working directory is not automatically set to a subfolder like `data/`.!@!Correct! The working directory is set to the root of the project folder.!@!RStudio Projects automatically manage the working directory for you.".split("!@!");
 
   for([index, question] of questions.entries()) {
     var radio_row = document.createElement("div");
@@ -749,7 +616,7 @@ Working directory in R Markdown and Quarto
     var selected = document.querySelectorAll('input[name=qforms-quiz-name-3]:checked')
     var values = Array.from(selected).map(element => element.value);
     var results = document.getElementById("qforms-quiz-results-3")
-    var solutions = "2".split("!@!")
+    var solutions = "3".split("!@!")
     if(selected != undefined) {
       var success = compareArrays(values, solutions)
       results.classList.toggle(success ? "success": "failure")
@@ -770,7 +637,7 @@ Working directory in R Markdown and Quarto
 
 
 <hr>
-<p>Which of the following is NOT true about relative paths?</p>
+<p>Which of the following files is typically included in an RStudio Project?</p>
 <div id="qforms-quiz-4" class="radio-group">
 </div>
 
@@ -778,7 +645,7 @@ Working directory in R Markdown and Quarto
   var compareArrays = (a, b) =>
     a.length === b.length && a.every((element, index) => element === b[index]);
   var quiz_container = document.getElementById("qforms-quiz-4");
-  var questions = "They are more portable than absolute paths.!@!Relative paths are shorter and easier to read compared to absolute paths.!@!They start from the root directory of your system.!@!Relative paths are portable across different systems and environments.!@!Relative paths can vary depending on the working directory.";
+  var questions = ".gitignore!@!.Renviron!@!.Rproj!@!README.md";
   questions = questions.split("!@!");
   
   // console.log("hints", hints)
@@ -786,7 +653,7 @@ Working directory in R Markdown and Quarto
     var hints = []
     // Your variable is undefined
   }
-  hints[4 - 1] = "This is true. Relative paths are more portable.!@!This is generally true for relative paths, as they don't include the full system directory structure.!@!Absolute paths start from the root of your system, unlike relative paths which depend on the current working directory.!@!This is true. Relative paths work as long as the project structure is preserved.!@!This is true. changing the working directory can affect the interpretation of a relative path.".split("!@!");
+  hints[4 - 1] = "This file is related to version control, not exclusive to RStudio Projects.!@!This file is optional and not automatically created with a project.!@!Correct! Every RStudio Project includes an `.Rproj` file.!@!This is a helpful addition but not automatically included in every project.".split("!@!");
 
   for([index, question] of questions.entries()) {
     var radio_row = document.createElement("div");
@@ -841,7 +708,7 @@ Working directory in R Markdown and Quarto
 
 
 <hr>
-<p>Which part of the URL specifies the communication method for the external resource?</p>
+<p>Which of the following is <strong>NOT</strong> true about RStudio Projects?</p>
 <div id="qforms-quiz-5" class="radio-group">
 </div>
 
@@ -849,7 +716,7 @@ Working directory in R Markdown and Quarto
   var compareArrays = (a, b) =>
     a.length === b.length && a.every((element, index) => element === b[index]);
   var quiz_container = document.getElementById("qforms-quiz-5");
-  var questions = "The address.!@!The protocol.!@!The path.!@!The port.";
+  var questions = "They make it easy to organise project files.!@!They automatically set the working directory.!@!They allow you to store project-specific settings.!@!They prevent you from using absolute file paths.";
   questions = questions.split("!@!");
   
   // console.log("hints", hints)
@@ -857,7 +724,7 @@ Working directory in R Markdown and Quarto
     var hints = []
     // Your variable is undefined
   }
-  hints[5 - 1] = "The address specifies the server location, not the communication method.!@!Correct! The protocol determines how the resource is accessed, e.g., `https` or `ftp`.!@!The path specifies the file location on the server, not the communication method.!@!The port is used for specifying a network port, not the communication method.".split("!@!");
+  hints[5 - 1] = "This is true; projects encourage structured file organisation.!@!This is true; projects handle working directories for you.!@!This is true; settings like `renv` or build options can be project-specific.!@!Correct! Projects encourage the use of relative paths, but you can still use absolute paths if necessary.".split("!@!");
 
   for([index, question] of questions.entries()) {
     var radio_row = document.createElement("div");
@@ -891,11 +758,625 @@ Working directory in R Markdown and Quarto
     var selected = document.querySelectorAll('input[name=qforms-quiz-name-5]:checked')
     var values = Array.from(selected).map(element => element.value);
     var results = document.getElementById("qforms-quiz-results-5")
-    var solutions = "2".split("!@!")
+    var solutions = "4".split("!@!")
     if(selected != undefined) {
       var success = compareArrays(values, solutions)
       results.classList.toggle(success ? "success": "failure")
       results.innerHTML = (success ? "✅ That's correct!<br>": "❌ Incorrect, try again!<br>") + hints[5 - 1][values-1]
+    }
+
+  })
+  quiz_container.append(submit_btn)
+
+  quiz_container.append(result_section)
+</script>
+
+<style>
+  input.quiz-radio {
+    margin: 0.4rem;
+  }
+</style>
+
+
+<hr>
+<p>What should you <strong>avoid</strong> when closing an RStudio Project?</p>
+<div id="qforms-quiz-6" class="radio-group">
+</div>
+
+<script>
+  var compareArrays = (a, b) =>
+    a.length === b.length && a.every((element, index) => element === b[index]);
+  var quiz_container = document.getElementById("qforms-quiz-6");
+  var questions = "Saving any open scripts.!@!Leaving the project open.!@!Saving the workspace image.";
+  questions = questions.split("!@!");
+  
+  // console.log("hints", hints)
+  if (typeof hints === 'undefined') {
+    var hints = []
+    // Your variable is undefined
+  }
+  hints[6 - 1] = "Saving scripts is perfectly fine and recommended.!@!This is not inherently problematic, though it's good practice to close projects you aren't using.!@!Correct! Saving the workspace image can lead to issues with reproducibility.".split("!@!");
+
+  for([index, question] of questions.entries()) {
+    var radio_row = document.createElement("div");
+
+    var label = document.createElement("label");
+    label.setAttribute("class", "radio-label");
+    label.setAttribute("for", question);
+    label.textContent = question;
+
+    var input_elem = document.createElement("input");
+    input_elem.setAttribute("type", "radio");
+    input_elem.setAttribute("class", "quiz-radio");
+    input_elem.setAttribute("name", `qforms-quiz-name-6`);
+    input_elem.setAttribute("value", (index+1));
+
+    radio_row.append(input_elem, label);
+    quiz_container.append(radio_row);
+  }
+
+
+  var result_section = document.createElement("div")
+  result_section.setAttribute("id", "qforms-quiz-results-6")
+  result_section.setAttribute("class", "result-section")
+
+  var submit_btn = document.createElement("input")
+  submit_btn.setAttribute("type", "button")
+  submit_btn.setAttribute("id", "qforms-quiz-submit-6")
+  submit_btn.setAttribute("class", "submit-btn")
+  submit_btn.setAttribute("value", "Submit")
+  submit_btn.addEventListener("click", event => {
+    var selected = document.querySelectorAll('input[name=qforms-quiz-name-6]:checked')
+    var values = Array.from(selected).map(element => element.value);
+    var results = document.getElementById("qforms-quiz-results-6")
+    var solutions = "3".split("!@!")
+    if(selected != undefined) {
+      var success = compareArrays(values, solutions)
+      results.classList.toggle(success ? "success": "failure")
+      results.innerHTML = (success ? "✅ That's correct!<br>": "❌ Incorrect, try again!<br>") + hints[6 - 1][values-1]
+    }
+
+  })
+  quiz_container.append(submit_btn)
+
+  quiz_container.append(result_section)
+</script>
+
+<style>
+  input.quiz-radio {
+    margin: 0.4rem;
+  }
+</style>
+
+
+</section>
+</section>
+<section id="sec-path" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="sec-path">File Paths</h2>
+<p>When working with files in R, understanding and using file paths correctly is essential to ensure your scripts run seamlessly, whether on your computer or someone else’s.</p>
+<!-- TODO: Insert pirate's map / drawing about file paths -->
+<!-- The **paths** are used to identify the location of a file, computer, device, or web page. You could think of it as a direction pointing to the destination. -->
+<p>File paths can be defined in two main ways: <strong>absolute paths</strong> and <strong>relative paths</strong>. Both approaches work to locate files, but they behave very differently when running your code on other computers. Understanding how to use these paths effectively is crucial for reproducibly accessing your files from scripts and keeping your project portable (shareable with others).</p>
+<section id="sec-absolute" class="level3">
+<h3 class="anchored" data-anchor-id="sec-absolute">Absolute paths</h3>
+<p>An <strong>absolute path</strong> specifies the full location of a file or folder on your system <strong>starting from the root directory</strong> (e.g., <code>C:/</code> on Windows or <code>/</code> on macOS/Linux).</p>
+<p><strong>Example:</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"C:/Users/Admin/Documents/my-awesome-project/data/survey_data.csv"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS/Linux</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"/home/Admin/Documents/my-awesome-project/data/survey_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Notice how the file path is differs between operating systems? This is bad for reproducibility.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Absolute paths are NOT portable!
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>While absolute paths work on your computer, they are not portable because:</p>
+<ul>
+<li>They depend on the exact file structure of your system.</li>
+<li>If you share your project with others, their systems may not have the same directory structure.</li>
+<li>Moving your project to a new location can break the paths.</li>
+</ul>
+<p>For this reason, <strong>absolute paths are strongly discouraged</strong> in R scripts.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-relative" class="level3">
+<h3 class="anchored" data-anchor-id="sec-relative">Relative paths</h3>
+<p>A <strong>relative path</strong> specifies the location of a file or folder <strong>relative to the current working directory</strong>. The current working directory is your project folder (if you’re working within an <a href="#sec-projects">R project</a>).</p>
+<p>When using R Projects, the working directory is automatically set to the root of the project, making relative paths the most reliable and portable option.</p>
+<p><strong>Example:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows/macOS/Linux</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/survey_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this example:</p>
+<ul>
+<li><code>./</code> refers to the current working directory. It is optional.</li>
+<li><code>./data/</code> navigates to the <code>data/</code> subfolder within the project folder.</li>
+</ul>
+<p>Relative paths ensure that your scripts work regardless of where the project folder is located, as long as the folder structure remains consistent. This makes them ideal for reproducible analysis. <span class="emoji" data-emoji="tada">🎉</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Finding files
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>When specifying file paths in R, you can use tab completion to quickly find and insert file paths. Inside quotation marks (““), start typing the folder or file name and press the <kbd aria-hidden="true">Tab</kbd><span class="visually-hidden">Tab</span> key.</p>
+<p>RStudio will then show a list of matching files and folders, making it easier to navigate your project, find files and avoid typos.</p>
+<p><video src="resources/tab-paths.mp4" class="img-fluid" controls=""><a href="resources/tab-paths.mp4">Video</a></video></p>
+</div>
+</div>
+</div>
+<section id="working-directories" class="level4">
+<h4 class="anchored" data-anchor-id="working-directories">Working directories</h4>
+<p>The working directory in R is the folder where R looks for files using relative paths. The working directory is almost always your project folder.</p>
+<p>You can check your current working directory with the <code>getwd()</code> function.</p>
+<div class="cell" data-exercise="getwd">
+<div>
+<div id="webr-1" class="exercise-cell">
+
+</div>
+<script type="webr-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZ2V0d2QifSwiY29kZSI6ImdldHdkKCkifQ==
+</script>
+</div>
+</div>
+<div class="cell" data-exercise="getwd" data-check="true">
+<script type="exercise-check-getwd-contents">
+eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImdldHdkIn0sImNvZGUiOiJsaWJyYXJ5KHFsY2hlY2tyKVxuYXBwbHlfY2hlY2tzKFxuICBcIlVzZSB0aGUgYGdldHdkKClgIGZ1bmN0aW9uLlwiID0gc2VhcmNoX2FzdChwYXJzZSh0ZXh0ID0gLmV2YWx1YXRlX3Jlc3VsdCQudXNlcl9jb2RlKSwgLmZuID0gZ2V0d2QpLFxuICBcIlRoZSBjb3JyZWN0IHdvcmtpbmcgZGlyZWN0b3J5IHdhcyBub3QgZm91bmQsIGhhdmUgeW91IGNoYW5nZWQgaXQ/IFRyeSByZWxvYWRpbmcgdGhlIHdlYnBhZ2UuXCIgPSBleGlzdHNfaW4ocWxfcmVzdWx0cygpLCBpZGVudGljYWwsIFwiL2hvbWUvd2ViX3VzZXJcIiksXG4gIC5tc2dfY29ycmVjdCA9IFwiVGhhdCdzIGNvcnJlY3QhPGJyPlRyeSBydW5uaW5nIGdldHdkKCkgd2l0aCB5b3VyIG93biBSIGluc3RhbGxhdGlvbiBhbmQgY29tcGFyZSB0aGUgcmVzdWx0cy48YnI+V2hhdCBkb2VzIHRoaXMgdGVsbCB5b3UgYWJvdXQgcmVsYXRpdmUgYW5kIGFic29sdXRlIHBhdGhzP1wiXG4pIn0=
+</script>
+</div>
+<p>This function returns the absolute path of the current working directory.</p>
+<p>You can (but shouldn’t) change your working directory with <code>setwd()</code>. Instead, we strongly recommend using R Projects and relative paths from the project folder.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Working directory in R Markdown and Quarto
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>When running R Markdown or Quarto documents, the working directory is instead the location of the document. You can think of these documents as being their own mini-projects, where files paths to images and data are relative to the document.</p>
+<p>If your document is in a sub-folder of an R project the relative paths can be confusing. R scripts will use the project folder, while your R documents will use the document folder!</p>
+<!-- TODO -->
+<!-- For more information, see the "writing documents" modules. -->
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="project-paths" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="project-paths">Project paths</h3>
+<p>Another type of relative path is a <strong>project path</strong>, which specifies the location of files relative to the project folder (rather than the working directory). This can be useful since the project paths will work even if the working directory in R changes (e.g.&nbsp;when using code in R Markdown or Quarto documents).</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><img src="resources/here.png" class="img-fluid" alt="A cartoon showing two paths side-by-side. On the left is a scary spooky forest, with spiderwebs and gnarled trees, with file paths written on the branches like &quot;~/mmm/nope.csv&quot; and &quot;setwd(&quot;/haha/good/luck/&quot;), with a scared looking cute fuzzy monster running out of it. On the right is a bright, colorful path with flowers, rainbow and sunshine, with signs saying &quot;here!&quot; and &quot;it’s all right here!&quot; A monster facing away from us in a backpack and walking stick is looking toward the right path. Stylized text reads &quot;here: find your path.&quot; Learn more about [here](https://here.r-lib.org/)."></p>
+<p><a href="https://allisonhorst.com/">Artwork by <span class="citation" data-cites="allison_horst">@allison_horst</span></a>.</p>
+</div></div><p>The <a href="https://here.r-lib.org/">here</a> package helps you create file paths relative to the project folder, ensuring that your scripts and analyses are portable and reproducible across different systems. The <code>here()</code> function automatically detects the project folder based on the location of your .Rproj file (or other indicators, like a README.md or .git folder).</p>
+<p><strong>Example:</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows/macOS/Linux</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/survey_data.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this example:</p>
+<ul>
+<li><code>here::here()</code> refers to the the project folder.</li>
+<li><code>data/survey_data.csv</code> is the path to the dataset from the project folder.</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Project portability
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>Since project paths are relative to the project folder, you will need to share the entire project for your code to be reproducible by others. Without the .Rproj file (or other project indicator), the <code>here::here()</code> package won’t know which folder is your project folder.</p>
+</div>
+</div>
+</div>
+<!-- If you're writing scripts within an R Project, the `here()` function will give the same result as using relative paths. The key difference is that the `here()` function will also use the project folder for documents too. -->
+</section>
+<section id="external-paths" class="level3">
+<h3 class="anchored" data-anchor-id="external-paths">External paths</h3>
+<p>External paths refer to file locations external to the computer you are using but accessible over a network connection. External paths are specified with a URL (Uniform Resource Locator).</p>
+<p><strong>Example:</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows/macOS/Linux</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://learnr.numbat.space/data/survey_results.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A URL consists of several parts:</p>
+<ul>
+<li><strong>Protocol</strong> (<code>https://</code>): The communication method used to access the resource. Most often this will be <code>http</code> or <code>https</code> (Hypertext Transfer Protocol Secure, the protocol for websites). Other protocols that are commonly used include <code>ftp</code> (File Transfer Protocol), or <code>s3</code> (Simply Storage Service).</li>
+<li><strong>Address / Location</strong> (<code>learnr.numbat.space</code>): The network address of the server hosting the resource. In this case, <code>learnr.numbat.space</code> is the address, identifying the specific server to connect to.<br>
+</li>
+<li><strong>Path</strong> (<code>/data/survey_results.csv</code>): The absolute path of the file or resource on the server.</li>
+<li><strong>Other Information</strong>: Sometimes additional details are needed to connect to the external server, commonly this is:
+<ul>
+<li>A port number like <code>:8080</code> specifies a network port (<code>https://learnr.numbat.space:8080/...</code>).<br>
+</li>
+<li>Credentials like <code>username:password@</code> can provide login information (<code>https://user:pass@learnr.numbat.space/...</code>).</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Using external paths
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>Many R functions allow you to directly use web URLs for accessing data, for example <code>read.csv()</code> shown earlier. If the function you want doesn’t support external file paths, you can download the files with <code>download.file()</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://learnr.numbat.space/data/survey_results.csv"</span>, <span class="at">destfile =</span> <span class="st">"data/survey_results.csv"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/survey_results.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<!-- More information about reading in data can be found in the <TODO> lesson. -->
+</section>
+<section id="check-your-understanding-1" class="level3">
+<h3 class="anchored" data-anchor-id="check-your-understanding-1">Check your understanding</h3>
+<p>Which of the following is an example of an absolute path?</p>
+<div id="qforms-quiz-7" class="radio-group">
+</div>
+
+<script>
+  var compareArrays = (a, b) =>
+    a.length === b.length && a.every((element, index) => element === b[index]);
+  var quiz_container = document.getElementById("qforms-quiz-7");
+  var questions = "./data/survey_data.csv!@!C:/Users/YourName/Documents/data/survey_data.csv!@!here('data', 'survey_data.csv')!@!data/survey_data.csv";
+  questions = questions.split("!@!");
+  
+  // console.log("hints", hints)
+  if (typeof hints === 'undefined') {
+    var hints = []
+    // Your variable is undefined
+  }
+  hints[7 - 1] = "This is a relative path, not an absolute path.!@!This is an absolute path, specifying the full location on the system.!@!This uses the 'here' package to create paths relative to the project folder.!@!This is a relative path but it's missing the optional `./` to indicate the current directory.".split("!@!");
+
+  for([index, question] of questions.entries()) {
+    var radio_row = document.createElement("div");
+
+    var label = document.createElement("label");
+    label.setAttribute("class", "radio-label");
+    label.setAttribute("for", question);
+    label.textContent = question;
+
+    var input_elem = document.createElement("input");
+    input_elem.setAttribute("type", "radio");
+    input_elem.setAttribute("class", "quiz-radio");
+    input_elem.setAttribute("name", `qforms-quiz-name-7`);
+    input_elem.setAttribute("value", (index+1));
+
+    radio_row.append(input_elem, label);
+    quiz_container.append(radio_row);
+  }
+
+
+  var result_section = document.createElement("div")
+  result_section.setAttribute("id", "qforms-quiz-results-7")
+  result_section.setAttribute("class", "result-section")
+
+  var submit_btn = document.createElement("input")
+  submit_btn.setAttribute("type", "button")
+  submit_btn.setAttribute("id", "qforms-quiz-submit-7")
+  submit_btn.setAttribute("class", "submit-btn")
+  submit_btn.setAttribute("value", "Submit")
+  submit_btn.addEventListener("click", event => {
+    var selected = document.querySelectorAll('input[name=qforms-quiz-name-7]:checked')
+    var values = Array.from(selected).map(element => element.value);
+    var results = document.getElementById("qforms-quiz-results-7")
+    var solutions = "2".split("!@!")
+    if(selected != undefined) {
+      var success = compareArrays(values, solutions)
+      results.classList.toggle(success ? "success": "failure")
+      results.innerHTML = (success ? "✅ That's correct!<br>": "❌ Incorrect, try again!<br>") + hints[7 - 1][values-1]
+    }
+
+  })
+  quiz_container.append(submit_btn)
+
+  quiz_container.append(result_section)
+</script>
+
+<style>
+  input.quiz-radio {
+    margin: 0.4rem;
+  }
+</style>
+
+
+<hr>
+<p>Why should you avoid using absolute paths in R scripts?</p>
+<div id="qforms-quiz-8" class="radio-group">
+</div>
+
+<script>
+  var compareArrays = (a, b) =>
+    a.length === b.length && a.every((element, index) => element === b[index]);
+  var quiz_container = document.getElementById("qforms-quiz-8");
+  var questions = "They are too long.!@!They only work on your system - not on others.!@!They are slower to process in R.!@!They are hard to write in Windows.";
+  questions = questions.split("!@!");
+  
+  // console.log("hints", hints)
+  if (typeof hints === 'undefined') {
+    var hints = []
+    // Your variable is undefined
+  }
+  hints[8 - 1] = "The length of the path is not the issue, but the lack of portability is.!@!Absolute paths are specific to a system's directory structure, causing issues when sharing the project.!@!R does not process absolute paths slower than relative ones.!@!Writing absolute paths in Windows is not particularly difficult, but they are less portable.".split("!@!");
+
+  for([index, question] of questions.entries()) {
+    var radio_row = document.createElement("div");
+
+    var label = document.createElement("label");
+    label.setAttribute("class", "radio-label");
+    label.setAttribute("for", question);
+    label.textContent = question;
+
+    var input_elem = document.createElement("input");
+    input_elem.setAttribute("type", "radio");
+    input_elem.setAttribute("class", "quiz-radio");
+    input_elem.setAttribute("name", `qforms-quiz-name-8`);
+    input_elem.setAttribute("value", (index+1));
+
+    radio_row.append(input_elem, label);
+    quiz_container.append(radio_row);
+  }
+
+
+  var result_section = document.createElement("div")
+  result_section.setAttribute("id", "qforms-quiz-results-8")
+  result_section.setAttribute("class", "result-section")
+
+  var submit_btn = document.createElement("input")
+  submit_btn.setAttribute("type", "button")
+  submit_btn.setAttribute("id", "qforms-quiz-submit-8")
+  submit_btn.setAttribute("class", "submit-btn")
+  submit_btn.setAttribute("value", "Submit")
+  submit_btn.addEventListener("click", event => {
+    var selected = document.querySelectorAll('input[name=qforms-quiz-name-8]:checked')
+    var values = Array.from(selected).map(element => element.value);
+    var results = document.getElementById("qforms-quiz-results-8")
+    var solutions = "2".split("!@!")
+    if(selected != undefined) {
+      var success = compareArrays(values, solutions)
+      results.classList.toggle(success ? "success": "failure")
+      results.innerHTML = (success ? "✅ That's correct!<br>": "❌ Incorrect, try again!<br>") + hints[8 - 1][values-1]
+    }
+
+  })
+  quiz_container.append(submit_btn)
+
+  quiz_container.append(result_section)
+</script>
+
+<style>
+  input.quiz-radio {
+    margin: 0.4rem;
+  }
+</style>
+
+
+<hr>
+<p>What does the <code>{here}</code> package do?</p>
+<div id="qforms-quiz-9" class="radio-group">
+</div>
+
+<script>
+  var compareArrays = (a, b) =>
+    a.length === b.length && a.every((element, index) => element === b[index]);
+  var quiz_container = document.getElementById("qforms-quiz-9");
+  var questions = "Automatically downloads files into the project folder.!@!Helps build paths relative to the project folder.!@!Converts absolute paths into relative paths.!@!Creates new folders within the project.";
+  questions = questions.split("!@!");
+  
+  // console.log("hints", hints)
+  if (typeof hints === 'undefined') {
+    var hints = []
+    // Your variable is undefined
+  }
+  hints[9 - 1] = "The 'here' package does not download files; it helps with path handling.!@!The 'here' package locates the project root and helps construct relative paths from it.!@!The 'here' package does not convert absolute paths but ensures paths are always relative to the project root.!@!The 'here' package does not create folders but helps manage file paths.".split("!@!");
+
+  for([index, question] of questions.entries()) {
+    var radio_row = document.createElement("div");
+
+    var label = document.createElement("label");
+    label.setAttribute("class", "radio-label");
+    label.setAttribute("for", question);
+    label.textContent = question;
+
+    var input_elem = document.createElement("input");
+    input_elem.setAttribute("type", "radio");
+    input_elem.setAttribute("class", "quiz-radio");
+    input_elem.setAttribute("name", `qforms-quiz-name-9`);
+    input_elem.setAttribute("value", (index+1));
+
+    radio_row.append(input_elem, label);
+    quiz_container.append(radio_row);
+  }
+
+
+  var result_section = document.createElement("div")
+  result_section.setAttribute("id", "qforms-quiz-results-9")
+  result_section.setAttribute("class", "result-section")
+
+  var submit_btn = document.createElement("input")
+  submit_btn.setAttribute("type", "button")
+  submit_btn.setAttribute("id", "qforms-quiz-submit-9")
+  submit_btn.setAttribute("class", "submit-btn")
+  submit_btn.setAttribute("value", "Submit")
+  submit_btn.addEventListener("click", event => {
+    var selected = document.querySelectorAll('input[name=qforms-quiz-name-9]:checked')
+    var values = Array.from(selected).map(element => element.value);
+    var results = document.getElementById("qforms-quiz-results-9")
+    var solutions = "2".split("!@!")
+    if(selected != undefined) {
+      var success = compareArrays(values, solutions)
+      results.classList.toggle(success ? "success": "failure")
+      results.innerHTML = (success ? "✅ That's correct!<br>": "❌ Incorrect, try again!<br>") + hints[9 - 1][values-1]
+    }
+
+  })
+  quiz_container.append(submit_btn)
+
+  quiz_container.append(result_section)
+</script>
+
+<style>
+  input.quiz-radio {
+    margin: 0.4rem;
+  }
+</style>
+
+
+<hr>
+<p>Which of the following is NOT true about relative paths?</p>
+<div id="qforms-quiz-10" class="radio-group">
+</div>
+
+<script>
+  var compareArrays = (a, b) =>
+    a.length === b.length && a.every((element, index) => element === b[index]);
+  var quiz_container = document.getElementById("qforms-quiz-10");
+  var questions = "They are more portable than absolute paths.!@!Relative paths are shorter and easier to read compared to absolute paths.!@!They start from the root directory of your system.!@!Relative paths are portable across different systems and environments.!@!Relative paths can vary depending on the working directory.";
+  questions = questions.split("!@!");
+  
+  // console.log("hints", hints)
+  if (typeof hints === 'undefined') {
+    var hints = []
+    // Your variable is undefined
+  }
+  hints[10 - 1] = "This is true. Relative paths are more portable.!@!This is generally true for relative paths, as they don't include the full system directory structure.!@!Absolute paths start from the root of your system, unlike relative paths which depend on the current working directory.!@!This is true. Relative paths work as long as the project structure is preserved.!@!This is true. changing the working directory can affect the interpretation of a relative path.".split("!@!");
+
+  for([index, question] of questions.entries()) {
+    var radio_row = document.createElement("div");
+
+    var label = document.createElement("label");
+    label.setAttribute("class", "radio-label");
+    label.setAttribute("for", question);
+    label.textContent = question;
+
+    var input_elem = document.createElement("input");
+    input_elem.setAttribute("type", "radio");
+    input_elem.setAttribute("class", "quiz-radio");
+    input_elem.setAttribute("name", `qforms-quiz-name-10`);
+    input_elem.setAttribute("value", (index+1));
+
+    radio_row.append(input_elem, label);
+    quiz_container.append(radio_row);
+  }
+
+
+  var result_section = document.createElement("div")
+  result_section.setAttribute("id", "qforms-quiz-results-10")
+  result_section.setAttribute("class", "result-section")
+
+  var submit_btn = document.createElement("input")
+  submit_btn.setAttribute("type", "button")
+  submit_btn.setAttribute("id", "qforms-quiz-submit-10")
+  submit_btn.setAttribute("class", "submit-btn")
+  submit_btn.setAttribute("value", "Submit")
+  submit_btn.addEventListener("click", event => {
+    var selected = document.querySelectorAll('input[name=qforms-quiz-name-10]:checked')
+    var values = Array.from(selected).map(element => element.value);
+    var results = document.getElementById("qforms-quiz-results-10")
+    var solutions = "3".split("!@!")
+    if(selected != undefined) {
+      var success = compareArrays(values, solutions)
+      results.classList.toggle(success ? "success": "failure")
+      results.innerHTML = (success ? "✅ That's correct!<br>": "❌ Incorrect, try again!<br>") + hints[10 - 1][values-1]
+    }
+
+  })
+  quiz_container.append(submit_btn)
+
+  quiz_container.append(result_section)
+</script>
+
+<style>
+  input.quiz-radio {
+    margin: 0.4rem;
+  }
+</style>
+
+
+<hr>
+<p>Which part of the URL specifies the communication method for the external resource?</p>
+<div id="qforms-quiz-11" class="radio-group">
+</div>
+
+<script>
+  var compareArrays = (a, b) =>
+    a.length === b.length && a.every((element, index) => element === b[index]);
+  var quiz_container = document.getElementById("qforms-quiz-11");
+  var questions = "The address.!@!The protocol.!@!The path.!@!The port.";
+  questions = questions.split("!@!");
+  
+  // console.log("hints", hints)
+  if (typeof hints === 'undefined') {
+    var hints = []
+    // Your variable is undefined
+  }
+  hints[11 - 1] = "The address specifies the server location, not the communication method.!@!Correct! The protocol determines how the resource is accessed, e.g., `https` or `ftp`.!@!The path specifies the file location on the server, not the communication method.!@!The port is used for specifying a network port, not the communication method.".split("!@!");
+
+  for([index, question] of questions.entries()) {
+    var radio_row = document.createElement("div");
+
+    var label = document.createElement("label");
+    label.setAttribute("class", "radio-label");
+    label.setAttribute("for", question);
+    label.textContent = question;
+
+    var input_elem = document.createElement("input");
+    input_elem.setAttribute("type", "radio");
+    input_elem.setAttribute("class", "quiz-radio");
+    input_elem.setAttribute("name", `qforms-quiz-name-11`);
+    input_elem.setAttribute("value", (index+1));
+
+    radio_row.append(input_elem, label);
+    quiz_container.append(radio_row);
+  }
+
+
+  var result_section = document.createElement("div")
+  result_section.setAttribute("id", "qforms-quiz-results-11")
+  result_section.setAttribute("class", "result-section")
+
+  var submit_btn = document.createElement("input")
+  submit_btn.setAttribute("type", "button")
+  submit_btn.setAttribute("id", "qforms-quiz-submit-11")
+  submit_btn.setAttribute("class", "submit-btn")
+  submit_btn.setAttribute("value", "Submit")
+  submit_btn.addEventListener("click", event => {
+    var selected = document.querySelectorAll('input[name=qforms-quiz-name-11]:checked')
+    var values = Array.from(selected).map(element => element.value);
+    var results = document.getElementById("qforms-quiz-results-11")
+    var solutions = "2".split("!@!")
+    if(selected != undefined) {
+      var success = compareArrays(values, solutions)
+      results.classList.toggle(success ? "success": "failure")
+      results.innerHTML = (success ? "✅ That's correct!<br>": "❌ Incorrect, try again!<br>") + hints[11 - 1][values-1]
     }
 
   })
