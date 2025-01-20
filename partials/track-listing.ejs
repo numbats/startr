@@ -10,12 +10,14 @@
       </a>
     <span class="track-list-desc"> <%= item.subtitle.length  > 256 ? item.subtitle.substring(0, 256) + "..." : item.subtitle %></span>
     <span class="track-list-icons">
+      <span class="<%- item.dev == 'Ready' ? 'beginner': item.dev == 'Draft' ? 'intermediate' : 'advanced' %>"> <% for (const i in Array(1).fill(0)) { %> <span></span> <% } %> </span> <span class="track-list-diff"> <%= "dev" in item ? item.dev : "WIP" %> </span>
       <img 
         src="assets/schedule-icon.svg" 
       />
       <span class="track-list-time"> 
         <%= "time" in item ? item.time: "5 minutes" %>
-      </span> <span class="<%- item.difficulty == 'Beginner' ? 'beginner': item.difficulty == 'Intermediate' ? 'intermediate' : 'advanced' %>"> <% for (const i in Array(3).fill(0)) { %> <span></span> <% } %> </span> <span class="track-list-diff"> <%= "difficulty" in item ? item.difficulty : "Beginner" %> </span> 
+      </span> 
+      <span class="<%- item.difficulty == 'Beginner' ? 'beginner': item.difficulty == 'Intermediate' ? 'intermediate' : 'advanced' %>"> <% for (const i in Array(3).fill(0)) { %> <span></span> <% } %> </span> <span class="track-list-diff"> <%= "difficulty" in item ? item.difficulty : "Beginner" %> </span>
     </span>
   </li>
   <% } %>

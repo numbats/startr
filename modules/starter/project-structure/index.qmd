@@ -7,6 +7,7 @@ execute:
   echo: false
 difficulty: "Beginner"
 time: "20 minutes"
+dev: "Ready"
 ojs-engine: true
 format:
   lesson-html: default
