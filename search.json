@@ -2,14 +2,14 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About Stats Code",
+    "title": "About StartR",
     "section": "",
-    "text": "Stats Code is a website with materials to help you learn R and use it to explore data. No prior experience in programming, statistics, or data is required to work through these materials. These materials were developed to prepare our students for our courses that expect some familiarity of R and data analysis."
+    "text": "StartR is a website with materials to help you learn R and start using it to explore data. No prior experience in programming, statistics, or data is required to work through these materials. These materials were developed to prepare our students for our courses that expect some familiarity of R and data analysis."
   },
   {
     "objectID": "about.html#about-us",
     "href": "about.html#about-us",
-    "title": "About Stats Code",
+    "title": "About StartR",
     "section": "About us",
     "text": "About us\n\n\n\n\n\nThis course is brought to you by the team at Monash University, Department of Econometrics and Business Statistics. You can find the full list of contributors in the link ‘Contributors’ at the footer of this site."
   },
@@ -219,7 +219,7 @@
   {
     "objectID": "contribute.html#join-the-group-of-contributors",
     "href": "contribute.html#join-the-group-of-contributors",
-    "title": "Contribute to Stats Code",
+    "title": "Contribute to StartR",
     "section": "Join the group of contributors",
     "text": "Join the group of contributors"
   },
