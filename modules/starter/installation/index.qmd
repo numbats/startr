@@ -21,6 +21,9 @@ toc-depth: 2
 
 <!-- R and RStudio are powerful tools for statistical analysis. R is an open-source language, meaning it is both free and supported by a large, active community. RStudio provides an intuitive and user-friendly interface, making using R more productive. The R package (more on this later) ecosystem allows users to extend its functionality for various types of analysis. Additionally, it facilitates reproducible code and reports and allows researchers to share their work with others. -->
 
+<!-- required to make the .instructions .linux .collapse divs & #tool-chooser work -->
+{{< include _tool-chooser.md >}}
+
 # R and RStudio
 
 R is a free and open-source programming language designed for statistical computing, data analysis, and graphics. RStudio is an integrated development environment (IDE) for R, designed to make coding and data analysis more efficient and user-friendly.
@@ -37,30 +40,8 @@ The engine (R) is what runs all of your analysis, while the dashboard (RStudio) 
 
 Select your operating system for detailed instructions on installing R and RStudio.
 
-```{js}
-document.addEventListener("DOMContentLoaded", function() {
-  // Add event listeners to columns with data-bs-target
-   document.querySelectorAll('.g-col-4').forEach(function(item) {
-    item.addEventListener('click', function() {
-      // Get the target collapse section
-      const targetClass = item.getAttribute('data-show-target');
-      console.log(targetClass);
 
-      // Collapse all other sections with .collapse class
-      document.querySelectorAll('.collapse.instructions').forEach(function(collapse) {
-        if (collapse.classList.contains(targetClass)) {
-          new bootstrap.Collapse(collapse, { toggle: true })
-        } else {
-          new bootstrap.Collapse(collapse, { toggle: false }).hide();
-        }
-      });
-    });
-  });
-});
-```
-
-
-::: {.grid style="text-align: center; font-weight: bold; font-size: 20px;"}
+::: {#tool-chooser .grid style="text-align: center; font-weight: bold; font-size: 20px;"}
 
 ::: {.g-col-4 .border .bg-light data-show-target="windows"}
 Windows
