@@ -9,134 +9,312 @@ execute:
   echo: false
 difficulty: "Beginner"
 time: "20 minutes"
-dev: "Draft"
+dev: "Ready"
 format:
   lesson-html: default
+toc-depth: 2
 ---
 
-# Background
+<!-- # Background -->
 
-## Why do we want to learn and use R and RStudio
+<!-- ## Why do we want to learn and use R and RStudio -->
 
-R and Rstudio are powerful tools for statistical analysis. R is an open-source language, meaning it is both free and supported by a large, active community. RStudio provides an intuitive and user-friendly interface, making using R more productive. The R package (more on this later) ecosystem allows users to extend its functionality for various types of analysis. Additionally, it facilitates reproducible code and reports and allows researchers to share their work with others.
+<!-- R and RStudio are powerful tools for statistical analysis. R is an open-source language, meaning it is both free and supported by a large, active community. RStudio provides an intuitive and user-friendly interface, making using R more productive. The R package (more on this later) ecosystem allows users to extend its functionality for various types of analysis. Additionally, it facilitates reproducible code and reports and allows researchers to share their work with others. -->
 
+<!-- required to make the .instructions .linux .collapse divs & #tool-chooser work -->
+{{< include _tool-chooser.md >}}
 
-## What is R and RStudio
+# R and RStudio
 
-R is a free software environment for statistical computing and graphics. RStudio is an integrated development environment (IDE) for R. To understand why we might want to use R with RStudio. We will use the analogy from [Modern Dive book](https://moderndive.com/1-getting-started.html#r-rstudio). 
+R is a free and open-source programming language designed for statistical computing, data analysis, and graphics. RStudio is an integrated development environment (IDE) for R, designed to make coding and data analysis more efficient and user-friendly.
 
->  At its simplest, R is like a car’s engine while RStudio is like a car’s dashboard
+To understand the benefits of using R with RStudio, let's draw on an analogy from the [Modern Dive book](https://moderndive.com/1-getting-started.html#r-rstudio). 
+
+>  At its simplest, R is like a car's engine while RStudio is like a car's dashboard.
 
 ![](resources/R_vs_RStudio.png)
 
-# R installation
+The engine (R) is what runs all of your analysis, while the dashboard (RStudio) provides an interface to efficiently control and navigate it.
 
-First, install R. The R language is available through the [The Comprehensive R Archive Network](http://cran.r-project.org/) website. In the next sections, we will show how to install R for different operating systems: Windows, MacOS, and Linux. 
+# Installation
 
-## Windows
+Select your operating system for detailed instructions on installing R and RStudio.
 
-Steps:
 
-1. Click *"Download R for Windows"*
+::: {#tool-chooser .grid style="text-align: center; font-weight: bold; font-size: 20px;"}
+
+::: {.g-col-4 .border .bg-light data-show-target="windows"}
+Windows
+
+![](resources/windows_logo.svg){fig-align="center" style="height: 100px;"}
+:::
+
+::: {.g-col-4 .border .bg-light data-show-target="macos"}
+macOS
+
+![](resources/macos_logo.svg){fig-align="center" style="height: 100px;"}
+:::
+
+::: {.g-col-4 .border .bg-light data-show-target="linux"}
+Linux
+
+![](resources/tux_logo.svg){fig-align="center" style="height: 100px;"}
+:::
+
+:::
+
+## Installing R
+
+The R programming language is available through the [Comprehensive R Archive Network (CRAN)](http://cran.r-project.org/) website.
+
+### Windows {.instructions .windows .collapse}
+
+**Download the R installer**:
+
+1. Open your web browser and go to the [R Project website](https://cran.r-project.org).
+
+2. Under the "Download and Install R" section, click on the "Download R for Windows" link.
 
 ![](resources/R_install_windows_1.png)
 
-2. Click *"base"*
+3. On the next page, click on "base" to download the base distribution of R.
 
 ![](resources/R_install_windows_2.png)
 
-3. Click the link at the top of the page. It should say something like *"Download R-4.4.1 for Windows"*, where the numbers would change to the latest version.
+4. Click on the "Download R x.x.x for Windows" link (the version number will vary).
 
 ![](resources/R_install_windows_3.png)
 
-4. Run the downloaded executable file.
+5. Save the `.exe` file to your computer (the download should begin automatically).
+
+**Install R**:
+
+1. Once the `.exe` file has been downloaded, open the executable file.
 
 ![](resources/R_install_windows_4.png)
 
-5. Allow the installer to change your device.
+2. Allow the installer to change your device.
 
 ![](resources/R_install_windows_5.png)
 
-6. Follow the prompt instructions. You do not need to customise the startup.
+3. The R Setup Wizard will appear. Click **Next**.
+4. Accept the license agreement by selecting **I Agree**.
+5. Choose the installation path. The default is usually fine (e.g., `C:\Program Files\R\R-x.x.x`), but you can choose a different directory if you prefer. Click **Next**.
+6. Select components for installation. The default components (which include everything you need) should be fine, so click **Next**.
+7. Choose the start menu folder for the R shortcut, or leave it as the default and click **Next**.
+8. Select whether you want to associate R with `.R`, `.Rdata`, and `.rds` files. You can accept the default option and click **Next**.
+9. Choose whether to create a desktop shortcut for R. If you want it, leave the box checked and click **Next**.
+10. Click **Install** to begin the installation.
+11. Once the installation is complete, click **Finish** to exit the setup wizard.
 
-## MacOS
+::: {.callout-note collapse="true"}
+## Installing Rtools (optional)
 
-Steps:
+**Rtools** is a collection of software tools necessary for building R packages on Windows. If you are creating R packages, or installing R packages from sources it is useful to have Rtools installed.
 
-1. Click *"Download R for macOS"*
+Rtools includes compilers and other utilities which help install packages from sources which contain C, C++, or Fortran code.
+
+**Download Rtools**:
+
+1. Open your browser and go to the Rtools page: [Rtools for Windows](https://cran.r-project.org/bin/windows/Rtools/).
+2. Find the version of Rtools that matches your version of R (e.g., Rtools43 is compatible with R 4.3.x).
+3. Click on the download link for the appropriate Rtools version (e.g., `Rtools43.exe` for R 4.3.x).
+
+**Install Rtools**:
+
+1. After downloading the installer, double-click on the `.exe` file to start the installation process.
+2. In the Setup Wizard, select **Next**.
+3. Accept the license agreement and click **Next**.
+4. Choose the installation path (the default should be fine), then click **Next**.
+5. Select the components to install. The default components should suffice for most users, so click **Next**.
+6. Choose whether to add Rtools to your system’s PATH variable. It is highly recommended to leave this option checked, as it will make Rtools available from the command line. Click **Next**.
+7. Click **Install** to begin the installation process.
+8. Once installation is complete, click **Finish**.
+:::
+
+### MacOS {.instructions .macos .collapse}
+
+**Download the R installer**:
+
+1. Open your web browser and go to the [R Project website](https://cran.r-project.org).
+2. Under the **"Download and Install R"** section, click **Download R for macOS**.
 
 ![](resources/R_install_macos_1.png)
 
-2. Under the *"Latest release:"*, click the .pkg base on your system architecture. If you are using **Apple silicon (M1 onwards) Macs**, click the *"R-4.41-arm64.pkg"*, **otherwise**, click the *"R-4.4.1-x86_64.pkg"*.
+3. On the next page, click the **"R-4.x.x.pkg"** link (where "x.x" will be the version number) to download the R installer for macOS. This will download a `.pkg` file.
 
 ![](resources/R_install_macos_2.png)
 
-3. After finishing downloading the .pkg, double-click on it.
+**Install R**:
+
+1. After downloading the `.pkg` file, open it to start the installation process.
 
 ![](resources/R_install_macos_3.png)
 
-4. Follow the installer's instructions. It will involve reading through some documents and clicking continue or install.
+2. Follow the on-screen instructions in the installation wizard:
+   - Click **Continue**.
+   - Read and agree to the software license.
+   - Click **Install** to start the installation.
+   - If prompted, enter your macOS administrator password to authorize the installation.
 
 ![](resources/R_install_macos_4.png)
 
-5. Once the installation is complete, click *"Close"* to exit the installation process.
+3. Once the installation is complete, click **Close** to exit the installer.
 
-## Linux
 
-Steps:
+::: {.callout-note collapse="true"}
+## Installing Xcode (optional)
 
-1. Click *"Download R for Linux"*.
+On macOS, you may need to install **Xcode Command Line Tools** to compile R packages that require compiled code (such as C, C++, or Fortran). If you are creating R packages, or installing R packages from sources it is useful to have Xcode installed.
 
-![](resources/R_install_linux_1.png)
+Rtools includes compilers and other utilities which help install packages from sources which contain C, C++, or Fortran code.
 
-2. Click on the directory based on the Linux version you have.
 
-![](resources/R_install_linux_2.png)
+**Install Xcode Command Line Tools**:
 
-3. Follow the instructions on the website.
+1. Open the **Terminal** application (you can find it via Spotlight search).
+2. Run the following command to install Xcode Command Line Tools:
 
-# RStudio installation
+   ```bash
+   xcode-select --install
+   ```
+
+3. A pop-up will appear prompting you to install the tools. Click **Install** to proceed.
+:::
+
+### Linux {.instructions .linux .collapse}
+
+Below are instructions for installing R on Ubuntu / Debian systems. For other linux distributions, please refer to these R installation instructions: <https://docs.posit.co/resources/install-r.html>
+
+1. Open a new **Terminal** window.
+
+2. Run the following command to ensure your package list is up-to-date:
+   ```bash
+   sudo apt update
+   ```
+
+3. Install the necessary software properties package:
+   ```bash
+   sudo apt install -y software-properties-common
+   ```
+
+4. Add the CRAN repository to your list of package sources:
+   ```bash
+   sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -c | awk '{print $2}')/"
+   ```
+
+5. Import the CRAN GPG key for package verification:
+   ```bash
+   sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+   ```
+
+1. Update your package list again:
+   ```bash
+   sudo apt update
+   ```
+   
+2. Install R:
+   ```bash
+   sudo apt install -y r-base
+   ```
+
+::: {.callout-note collapse="true"}
+## Installing r-base-dev (optional)
+
+The `r-base-dev` package contains development tools and libraries needed to compile R packages from source. It is particularly important when you want to install R packages that require compiling native code (such as C, C++, or Fortran). 
+
+To install `r-base-dev` (after installing `r-base`):
+
+1. Open a **Terminal** window.
+2. Run the following command to install `r-base-dev`:
+   ```bash
+   sudo apt install -y r-base-dev
+   ```
+:::
+
+
+## Installing RStudio
 
 The RStudio can be downloaded from the [Posit](https://posit.co/download/rstudio-desktop/) website. Scroll down to *All Installers and Tarballs* and download the RStudio version for your operating system.
 
-## Windows
+### Windows {.instructions .windows .collapse}
 
-Steps:
+**Download the RStudio Installer**:
 
-1. Click the .exe file. It should look similar to *"RSTUDIO-2024.04.2-764.EXE"*. The number will be different based on the latest version.
+1. Open your web browser and go to the [RStudio website](https://posit.co/download/rstudio/).
+2. Under the "RStudio Desktop" section, click on the **Download RStudio** button.
+3. You will be directed to a page where you can select the version of RStudio for your operating system. Select **RStudio for Windows**.
+4. Click on the **Download RStudio Desktop** button to download the installer for Windows. It will download a `.exe` file.
 
 ![](resources/RStudio_install_windows.png)
 
-2. Run the executable file to install RStudio.
+**Install RStudio**:
+
+1. After downloading the `.exe` file, open the executable file.
 
 ![](resources/RStudio_install_windows_1.png)
 
-3. Allow the installer to make changes on your computer.
+2. Allow the installer to make changes on your computer.
 
 ![](resources/RStudio_install_windows_2.png)
 
-4. Follow the prompts.
+3. The RStudio Setup Wizard will open. Click **Next** to continue.
+4. Accept the license agreement by selecting **I Agree**.
+5. Choose the installation directory. The default installation path (e.g., `C:\Program Files\RStudio`) should be fine, but you can change it if needed. Click **Next**.
+6. Select whether you want to create a desktop shortcut for RStudio. If you want one, leave the box checked and click **Next**.
+7. Click **Install** to begin the installation.
+8. Once installation is complete, click **Finish** to exit the setup wizard.
 
-5. Search for RStudio on your computer and open it. You are now ready to learn R!
+**Launch RStudio**:
 
-## MacOS
+After the installation, you can launch RStudio either by using the desktop shortcut (if you created one) or by searching for "RStudio" in the Windows Start menu. 
 
-Steps:
+### MacOS {.instructions .macos .collapse}
 
-1. Click the .dmg file. It should look similar to *"RSTUDIO-2024.04.2-764.DMG"*. The number will be different based on the latest version.
+**Download the RStudio installer**:
+
+1. Open your web browser and go to the [RStudio website](https://posit.co/download/rstudio/).
+2. Scroll down to the **"RStudio Desktop"** section and click **Download RStudio**.
+3. On the next page, under **RStudio Desktop** for macOS, click **Download RStudio Desktop** (this will download the `.dmg` file).
 
 ![](resources/RStudio_install_Mac.png)
 
-2. Drag RStudio.app into the Applications folder. Now you are ready to use R!
+**Install RStudio**:
+
+1. After the `.dmg` file has downloaded, locate the file and double-click it to open the disk image.
+2. A new window will appear showing the **RStudio** application icon. Drag the **RStudio** icon into your **Applications** folder.
 
 ![](resources/RStudio_Install_Mac_1.png)
 
-## Linux
+3. Once the application is copied to the Applications folder, you can close the disk image window.
 
-Steps:
+**Launch RStudio**:
 
-1. Click download the file based on your Linux version.
+After the installation, you can launch RStudio either by double-clicking the **RStudio** app in the **Applications** folder or by searching for "RStudio" in the application launcher. 
 
-![](resources/RStudio_install_linux.png)
+### Linux {.instructions .linux .collapse}
 
-2. Follow the instructions prompts.
+**Download the RStudio installer**:
+
+1. Open your web browser and go to the [RStudio Download page](https://posit.co/download/rstudio/).
+2. Scroll down to the **"RStudio Desktop"** section and click **Download RStudio**.
+3. On the next page, choose the **.deb** package for Ubuntu/Debian and download it to your system.
+
+**Install RStudio**:
+
+1. Once the `.deb` file has been downloaded, open it with your application manager.
+
+2. Click the manager's install button, and enter your system password if necessary.
+
+**Launch RStudio**:
+
+After the installation, you can launch RStudio either from your application menu or by running `rstudio` from your Terminal.
+
+
+<!-- ::: {.instructions .collapse .show} -->
+<!-- :::callout-important -->
+<!-- ## Detailed instructions -->
+
+<!-- Select your operating system above to see detailed instructions. -->
+<!-- ::: -->
+<!-- ::: -->
