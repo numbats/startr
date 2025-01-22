@@ -12,6 +12,7 @@ time: "20 minutes"
 dev: "Ready"
 format:
   lesson-html: default
+toc-depth: 2
 ---
 
 <!-- # Background -->
