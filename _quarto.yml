@@ -7,6 +7,8 @@ project:
     browser: false
 
 website:
+  site-url: https://startr.numbat.space/
+  repo-url: https://github.com/numbats/startr
   navbar:
     title: "StartR"
     search: false
