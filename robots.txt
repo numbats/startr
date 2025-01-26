@@ -1,1 +1,1 @@
-Sitemap: https://numbats.github.io/monash-learnr-modules/sitemap.xml
+Sitemap: https://startr.numbat.space/sitemap.xml

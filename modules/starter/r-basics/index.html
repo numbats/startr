@@ -5722,17 +5722,17 @@ power_three(3)
 <span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Flip the coin the first time</span></span>
 <span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="fu">flip_a_coin</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Head"</code></pre>
+<pre><code>[1] "Tail"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Flip the coin second time</span></span>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">flip_a_coin</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Head"</code></pre>
+<pre><code>[1] "Tail"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Flip the coin once again</span></span>
 <span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">flip_a_coin</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Tail"</code></pre>
+<pre><code>[1] "Head"</code></pre>
 </div>
 </div>
 <p>You will get a different outcome (“Head” or “Tail”) every time when you call the function <code>flip_a_coin</code>.</p>
@@ -6181,7 +6181,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/numbats\.github\.io\/monash-learnr-modules\/");
+      var filterRegex = new RegExp("https:\/\/startr\.numbat\.space\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
