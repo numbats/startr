@@ -42,8 +42,6 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/bootstrap/bootstrap-eacd576b7c73fef5c01f48496033baa0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="../../../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
-<script src="../../../site_libs/quarto-contrib/kbd/kbd.js"></script>
-<link href="../../../site_libs/quarto-contrib/kbd/kbd.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -77,20 +75,7 @@ ul.task-list li input[type="checkbox"] {
         background: yes;
       }
 </style>
-<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
-<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <style>
-div.callout-tada.callout {
-  border-left-color: #008000;
-}
-div.callout-tada.callout-style-default > .callout-header {
-  background-color: rgba(0, 128, 0, 0.13);
-}
-div.callout-tada .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.callout-titled .callout-icon::before {
-  content: '🎉';
-  background-image: none;
-}
 div.callout-todo.callout {
   border-left-color: pink;
 }
@@ -102,7 +87,411 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
   content: '📝';
   background-image: none;
 }
+div.callout-tada.callout {
+  border-left-color: #008000;
+}
+div.callout-tada.callout-style-default > .callout-header {
+  background-color: rgba(0, 128, 0, 0.13);
+}
+div.callout-tada .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.callout-titled .callout-icon::before {
+  content: '🎉';
+  background-image: none;
+}
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/editor/editor.main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<style>
+  .monaco-editor pre {
+    background-color: unset !important;
+  }
+
+  .qwebr-icon-status-spinner {
+    color: #7894c4;
+  }
+
+  .qwebr-icon-run-code {
+    color: #0d9c29
+  }
+
+  .qwebr-output-code-stdout {
+    color: #111;
+  }
+
+  .qwebr-output-code-stderr {
+    color: #db4133;
+  }
+
+  .qwebr-editor {
+    border: 1px solid #EEEEEE;
+  }
+
+  .qwebr-button {
+    background-color: #EEEEEE;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0; /* Extra styling for consistency */
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #000;
+    text-align: center;
+    text-decoration: none;
+    -webkit-text-decoration: none;
+    -moz-text-decoration: none;
+    -ms-text-decoration: none;
+    -o-text-decoration: none;
+    /* vertical-align: middle; */ /* Prevents a space from appearing between the code cell and button */
+    -webkit-user-select: none;
+    border-color: #dee2e6;
+    border: 1px solid rgba(0,0,0,0);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-top-right-radius: 0.25rem;
+    border-top-left-radius: 0.25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+
+  .qwebr-button:hover {
+    color: #000;
+    background-color: #e3e6ea;
+    border-color: #e1e5e9;
+  }
+
+  .qwebr-button:disabled,.qwebr-button.disabled,fieldset:disabled .qwebr-button {
+    pointer-events: none;
+    opacity: .65
+  }
+
+  /* Custom styling for RevealJS Presentations*/
+
+  /* Reset the style of the interactive area */
+  .reveal div.qwebr-interactive-area {
+    display: block;
+    box-shadow: none;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+  } 
+
+  /* Provide space to entries */
+  .reveal div.qwebr-output-code-area pre div {
+    margin: 1px 2px 1px 10px;
+  }
+
+  /* Collapse the inside code tags to avoid extra space between line outputs */
+  .reveal pre div code.qwebr-output-code-stdout, .reveal pre div code.qwebr-output-code-stderr {
+    padding: 0;
+    display: contents;
+  }
+
+  .reveal pre div code.qwebr-output-code-stdout {
+    color: #111;
+  }
+
+  .reveal pre div code.qwebr-output-code-stderr {
+    color: #db4133;
+  }
+
+
+  /* Create a border around console and output (does not effect graphs) */
+  .reveal div.qwebr-console-area {
+    border: 1px solid #EEEEEE;
+    box-shadow: 2px 2px 10px #EEEEEE;
+  }
+
+  /* Cap output height and allow text to scroll */
+  /* TODO: Is there a better way to fit contents/max it parallel to the monaco editor size? */
+  .reveal div.qwebr-output-code-area pre {
+    max-height: 400px;
+    overflow: scroll;
+  }
+</style>
+
+<script type="module">
+
+  // Start a timer
+  const initializeWebRTimerStart = performance.now();
+
+  // Determine if we need to install R packages
+  var installRPackagesList = ['qlcheckr'];
+  // Check to see if we have an empty array, if we do set to skip the installation.
+  var setupRPackages = !(installRPackagesList.indexOf("") !== -1);
+  var autoloadRPackages = true;
+
+  // Display a startup message?
+  var showStartupMessage = true;
+  var showHeaderMessage = false;
+  if (showStartupMessage) {
+
+    // Get references to header elements
+    const headerHTML = document.getElementById("title-block-header");
+    const headerRevealJS = document.getElementById("title-slide");
+
+    // Create the outermost div element for metadata
+    const quartoTitleMeta = document.createElement("div");
+    quartoTitleMeta.classList.add("quarto-title-meta");
+
+    // Create the first inner div element
+    const firstInnerDiv = document.createElement("div");
+    firstInnerDiv.setAttribute("id", "qwebr-status-message-area");
+
+    // Create the second inner div element for "WebR Status" heading and contents
+    const secondInnerDiv = document.createElement("div");
+    secondInnerDiv.setAttribute("id", "qwebr-status-message-title");
+    secondInnerDiv.classList.add("quarto-title-meta-heading");
+    secondInnerDiv.innerText = "WebR Status";
+
+    // Create another inner div for contents
+    const secondInnerDivContents = document.createElement("div");
+    secondInnerDivContents.setAttribute("id", "qwebr-status-message-body");
+    secondInnerDivContents.classList.add("quarto-title-meta-contents");
+
+    // Describe the WebR state
+    var startupMessageWebR = document.createElement("p");
+    startupMessageWebR.innerText = "🟡 Loading...";
+    startupMessageWebR.setAttribute("id", "qwebr-status-message-text");
+    // Add `aria-live` to auto-announce the startup status to screen readers
+    startupMessageWebR.setAttribute("aria-live", "assertive");
+
+    // Append the startup message to the contents
+    secondInnerDivContents.appendChild(startupMessageWebR);
+
+    // Add a status indicator for COOP and COEP Headers if needed
+    if (showHeaderMessage) {
+      const crossOriginMessage = document.createElement("p");
+      crossOriginMessage.innerText = `${crossOriginIsolated ? '🟢' : '🟡'} COOP & COEP Headers`;
+      crossOriginMessage.setAttribute("id", "qwebr-coop-coep-header");
+      secondInnerDivContents.appendChild(crossOriginMessage);
+    }
+
+    // Combine the inner divs and contents
+    firstInnerDiv.appendChild(secondInnerDiv);
+    firstInnerDiv.appendChild(secondInnerDivContents);
+    quartoTitleMeta.appendChild(firstInnerDiv);
+
+    // Determine where to insert the quartoTitleMeta element
+    if (headerHTML) {
+      // Append to the existing "title-block-header" element
+      headerHTML.appendChild(quartoTitleMeta);
+    } else if (headerRevealJS) {
+      // If using RevealJS, add to the "title-slide" div
+      headerRevealJS.appendChild(firstInnerDiv);
+    } else {
+      // If neither headerHTML nor headerRevealJS is found, insert after "webr-monaco-editor-init" script
+      const monacoScript = document.getElementById("qwebr-monaco-editor-init");
+      const header = document.createElement("header");
+      header.setAttribute("id", "title-block-header");
+      header.appendChild(quartoTitleMeta);
+      monacoScript.after(header);
+    }
+  }
+
+  // Retrieve the webr.mjs
+  import { WebR, ChannelType } from "https://webr.r-wasm.org/v0.2.2/webr.mjs";
+
+  // Populate WebR options with defaults or new values based on 
+  // webr meta
+  globalThis.webR = new WebR({
+    "baseURL": "https://webr.r-wasm.org/v0.2.2/",
+    "serviceWorkerUrl": "",
+    "homedir": "/home/web_user", 
+    "channelType": ChannelType.Automatic
+  });
+
+  // Initialization WebR
+  await globalThis.webR.init();
+
+  // Setup a shelter
+  globalThis.webRCodeShelter = await new globalThis.webR.Shelter();
+
+  // Setup a pager to allow processing help documentation 
+  await globalThis.webR.evalRVoid('webr::pager_install()'); 
+
+  // Function to set the button text
+  function qwebrSetInteractiveButtonState(buttonText, enableCodeButton = true) {
+    document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+      btn.innerHTML = buttonText;
+      btn.disabled = !enableCodeButton;
+    });
+    document.querySelectorAll(".qwebr-button-check").forEach((btn) => {
+      btn.disabled = !enableCodeButton;
+    });
+  }
+
+  // Function to update the status message
+  function qwebrUpdateStatusHeader(message) {
+    startupMessageWebR.innerHTML = `
+      <i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i>
+      <span>${message}</span>`;
+  }
+
+  // Function to install a single package
+  async function qwebrInstallRPackage(packageName) {
+    await globalThis.webR.installPackages([packageName]);
+  }
+
+  // Function to load a single package
+  async function qwebrLoadRPackage(packageName) {
+    await globalThis.webR.evalRVoid(`library(${packageName});`);
+  }
+
+  // Generic function to process R packages
+  async function qwebrProcessRPackagesWithStatus(packages, processType, displayStatusMessageUpdate = true) {
+    // Switch between contexts
+    const messagePrefix = processType === 'install' ? 'Installing' : 'Loading';
+
+    // Modify button state
+    qwebrSetInteractiveButtonState(`🟡 ${messagePrefix} package ...`, false);
+
+    // Iterate over packages
+    for (let i = 0; i < packages.length; i++) {
+      const activePackage = packages[i];
+      const formattedMessage = `${messagePrefix} package ${i + 1} out of ${packages.length}: ${activePackage}`;
+      
+      // Display the update
+      if (displayStatusMessageUpdate) {
+        qwebrUpdateStatusHeader(formattedMessage);
+      }
+
+      // Run package installation
+      if (processType === 'install') {
+        await qwebrInstallRPackage(activePackage);
+      } else {
+        await qwebrLoadRPackage(activePackage);
+      }
+    }
+
+    // Clean slate
+    if (processType === 'load') {
+      await globalThis.webR.flush();
+    }
+  }
+
+
+  // Override the existing install.packages() to use webr::install()
+  await globalThis.webR.evalRVoid('webr::shim_install()'); 
+
+
+  // Check to see if any packages need to be installed
+  if (setupRPackages) {
+    // Obtain only a unique list of packages
+    const uniqueRPackageList = Array.from(new Set(installRPackagesList));
+
+    // Install R packages one at a time (either silently or with a status update)
+    await qwebrProcessRPackagesWithStatus(uniqueRPackageList, 'install', showStartupMessage);
+
+    if(autoloadRPackages) {
+      // Load R packages one at a time (either silently or with a status update)
+      await qwebrProcessRPackagesWithStatus(uniqueRPackageList, 'load', showStartupMessage);
+    }
+  }
+  
+  // Setup answer checking functions
+  await globalThis.webR.evalRVoid(
+`options(max.print = 100)
+.printed <- list()
+.errored <- character()
+.warned <- character()
+print <- function(x, ...) {
+  .printed[[length(.printed) + 1]] <<- x
+  base:::print(x, ...)
+}
+capture_printed <- function(x) {
+  x_vis <- withVisible(
+    tryCatch(x, 
+      error = function(e) {
+        message("Error: ", e$message)
+        .errored[[length(.errored) + 1]] <<- e$message
+      },
+      finally = list(visible = FALSE, value = NULL)
+    )
+  )
+  if(x_vis$visible) print(x_vis$value) else invisible()
+}
+
+compare_args <- function(x, y) {
+  val <- match(x, y)
+  if(any(is.na(val))) return(FALSE)
+  identical(names(x), names(y)[val])
+}
+
+search_ast_impl <- function(.code, fn = NULL, fn_args = list()) {
+  if(!(is.call(.code) || is.expression(.code))) return(FALSE)
+  args <- as.list(.code[-1])
+  if(compare_args(fn_args, args)) {
+    if(is.null(fn) || identical(fn, .code[[1]])) return(TRUE)
+  }
+  
+  any(vapply(args, search_ast_impl, logical(1L), fn = fn, fn_args = fn_args))
+}
+
+search_ast <- function(.code, .fn = NULL, ..., .expr = NULL) {
+  .expr <- substitute(.expr)
+  if(!is.null(.expr)) {
+    .fn <- .expr[[1]]
+    fn_args <- as.list(.expr[-1])
+  } else {
+    .fn <- substitute(.fn)
+    fn_args <- as.list(substitute(...()))
+  }
+  
+  if(is.expression(.code)) .code <- as.list(.code)
+  any(vapply(.code, search_ast_impl, logical(1L), fn = .fn, fn_args = fn_args))
+}
+
+exists_in <- function(.x, .f, ..., .require = any) {
+  if(inherits(.f, "formula")) {
+    f <- .f
+    .f <- function(.x, .y, ..., . = .x) {}
+    body(.f) <- f[[length(f)]]
+  }
+  .require(vapply(.x, .f, logical(1L), ...))
+}
+
+check_answer <- function(.code) {
+  .printed <<- list()
+  .errored <<- character()
+  .warned <<- character()
+  .src <- .code
+  .code <- parse(text = .src)
+  .exec <- as.expression(lapply(.code, function(l) call("capture_printed", l)))
+  eval(.exec, envir = .GlobalEnv)
+  results <- teachr_tests(.code, .printed, .errored, .warned)
+  if(all(!results)) {
+    cat("✅ That's correct! Well done 🎉", "\n", sep = "", file = stdout(), append = TRUE)
+  } else {
+    cat("❌ That's incorrect! Please try again...", "\n", sep = "", file = stdout(), append = TRUE)
+    cat(paste("•", names(results)[results]), sep = "\n", file = stdout(), append = TRUE)
+  }
+  invisible()
+}`
+  );
+
+  // Stop timer
+  const initializeWebRTimerEnd = performance.now();
+
+  // Release document status as ready
+  if (showStartupMessage) {
+    startupMessageWebR.innerText = "🟢 Ready!"
+  }
+  
+  qwebrSetInteractiveButtonState(
+    `<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run code</span>`, 
+    true
+  );
+
+  // Global version of the Escape HTML function that converts HTML 
+  // characters to their HTML entities.
+  globalThis.qwebrEscapeHTMLCharacters = function(unsafe) {
+    return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  };
+</script>
 
 
 </head>
@@ -144,7 +533,7 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">2. RStudio basics</h1>
-            <p class="subtitle lead">Learn how to use RStudio and install R packages.</p>
+            <p class="subtitle lead">Learn how to use RStudio to write code and install packages.</p>
                       </div>
   </div>
     
@@ -170,9 +559,10 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#using-rstudio" id="toc-using-rstudio" class="nav-link active" data-scroll-target="#using-rstudio">Using RStudio</a></li>
-  <li><a href="#the-4-pane-workspace" id="toc-the-4-pane-workspace" class="nav-link" data-scroll-target="#the-4-pane-workspace">The 4-pane workspace</a></li>
-  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages">R packages</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#what-does-it-look-like" id="toc-what-does-it-look-like" class="nav-link" data-scroll-target="#what-does-it-look-like">What does it look like?</a></li>
+  <li><a href="#r-script" id="toc-r-script" class="nav-link" data-scroll-target="#r-script">R Script</a></li>
+  <li><a href="#r-packages-installation-and-loading" id="toc-r-packages-installation-and-loading" class="nav-link" data-scroll-target="#r-packages-installation-and-loading">R packages installation and loading</a></li>
   </ul>
 </nav>
 </nav>
@@ -182,139 +572,450 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/loader.js"></script>
+<script type="module" id="qwebr-monaco-editor-init">
+
+  // Configure the Monaco Editor's loader
+  require.config({
+    paths: {
+      'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs'
+    }
+  });
+</script>
 
 
 
 
 
-<section id="using-rstudio" class="level2">
-<h2 class="anchored" data-anchor-id="using-rstudio">Using RStudio</h2>
-<p>RStudio is an Integrated Development Environment (IDE) developed by Posit for the R programming language. It is designed for analysing data, and is the most popular coding environment for R. In extension to the usual script editing and console output of other IDEs, RStudio also includes tools for viewing analysis results such as data, plots, and documents.</p>
-<p>Start by opening RStudio on your computer, once loaded it should look like this:</p>
-<p><img src="resources/rstudio-fresh.png" class="img-fluid"></p>
-<p>In the R <strong>Console</strong> on the left, you should see information about your R installation. If you see something similar, congratulations – you’ve successfully installed both R and RStudio as outlined in the previous lesson!</p>
-<p>You can try out some R code by typing into the R <strong>Console</strong>, just after the <code>&gt;</code> at the bottom. We’ll get some practice writing R code in the next lesson, but for now you can try:</p>
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>RStudio is an Integrated Development Environment (IDE) developed by Posit for R programming language. It includes tools for script editing, R console output, data viewing, and plotting, making it easier for an analyst to explore, visualise, and conduct analysis on the data in a single environment.</p>
+</section>
+<section id="what-does-it-look-like" class="level1">
+<h1>What does it look like?</h1>
+<p>The default appearances of the RStudio user interface contains 4 primary panes:</p>
 <ul>
-<li><code>1 + 1</code> (Make sure that basic math still applies)</li>
-<li><code>hist(rnorm(100))</code> (Histogram of 100 random normally distributed numbers)</li>
+<li>Source pane</li>
+<li>Console pane</li>
+<li>Environment pane</li>
+<li>Output pane</li>
 </ul>
-<!-- TODO: 3x lesson references -->
-<p>Any code you write into the R Console is temporary, and will be lost when you restart R or close RStudio. Any code you want to keep should be written into an R script (or an R document, explained in a later lesson).</p>
-<p>To create an R script, click on the new document drop-down and select “R Script” (or use the keyboard shortcut <kbd aria-hidden="true">Ctrl</kbd><span class="visually-hidden">Ctrl</span>):</p>
-<p><img src="resources/rstudio-script.png" class="img-fluid"></p>
-<p>An R script is a simple text file which you can write and save your R code in. To run code from an R script, click on the line of code you want to run and then click the Run button (or use the keyboard shortcut <kbd aria-hidden="true">Ctrl</kbd><span class="visually-hidden">Ctrl</span>)</p>
-<p><img src="resources/rstudio-execute.png" class="img-fluid"></p>
-<p>The code from your R script is ran in the Console, and the result is displayed.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<p>The first time you open the RStudio, you will be greeted by the three panes: console, environment, and output. We will talk about the Source pane later in the chapter.</p>
+<p><img src="resources/RStudio_interface_3p.png" class="img-fluid"></p>
+<p>On the top right-hand side, you have the <strong>Environment</strong> pane, which includes the Environment, History, Connections, Build, and Version Control System (VCS) tabs. We will focus on the Environment tab, which shows the currently saved R objects.</p>
+<p><strong>Output</strong> pane, located at the bottom-right of the app, is used to display various outputs such as plots, HTML content, or files directory. You can interact with it as well, not just for shows. For example, in the “Files” tab, you can add new folders, new blank files, delete/rename, and more.</p>
+<p>On the left-hand side, you have the <strong>Console</strong> pane, which is the place where you can type out the command written in the R language and execute it immediately on your computer.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Running selected code
+Important
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<p>Instead of running the entire line of code, you can also run specific parts of your code by first highlighting the part you wish to run.</p>
-<p>Try highlighting <code>rnorm(100)</code> before clicking the run button (or using the keyboard shortcut <kbd aria-hidden="true">Ctrl</kbd><span class="visually-hidden">Ctrl</span>)</p>
+<p>You can run the R code inside the <strong>Console</strong>, but once you close RStudio, you will lose all the code.</p>
 </div>
+</div>
+<p>To make your work reproducible, you should write and store all the code in the R Script (.R). It will show up in the <strong>Source</strong> pane, allowing you to view and edit various code-related files.</p>
+<p><img src="resources/RStudio_interface_4p.png" class="img-fluid"></p>
+</section>
+<section id="r-script" class="level1">
+<h1>R Script</h1>
+<p>There are multiple ways of adding the R Script. To get started, click on the <em>paper with a plus</em> symbol and choose R Script.</p>
+<p><img src="resources/RStudio_newfile.png" class="img-fluid"></p>
+<p>In an R Script, you can write code and add comments. Also, you can run each line of code by pressing <strong>ctrl + enter/return</strong> on Windows and Linux or <strong>cmd + enter/return</strong> on Macs. The code messages will shown in the <strong>Console</strong>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Create R script
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There is a shortcut key for creating a new R Script, which is <strong>ctrl + shift + N</strong> for Windows and Linux or <strong>cmd + shift + N</strong> for Macs.</p>
 </div>
 </div>
 </section>
-<section id="the-4-pane-workspace" class="level2">
-<h2 class="anchored" data-anchor-id="the-4-pane-workspace">The 4-pane workspace</h2>
-<p><img src="resources/rstudio-source.png" class="img-fluid"></p>
-<p>The RStudio workspace is organised into 4 adjustable panes which serve different purposes:</p>
-<ul>
-<li><p><strong>Source Pane</strong> (Top-Left) Write your R code in scripts, documents, and web apps here. Each open file is split across tabs.</p></li>
-<li><p><strong>Console Pane</strong> (Bottom-Left) The Console is where code is ran, and most results are shown. This pane also has tabs for the Terminal (a code interface to your computer), and background jobs (used for running code in the background).</p></li>
-<li><p><strong>Environment and Tools Pane</strong> (Top-Right) The environment is where your R objects exist. Try running <code>x &lt;- 1:10</code> which will create an object named <code>x</code> containing the numbers 1 to 10. This newly created object should appear in the environment tab.</p>
-<p>This pane also includes other tabs containing tools specific to your R project (such as document rendering and version control with git). R projects are explained more in a later lesson. <!-- TODO --></p></li>
-<li><p><strong>Files, Packages, Help and Outputs Pane</strong> (Bottom-Right) This is where most of your visual outputs are shown.</p>
-<p>This pane contains tabs for many output types:</p>
-<ul>
-<li><strong>Plots</strong>: View generated plots.</li>
-<li><strong>Viewer</strong>: View interactive outputs and documents.</li>
-<li><strong>Presentation</strong>: View presentation slides.</li>
-</ul>
-<p>It also includes useful tools for writing R code, including:</p>
-<ul>
-<li><strong>Files</strong>: Explore your files.</li>
-<li><strong>Help</strong>: View and search documentation for R functions.</li>
-<li><strong>Packages</strong>: Manage installed packages.</li>
-</ul></li>
-</ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="true" aria-label="Toggle callout">
+<section id="r-packages-installation-and-loading" class="level1">
+<h1>R packages installation and loading</h1>
+<p>An R package bundles all useful functions, help files, and data sets that help extend the functionality into a package. To start installing the package, navigate to the “Packages” tab in the <strong>Output</strong> pane. It will show you what packages you currently have. Next, click “Install”, and you should be able to see the pop-up window. Type the package name you want to install in the “Packages” field. You need to make sure that you install all the dependencies by clicking on the box labeled “Install dependencies”. Then click “Install”, you are now ready to start using the new package.</p>
+<p>Alternatively, you can install the package by running <code>install.packages("package_name")</code> in the <strong>Console</strong> pane. The packages only need to be installed once, and <code>install.packages()</code> should not be kept or commented out in the R code.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Customising your workspace
+Default packages
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<p>The appearance and layout of your workspace is fully customisable. You can resize each pane by dragging the gaps between panes.</p>
-<p>Further customisation options can be found in the <code>Tools &gt; Global Options</code>, from there you can switch the RStudio colour theme under <code>Appearance</code> and reorganise the pane tabs under <code>Pane Layout</code>.</p>
+<p>R, by default, comes bundled with some basic packages that are always loaded, including <code>base</code> (for basic things like <code>+</code> and <code>log()</code>), utils (for utility functions like <code>install.packages()</code>), and stats (for statistical models like <code>lm()</code> and <code>arima()</code>).</p>
 </div>
 </div>
-</div>
-</section>
-<section id="r-packages" class="level2">
-<h2 class="anchored" data-anchor-id="r-packages">R packages</h2>
-<p>R packages are used extensively in R to provide new functionality to the language. R packages can be managed from the “Packages” tab of the <strong>Output</strong> pane. Here you can see the currently installed packages, update them, or install new packages.</p>
-<p><img src="resources/rstudio-packages.png" class="img-fluid"></p>
-<p>To install a new R package, click on the “Install” button to open a pop-up. Then type the name of the package you want to install and click “Install” (the dependencies checkbox should also be ticked).</p>
-<p><img src="resources/rstudio-install.png" class="img-fluid"></p>
-<p>Try installing the <code>palmerpenguins</code> package, it features a dataset about Antarctic penguins that we’ll be using in many examples. Once you complete the installation pop-up, you should see the <strong>Console</strong> busily working to download and install the package. Above all of the red text, you will find that R is running <code>install.packages("palmerpenguins")</code> to install the package.</p>
-<p><img src="resources/rstudio-install-cmd.png" class="img-fluid"></p>
-<p>You can use either the “Packages” tab or directly use the <code>install.packages()</code> function to install packages.</p>
-<p>To use an installed package, you need to <em>attach</em> it with the <code>library()</code> function. Try loading the palmerpenguins package with <code>library(palmerpenguins)</code>. If successful, you will now be able to view the penguins dataset by running the code <code>penguins</code> and view the dataset’s documentation by running <code>?penguins</code>.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="true" aria-label="Toggle callout">
+<p><img src="resources/RStudio_package.png" class="img-fluid"></p>
+<p><img src="resources/RStudio_Install_pkg.png" class="img-fluid"></p>
+<p>Now that you have a package installed, you can bring it to your current working environment by typing <code>library(package_name)</code> in the <strong>Console</strong> pane. All of the package’s functions, data sets, and help files are now available for you to use until you close your current R session. So, if you have closed it, you will need to load the R packages again.</p>
+<p>You should load the packages you used at the top of the R Script. This way, you do not need to remember which packages you need in the script. It is also a good practice to do.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Using packages
+Important
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<p>R packages only need to be installed once, but they need to be attached every time before you use them.</p>
-<p>Load all of the packages you use at the start of each R script with <code>library()</code>.</p>
-<p>Exclude (or comment out) <code>install.packages()</code> from your scripts to prevent re-installing packages each time you run your code.</p>
+<p>You may have noticed we do not use quotation marks when calling the package in the <code>library</code> function. You have options to use them if you like for this function. However, the quotation marks are necessary for the <code>install.packages</code> function.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>Try installing and attaching the <code>palmerpenguins</code> package using only code here:</p>
-<div class="cell" data-exercise="install-pkg">
-<div>
-<div id="webr-1" class="exercise-cell">
+<div class="callout-title-container flex-fill">
+Your turn!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is now your turn to try out the package installation process. What you need to do is to get the palmerpenguins package so we can have a look at the penguin’s data.</p>
+</div>
+</div>
+<div id="qwebr-interactive-area-1" class="qwebr-interactive-area">
+  <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-1">🟡 Loading
+    webR...</button>
+  <button class="btn btn-default qwebr-button qwebr-button-check" disabled="" type="button" id="qwebr-button-check-1">💡 Check answer</button>
+  <button class="btn btn-default qwebr-button qwebr-button-solve" type="button" id="qwebr-button-solve-1">✅ Show solution</button>
+  <button class="btn btn-default qwebr-button qwebr-button-reset" type="button" id="qwebr-button-reset-1">💥 Reset code</button>
+  <div id="qwebr-console-area-1" class="qwebr-console-area">
+    <div id="qwebr-editor-1" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-1" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
+  </div>
+  <div id="qwebr-output-graph-area-1" class="qwebr-output-graph-area">
+  </div>
+</div>
+<script type="module">
+  // Retrieve webR code cell information
+  const runButton = document.getElementById("qwebr-button-run-1");
+  const checkButton = document.getElementById("qwebr-button-check-1");
+  const solveButton = document.getElementById("qwebr-button-solve-1");
+  const resetButton = document.getElementById("qwebr-button-reset-1");
+  const outputCodeDiv = document.getElementById("qwebr-output-code-area-1");
+  const editorDiv = document.getElementById("qwebr-editor-1");
+  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-1");
+  const webrCode = `# install the package
+___
 
-</div>
-<script type="webr-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiaW5zdGFsbC1wa2cifSwiY29kZSI6IlxuIyBpbnN0YWxsIHRoZSBwYWNrYWdlXG5pbnN0YWxsLnBhY2thZ2VzKF9fX19fXylcblxuIyBsb2FkIHRoZSBwYWNrYWdlXG5saWJyYXJ5KF9fX19fXylcblxucGVuZ3VpbnMifQ==
-</script>
-</div>
-</div>
-<div class="cell" data-exercise="install-pkg" data-check="true">
-<script type="exercise-check-install-pkg-contents">
-eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6Imluc3RhbGwtcGtnIn0sImNvZGUiOiJsaWJyYXJ5KHFsY2hlY2tyKVxuYXBwbHlfY2hlY2tzKFxuICBcIkRpZCB5b3UgdXNlIHRoZSByaWdodCBmdW5jdGlvbiBmb3IgaW5zdGFsbGluZyB0aGUgcGFja2FnZT9cIiA9ICFzZWFyY2hfYXN0KHFsXy5jb2RlLCAuZm4gPSBpbnN0YWxsLnBhY2thZ2VzKSxcbiAgXCJEaWQgeW91IHVzZSB0aGUgcmlnaHQgZnVuY3Rpb24gZm9yIGxvYWRpbmcgdGhlIHBhY2thZ2U/XCIgPSAhc2VhcmNoX2FzdChxbF9hc3QoKSwgLmZuID0gbGlicmFyeSksXG4gIFwiRGlkIHlvdSBpbnN0YWxsIHRoZSByaWdodCBwYWNrYWdlPyBIaW50OiBpdCBuZWVkcyB0byBiZSBpbiBcXFwicXVvdGVzXFxcIlwiID0gIXNlYXJjaF9hc3QocWxfYXN0KCksIC5leHByID0gaW5zdGFsbC5wYWNrYWdlcyhcInBhbG1lcnBlbmd1aW5zXCIpKSxcbiAgXCJEaWQgeW91IGxvYWQgdGhlIHJpZ2h0IHBhY2thZ2U/XCIgPSAhc2VhcmNoX2FzdChxbF9hc3QoKSwgLmV4cHIgPSBcInBhbG1lcnBlbmd1aW5zXCIgJWluJSAucGFja2FnZXMoKSlcbikifQ==
-</script>
-</div>
+# load the package
+___
+
+penguins
+`
+
+  // Load the Monaco Editor and create an instance
+  let editor;
+  require(['vs/editor/editor.main'], function () {
+    editor = monaco.editor.create(editorDiv, {
+      value: webrCode,
+      language: 'r',
+      theme: 'vs-light',
+      automaticLayout: true,           // TODO: Could be problematic for slide decks
+      scrollBeyondLastLine: false,
+      minimap: {
+        enabled: false
+      },
+      fontSize: '17.5pt',               // Bootstrap is 1 rem
+      renderLineHighlight: "none",     // Disable current line highlighting
+      hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
+    });
+
+    // Dynamically modify the height of the editor window if new lines are added.
+    let ignoreEvent = false;
+    const updateHeight = () => {
+      const contentHeight = editor.getContentHeight();
+      // We're avoiding a width change
+      //editorDiv.style.width = `${width}px`;
+      editorDiv.style.height = `${contentHeight}px`;
+      try {
+        ignoreEvent = true;
+
+        // The key to resizing is this call
+        editor.layout();
+      } finally {
+        ignoreEvent = false;
+      }
+    };
+
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        executeCode(editor.getValue());
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          executeCode(currentLine);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          executeCode(selectedText);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
+    // Register an on change event for when new code is added to the editor window
+    editor.onDidContentSizeChange(updateHeight);
+
+    // Manually re-update height to account for the content we inserted into the call
+    updateHeight();
+  });
+
+  // Function to execute the code (accepts code as an argument)
+  async function executeCode(codeToRun) {
+
+    // Disallowing execution of other code cells
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = true;
+    });
+
+    // Create a canvas variable for graphics
+    let canvas = undefined;
+
+    // Create a pager variable for help/file contents
+    let pager = [];
+
+    // Process 
+    async function parseTypePager(msg) { 
+
+        // Split out the event data
+        const { path, title, deleteFile } = msg.data; 
+
+        // Process the pager data by reading the information from disk
+        const paged_data = await webR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+            content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+        });
+
+        // Unlink file if needed
+        if (deleteFile) { 
+          await webR.FS.unlink(path); 
+        } 
+
+        // Return extracted data with spaces
+        return paged_data;
+    } 
+
+    // Initialize webR
+    await webR.init();
+
+    // Setup a webR canvas by making a namespace call into the {webr} package
+    await webR.evalRVoid("webr::canvas(width=504, height=360)");
+
+    // Capture output data from evaluating the code
+    const result = await webRCodeShelter.captureR(codeToRun, {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false//,
+      // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
+    });
+
+    // Start attempting to parse the result data
+    try {
+
+      // Stop creating images
+      await webR.evalRVoid("dev.off()");
+
+      // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
+      const out = result.output
+        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
+        .map((evt, index) => {
+          const className = `qwebr-output-code-${evt.type}`;
+          return `<code id="${className}-editor-1-result-${index + 1}" class="${className}">${qwebrEscapeHTMLCharacters(evt.data)}</code>`;
+        })
+        .join("\n");
 
 
-<script type="webr-data">
-eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC40LjEvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyIsInFsY2hlY2tyIl0sInJlcG9zIjpbImh0dHBzOi8vbGVhcm5yLWFjYWRlbXkuZ2l0aHViLmlvL3FsY2hlY2tyIl19LCJyZW5kZXJfZGYiOiJkZWZhdWx0In0=
+      // Clean the state
+      const msgs = await webR.flush();
+
+      // Output each image event stored
+      msgs.forEach((msg) => {
+        // Determine if old canvas can be used or a new canvas is required.
+        if (msg.type === 'canvas'){
+          // Add image to the current canvas
+          if (msg.data.event === 'canvasImage') {
+            canvas.getContext('2d').drawImage(msg.data.image, 0, 0);
+          } else if (msg.data.event === 'canvasNewPage') {
+            // Generate a new canvas element
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
+            canvas.style.width = "700px";
+            canvas.style.display = "block";
+            canvas.style.margin = "auto";
+          }
+        } 
+      });
+
+      // Use `map` to process the filtered "pager" events asynchronously
+      const pager = await Promise.all(
+        msgs.filter(msg => msg.type === 'pager').map(
+          async (msg) => {
+            return await parseTypePager(msg);
+          }
+        )
+      );
+
+      // Nullify the output area of content
+      outputCodeDiv.innerHTML = "";
+      outputGraphDiv.innerHTML = "";
+
+      // Design an output object for messages
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        // Display results as HTML elements to retain output styling
+        const div = document.createElement("div");
+        div.innerHTML = out;
+        pre.appendChild(div);
+      } else {
+        // If nothing is present, hide the element.
+        pre.style.visibility = "hidden";
+      }
+      outputCodeDiv.appendChild(pre);
+
+      // Place the graphics on the canvas
+      if (canvas) {
+        outputGraphDiv.appendChild(canvas);
+      }
+
+      // Display the pager data
+      if (pager) {
+        // Use the `pre` element to preserve whitespace.
+        pager.forEach((paged_data, index) => {
+          let pre_pager = document.createElement("pre");
+          pre_pager.innerText = paged_data;
+          pre_pager.classList.add("qwebr-output-code-pager");
+          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-1-result-" + (index + 1));
+          outputCodeDiv.appendChild(pre_pager);
+        });
+      }
+    } finally {
+      // Clean up the remaining code
+      webRCodeShelter.purge();
+    }
+
+    // Switch to allowing execution of code
+    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
+      btn.disabled = false;
+    });
+    
+    // Revert to the initial code cell state
+    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run code</span>';
+    checkButton.innerHTML = '💡 Check answer';
+  }
+
+  // Add a click event listener to the run button
+  runButton.onclick = function () {
+    // Emphasize the active code cell
+    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run code</span>';
+    executeCode(editor.getValue());
+  };
+  
+  checkButton.onclick = function () {
+    // Emphasize the active code cell
+    checkButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Check answer</span>';
+    executeCode(
+`teachr_tests <- function(.code, .printed, .errored, .warned) {
+  
+c(
+    "Did you use the right function for installing the package?" = !search_ast(.code, .fn = install.packages),
+    "Did you use the right function for loading the package?" = !search_ast(.code, .fn = library),
+    "Did you install the right package?" = !search_ast(.code, .expr = install.packages("palmerpenguins")),
+    "Did you load the right package?" = !search_ast(.code, .expr = library(palmerpenguins))
+)
+
+}
+check_answer(r"(` + editor.getValue() + `)")`
+    );
+  };
+  
+  solveButton.onclick = function () {
+    editor.setValue(`# install the package
+install.packages("palmerpenguins")
+
+# load the package
+library(palmerpenguins)
+
+penguins
+`);
+  };
+  
+  resetButton.onclick = function () {
+    editor.setValue(webrCode);
+  };
 </script>
+
+
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV8xO1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItMSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzEgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBleGVyY2lzZSBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKFxuICAgIHtcbiAgICAgIGlkOiBcIndlYnItMS1jb250ZW50c1wiLFxuICAgICAgZW52aXI6IGBleGVyY2lzZS1lbnYtJHtibG9jay5hdHRyLmV4ZXJjaXNlfWAsXG4gICAgICBlcnJvcjogZmFsc2UsXG4gICAgICBjYXB0aW9uOiAnRXhlcmNpc2UnLFxuICAgIH0sXG4gICAgYmxvY2suYXR0clxuICApO1xuXG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxudmlld29mIF93ZWJyX3ZhbHVlXzEgPSB3ZWJST2pzLnByb2Nlc3MoX3dlYnJfZWRpdG9yXzEsIHt9KTtcbl93ZWJyX2ZlZWRiYWNrXzEgPSB7XG4gIGNvbnN0IHsgV2ViUkdyYWRlciB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3QgZW1wdHlGZWVkYmFjayA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpO1xuXG4gIGNvbnN0IGdyYWRlciA9IG5ldyBXZWJSR3JhZGVyKF93ZWJyX3ZhbHVlXzEuZXZhbHVhdG9yKTtcbiAgY29uc3QgZmVlZGJhY2sgPSBhd2FpdCBncmFkZXIuZ3JhZGVFeGVyY2lzZSgpO1xuICBpZiAoIWZlZWRiYWNrKSByZXR1cm4gZW1wdHlGZWVkYmFjaztcbiAgcmV0dXJuIGZlZWRiYWNrO1xufVxuIn0seyJjZWxsTmFtZSI6IndlYnItcHJlbHVkZSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IndlYlJPanMgPSB7XG4gIGNvbnN0IHsgV2ViUiB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZS5XZWJSO1xuICBjb25zdCB7XG4gICAgV2ViUkV2YWx1YXRvcixcbiAgICBXZWJSRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoXG4gIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHN0YXR1c0NvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1zdGF0dXNcIik7XG4gIGNvbnN0IGluZGljYXRvckNvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGluZGljYXRvckNvbnRhaW5lci5jbGFzc0xpc3QucmVtb3ZlKFwiZC1ub25lXCIpO1xuXG4gIGxldCBzdGF0dXNUZXh0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKVxuICBzdGF0dXNUZXh0LmNsYXNzTGlzdCA9IFwiZXhlcmNpc2UtbG9hZGluZy1kZXRhaWxzXCI7XG4gIHN0YXR1c1RleHQgPSBzdGF0dXNDb250YWluZXIuYXBwZW5kQ2hpbGQoc3RhdHVzVGV4dCk7XG4gIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5pdGlhbGlzZWA7XG5cbiAgLy8gSG9pc3QgaW5kaWNhdG9yIG91dCBmcm9tIGZpbmFsIHNsaWRlIHdoZW4gcnVubmluZyB1bmRlciByZXZlYWxcbiAgY29uc3QgcmV2ZWFsU3RhdHVzID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgLmV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpZiAocmV2ZWFsU3RhdHVzKSB7XG4gICAgcmV2ZWFsU3RhdHVzLnJlbW92ZSgpO1xuICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsID4gLnNsaWRlc1wiKS5hcHBlbmRDaGlsZChyZXZlYWxTdGF0dXMpO1xuICB9XG5cbiAgLy8gTWFrZSBhbnkgcmV2ZWFsIHNsaWRlcyB3aXRoIGxpdmUgY2VsbHMgc2Nyb2xsYWJsZVxuICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKFwiLnJldmVhbCAuZXhlcmNpc2UtY2VsbFwiKS5mb3JFYWNoKChlbCkgPT4ge1xuICAgIGVsLmNsb3Nlc3QoJ3NlY3Rpb24uc2xpZGUnKS5jbGFzc0xpc3QuYWRkKFwic2Nyb2xsYWJsZVwiKTtcbiAgfSlcblxuICAvLyB3ZWJSIHN1cHBsZW1lbnRhbCBkYXRhIGFuZCBvcHRpb25zXG4gIGNvbnN0IGRhdGFDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItZGF0YVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGRhdGEgPSBKU09OLnBhcnNlKGI2NERlY29kZShkYXRhQ29udGVudCkpO1xuXG4gIC8vIEdyYWIgbGlzdCBvZiByZXNvdXJjZXMgdG8gYmUgZG93bmxvYWRlZFxuICBjb25zdCBmaWxlc0NvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwidmZzLWZpbGVcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBmaWxlcyA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGZpbGVzQ29udGVudCkpO1xuXG4gIC8vIEluaXRpYWxpc2Ugd2ViUiBhbmQgc2V0dXAgZm9yIFIgY29kZSBldmFsdWF0aW9uXG4gIGxldCB3ZWJSUHJvbWlzZSA9IChhc3luYyAod2ViUikgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgd2ViUmA7XG4gICAgYXdhaXQgd2ViUi5pbml0KCk7XG5cbiAgICAvLyBJbnN0YWxsIHByb3ZpZGVkIGxpc3Qgb2YgcGFja2FnZXNcbiAgICAvLyBFbnN1cmUgd2ViUiBkZWZhdWx0IHJlcG8gaXMgaW5jbHVkZWRcbiAgICBkYXRhLnBhY2thZ2VzLnJlcG9zLnB1c2goXCJodHRwczovL3JlcG8uci13YXNtLm9yZ1wiKVxuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIHdlYlIuZXZhbFJWb2lkKGBcbiAgICAgICAgd2Vicjo6aW5zdGFsbChwa2csIHJlcG9zID0gcmVwb3MpXG4gICAgICAgIGxpYnJhcnkocGtnLCBjaGFyYWN0ZXIub25seSA9IFRSVUUpXG4gICAgICBgLCB7IGVudjoge1xuICAgICAgICBwa2c6IHBrZyxcbiAgICAgICAgcmVwb3M6IGRhdGEucGFja2FnZXMucmVwb3MsXG4gICAgICB9fSk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCB3ZWJSLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKCFlLm1lc3NhZ2UuaW5jbHVkZXMoXCJGUyBlcnJvclwiKSkge1xuICAgICAgICAgICAgdGhyb3cgZTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHJldHVybiBhd2FpdCB3ZWJSLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluc3RhbGxpbmcgd2ViUiBzaGltc2A7XG4gICAgYXdhaXQgd2ViUi5ldmFsUlZvaWQoYHdlYnI6OnNoaW1faW5zdGFsbCgpYCk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFdlYlIgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUih3ZWJSLCBkYXRhKTtcblxuICAgIHN0YXR1c1RleHQucmVtb3ZlKCk7XG4gICAgaWYgKHN0YXR1c0NvbnRhaW5lci5jaGlsZHJlbi5sZW5ndGggPT0gMCkge1xuICAgICAgc3RhdHVzQ29udGFpbmVyLnBhcmVudE5vZGUucmVtb3ZlKCk7XG4gICAgfVxuICAgIHJldHVybiB3ZWJSO1xuICB9KShuZXcgV2ViUihkYXRhLm9wdGlvbnMpKTtcblxuICAvLyBLZWVwIHRyYWNrIG9mIGluaXRpYWwgT0pTIGJsb2NrIHJlbmRlclxuICBjb25zdCByZW5kZXJlZE9qcyA9IHt9O1xuXG4gIGNvbnN0IHByb2Nlc3MgPSBhc3luYyAoY29udGV4dCwgaW5wdXRzKSA9PiB7XG4gICAgY29uc3Qgd2ViUiA9IGF3YWl0IHdlYlJQcm9taXNlO1xuICAgIGNvbnN0IGV2YWx1YXRvciA9IG5ldyBXZWJSRXZhbHVhdG9yKHdlYlIsIGNvbnRleHQpXG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHJvY2VzcyxcbiAgICB3ZWJSUHJvbWlzZSxcbiAgICByZW5kZXJlZE9qcyxcbiAgfTtcbn1cbiJ9XX0=
+eyJjb250ZW50cyI6W119
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">
@@ -330,17 +1031,6 @@ W10=
 </section>
 
 </main> <!-- /main -->
-<script type="ojs-module-contents">
-eyJjb250ZW50cyI6W119
-</script>
-<script type="module">
-if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
-window._ojs.paths.runtimeToDoc = "../../modules/starter/rstudio-basics";
-window._ojs.paths.runtimeToRoot = "../..";
-window._ojs.paths.docToRoot = "../../..";
-window._ojs.selfContained = false;
-window._ojs.runtime.interpretFromScriptTags();
-</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
