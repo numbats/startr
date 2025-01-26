@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-01-20">
+<meta name="dcterms.date" content="2025-01-27">
 
 <title>4. Projects and paths</title>
 <style>
@@ -114,17 +114,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <style>
-div.callout-todo.callout {
-  border-left-color: pink;
-}
-div.callout-todo.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-todo .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
 div.callout-tada.callout {
   border-left-color: #008000;
 }
@@ -134,6 +123,17 @@ div.callout-tada.callout-style-default > .callout-header {
 div.callout-tada .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.callout-titled .callout-icon::before {
   content: '🎉';
+  background-image: none;
+}
+div.callout-todo.callout {
+  border-left-color: pink;
+}
+div.callout-todo.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-todo .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.callout-titled .callout-icon::before {
+  content: '📝';
   background-image: none;
 }
 </style>
@@ -189,7 +189,7 @@ div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.c
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">20 January 2025</p>
+        <p class="date">27 January 2025</p>
       </div>
     </div>
     
@@ -209,7 +209,7 @@ div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.c
   <li><a href="#create-an-r-project" id="toc-create-an-r-project" class="nav-link" data-scroll-target="#create-an-r-project">Create an R project</a></li>
   <li><a href="#using-r-projects" id="toc-using-r-projects" class="nav-link" data-scroll-target="#using-r-projects">Using R projects</a></li>
   <li><a href="#project-organisation" id="toc-project-organisation" class="nav-link" data-scroll-target="#project-organisation">Project organisation</a></li>
-  <li><a href="#self-contained-reproducible-projects" id="toc-self-contained-reproducible-projects" class="nav-link" data-scroll-target="#self-contained-reproducible-projects">Self-contained reproducible projects</a></li>
+  <li><a href="#portable-and-reproducible-projects" id="toc-portable-and-reproducible-projects" class="nav-link" data-scroll-target="#portable-and-reproducible-projects">Portable and reproducible projects</a></li>
   <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding">Check your understanding</a></li>
   </ul></li>
   <li><a href="#sec-path" id="toc-sec-path" class="nav-link" data-scroll-target="#sec-path">File Paths</a>
@@ -234,21 +234,21 @@ div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.c
 
 
 
-<p>Good project organisation is not just a courtesy; it is essential for collaboration, transparency, and reproducibility in any data analysis project.</p>
-<p>This module introduces practical strategies to organise your analysis files. It includes creating and using R Projects, understanding relative and absolute file paths, and structuring your work for clarity and reproducibility. A well organised project sets a strong foundation for reliable data analysis, ultimately saving you time and reducing the risk of errors.</p>
+<p>Good project organisation is essential for collaboration, transparency, and reproducibility in any data analysis project. A well organised project sets a strong foundation for reliable data analysis, ultimately saving you time and reducing the risk of errors.</p>
+<p>This module introduces practical strategies to organise your workflow and files. You will learn how to create and use R Projects, understand relative and absolute file paths, and structure your work for clarity and reproducibility.</p>
 <section id="sec-projects" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="sec-projects">R Projects</h2>
-<p>An R Project is a powerful feature in RStudio that helps you organise your work. Using an R Project creates a self-contained workspace that includes all relevant scripts, data files, and outputs for your analysis.</p>
+<p>R Projects are an RStudio feature that can help you organise all files related to a single project folder and access them in a project specific workspace.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p><img src="resources/setwd.png" class="img-fluid" alt="A cartoon of a cracked glass cube looking frustrated with casts on its arm and leg, with bandaids on it, containing &quot;setwd&quot;, looks on at a metal riveted cube labeled &quot;R Proj&quot; holding a skateboard looking sympathetic, and a smaller cube with a helmet on labeled &quot;here&quot; doing a trick on a skateboard."></p>
 <p><a href="https://allisonhorst.com/">Artwork by <span class="citation" data-cites="allison_horst">@allison_horst</span></a>.</p>
-</div></div><p>Using an R Project streamlines your work by:</p>
+</div></div><p>Using an R Project in RStudio helps with:</p>
 <ol type="1">
-<li><strong>Automatic working directory</strong>: RStudio automatically sets the working directory to the project’s folder. The working directory is the folder relative file paths are built from (more details <a href="#sec-relative">later</a>).</li>
-<li><strong>Project settings</strong>: RStudio projects restore project-specific settings and keyboard shortcuts (e.g., git, packages, or documents).</li>
-<li><strong>Workspace restoration</strong>: Reopen projects with scripts, unsaved changes, and history exactly as you left them.</li>
-<li><strong>Organised structure</strong>: Simplifies collaboration and reproducibility with clear folders and relative paths.</li>
+<li><strong>Automatic working directory</strong>: When you open an R Project, RStudio automatically sets the working directory location to the project’s folder. The working directory is the folder relative file paths are built from (more details <a href="#sec-relative">later</a>).</li>
+<li><strong>Project settings</strong>: The <code>.Rproj</code> file created when you make an R Project stores project-specific settings and keyboard shortcuts (e.g., git, packages, or documents). These settings are automatically loaded when you open the project in RStudio.</li>
+<li><strong>Workspace restoration</strong>: When you reopen an R Project, Rstudio will reload your workspace (scripts, unsaved changes and history) exactly how you left it.</li>
+<li><strong>Folder structure</strong>: R projects make it easy to access related files in the project folder with relative paths, making your analysis easier to share with others.</li>
 </ol>
 <!-- Using an R Project for your work offers several key benefits: -->
 <!-- 1. **Setting the working directory**: When you open an R Project, RStudio automatically sets the working directory to the folder where the project is saved. You should *almost* never use `setwd()` to change the working directory, needing to change your working directory is a symptom of poorly organised projects. -->
@@ -272,7 +272,7 @@ For your very first R project, let’s start by selecting “New Directory”.</
 </ol>
 <p><img src="resources/project_2.png" class="img-fluid"></p>
 <ol start="3" type="1">
-<li>There are many different types of R projects that you can create. These various project types come bundled with starter code and settings (for shortcuts and build options). A standard project (without any starter code or settings) is suitable most projects - so simply select “New Project” for an empty folder.</li>
+<li>There are many different types of R projects that you can create. These various project types come bundled with starter code and settings (for shortcuts and build options). A standard project (without any boilerplate or settings) is suitable most projects - so simply select “New Project” for an empty folder.</li>
 </ol>
 <p><img src="resources/project_3.png" class="img-fluid"></p>
 <ol start="4" type="1">
@@ -327,7 +327,7 @@ Saving the workspace image? No!
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<p>While you should always save your work, it is best for reproducibility to not save your workspace image. Saving the workspace means storing all of the objects you’ve created for the next time you open the project. It’s better to explicitly load data and scripts each time you open a project, ensuring that the analysis can be replicated by anyone, including your future self.</p>
+<p>While you should always save your work, it is best for reproducibility to not save your workspace image. Saving the workspace means next time you open the project, R Studio will also reload your last R session, along all of the variables and functions you previously created. While this seems convenient, it is better to explicitly load data and scripts each time you open a project to ensure that your analysis results can be re-run by anyone, including your future self.</p>
 <!-- When you work in RStudio, the workspace refers to all the objects (such as variables, data frames, functions, etc.) that are stored in your R environment during the session. RStudio offers to saves this workspace to a file called .RData when you close the project or RStudio itself. This file contains all the objects from your session, so when you reopen the project, RStudio will automatically load these objects back into the environment. -->
 <!-- Save the workspace means storing all of the objects you've created for the next time you open the project. It may sound tempting to do it, but it is bad for reproducibility. If you rely on previously saved objects, such as datasets or analysis results, you might skip the process of reloading or regenerating data, which undermines the reproducibility of your work. It’s always better to explicitly load data and scripts each time you open a project, ensuring that the analysis can be replicated by anyone, including your future self. -->
 <p>You can prevent the popup messages by going to <strong>Tools → Global Options</strong>. Then select <strong>General</strong> on the side-bar and change “Save workspace to .RData on exit” to “Never”.</p>
@@ -342,7 +342,7 @@ Saving the workspace image? No!
 <div class="no-row-height column-margin column-container"><div class="">
 <p><img src="resources/blame.png" class="img-fluid" alt="A friendly monster has slipped on a banana peel, and says &quot;I know it was you, code. It breaks my heart.&quot; Meanwhile, a little character labeled &quot;CODE&quot; looks on indignantly, pointing to evil characters labeled &quot;mismanaged files,&quot; &quot;navigating your computer&quot;, and &quot;typing&quot; hiding behind a bush holding a bunch of bananas. The point being: often folks blame code for data science problems that are often caused by other underlying issues."></p>
 <p><a href="https://allisonhorst.com/">Artwork by <span class="citation" data-cites="allison_horst">@allison_horst</span></a>.</p>
-</div></div><p>While an R Project helps you quickly switch between projects, it is up to you to organise your project files into suitable folders. By structuring your files effectively, you can reduce the risk of losing important data, simplify the code for accessing your data, and make it easy to locate each script.</p>
+</div></div><p>While an R Project helps you quickly switch between projects, it is up to you to organise your files into suitable subfolders within the project folder. By structuring your files effectively, you can reduce the risk of losing important data, simplify the code for accessing your data, and make it easier to locate each script.</p>
 <!-- ::: {.callout-tip collapse="false"} -->
 <!-- ## Project portability -->
 <!-- All files for the project should be contained within the project folder. This allows you to share your work with others by sharing the project folder. -->
@@ -350,7 +350,7 @@ Saving the workspace image? No!
 <!-- ::: -->
 <section id="file-folders" class="level4">
 <h4 class="anchored" data-anchor-id="file-folders">File folders</h4>
-<p>A clear and consistent folder structure is essential for any project. The names of folders is a personal choice, however there are some commonly used folder names we recommend. Here’s an example of a typical R Project directory structure:</p>
+<p>A clear and consistent folder structure starts with sensible folder names. Here’s an example of a typical R Project directory structure:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">my-awesome-project/</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> data-raw/                   <span class="co"># Raw / unprocessed data files</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── survey_results_2024.csv</span>
@@ -370,13 +370,14 @@ Saving the workspace image? No!
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>       ├── regression_summary.csv</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> README.md                   <span class="co"># Project description and instructions</span></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> my-awesome-project.Rproj    <span class="co"># R Project file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This structure is suitable for most simple data analysis projects. We recommend you try to organise a few projects with this template before making modifications based on your personal preferences and project specific needs.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Expand For Folder Descriptions
+Expand For Recommended Folder Uses
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -395,8 +396,8 @@ Expand For Folder Descriptions
 </div>
 </section>
 </section>
-<section id="self-contained-reproducible-projects" class="level3">
-<h3 class="anchored" data-anchor-id="self-contained-reproducible-projects">Self-contained reproducible projects</h3>
+<section id="portable-and-reproducible-projects" class="level3">
+<h3 class="anchored" data-anchor-id="portable-and-reproducible-projects">Portable and reproducible projects</h3>
 <p>One of the key principles of maintaining an organised and reproducible workflow is to keep <strong>all project-related files within the project folder</strong>. This approach ensures that your project has:</p>
 <ol type="1">
 <li><p><strong>Reproducibility</strong>: By keeping everything in one place, you ensure that your code can easily locate all the necessary files (data, scripts, outputs) using relative paths. This makes your analysis reproducible for anyone who accesses the project.</p></li>
@@ -856,7 +857,7 @@ R packages not included
 <p>When working with files in R, understanding and using file paths correctly is essential to ensure your scripts run seamlessly, whether on your computer or someone else’s.</p>
 <!-- TODO: Insert pirate's map / drawing about file paths -->
 <!-- The **paths** are used to identify the location of a file, computer, device, or web page. You could think of it as a direction pointing to the destination. -->
-<p>File paths can be defined in two main ways: <strong>absolute paths</strong> and <strong>relative paths</strong>. Both approaches work to locate files, but they behave very differently when running your code on other computers. Understanding how to use these paths effectively is crucial for reproducibly accessing your files from scripts and keeping your project portable (shareable with others).</p>
+<p>File paths can be specified in two main ways: <strong>absolute paths</strong> and <strong>relative paths</strong>. Both approaches work to locate files, but they behave very differently when running your code on other computers. Appropriately specified file paths ensure that your projects will be portable to other people’s computers by enabling others to execute your analysis workflow without editing your scripts.</p>
 <section id="sec-absolute" class="level3">
 <h3 class="anchored" data-anchor-id="sec-absolute">Absolute paths</h3>
 <p>An <strong>absolute path</strong> specifies the full location of a file or folder on your system <strong>starting from the root directory</strong> (e.g., <code>C:/</code> on Windows or <code>/</code> on macOS/Linux).</p>
@@ -866,7 +867,7 @@ R packages not included
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS/Linux</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"/home/Admin/Documents/my-awesome-project/data/survey_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Notice how the file path is differs between operating systems? This is bad for reproducibility.</p>
+<p>Notice how the file path differs between operating systems? This is bad for reproducibility.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -882,18 +883,17 @@ Absolute paths are NOT portable!
 <p>While absolute paths work on your computer, they are not portable because:</p>
 <ul>
 <li>They depend on the exact file structure of your system.</li>
-<li>If you share your project with others, their systems may not have the same directory structure.</li>
+<li>If you share your project with others, their computer systems may not have the same directory structure.</li>
 <li>Moving your project to a new location can break the paths.</li>
 </ul>
-<p>For this reason, <strong>absolute paths are strongly discouraged</strong> in R scripts.</p>
+<p>For these reasons, <strong>using absolute paths is strongly discouraged</strong>.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="sec-relative" class="level3">
 <h3 class="anchored" data-anchor-id="sec-relative">Relative paths</h3>
-<p>A <strong>relative path</strong> specifies the location of a file or folder <strong>relative to the current working directory</strong>. The current working directory is your project folder (if you’re working within an <a href="#sec-projects">R project</a>).</p>
-<p>When using R Projects, the working directory is automatically set to the root of the project, making relative paths the most reliable and portable option.</p>
+<p>A <strong>relative path</strong> specifies the location of a file or folder <strong>relative to the current working directory</strong>. If you work within an [R Project]((#sec-projects), the current working directory is automatically set to the project folder, making relative paths the most reliable and portable option.</p>
 <p><strong>Example:</strong></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows/macOS/Linux</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/survey_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -923,7 +923,7 @@ Finding files
 </div>
 <section id="working-directories" class="level4">
 <h4 class="anchored" data-anchor-id="working-directories">Working directories</h4>
-<p>The working directory in R is the folder where R looks for files using relative paths. The working directory is almost always your project folder.</p>
+<p>The working directory in an R session is the folder from which R looks for files specified using relative paths. The working directory is almost always your project folder.</p>
 <p>You can check your current working directory with the <code>getwd()</code> function.</p>
 <div class="cell" data-exercise="getwd">
 <div>
