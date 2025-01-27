@@ -348,8 +348,8 @@ getwd()
 #| check: true
 library(qlcheckr)
 apply_checks(
-  "Use the `getwd()` function." = search_ast(parse(text = .evaluate_result$.user_code), .fn = getwd),
-  "The correct working directory was not found, have you changed it? Try reloading the webpage." = exists_in(ql_results(), identical, "/home/web_user"),
+  "Use the `getwd()` function." = !search_ast(ql_ast(), .fn = getwd),
+  "The correct working directory was not found, have you changed it? Try reloading the webpage." = !exists_in(ql_results(), identical, "/home/web_user"),
   .msg_correct = "That's correct!<br>Try running getwd() with your own R installation and compare the results.<br>What does this tell you about relative and absolute paths?"
 )
 ```
