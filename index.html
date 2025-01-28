@@ -80,9 +80,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-project','listing-website','listing-custom-callout','listing-filters','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-execute','listing-difficulty','listing-time','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count','listing-dev','listing-ojs-engine','listing-toc-depth','listing-webr','listing-editor',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      valueNames: ['listing-project','listing-website','listing-custom-callout','listing-filters','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-execute','listing-difficulty','listing-time','listing-dev','listing-ojs-engine','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count','listing-toc-depth','listing-webr',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-project","listing-website","listing-custom-callout","listing-filters","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-execute","listing-difficulty","listing-time","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-dev","listing-ojs-engine","listing-toc-depth","listing-webr","listing-editor"],
+      searchColumns: ["listing-project","listing-website","listing-custom-callout","listing-filters","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-execute","listing-difficulty","listing-time","listing-dev","listing-ojs-engine","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-toc-depth","listing-webr"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -156,17 +156,6 @@ ul.task-list li input[type="checkbox"] {
   })
   </script>
 <style>
-div.callout-todo.callout {
-  border-left-color: pink;
-}
-div.callout-todo.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-todo .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
 div.callout-tada.callout {
   border-left-color: #008000;
 }
@@ -176,6 +165,17 @@ div.callout-tada.callout-style-default > .callout-header {
 div.callout-tada .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.callout-titled .callout-icon::before {
   content: '🎉';
+  background-image: none;
+}
+div.callout-todo.callout {
+  border-left-color: pink;
+}
+div.callout-todo.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-todo .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.callout-titled .callout-icon::before {
+  content: '📝';
   background-image: none;
 }
 </style>
@@ -292,14 +292,14 @@ window.Quarto = {
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/rstudio-basics/index.html"> 2. RStudio basics </a> <span class="track-list-desc"> Learn how to use RStudio to write code and install packages.</span> <span class="track-list-icons"> <span class="advanced"> <span></span> </span> <span class="track-list-diff"> WIP </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
+  " class="track-list-title" href="./modules/starter/rstudio-basics/index.html"> 2. RStudio basics </a> <span class="track-list-desc"> Learn how to use RStudio and install R packages.</span> <span class="track-list-icons"> <span class="intermediate"> <span></span> </span> <span class="track-list-diff"> Draft </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
 </li>
 <li class="track-list-item">
 <a style="
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/r-basics/index.html"> 3. R basics </a> <span class="track-list-desc"> Start writing R code with basic functions and mathematical operations. Learn code syntax, chain functions together with the pipe (|&gt;), and understand the different types of data that can exist together in a dataset.</span> <span class="track-list-icons"> <span class="advanced"> <span></span> </span> <span class="track-list-diff"> WIP </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
+  " class="track-list-title" href="./modules/starter/r-basics/index.html"> 3. R basics </a> <span class="track-list-desc"> Start writing R code with basic functions and mathematical operations. Learn code syntax, chain functions together with the pipe (|&gt;), and understand the different types of data that can exist together in a dataset.</span> <span class="track-list-icons"> <span class="intermediate"> <span></span> </span> <span class="track-list-diff"> Draft </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
 </li>
 <li class="track-list-item">
 <a style="
