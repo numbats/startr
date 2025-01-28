@@ -6,11 +6,7 @@
       "/modules/starter/rstudio-basics/index.html",
       "/modules/starter/r-basics/index.html",
       "/modules/starter/project-structure/index.html",
-      "/modules/starter/debugging/index.html",
-      "/modules/analysis/data-wrangling/index.html",
-      "/modules/analysis/linear-regression/index.html",
-      "/modules/writing/monash-templates/index.html",
-      "/modules/writing/quarto-basics/index.html"
+      "/modules/starter/debugging/index.html"
     ]
   }
 ]
