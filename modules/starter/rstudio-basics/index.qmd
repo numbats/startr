@@ -94,19 +94,21 @@ Further customisation options can be found in the `Tools > Global Options`, from
 
 ## R packages
 
-R packages are used extensively in R to provide new functionality to the language. R packages can be managed from the "Packages" tab of the **Output** pane. Here you can see the currently installed packages, update them, or install new packages.
+R packages extended the functionality of the language. R packages can be managed from the "Packages" tab of the **Output** pane. Here you can see the currently installed packages, update them, or install new packages.
 
 ![](resources/rstudio-packages.png)
 
-To install a new R package, click on the "Install" button to open a pop-up. Then type the name of the package you want to install and click "Install" (the dependencies checkbox should also be ticked).
+To install a new R package, click on the "Install" button to open the "Install Packages" pop-up. Then type the name of the package you want to install (e.g. "tidyverse") and click "Install" (the dependencies checkbox should also be ticked):
 
 ![](resources/rstudio-install.png)
 
-Try installing the `palmerpenguins` package, it features a dataset about Antarctic penguins that we'll be using in many examples. Once you complete the installation pop-up, you should see the **Console** busily working to download and install the package. Above all of the red text, you will find that R is running `install.packages("palmerpenguins")` to install the package.
+You can use either the "Packages" tab or directly use the `install.packages()` function to install packages.
 
 ![](resources/rstudio-install-cmd.png)
 
-You can use either the "Packages" tab or directly use the `install.packages()` function to install packages.
+
+
+Try installing the `palmerpenguins` package. It provides a dataset about Antarctic penguins that we'll be using in many examples. Once you complete the installation pop-up, you should see the **Console** busily working to download and install the package. Above all of the red text, you will find that R is running `install.packages("palmerpenguins")` to install the package.
 
 To use an installed package, you need to *attach* it with the `library()` function. Try loading the palmerpenguins package with `library(palmerpenguins)`. If successful, you will now be able to view the penguins dataset by running the code `penguins` and view the dataset's documentation by running `?penguins`.
 
