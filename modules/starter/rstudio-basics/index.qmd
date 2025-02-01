@@ -94,7 +94,7 @@ Further customisation options can be found in the `Tools > Global Options`, from
 
 ## R packages
 
-R packages extended the functionality of the language. R packages can be managed from the "Packages" tab of the **Output** pane. Here you can see the currently installed packages, update them, or install new packages.
+R packages extend the functionality of R with new functions and datasets. R packages can be managed from the "Packages" tab of the **Output** pane. Here you can see the currently installed packages, update them, or install new packages.
 
 ![](resources/rstudio-packages.png)
 
