@@ -1,111 +1,150 @@
 ---
 title: 2. RStudio basics
-subtitle: 'Learn how to use RStudio to write code and install packages.'
+subtitle: 'Learn how to use RStudio and install R packages.'
 title-block-banner: yes
 engine: knitr
-filters:
-    - webr-teachr
 execute: 
-    echo: false
+  echo: false
 difficulty: "Beginner"
-time: "20 minutes"
+time: "15 minutes"
+dev: "Draft"
+ojs-engine: true
 format:
   lesson-html: default
 ---
 
-# Background
+{{< include /_extensions/r-wasm/live/_knitr.qmd >}}
 
-RStudio is an Integrated Development Environment (IDE) developed by Posit for R programming language. It includes tools for script editing, R console output, data viewing, and plotting, making it easier for an analyst to explore, visualise, and conduct analysis on the data in a single environment.
+## Using RStudio
 
+RStudio is an Integrated Development Environment (IDE) developed by Posit for the R programming language. It is designed for analysing data, and is the most popular coding environment for R. In extension to the usual script editing and console output of other IDEs, RStudio also includes tools for viewing analysis results such as data, plots, and documents.
 
-# What does it look like?
-The default appearances of the RStudio user interface contains 4 primary panes:
+Start by opening RStudio on your computer, once loaded it should look like this:
 
-- Source pane
-- Console pane
-- Environment pane
-- Output pane
+![](resources/rstudio-fresh.png)
 
-The first time you open the RStudio, you will be greeted by the three panes: console, environment, and output. We will talk about the Source pane later in the chapter.
+In the R **Console** on the left, you should see information about your R installation. If you see something similar, congratulations -- you've successfully installed both R and RStudio as outlined in the previous lesson!
 
-![](resources/RStudio_interface_3p.png)
+You can try out some R code by typing into the R **Console**, just after the `>` at the bottom. We'll get some practice writing R code in the next lesson, but for now you can try:
 
-On the top right-hand side, you have the **Environment** pane, which includes the Environment, History, Connections, Build, and Version Control System (VCS) tabs. We will focus on the Environment tab, which shows the currently saved R objects.
+* `1 + 1`
+  (Make sure that basic math still applies)
+* `hist(rnorm(100))`
+  (Histogram of 100 random normally distributed numbers)
 
-**Output** pane, located at the bottom-right of the app, is used to display various outputs such as plots, HTML content, or files directory. You can interact with it as well, not just for shows. For example, in the "Files" tab, you can add new folders, new blank files, delete/rename, and more.
+<!-- TODO: 3x lesson references -->
+Any code you write into the R Console is temporary, and will be lost when you restart R or close RStudio. Any code you want to keep should be written into an R script (or an R document, explained in a later lesson).
 
-On the left-hand side, you have the **Console** pane, which is the place where you can type out the command written in the R language and execute it immediately on your computer.
+To create an R script, click on the new document drop-down and select "R Script" (or use the keyboard shortcut {{< kbd Ctrl + Shift + N>}}):
 
-:::{.callout-important}
-You can run the R code inside the **Console**, but once you close RStudio, you will lose all the code.
+![](resources/rstudio-script.png)
+
+An R script is a simple text file which you can write and save your R code in. To run code from an R script, click on the line of code you want to run and then click the Run button (or use the keyboard shortcut {{< kbd Ctrl + Enter>}})
+
+![](resources/rstudio-execute.png)
+
+The code from your R script is ran in the Console, and the result is displayed.
+
+::: {.callout-tip collapse="false"}
+## Running selected code
+
+Instead of running the entire line of code, you can also run specific parts of your code by first highlighting the part you wish to run.
+
+Try highlighting `rnorm(100)` before clicking the run button (or using the keyboard shortcut {{< kbd Ctrl + Enter>}})
 :::
 
-To make your work reproducible, you should write and store all the code in the R Script (.R). It will show up in the **Source** pane, allowing you to view and edit various code-related files.
+## The 4-pane workspace
 
-![](resources/RStudio_interface_4p.png)
+![](resources/rstudio-source.png)
 
-# R Script
+The RStudio workspace is organised into 4 adjustable panes which serve different purposes:
 
-There are multiple ways of adding the R Script. To get started, click on the *paper with a plus* symbol and choose R Script. 
+* **Source Pane** (Top-Left)
+  Write your R code in scripts, documents, and web apps here. Each open file is split across tabs.
+  
+* **Console Pane** (Bottom-Left)
+  The Console is where code is ran, and most results are shown. This pane also has tabs for the Terminal (a code interface to your computer), and background jobs (used for running code in the background).
 
-![](resources/RStudio_newfile.png)
+* **Environment and Tools Pane** (Top-Right)
+  The environment is where your R objects exist. Try running `x <- 1:10` which will create an object named `x` containing the numbers 1 to 10. This newly created object should appear in the environment tab.
+  
+  This pane also includes other tabs containing tools specific to your R project (such as document rendering and version control with git). R projects are explained more in a later lesson.  <!-- TODO -->
+  
+* **Files, Packages, Help and Outputs Pane** (Bottom-Right)
+  This is where most of your visual outputs are shown. 
+  
+  This pane contains tabs for many output types:
+  - **Plots**: View generated plots.
+  - **Viewer**: View interactive outputs and documents.
+  - **Presentation**: View presentation slides.
+  
+  It also includes useful tools for writing R code, including:
+  - **Files**: Explore your files.
+  - **Help**: View and search documentation for R functions.
+  - **Packages**: Manage installed packages.
 
-In an R Script, you can write code and add comments. Also, you can run each line of code by pressing **ctrl + enter/return** on Windows and Linux or **cmd + enter/return** on Macs. The code messages will shown in the **Console**.
 
-:::{.callout-tip}
-# Create R script
+::: {.callout-tip collapse="false"}
+## Customising your workspace
 
-There is a shortcut key for creating a new R Script, which is **ctrl + shift + N** for Windows and Linux or **cmd + shift + N** for Macs.
+The appearance and layout of your workspace is fully customisable. You can resize each pane by dragging the gaps between panes.
+
+Further customisation options can be found in the `Tools > Global Options`, from there you can switch the RStudio colour theme under `Appearance` and reorganise the pane tabs under `Pane Layout`.
 :::
 
+## R packages
 
-# R packages installation and loading
+R packages extend the functionality of R with new functions and datasets. R packages can be managed from the "Packages" tab of the **Output** pane. Here you can see the currently installed packages, update them, or install new packages.
 
-An R package bundles all useful functions, help files, and data sets that help extend the functionality into a package. To start installing the package, navigate to the "Packages" tab in the **Output** pane. It will show you what packages you currently have. Next, click "Install", and you should be able to see the pop-up window. Type the package name you want to install in the "Packages" field. You need to make sure that you install all the dependencies by clicking on the box labeled "Install dependencies". Then click "Install", you are now ready to start using the new package.
+![](resources/rstudio-packages.png)
 
-Alternatively, you can install the package by running `install.packages("package_name")` in the **Console** pane. The packages only need to be installed once, and `install.packages()` should not be kept or commented out in the R code.
+To install a new R package, click on the "Install" button to open the "Install Packages" pop-up. Then type the name of the package you want to install (e.g. "tidyverse") and click "Install" (the dependencies checkbox should also be ticked):
 
-:::{.callout-note}
-# Default packages
+![](resources/rstudio-install.png)
 
-R, by default, comes bundled with some basic packages that are always loaded, including `base` (for basic things like `+` and `log()`), utils (for utility functions like `install.packages()`), and stats (for statistical models like `lm()` and `arima()`).
+You can use either the "Packages" tab or directly use the `install.packages()` function to install packages.
 
+![](resources/rstudio-install-cmd.png)
+
+
+
+Try installing the `palmerpenguins` package. It provides a dataset about Antarctic penguins that we'll be using in many examples. Once you complete the installation pop-up, you should see the **Console** busily working to download and install the package. Above all of the red text, you will find that R is running `install.packages("palmerpenguins")` to install the package.
+
+To use an installed package, you need to *attach* it with the `library()` function. Try loading the palmerpenguins package with `library(palmerpenguins)`. If successful, you will now be able to view the penguins dataset by running the code `penguins` and view the dataset's documentation by running `?penguins`.
+
+::: {.callout-tip collapse="false"}
+## Using packages
+
+R packages only need to be installed once, but they need to be attached every time before you use them.
+
+Load all of the packages you use at the start of each R script with `library()`.
+
+Exclude (or comment out) `install.packages()` from your scripts to prevent re-installing packages each time you run your code.
 :::
 
-![](resources/RStudio_package.png)
+Try installing and attaching the `palmerpenguins` package using only code here:
 
-![](resources/RStudio_Install_pkg.png)
+```{webr}
+#| exercise: install-pkg
 
-Now that you have a package installed, you can bring it to your current working environment by typing `library(package_name)` in the **Console** pane. All of the package's functions, data sets, and help files are now available for you to use until you close your current R session. So, if you have closed it, you will need to load the R packages again.
-
-You should load the packages you used at the top of the R Script. This way, you do not need to remember which packages you need in the script. It is also a good practice to do.
-
-:::{.callout-important}
-You may have noticed we do not use quotation marks when calling the package in the `library` function. You have options to use them if you like for this function. However, the quotation marks are necessary for the `install.packages` function.
-:::
-
-:::{.callout-caution}
-# Your turn!
-
-It is now your turn to try out the package installation process. What you need to do is to get the palmerpenguins package so we can have a look at the penguin's data.
-:::
-
-```{webr-teachr}
 # install the package
-<<install.packages("palmerpenguins")>>
+install.packages(______)
 
 # load the package
-<<library(palmerpenguins)>>
+library(______)
 
 penguins
-
-???
-
-c(
-    "Did you use the right function for installing the package?" = !search_ast(.code, .fn = install.packages),
-    "Did you use the right function for loading the package?" = !search_ast(.code, .fn = library),
-    "Did you install the right package?" = !search_ast(.code, .expr = install.packages("palmerpenguins")),
-    "Did you load the right package?" = !search_ast(.code, .expr = library(palmerpenguins))
-)
-
 ```
+
+```{webr}
+#| exercise: install-pkg
+#| check: true
+library(qlcheckr)
+apply_checks(
+  "Did you use the right function for installing the package?" = !search_ast(ql_.code, .fn = install.packages),
+  "Did you use the right function for loading the package?" = !search_ast(ql_ast(), .fn = library),
+  "Did you install the right package? Hint: it needs to be in \"quotes\"" = !search_ast(ql_ast(), .expr = install.packages("palmerpenguins")),
+  "Did you load the right package?" = !search_ast(ql_ast(), .expr = "palmerpenguins" %in% .packages())
+)
+```
+
