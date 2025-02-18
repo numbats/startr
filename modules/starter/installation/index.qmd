@@ -67,6 +67,14 @@ Linux
 
 The R programming language is available through the [Comprehensive R Archive Network (CRAN)](http://cran.r-project.org/) website.
 
+::: {.instructions .collapse .default .show}
+::: {.callout-tip}
+## Detailed instructions
+
+Select your operating system above for more detailed instructions.
+:::
+:::
+
 ### Windows {.instructions .windows .collapse}
 
 **Download the R installer**:
@@ -236,6 +244,14 @@ To install `r-base-dev` (after installing `r-base`):
 ## Installing RStudio
 
 The RStudio can be downloaded from the [Posit](https://posit.co/download/rstudio-desktop/) website. Scroll down to *All Installers and Tarballs* and download the RStudio version for your operating system.
+
+::: {.instructions .collapse .default .show}
+::: {.callout-tip}
+## Detailed instructions
+
+Select your operating system above for more detailed instructions.
+:::
+:::
 
 ### Windows {.instructions .windows .collapse}
 
