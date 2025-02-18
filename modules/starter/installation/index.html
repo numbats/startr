@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.33">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-01-28">
+<meta name="dcterms.date" content="2025-02-18">
 
 <title>1. Installing R and RStudio</title>
 <style>
@@ -70,10 +70,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-b358f982273499bf44fe150d2d5bb68e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-b1f392a39194f2101ae5ce2c3ccd3b7e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-0f51512fe0f38899f874f41d24fe9559.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-3204a54a37e7b2072cd53fe285cb3a4c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="../../../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -110,17 +110,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       }
 </style>
 <style>
-div.callout-tada.callout {
-  border-left-color: #008000;
-}
-div.callout-tada.callout-style-default > .callout-header {
-  background-color: rgba(0, 128, 0, 0.13);
-}
-div.callout-tada .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.callout-titled .callout-icon::before {
-  content: '🎉';
-  background-image: none;
-}
 div.callout-todo.callout {
   border-left-color: pink;
 }
@@ -130,6 +119,17 @@ div.callout-todo.callout-style-default > .callout-header {
 div.callout-todo .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.callout-titled .callout-icon::before {
   content: '📝';
+  background-image: none;
+}
+div.callout-tada.callout {
+  border-left-color: #008000;
+}
+div.callout-tada.callout-style-default > .callout-header {
+  background-color: rgba(0, 128, 0, 0.13);
+}
+div.callout-tada .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.callout-titled .callout-icon::before {
+  content: '🎉';
   background-image: none;
 }
 </style>
@@ -148,7 +148,6 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
     <span class="navbar-title">StartR</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -185,7 +184,7 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">28 January 2025</p>
+        <p class="date">18 February 2025</p>
       </div>
     </div>
     
@@ -230,9 +229,14 @@ document.addEventListener("DOMContentLoaded", function() {
   // Add event listeners to columns with data-bs-target
    document.querySelectorAll('.g-col-4').forEach(function(item) {
     item.addEventListener('click', function() {
+      // Remove 'tool-active' class from all columns
+      document.querySelectorAll('.g-col-4').forEach(col => col.classList.remove('tool-active'));
+      
+      // Add 'tool-active' class to the clicked column
+      item.classList.add('tool-active');
+      
       // Get the target collapse section
       const targetClass = item.getAttribute('data-show-target');
-      console.log(targetClass);
 
       // Collapse all other sections with .collapse class
       document.querySelectorAll('.collapse.instructions').forEach(function(collapse) {
@@ -246,6 +250,19 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 </script>
+</div>
+<div class="cell">
+<style type="text/css">
+div#tool-chooser>div.bg-light:hover {
+  background-color: #cdcdcd !important; /* Darker shade on hover */
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer; /* Change cursor to indicate clickability */
+}
+div#tool-chooser .tool-active {
+  background-color: #dfdfdf !important; /* Darker shade on select */
+  border-color: #848484 !important;
+}
+</style>
 </div>
 <section id="r-and-rstudio" class="level1">
 <h1>R and RStudio</h1>
@@ -289,6 +306,21 @@ document.addEventListener("DOMContentLoaded", function() {
 <section id="installing-r" class="level2">
 <h2 class="anchored" data-anchor-id="installing-r">Installing R</h2>
 <p>The R programming language is available through the <a href="http://cran.r-project.org/">Comprehensive R Archive Network (CRAN)</a> website.</p>
+<div class="instructions collapse default show">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Detailed instructions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Select your operating system above for more detailed instructions.</p>
+</div>
+</div>
+</div>
 <section id="windows" class="level3 instructions windows collapse">
 <h3 class="instructions windows collapse anchored" data-anchor-id="windows">Windows</h3>
 <p><strong>Download the R installer</strong>:</p>
@@ -329,7 +361,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <li>Once the installation is complete, click <strong>Finish</strong> to exit the setup wizard.</li>
 </ol>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -338,7 +370,7 @@ Installing Rtools (optional)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>Rtools</strong> is a collection of software tools necessary for building R packages on Windows. If you are creating R packages, or installing R packages from sources it is useful to have Rtools installed.</p>
 <p>Rtools includes compilers and other utilities which help install packages from sources which contain C, C++, or Fortran code.</p>
@@ -394,7 +426,7 @@ Installing Rtools (optional)
 <li>Once the installation is complete, click <strong>Close</strong> to exit the installer.</li>
 </ol>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -403,7 +435,7 @@ Installing Xcode (optional)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>On macOS, you may need to install <strong>Xcode Command Line Tools</strong> to compile R packages that require compiled code (such as C, C++, or Fortran). If you are creating R packages, or installing R packages from sources it is useful to have Xcode installed.</p>
 <p>Rtools includes compilers and other utilities which help install packages from sources which contain C, C++, or Fortran code.</p>
@@ -437,7 +469,7 @@ Installing Xcode (optional)
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> r-base</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ol>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -446,7 +478,7 @@ Installing r-base-dev (optional)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>The <code>r-base-dev</code> package contains development tools and libraries needed to compile R packages from source. It is particularly important when you want to install R packages that require compiling native code (such as C, C++, or Fortran).</p>
 <p>To install <code>r-base-dev</code> (after installing <code>r-base</code>):</p>
@@ -463,6 +495,21 @@ Installing r-base-dev (optional)
 <section id="installing-rstudio" class="level2">
 <h2 class="anchored" data-anchor-id="installing-rstudio">Installing RStudio</h2>
 <p>The RStudio can be downloaded from the <a href="https://posit.co/download/rstudio-desktop/">Posit</a> website. Scroll down to <em>All Installers and Tarballs</em> and download the RStudio version for your operating system.</p>
+<div class="instructions collapse default show">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Detailed instructions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Select your operating system above for more detailed instructions.</p>
+</div>
+</div>
+</div>
 <section id="windows-1" class="level3 instructions windows collapse">
 <h3 class="instructions windows collapse anchored" data-anchor-id="windows-1">Windows</h3>
 <p><strong>Download the RStudio Installer</strong>:</p>
@@ -638,8 +685,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -750,7 +795,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.33">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-01-28">
+<meta name="dcterms.date" content="2025-02-18">
 
 <title>2. RStudio basics</title>
 <style>
@@ -36,10 +36,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-b358f982273499bf44fe150d2d5bb68e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-b1f392a39194f2101ae5ce2c3ccd3b7e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-0f51512fe0f38899f874f41d24fe9559.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-3204a54a37e7b2072cd53fe285cb3a4c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="../../../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script src="../../../site_libs/quarto-contrib/kbd/kbd.js"></script>
@@ -118,7 +118,6 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
     <span class="navbar-title">StartR</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -155,7 +154,7 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">28 January 2025</p>
+        <p class="date">18 February 2025</p>
       </div>
     </div>
     
@@ -266,13 +265,13 @@ Customising your workspace
 </section>
 <section id="r-packages" class="level2">
 <h2 class="anchored" data-anchor-id="r-packages">R packages</h2>
-<p>R packages are used extensively in R to provide new functionality to the language. R packages can be managed from the “Packages” tab of the <strong>Output</strong> pane. Here you can see the currently installed packages, update them, or install new packages.</p>
+<p>R packages extend the functionality of R with new functions and datasets. R packages can be managed from the “Packages” tab of the <strong>Output</strong> pane. Here you can see the currently installed packages, update them, or install new packages.</p>
 <p><img src="resources/rstudio-packages.png" class="img-fluid"></p>
-<p>To install a new R package, click on the “Install” button to open a pop-up. Then type the name of the package you want to install and click “Install” (the dependencies checkbox should also be ticked).</p>
+<p>To install a new R package, click on the “Install” button to open the “Install Packages” pop-up. Then type the name of the package you want to install (e.g.&nbsp;“tidyverse”) and click “Install” (the dependencies checkbox should also be ticked):</p>
 <p><img src="resources/rstudio-install.png" class="img-fluid"></p>
-<p>Try installing the <code>palmerpenguins</code> package, it features a dataset about Antarctic penguins that we’ll be using in many examples. Once you complete the installation pop-up, you should see the <strong>Console</strong> busily working to download and install the package. Above all of the red text, you will find that R is running <code>install.packages("palmerpenguins")</code> to install the package.</p>
-<p><img src="resources/rstudio-install-cmd.png" class="img-fluid"></p>
 <p>You can use either the “Packages” tab or directly use the <code>install.packages()</code> function to install packages.</p>
+<p><img src="resources/rstudio-install-cmd.png" class="img-fluid"></p>
+<p>Try installing the <code>palmerpenguins</code> package. It provides a dataset about Antarctic penguins that we’ll be using in many examples. Once you complete the installation pop-up, you should see the <strong>Console</strong> busily working to download and install the package. Above all of the red text, you will find that R is running <code>install.packages("palmerpenguins")</code> to install the package.</p>
 <p>To use an installed package, you need to <em>attach</em> it with the <code>library()</code> function. Try loading the palmerpenguins package with <code>library(palmerpenguins)</code>. If successful, you will now be able to view the penguins dataset by running the code <code>penguins</code> and view the dataset’s documentation by running <code>?penguins</code>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="true" aria-label="Toggle callout">
@@ -423,8 +422,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -535,7 +532,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
