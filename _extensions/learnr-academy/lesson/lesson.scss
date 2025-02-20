@@ -6,7 +6,7 @@
   color: $brand-black;
 }
 
-.cell-output-stdout {
+.cell-output-stdout code {
   max-height: 400px;
   overflow-y: auto;
 }
