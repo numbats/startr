@@ -14,47 +14,49 @@ time: "30 minutes"
 ---
 
 ::: {.alert .alert-block .alert-warning}
-# What is Quarto?
+## What is Quarto?
 Quarto is a **free, open-source** system that helps you create **interactive** and **reproducible** documents easily.
 :::
 
-::: {.callout-note collapse="true"}
-# A Brief History Of Literate Programming
+::: {.callout-note collapse=true}
+## A Brief History Of Literate Programming
+
 **Literate programming** combines code and documentation in a single, readable document. Before delving into the basics of `Quarto`, it may be worthwhile to know the *brief* history of its predecessors.
 
-## Sweave
+### Sweave
 
 Sweave was one of the first tools for literate programming in R, allowing users to embed R code in LaTeX documents, combining R's statistical power with LaTeX's typesetting.
 
-## R Markdown
+### R Markdown
 
 R Markdown is a modern alternative to Sweave, enabling the integration of text and R code in various output formats like HTML, PDF, and Word, not just LaTeX.
 
-## Quarto
+### Quarto
+
 Which leads us to Quarto, a new system that enhances the R Markdown ecosystem. Quarto provides a seamless framework for integrating code, text, and visualisations into a single, interactive, and reproducible document.
 
 :::
 
-# Quarto Fundamentals
+## Quarto Fundamentals
 
-![](images/quarto_fundamentals.png){width="500" fig-align="center"}
+![](resources/quarto_fundamentals.png){width="500" fig-align="center"}
 
 
 Quarto provides a seamless framework for integrating code, text, and visualisations into a single, interactive, and reproducible document. Written in `Markdown`, Quarto is easy to learn yet powerful enough for complex document creation. 
 
-::: callout-tip
+::: {.callout-tip collapse=false}
 ## Quarto: Multi-Language and Multi-Engine
 
 Quarto is not only limited to R code chunks, and you can also use **Python, Julia, and SQL code chunks** in your Quarto documents.
 
-R Markdown on the other hand is tied to R, and has a dependency and requirement for R.
+Despite the name, R Markdown also allows you to write documents containing code from many programming languages. The difference is that R Markdown requires rendering ('knitting') with R, while Quarto doesn't!
 :::
 
 Quarto also provides a range of [**built-in templates**](https://quarto.org/docs/websites/website-about.html) that you can use to create documents for different purposes, such as **academic papers, presentations, and websites.** These templates make it easy to get started with Quarto and create professional-looking documents with minimal effort.
 
-## Setting Up Quarto
+### Setting Up Quarto
 
-To get started with Quarto, you will need to **install Quarto**. You can do this by [here](https://quarto.org/docs/get-started/).
+If you're using a recent version of RStudio, Quarto will already be installed and ready for you to use. If you have trouble rendering documents, you may need to install or update Quarto - detailed instructions for this can be found [here](https://quarto.org/docs/get-started/).
 
 Once you have installed Quarto, you can create a new Quarto document by:
 
@@ -62,11 +64,11 @@ Once you have installed Quarto, you can create a new Quarto document by:
 
 2.  Select New `File` \> `New File` \> `Quarto Document`
 
-![](images/select_new.png){width="307" fig-align="center"}
+![](resources/qmd_new.png)
 
 3.  Choose the document type: `Document`, `Presentation`, or `Interactive`.
 
-![](images/document_type.png){width="347" fig-align="center"}
+![](resources/qmd_wizard.png)
 
 A Quarto file is a plain text file with the extension `.qmd`.
 
@@ -78,16 +80,16 @@ Now that you've got your first `quarto` document up and ready, let's explore som
 
 * Markdown text
 
-## YAML
+### YAML
 
 When you open up your first `quarto` document, you will notice a block of text up the top that looks something like this:
 
-![](images/yaml.png){width="550" fig-align="center"}
+![](resources/yaml.png)
 
 This is the YAML header, which contains metadata about your document, including the title, author, and editor. It allows you to edit the document's title (currently “Untitled”), specifies that the output will be in `HTML format`, and indicates that the document will open in the `visual editor` by default.
 
-::: callout-note
-# Source vs Visual Editor
+::: {.callout-note collapse=false}
+## Source vs Visual Editor
 
 [RStudio v1.4](https://rstudio.com/products/rstudio/download/) or higher includes Visual Markdown editing. Instead of markdown syntax (e.g., **bolding** with double asterisks), you can format text, add images and insert tables using a toolbar or keyboard commands, similar to a word processor. View sections [28.3 and 28.4](https://r4ds.hadley.nz/quarto) for more detail.
 :::
@@ -103,38 +105,47 @@ Beyond the basics, you can add some real handy components to the [YAML](https://
 |                                                      |                                                                                                                                                                                                                           |
 
 
-::: {.callout-tip}
-## YAML Structure
-The structure of a YAML can be a little finicky, and errors may occur if it is not formatted correctly. If you  encountering errors or missing components - it may be worthwhile to cross-check. A useful starting point is the [Quarto documentation](https://quarto.org/docs/reference/formats/opml.html).
+::: {.callout-tip collapse=false}
+## YAML indentation
+
+The structure of a YAML is very particular about indentation, and errors may occur if it is not formatted correctly. If you encounter cryptic error messages about keywords in your YAML then it's worth checking the spacing of items carefully. A useful starting point is Quarto's [getting started documentation](https://quarto.org/docs/get-started/hello/rstudio.html).
 :::
 
 
-## R Code Chunks
+### R Code Chunks
 
 Code chunks refer to sections in the document where you can write and execute code. These chunks are enclosed by three backticks followed by the name of the language you are using (e.g., `r` for R code). Code chunks can be included in three ways:
 
-1. Keyboard commands: `Ctrl + Alt + I` (Windows) or `Cmd + Option + I` (Mac)
+1. Keyboard commands: {{< kbd Ctrl-Alt-I>}} (Windows) or {{< kbd Cmd-Option-I>}} (Mac)
+
 2. Clicking the `Insert` button in the toolbar (top right):
 
-![](images/insert.png){width="347" fig-align="center"}
+![](resources/insert.png){width="347" fig-align="center"}
 
 3. Typing the code chunk manually:
 
-![](images/code_chunk.png){width="550" fig-align="center"}
+![](resources/code_chunk.png){width="550" fig-align="center"}
 
 
 
 Write the code you want to include within the chunk and when you run it, the output will be displayed directly below the chunk!
 
-::: {.callout-tip}
-## Did you know
-Code doesn't have to be in a chunk! You can also include `inline code` by using backticks (``) around code you would like to run in text.
+::: {.callout-tip collapse=false}
+## Inline code
+
+Code doesn't have to be in a chunk! You can also embed the results of code within paragraphs using include code chunks, it looks like this:
+
+````markdown
+The approximate value of $\pi$ is `{{r}} pi`:
+````
+
+> The approximate value of $\pi$ is `r pi`
 :::
 
 
 You can also add options to the code chunk to control how the code is executed and displayed. For example, you can specify the output format, the width and height of plots, and whether the code should be displayed in the output. 
 
-![](images/chunk_options.png){width="550" fig-align="center"}
+![](resources/chunk_options.png){width="550" fig-align="center"}
 
 
 Look at the image of the code chunk above, you can see that the chunk has the following options:
@@ -147,21 +158,20 @@ Look at the image of the code chunk above, you can see that the chunk has the fo
 
 These are only a couple examples of options for chunk options, and there are many more available. You can find a full list of chunk options in [section 28.5.2](https://r4ds.hadley.nz/quarto) as well as further discussion in Communicating with Quarto. 
 
+<!-- ::: {.callout-tip collapse=false} -->
+<!-- ## Global Options -->
+<!-- To set global options for all code chunks, add them in the YAML header under `execute:`. Indent the options you want to apply by pressing tab on the next line. -->
+<!-- ::: -->
 
-::: callout-tip
-## Global Options
-To set global options for all code chunks, add them in the YAML header under `execute:`. Indent the options you want to apply by pressing tab on the next line.
-:::
-
-# Markdown text
+## Markdown text
 
 In a Quarto document, you can write text using Markdown syntax. Markdown is a lightweight markup language that allows you to format text using simple and intuitive syntax. You can use Markdown to create headings, lists, links, images, and more.
 
-## Headings
+### Headings
 
 Headings are created using the `#` symbol followed by the heading text. The number of `#` symbols indicates the level of the heading. For example, `#` creates a first-level heading, `##` creates a second-level heading, and so on.
 
-## Text Formatting
+### Text Formatting
 Just like in any other word processors, you can also format your text. Here are some examples:
 
 - **Bold**: `**bold**` or `__bold__`
@@ -169,17 +179,15 @@ Just like in any other word processors, you can also format your text. Here are 
 - ~~Strikethrough~~: `~~strikethrough~~`
 - `Code`: `` `code` ``
 
-## Lists
+### Lists
 
-Lists can be created using `*`. You can also create nested lists by indenting the items with spaces.
+Unordered lists can be created using `*` or `-`, with indentation used to indent list items.
 
-::: callout-tip
-## Checklist
-You can also create checklists in Quarto! This can be done by using `- [ ]` for an empty box and `- [x]` for a checked box.
-:::
+Numbered lists can be created with `1.`, `2.`, and so on.
 
+You can also create checklists by using `- [ ]` for an empty box and `- [x]` for a checked box.
 
-# Rendering Your Document
+## Rendering Your Document
 
 Once you have written your document, you can render it to see the output. To render your document you can:
 
@@ -187,27 +195,27 @@ Once you have written your document, you can render it to see the output. To ren
 2. use the keyboard shortcut `Ctrl + Shift + K` (Windows) or `Cmd + Shift + K` (Mac)
 3. run the `quarto::render()` function in the console
 
-![](images/console_render.png){width="700" fig-align="center"}
+![](resources/console_render.png){width="700" fig-align="center"}
 
 4. In the Terminal via `quarto render`:
 
-![](images/terminal_render.png){width="700" fig-align="center"}
+![](resources/terminal_render.png){width="700" fig-align="center"}
 
 When you render your document, Quarto will execute the code chunks and generate the output. The output will be displayed in the Viewer pane in RStudio, and you can also view the output in a web browser by clicking cog icon next to `Render` and ticking the `Preview in window` box.
 
 
-## Test your knowledge
+<!-- ## Test your knowledge -->
 
-** potentially a multiple choice question here about different common chunk options and what they do ??**
+<!-- ** potentially a multiple choice question here about different common chunk options and what they do ??** -->
 
-** interactive component to edit a basic yaml / include things in yaml -- pain point: warnings, messages = false, toc **
-
-
+<!-- ** interactive component to edit a basic yaml / include things in yaml -- pain point: warnings, messages = false, toc ** -->
 
 
 
 
-# Additional Resources
+
+
+## Additional Resources
 
 These are the more basic of the quarto markdown syntax. For more on how to communicate with quarto, refer to Communicating with Quarto. Additionally, the following resources may be helpful:
 
