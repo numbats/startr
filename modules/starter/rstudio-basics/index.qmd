@@ -35,11 +35,11 @@ You can try out some R code by typing into the R **Console**, just after the `>`
 <!-- TODO: 3x lesson references -->
 Any code you write into the R Console is temporary, and will be lost when you restart R or close RStudio. Any code you want to keep should be written into an R script (or an R document, explained in a later lesson).
 
-To create an R script, click on the new document drop-down and select "R Script" (or use the keyboard shortcut {{< kbd Ctrl + Shift + N>}}):
+To create an R script, click on the new document drop-down and select "R Script" (or use the keyboard shortcut {{< kbd Ctrl-Shift-N>}}):
 
 ![](resources/rstudio-script.png)
 
-An R script is a simple text file which you can write and save your R code in. To run code from an R script, click on the line of code you want to run and then click the Run button (or use the keyboard shortcut {{< kbd Ctrl + Enter>}})
+An R script is a simple text file which you can write and save your R code in. To run code from an R script, click on the line of code you want to run and then click the Run button (or use the keyboard shortcut {{< kbd Ctrl-Enter>}})
 
 ![](resources/rstudio-execute.png)
 
@@ -50,7 +50,7 @@ The code from your R script is ran in the Console, and the result is displayed.
 
 Instead of running the entire line of code, you can also run specific parts of your code by first highlighting the part you wish to run.
 
-Try highlighting `rnorm(100)` before clicking the run button (or using the keyboard shortcut {{< kbd Ctrl + Enter>}})
+Try highlighting `rnorm(100)` before clicking the run button (or using the keyboard shortcut {{< kbd Ctrl-Enter>}})
 :::
 
 ## The 4-pane workspace
