@@ -1,169 +1,414 @@
 ---
-title: Linear regression with R
-subtitle: 'Welcome to the LearR Academy module on Linear Regression! This module is designed to introduce you to the concepts and techniques of linear regression, an widely used tool in the field of statistics, data science, and machine learning. Through this module, you will explore the mathematical principles underlying linear regression, learn how to build and evaluate models using R, and understand the practical applications of these models in real-world scenarios. Whether you are predicting housing prices or forecasting sales, this module will equip you with the skills and knowledge to leverage the power of linear regression for insightful data analysis and informed decision-making.'
+title: 6. Linear regression
+subtitle: 'Statistically summarise relationships between variables of a dataset with a linear regression model.'
 title-block-banner: yes
 engine: knitr
 filters:
   - webr-teachr
 webr:
-  packages: ['ggplot2']
+  packages:
+    - qlcheckr
+    - palmerpenguins
+  repos:
+    - https://repo.r-wasm.org/
+    - https://learnr-academy.github.io/qlcheckr
 difficulty: "Intermediate"
-time: "40 minutes"
+time: "30 minutes"
+ojs-engine: true
 format:
   lesson-html: default
 ---
 
-# Simple linear regression
+{{< include /_extensions/r-wasm/live/_knitr.qmd >}}
 
-## Introduction
-Linear regression is a statistical method used to model the relationship between a dependent variable and one or more independent variables. It aims to find the best-fitting linear relationship that describes how the dependent variable changes in response to the independent variable(s). This technique is of key importance in statistics and data science and is used extensively for predictive analysis.
+Regression modelling helps us understand relationships between variables and make predictions. Regression allows us to quantify these relationships between two or more variables to make informed decisions based on data. The `lm()` function in R allows us to estimate linear regression models using a model formula.
 
-Simple linear regression refers to fitting a straight line to a set of data points to model the relationship between a single independent variable and a dependent variable. The equation of a simple linear regression model is given by: 
-$y = \beta_0 + \beta_1x + \epsilon$,
-where $y$ is the dependent variable, $x$ is the independent variable, $\beta_0$ is the intercept, $\beta_1$ is the slope, and $\epsilon$ is the error term that follows a normal distribution with zero mean and constant variance $\sigma^2$.
+## Simple linear regression
 
-:::{.callout-caution}
-## Your turn!
-Consider the following plot with `dist` as the dependent variable and `speed` as the independent variable:
+A **simple linear regression** models the relationship between one predictor (`X`) and one response (`Y`). 
 
-```{r slr-plot, eval = TRUE}
-library(ggplot2)
-ggplot(cars, aes(speed, dist)) +
-  geom_point()
+Mathematically, general formula is:
+
+$$\mathbf{Y} = \beta_0\mathbf{1} + \beta_1 \mathbf{X} + \boldsymbol{\varepsilon}$$
+
+where:
+
+- $\mathbf{Y}$ is the dependent variable (what is being predicted),
+- $\mathbf{1}$ is a vector containing 1 (for the intercept),
+- $\mathbf{X}$ is the independent variable (how it is predicted),
+- $\beta_0$ (intercept) and $\beta_1$ (slope) are model parameters,
+- $\boldsymbol{\varepsilon}$ represents random error (assumed $\varepsilon_i \overset{iid}{\sim} N(0,1)$).
+
+Programmatically, the R model formula is:
+
+```r
+lm(Y ~ 1 + X, data = data)
 ```
 
-What is the approximate best intercept and slope for the data?
+where:
+
+- `Y` is the name of the dependent variable from `data`,
+- `1` indicates to include an intercept,
+- `X` is the name of the independent variable from `data`,
+- `data` is the name of the dataset being modelled.
+
+### Example: Predicting penguin weight
+
+Let's predict the weight of adult foraging penguins nearby Antarctica's Palmer Station. This dataset is included in the `palmerpenguins` package.
+
+The weight of each penguin is recorded in the `body_mass_g` column (our dependent variable), and we will use the length of their bill (from the `bill_length_mm` column) to predict it. Our hypothesis could be that a larger bill allows a penguin to eat more fish!
+
+```{r}
+library(palmerpenguins)
+# Fit simple linear regression model
+lm(body_mass_g ~ bill_length_mm, data = penguins)
+```
+
+The coefficient for bill_length_mm ($\beta_1 \approx 87.42$) indicates that for each additional millimetre in bill length, the penguin's body mass increases by roughly 87.42 grams on average.
+
+To evaluate the significance of this relationship, we can look at the model in more detail using `summary()`.
+
+```{r}
+# Fit simple linear regression model
+fit <- lm(body_mass_g ~ bill_length_mm, data = penguins)
+
+# View model summary
+summary(fit)
+```
+
+The `summary()` output shows that the `bill_length_mm` coefficient has a p-value of $< 2e^{-16}$ (nearly 0), which is significant at a 5\% level (since it is less than 0.05). This analysis and interpretation isn't reliable, since there are many statistical considerations which have not yet been satisfied.
+
+::: {.callout-important collapse=false}
+## Interpret with caution
+
+While the model provides useful insights, it should be interpreted with caution. Making accurate interpretations from a model requires thorough investigation of the model and data. A deeper understanding of the model's capabilities and assumptions is beyond this lesson.
+
+While the model suggests a positive relationship between **bill length** and **body mass**, there are several important caveats and assumptions to consider:
+
+* **Assumed Linearity**  
+  
+  The model assumes a **linear relationship** between bill length and body mass. If the true relationship is curved or more complex, a simple linear regression may not be appropriate.
+
+* **Causation vs. Correlation**  
+  
+  The model does **not** prove that bill length *causes* changes in body mass—it only identifies an association. Other factors (e.g., diet, age, species differences) may influence both variables.
+
+* **Omitted Variable Bias**  
+  
+  The model only includes **bill length** as a predictor. Other important predictors like **flipper length, species, or sex** might influence body mass. Ignoring these could lead to misleading results.
+
+* **Extrapolation Risk**  
+  
+  Predictions should only be made **within the range of observed bill lengths** in the dataset. For example, predicting body mass for a penguin with an extremely small or large bill (outside the dataset's range) could lead to unreliable estimates.
+
+* **Residual assumptions**  
+  The model assumes that residuals (errors) are $\varepsilon_i \overset{iid}{\sim} N(0,1)$, and this should be assumption should be tested with residual diagnostics. The `iid` means:
+
+   - **Independent** (and)
+    
+     The weight of one penguin does not affect another
+   - **Identically**
+   
+     All residuals have a:
+     
+     * mean of 0 (needed for unbiased predictions)
+     * constant variance (needed for accurate prediction intervals)
+   - **Distributed**
+     
+     The residuals are normally distributed (needed for valid hypothesis testing)
+
 :::
 
+Try estimating a simple linear regression model with a different predictor from the Palmer penguins dataset.
 
-```{webr-teachr}
-library(ggplot2)
-ggplot(cars, aes(speed, dist)) +
-  geom_point() + 
-# Insert the intercept
-  geom_abline(intercept = <<-17>>, 
-# Insert the slope
-              slope = <<4>>)
+```{webr}
+#| exercise: fit_penguins_model
+# Adapt the linear model by replacing bill_length_mm with another variable
+fit <- lm(body_mass_g ~ bill_length_mm , data = penguins)
+summary(fit)
+```
 
-???
-
-p<- .printed[[1]]
-abline_data<- p$layers[[2]]$data
-
-
-c(
-  "Humm. The intercept seems to be too high..." = abline_data$intercept > (-12),
-  "Humm. The intercept seems to be too low..." = abline_data$intercept < (-22),
-  "Are you sure. The slop seems to be too low" = abline_data$slope < (2),  
-  "Are you sure. The slop seems to be too high" = abline_data$slope > (6) 
+```{webr}
+#| exercise: fit_penguins_model
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Make sure to choose a different variable from the penguins dataset, other than `bill_length_mm`, to predict body_mass_g." = !exists_in(ql_results(), \(x) inherits(x, "lm") && with(attributes(x$terms), rownames(factors)[1] == "body_mass_g" && rownames(factors)[2] != "bill_length_mm"))
+  )
 )
 ```
 
+::: { .hint exercise="fit_penguins_model"}
+::: { .callout-note collapse="false"}
+## Hint
+
+Choose another variable from the `penguins` dataset, such as `bill_depth_mm`, `flipper_length_mm`, or `species` for building the model.
+
+```r
+fit <- lm(body_mass_g ~ bill_depth_mm, data = penguins)
+summary(fit)
+```
+:::
+:::
 
 
+## Multiple linear regression
 
+A **multiple linear regression** extends simple linear regression by including multiple predictors (`X₁, X₂, ..., Xₙ`) to explain variations in a response variable (`Y`). This helps account for additional sources of variation and can **reduce omitted variable bias**, which occurs when an important predictor is left out, potentially leading to misleading estimates.
 
-# Pearson correlation coefficient #
+Mathematically, the general formula is:
 
-The Pearson correlation coefficient ($r$) is a measure of the strength and direction of association between two continuous variables. It ranges from -1 to 1, where:
+$$\mathbf{Y} = \beta_0\mathbf{1} + \beta_1 \mathbf{X_1} + \beta_2 \mathbf{X_2} + \dots + \beta_n \mathbf{X_n} + \boldsymbol{\varepsilon}$$
 
-- 1 indicates a perfect positive linear relationship,
-- -1 indicates a perfect negative linear relationship,
-- 0 indicates no linear relationship.
+where:
 
-The Pearson correlation coefficient is calculated using the following formula:
+- $\mathbf{X_1}, \mathbf{X_2}, \dots, \mathbf{X_n}$ are independent variables (predictors),
+- $\beta_1, \beta_2, \dots, \beta_n$ are their respective coefficients,
+- $\beta_0$ is the intercept,
+- $\boldsymbol{\varepsilon}$ represents random error.
+
+Programmatically, the R model formula is:
+
+```r
+lm(Y ~ 1 + X1 + X2 + X3 + ..., data = data)
+```
+
+where:
+
+- `Y` is the name of the dependent variable from `data`,
+- `1` indicates to include an intercept,
+- `X1`, `X2`, `X3`, ... are the names of the independent variables from `data`,
+- `data` is the name of the dataset being modelled.
+
+### Example: Predicting penguin weight with multiple predictors
+
+Instead of just using **bill length**, we now incorporate **flipper length** as an additional predictor. Our hypothesis is that both bill size and flipper size contribute to the body mass of a penguin (perhaps longer flippers helps a penguin swim faster to catch more fish)!
+
+```{r}
+# Fit multiple linear regression model
+fit_multi <- lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = penguins)
+
+# View model summary
+summary(fit_multi)
+```
+
+Each coefficient can be interpretted similarly to simple linear regression.
+
+> The coefficient for `bill_length_mm` ($\beta_1 \approx 6.05$) indicates that for each additional millimetre in bill length, the penguin's body mass increases by roughly **6.05 grams on average**, holding flipper length constant. However, the p-value (0.244) suggests this effect is **not statistically significant** at a 5\% level.
+> 
+> The coefficient for `flipper_length_mm` ($\beta_2 \approx 48.15$) indicates that for each additional millimetre in flipper length, the penguin's body mass increases by roughly **48.15 grams on average**, holding bill length constant. This effect is **highly significant** (p < 0.001).  
+
+Notice that when including the flipper length in the model, the coefficient for bill length ($\beta_1$) becomes much smaller and is no longer statistically significant (p = 0.244). This suggests that **flipper length may account for much of the variation in body mass that was previously attributed to bill length** in a simple linear regression. In other words, bill length's effect on body mass may have been overstated in the simpler model due to **omitted variable bias**, and flipper length appears to be a stronger predictor of body mass.
+
+Now add the bill depth to the model and see how it changes the model.
+
+```{webr}
+#| exercise: fit_penguins_all_numeric
+# Adapt the linear model to include specified numerical predictor variables
+fit <- lm(
+  body_mass_g ~ bill_length_mm + flipper_length_mm + ______, 
+  data = penguins
+)
+summary(fit)
+```
+
+```{webr}
+#| exercise: fit_penguins_all_numeric
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Not all flipper and bill measurements are included in the model." = !exists_in(ql_results(), \(x) inherits(x, "lm") && with(attributes(x$terms), rownames(factors)[1] == "body_mass_g" && nrow(factors) == 4))
+  )
+)
+```
+
+::: { .hint exercise="fit_penguins_all_numeric"}
+::: { .callout-note collapse="false"}
+## Hint
+
+Include the specified numerical predictors: `bill_length_mm`, `bill_depth_mm`, and `flipper_length_mm` to build the model.
+
+```r
+fit <- lm(body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm, data = penguins)
+summary(fit)
+```
+:::
+:::
+
+## Categorical predictors (dummy variables)
+
+A **dummy variable** is a numerical representation of a categorical variable. It uses **0s and 1s** to encode different groups, which results in level shifts to predictions (just like the intercept). This allows categorical data to be included in regression models.  
+
+For example, in the **Palmer Penguins** dataset, the `species` variable has three categories: **Adelie, Chinstrap, and Gentoo**. Since regression models require numerical inputs, we create **dummy variables** for two of the species (the third is treated as the baseline).  
+
+Let's define the dummy variables:  
 
 $$
-r_{x,y} = \frac{\sum_{i_1}^{n}{(x_i-\bar{x})(y_i-\bar{y})}} {\sqrt{\sum_{i=1}^{n}{(x_i-\bar{x})^2}}\sqrt{\sum_{i=1}^{n}{(y_i-\bar{y})^2}}}
+\text{species}_\text{Chinstrap} =
+\begin{cases} 
+1, & \text{if the penguin is Chinstrap} \\
+0, & \text{otherwise}
+\end{cases}
+$$
+
+$$
+\text{species}_\text{Gentoo} =
+\begin{cases} 
+1, & \text{if the penguin is Gentoo} \\
+0, & \text{otherwise}
+\end{cases}
+$$
+
+Since there are **three categories**, we only need **two dummy variables** — the **third category (Adelie)** is the **reference category**.
+
+
+Mathematically, the multiple regression model with these dummy variables is:
+
+$$
+\text{body\_mass}_i = \beta_0 + \beta_1 \cdot \text{species}_\text{Chinstrap} + \beta_2 \cdot \text{species}_\text{Gentoo} + \varepsilon_i
 $$
 
 where:
 
-- $n$ is the number of pairs of of data points,
-- $x$ and $y$ are the individual sample points indexed with $i$,
-- $\bar{x}$ and $\bar{y}$ are the sample means of $x$ and $y$, respectively.
+- $\beta_0$ represents the **average body mass of Adelie penguins** (the reference category).
+- $\beta_1$ represents the **difference in average body mass** between Chinstrap and Adelie penguins.
+- $\beta_2$ represents the **difference in average body mass** between Gentoo and Adelie penguins.
 
+Programmatically, the R model formula is:
 
-:::{.callout-caution}
-## Your turn!
-Consider the `mtcars` dataset. Compute the the Pearson correlation coefficient between `mpg` (miles per gallon) and `hp` (horsepower). 
-:::
-
-```{webr-teachr}
-# Load the dataset
-data(mtcars)
-
-# Calculate Pearson correlation
-correlation <- cor(<<mtcars$mpg>>, <<mtcars$hp>>)
-
-???
-
-c(
-  "Are you using the correct variables?" = abs(correlation - (-0.7761684)) > 10e-6
-)
+```r
+lm(Y ~ 1 + X, data = data)
 ```
 
+where:
 
-:::{.callout-caution}
-## Your turn!
-Consider the `mtcars` dataset. Create a scatter plot with a regression line considering the variables `mpg` (miles per gallon) and `hp` (horsepower). 
-:::
+- `X` is a categorical variable (`character` or `factor`) which is automatically converted into dummy variable(s).
 
-```{webr-teachr}
-# Load the dataset
-data(mtcars)
+This approach allows categorical predictors to be incorporated into regression models while maintaining meaningful interpretation.
 
-# Create a scatter plot with a regression line
-ggplot(mtcars, aes(x = <<hp>>, y = <<mpg>>)) +
-  geom_point() +
-  geom_smooth(method = "lm", col = "blue") +
-  labs(title = "Scatter Plot of MPG vs Horsepower",
-       x = "Horsepower",
-       y = "Miles per Gallon") +
-  theme_minimal()
-
-???
-
-p<- .code[[1]]
-x_variable<- p$mapping[[1]][2][[1]]
-y_variable<- p$mapping[[2]][2][[1]]
-
-c(
-  "Are you using the correct variables?" = x_variable != "hp", 
-  "Are you using the correct variables?" = y_variable != "mpg" 
-)
-```
-
-
-
-# Residuals and R-squared
-
-
-
-
-
-
-
-
-
-
-
-
+### Example: Predicting penguin weight using species information
 
 ```{r}
-# Load the dataset
-data(mtcars)
-
-# Perform linear regression
-model <- lm(mpg ~ hp, data = mtcars)
-
-# Summary of the model
-summary(model)
+fit_species <- lm(body_mass_g ~ species, data = penguins)
+summary(fit_species)
 ```
 
+Interpretting the dummy variable coefficients for categorical predictors requires special consideration to the reference category.
 
+- **Intercept** ($\beta_0 \approx 3700.66$):
 
+  This represents the **average body mass (in grams) of Adelie penguins**, since Adelie is the **reference category**. On average, Adelie penguins weigh **3700.66 grams**. This is **highly statistically significant** (p < 0.001), which simply means their weight is statistically not zero.
 
+- **speciesChinstrap** ($\beta_1 \approx 32.43$):  
 
+  This represents the **difference in average body mass between Chinstrap and Adelie penguins**. Chinstrap penguins are, on average, **32.43 grams heavier than Adelie penguins**, but this difference is **not statistically significant** (p = 0.631), meaning we cannot confidently conclude that Chinstrap penguins weigh more than Adelie penguins based on this model.  
 
-**Congratulations! This is the end of the Linear Regression with R module!**
+- **speciesGentoo** ($\beta_2 \approx 1375.35$):  
+
+  This represents the **difference in average body mass between Gentoo and Adelie penguins**. Gentoo penguins are, on average, **1375.35 grams heavier than Adelie penguins**, and this difference is **highly statistically significant** (p < 0.001).  
+
+Try adding a second categorical variable for the penguin's island into the model, does it make a difference?
+```{webr}
+#| exercise: fit_penguins_categorical
+# Build a linear model using all categorical variables in the dataset
+fit <- lm(body_mass_g ~ species + ______ , data = penguins)
+summary(fit)
+```
+
+```{webr}
+#| exercise: fit_penguins_categorical
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Ensure you are including the categorical predictor variables: `island` and `species`." = !exists_in(ql_results(), \(x) inherits(x, "lm") && with(attributes(x$terms), rownames(factors)[1] == "body_mass_g" && all(c("island", "species") %in% rownames(factors)[-1])))
+  )
+)
+```
+
+::: { .hint exercise="fit_penguins_categorical"}
+::: { .callout-note collapse="false"}
+## Hint
+
+To model `body_mass_g` with categorical variables, use both `island` and `species` as predictors.
+
+```r
+fit <- lm(body_mass_g ~ island + species, data = penguins)
+summary(fit)
+```
+:::
+:::
+
+## Interaction effects  
+
+An **interaction effect** occurs when the effect of one predictor on the response variable **depends on the value of another predictor**. This means that the relationship between a predictor and the outcome is **not constant** across levels of another variable.  
+
+Mathematically, an interaction between two variables $X_1$ and $X_2$ in a regression model is represented as:
+
+$$
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 (X_1 \times X_2) + \varepsilon
+$$
+
+where:  
+
+- $\beta_3$ represents the **interaction effect**, or how the relationship between $X_1$ and $Y$ changes depending on $X_2$.  
+
+Programmatically we use `*` to represent interactions, so the R model formula is:
+
+```r
+lm(Y ~ 1 + X1 * X2, data = data)
+```
+
+The main effects (`X1`) and (`X2`) are automatically included. To specify an interaction without including main effects, we instead use `X1:X2`.
+
+### Example: Interaction between species and flipper length  
+
+Let's test whether the relationship between **flipper length** and **body mass** differs by **species**. We include an **interaction term** between `species` and `flipper_length_mm` in the model:
+
+```{r}
+fit_interaction <- lm(body_mass_g ~ species * flipper_length_mm, data = penguins)
+summary(fit_interaction)
+```
+
+The **interaction terms** represent how the effect of **flipper length** on **body mass** differs by species.
+
+- **speciesChinstrap:flipper_length_mm ($\beta_4 \approx 1.742$)**:  
+  This coefficient represents the **additional change in body mass for Chinstrap penguins** for each additional millimetre of flipper length, compared to Adelie penguins (the reference species). The coefficient is **not statistically significant** (p = 0.82467), suggesting that the relationship between flipper length and body mass for Chinstrap penguins is **not meaningfully different** from that of Adelie penguins. The small value of 1.742 indicates that even if the effect were significant, it would be a minor difference in comparison to other species.
+
+- **speciesGentoo:flipper_length_mm ($\beta_5 \approx 21.791$)**:  
+  This coefficient represents the **additional change in body mass for Gentoo penguins** for each additional millimetre of flipper length, compared to Adelie penguins. The coefficient is **statistically significant** (p = 0.00184), indicating that the effect of flipper length on body mass for Gentoo penguins is **significantly stronger** than for Adelie penguins. Specifically, for each additional millimetre of flipper length, the body mass of Gentoo penguins increases by **21.791 grams more** than Adelie penguins, reflecting a more pronounced relationship between flipper length and body mass for this species.
+  
+Now try to model a penguin's weight using the interaction between species and the length of a penguin's bill.
+
+```{webr}
+#| exercise: fit_penguins_interaction
+# Build a linear model to investigate interactions between `species` and `bill_length_mm`
+fit <- lm(body_mass_g ~ ______ , data = penguins)
+summary(fit)
+```
+
+```{webr}
+#| exercise: fit_penguins_interaction
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Ensure you are including an interaction term between `species` and `bill_length_mm`." = !exists_in(ql_results(), \(x) inherits(x, "lm") && any(c("species:bill_length_mm", "bill_length_mm:species") %in% colnames(attr(x$terms, "factors"))))
+  )
+)
+```
+
+::: { .hint exercise="fit_penguins_interaction"}
+::: { .callout-note collapse="false"}
+## Hint
+
+Use `*` symbol to include the interaction between `species` and `bill_length_mm` in your model.
+
+```r
+fit <- lm(body_mass_g ~ species * bill_length_mm, data = penguins)
+summary(fit)
+```
+:::
+:::
