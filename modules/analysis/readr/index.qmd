@@ -1,6 +1,6 @@
 ---
-title: Reading data from files
-subtitle: 'The basics of reading, restructuring, and otherwise manipulating data to produce clean tidy datasets.'
+title: 1. Reading data from files
+subtitle: 'Reading and writing data from common local file formats'
 title-block-banner: yes
 engine: knitr
 format:
@@ -16,7 +16,7 @@ webr:
     - https://learnr-academy.github.io/qlcheckr
 ojs-engine: true
 difficulty: "Beginner"
-time: "30 minutes"
+time: "15 minutes"
 ---
 
 Data is the core of data analysis, and accurately reading data is the first step of any analysis. There are many data formats and platforms in use, and understanding how to read them efficiently is necessary for working with data in R. Later in your analysis, you often need to share your cleaned dataset or tabulated results with others, and knowing how to write data to appropriate file formats is necessary for effective communication and collaboration.
