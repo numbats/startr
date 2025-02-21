@@ -80,9 +80,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-project','listing-website','listing-custom-callout','listing-filters','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-execute','listing-difficulty','listing-time','listing-dev','listing-ojs-engine','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count','listing-toc-depth','listing-webr',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      valueNames: ['listing-project','listing-website','listing-custom-callout','listing-filters','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-execute','listing-difficulty','listing-time','listing-dev','listing-ojs-engine','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count','listing-toc-depth',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-project","listing-website","listing-custom-callout","listing-filters","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-execute","listing-difficulty","listing-time","listing-dev","listing-ojs-engine","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-toc-depth","listing-webr"],
+      searchColumns: ["listing-project","listing-website","listing-custom-callout","listing-filters","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-execute","listing-difficulty","listing-time","listing-dev","listing-ojs-engine","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-toc-depth"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -108,13 +108,41 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-project','listing-website','listing-custom-callout','listing-filters','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-webr','listing-difficulty','listing-time','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      valueNames: ['listing-project','listing-website','listing-custom-callout','listing-filters','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-webr','listing-ojs-engine','listing-difficulty','listing-time','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-project","listing-website","listing-custom-callout","listing-filters","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-webr","listing-difficulty","listing-time","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
+      searchColumns: ["listing-project","listing-website","listing-custom-callout","listing-filters","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-webr","listing-ojs-engine","listing-difficulty","listing-time","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
     window['quarto-listings']['listing-analysis'] = new List('listing-analysis', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-statistics .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-project','listing-website','listing-custom-callout','listing-filters','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-webr','listing-difficulty','listing-time','listing-ojs-engine','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      
+      searchColumns: ["listing-project","listing-website","listing-custom-callout","listing-filters","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-webr","listing-difficulty","listing-time","listing-ojs-engine","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-statistics'] = new List('listing-statistics', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -284,35 +312,35 @@ window.Quarto = {
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/installation/index.html"> 1. Installing R and RStudio </a> <span class="track-list-desc"> Install R and RStudio on Windows, macOS, or Linux.</span> <span class="track-list-icons"> <span class="beginner"> <span></span> </span> <span class="track-list-diff"> Ready </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
+  " class="track-list-title" href="./modules/starter/installation/index.html"> 1. Installing R and RStudio </a> <span class="track-list-desc"> Install R and RStudio on Windows, macOS, or Linux.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
 </li>
 <li class="track-list-item">
 <a style="
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/rstudio-basics/index.html"> 2. RStudio basics </a> <span class="track-list-desc"> Learn how to use RStudio and install R packages.</span> <span class="track-list-icons"> <span class="intermediate"> <span></span> </span> <span class="track-list-diff"> Draft </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 15 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
+  " class="track-list-title" href="./modules/starter/rstudio-basics/index.html"> 2. RStudio basics </a> <span class="track-list-desc"> Learn how to use RStudio and install R packages.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 15 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
 </li>
 <li class="track-list-item">
 <a style="
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/r-basics/index.html"> 3. R basics </a> <span class="track-list-desc"> Start writing R code with basic functions and mathematical operations. Learn code syntax, chain functions together with the pipe (|&gt;), and understand the different types of data that can exist together in a dataset.</span> <span class="track-list-icons"> <span class="intermediate"> <span></span> </span> <span class="track-list-diff"> Draft </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
+  " class="track-list-title" href="./modules/starter/r-basics/index.html"> 3. R basics </a> <span class="track-list-desc"> Start writing R code with basic functions and mathematical operations. Learn code syntax, chain functions together with the pipe (|&gt;), and understand the different types of data that can exist together in a dataset.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
 </li>
 <li class="track-list-item">
 <a style="
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/project-structure/index.html"> 4. Projects and paths </a> <span class="track-list-desc"> Establish good practices for organising and accessing project files. Essential for when you share your work with others.</span> <span class="track-list-icons"> <span class="beginner"> <span></span> </span> <span class="track-list-diff"> Ready </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
+  " class="track-list-title" href="./modules/starter/project-structure/index.html"> 4. Projects and paths </a> <span class="track-list-desc"> Establish good practices for organising and accessing project files. Essential for when you share your work with others.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 20 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
 </li>
 <li class="track-list-item">
 <a style="
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-  " class="track-list-title" href="./modules/starter/debugging/index.html"> 5. Strategies for troubleshooting in R </a> <span class="track-list-desc"> With coding comes bugs and errors that need troubleshooting. In this chapter, you will learn how to decipher errors, find help for fixing them, and practice asking clear questions with minimally reproducible examples.</span> <span class="track-list-icons"> <span class="advanced"> <span></span> </span> <span class="track-list-diff"> WIP </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 1 hour </span> <span class="advanced"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Advanced </span> </span>
+  " class="track-list-title" href="./modules/starter/debugging/index.html"> 5. Strategies for troubleshooting in R </a> <span class="track-list-desc"> With coding comes bugs and errors that need troubleshooting. In this chapter, you will learn how to decipher errors, find help for fixing them, and practice asking clear questions with minimally reproducible examples.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 30 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
 </li>
 </ul>
 <div class="listing-no-matching d-none">
@@ -335,14 +363,21 @@ No matching items
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-  " class="track-list-title" href="./modules/analysis/data-wrangling/index.html"> Data wrangling with R </a> <span class="track-list-desc"> In this chapter, you will learn to use tidyr and dplyr from the tidyverse in R for tidying your data set and data maniplulation.</span> <span class="track-list-icons"> <span class="advanced"> <span></span> </span> <span class="track-list-diff"> WIP </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 30 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
+  " class="track-list-title" href="./modules/analysis/readr/index.html"> 1. Reading data from files </a> <span class="track-list-desc"> Reading and writing data from common local file formats</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 15 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
 </li>
 <li class="track-list-item">
 <a style="
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-  " class="track-list-title" href="./modules/analysis/linear-regression/index.html"> Linear regression with R </a> <span class="track-list-desc"> Welcome to the LearR Academy module on Linear Regression! This module is designed to introduce you to the concepts and techniques of linear regression, an widely used tool in the field of statistics, data science, and machine learning. Through this module,…</span> <span class="track-list-icons"> <span class="advanced"> <span></span> </span> <span class="track-list-diff"> WIP </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 40 minutes </span> <span class="intermediate"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Intermediate </span> </span>
+  " class="track-list-title" href="./modules/analysis/tidyr/index.html"> 2. Tidy data restructuring </a> <span class="track-list-desc"> How to restructure a messy dataset with tidyr into tidy data.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 30 minutes </span> <span class="intermediate"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Intermediate </span> </span>
+</li>
+<li class="track-list-item">
+<a style="
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+  " class="track-list-title" href="./modules/analysis/dplyr/index.html"> 3. Data manipulation </a> <span class="track-list-desc"> How to modify a dataset with dplyr to compute new columns or summaries, change rows or columns, and join datasets together.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 30 minutes </span> <span class="intermediate"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Intermediate </span> </span>
 </li>
 </ul>
 <div class="listing-no-matching d-none">
@@ -355,7 +390,30 @@ No matching items
 <div class="track">
 <input type="checkbox" class="track-chkbox">
 <div class="track-header-card">
-  <span> Document writing </span>
+  <span>Statistical modelling</span>
+  <i></i>
+</div>
+<div id="listing-statistics" class="listing quarto-listing quarto-listing-container-custom">
+<ul class="track-list-container">
+<li class="track-list-item">
+<a style="
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+  " class="track-list-title" href="./modules/statistics/linear-regression/index.html"> 1. Linear regression </a> <span class="track-list-desc"> Statistically summarise relationships between variables of a dataset with a linear regression model.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 30 minutes </span> <span class="intermediate"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Intermediate </span> </span>
+</li>
+</ul>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div>
+</div>
+</div>
+<div class="track-listing">
+<div class="track">
+<input type="checkbox" class="track-chkbox">
+<div class="track-header-card">
+  <span>Writing documents</span>
   <i></i>
 </div>
 <div id="listing-writing" class="listing quarto-listing quarto-listing-container-custom">
@@ -365,14 +423,7 @@ No matching items
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-  " class="track-list-title" href="./modules/writing/monash-templates/index.html"> Monash Quarto templates </a> <span class="track-list-desc"> A collection of monash templates for your assignments, projects, papers, and more.</span> <span class="track-list-icons"> <span class="advanced"> <span></span> </span> <span class="track-list-diff"> WIP </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 30 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
-</li>
-<li class="track-list-item">
-<a style="
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-  " class="track-list-title" href="./modules/writing/quarto-basics/index.html"> Quarto Basics </a> <span class="track-list-desc"> With Quarto, creating documents and reports becomes a breeze. In this chapter, you will learn how to set up Quarto, explore its key features, and start creating your own quarto documents with ease.</span> <span class="track-list-icons"> <span class="advanced"> <span></span> </span> <span class="track-list-diff"> WIP </span> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 30 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
+  " class="track-list-title" href="./modules/writing/quarto-basics/index.html"> 1. Quarto Basics </a> <span class="track-list-desc"> With Quarto, creating documents and reports becomes a breeze. In this chapter, you will learn how to set up Quarto, explore its key features, and start creating your own quarto documents with ease.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 30 minutes </span> <span class="beginner"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Beginner </span> </span>
 </li>
 </ul>
 <div class="listing-no-matching d-none">

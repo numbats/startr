@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2025-02-21">
 
-<title>2. RStudio basics</title>
+<title>Monash Quarto templates</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -42,8 +42,6 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/bootstrap/bootstrap-ee57b11313ca63e618186ea68f897590.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="../../../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
-<script src="../../../site_libs/quarto-contrib/kbd/kbd.js"></script>
-<link href="../../../site_libs/quarto-contrib/kbd/kbd.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -77,8 +75,6 @@ ul.task-list li input[type="checkbox"] {
         background: yes;
       }
 </style>
-<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
-<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <style>
 div.callout-tada.callout {
   border-left-color: #008000;
@@ -142,8 +138,8 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">2. RStudio basics</h1>
-            <p class="subtitle lead">Learn how to use RStudio and install R packages.</p>
+      <h1 class="title">Monash Quarto templates</h1>
+            <p class="subtitle lead">A collection of monash templates for your assignments, projects, papers, and more.</p>
                       </div>
   </div>
     
@@ -165,15 +161,7 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#using-rstudio" id="toc-using-rstudio" class="nav-link active" data-scroll-target="#using-rstudio">Using RStudio</a></li>
-  <li><a href="#the-4-pane-workspace" id="toc-the-4-pane-workspace" class="nav-link" data-scroll-target="#the-4-pane-workspace">The 4-pane workspace</a></li>
-  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages">R packages</a></li>
-  </ul>
-</nav>
+    
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -186,134 +174,11 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
 
 
 
-<section id="using-rstudio" class="level2">
-<h2 class="anchored" data-anchor-id="using-rstudio">Using RStudio</h2>
-<p>RStudio is an Integrated Development Environment (IDE) developed by Posit for the R programming language. It is designed for analysing data, and is the most popular coding environment for R. In extension to the usual script editing and console output of other IDEs, RStudio also includes tools for viewing analysis results such as data, plots, and documents.</p>
-<p>Start by opening RStudio on your computer, once loaded it should look like this:</p>
-<p><img src="resources/rstudio-fresh.png" class="img-fluid"></p>
-<p>In the R <strong>Console</strong> on the left, you should see information about your R installation. If you see something similar, congratulations – you’ve successfully installed both R and RStudio as outlined in the previous lesson!</p>
-<p>You can try out some R code by typing into the R <strong>Console</strong>, just after the <code>&gt;</code> at the bottom. We’ll get some practice writing R code in the next lesson, but for now you can try:</p>
-<ul>
-<li><code>1 + 1</code> (Make sure that basic math still applies)</li>
-<li><code>hist(rnorm(100))</code> (Histogram of 100 random normally distributed numbers)</li>
-</ul>
-<!-- TODO: 3x lesson references -->
-<p>Any code you write into the R Console is temporary, and will be lost when you restart R or close RStudio. Any code you want to keep should be written into an R script (or an R document, explained in a later lesson).</p>
-<p>To create an R script, click on the new document drop-down and select “R Script” (or use the keyboard shortcut <kbd aria-hidden="true">Ctrl-Shift-N</kbd><span class="visually-hidden">Ctrl-Shift-N</span>):</p>
-<p><img src="resources/rstudio-script.png" class="img-fluid"></p>
-<p>An R script is a simple text file which you can write and save your R code in. To run code from an R script, click on the line of code you want to run and then click the Run button (or use the keyboard shortcut <kbd aria-hidden="true">Ctrl-Enter</kbd><span class="visually-hidden">Ctrl-Enter</span>)</p>
-<p><img src="resources/rstudio-execute.png" class="img-fluid"></p>
-<p>The code from your R script is ran in the Console, and the result is displayed.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Running selected code
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<p>Instead of running the entire line of code, you can also run specific parts of your code by first highlighting the part you wish to run.</p>
-<p>Try highlighting <code>rnorm(100)</code> before clicking the run button (or using the keyboard shortcut <kbd aria-hidden="true">Ctrl-Enter</kbd><span class="visually-hidden">Ctrl-Enter</span>)</p>
-</div>
-</div>
-</div>
-</section>
-<section id="the-4-pane-workspace" class="level2">
-<h2 class="anchored" data-anchor-id="the-4-pane-workspace">The 4-pane workspace</h2>
-<p><img src="resources/rstudio-source.png" class="img-fluid"></p>
-<p>The RStudio workspace is organised into 4 adjustable panes which serve different purposes:</p>
-<ul>
-<li><p><strong>Source Pane</strong> (Top-Left) Write your R code in scripts, documents, and web apps here. Each open file is split across tabs.</p></li>
-<li><p><strong>Console Pane</strong> (Bottom-Left) The Console is where code is ran, and most results are shown. This pane also has tabs for the Terminal (a code interface to your computer), and background jobs (used for running code in the background).</p></li>
-<li><p><strong>Environment and Tools Pane</strong> (Top-Right) The environment is where your R objects exist. Try running <code>x &lt;- 1:10</code> which will create an object named <code>x</code> containing the numbers 1 to 10. This newly created object should appear in the environment tab.</p>
-<p>This pane also includes other tabs containing tools specific to your R project (such as document rendering and version control with git). R projects are explained more in a later lesson. <!-- TODO --></p></li>
-<li><p><strong>Files, Packages, Help and Outputs Pane</strong> (Bottom-Right) This is where most of your visual outputs are shown.</p>
-<p>This pane contains tabs for many output types:</p>
-<ul>
-<li><strong>Plots</strong>: View generated plots.</li>
-<li><strong>Viewer</strong>: View interactive outputs and documents.</li>
-<li><strong>Presentation</strong>: View presentation slides.</li>
-</ul>
-<p>It also includes useful tools for writing R code, including:</p>
-<ul>
-<li><strong>Files</strong>: Explore your files.</li>
-<li><strong>Help</strong>: View and search documentation for R functions.</li>
-<li><strong>Packages</strong>: Manage installed packages.</li>
-</ul></li>
-</ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Customising your workspace
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<p>The appearance and layout of your workspace is fully customisable. You can resize each pane by dragging the gaps between panes.</p>
-<p>Further customisation options can be found in the <code>Tools &gt; Global Options</code>, from there you can switch the RStudio colour theme under <code>Appearance</code> and reorganise the pane tabs under <code>Pane Layout</code>.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="r-packages" class="level2">
-<h2 class="anchored" data-anchor-id="r-packages">R packages</h2>
-<p>R packages extend the functionality of R with new functions and datasets. R packages can be managed from the “Packages” tab of the <strong>Output</strong> pane. Here you can see the currently installed packages, update them, or install new packages.</p>
-<p><img src="resources/rstudio-packages.png" class="img-fluid"></p>
-<p>To install a new R package, click on the “Install” button to open the “Install Packages” pop-up. Then type the name of the package you want to install (e.g.&nbsp;“tidyverse”) and click “Install” (the dependencies checkbox should also be ticked):</p>
-<p><img src="resources/rstudio-install.png" class="img-fluid"></p>
-<p>You can use either the “Packages” tab or directly use the <code>install.packages()</code> function to install packages.</p>
-<p><img src="resources/rstudio-install-cmd.png" class="img-fluid"></p>
-<p>Try installing the <code>palmerpenguins</code> package. It provides a dataset about Antarctic penguins that we’ll be using in many examples. Once you complete the installation pop-up, you should see the <strong>Console</strong> busily working to download and install the package. Above all of the red text, you will find that R is running <code>install.packages("palmerpenguins")</code> to install the package.</p>
-<p>To use an installed package, you need to <em>attach</em> it with the <code>library()</code> function. Try loading the palmerpenguins package with <code>library(palmerpenguins)</code>. If successful, you will now be able to view the penguins dataset by running the code <code>penguins</code> and view the dataset’s documentation by running <code>?penguins</code>.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Using packages
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<p>R packages only need to be installed once, but they need to be attached every time before you use them.</p>
-<p>Load all of the packages you use at the start of each R script with <code>library()</code>.</p>
-<p>Exclude (or comment out) <code>install.packages()</code> from your scripts to prevent re-installing packages each time you run your code.</p>
-</div>
-</div>
-</div>
-<p>Try installing and attaching the <code>palmerpenguins</code> package using only code here:</p>
-<div class="cell" data-exercise="install-pkg">
-<div>
-<div id="webr-1" class="exercise-cell">
-
-</div>
-<script type="webr-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiaW5zdGFsbC1wa2cifSwiY29kZSI6IlxuIyBpbnN0YWxsIHRoZSBwYWNrYWdlXG5pbnN0YWxsLnBhY2thZ2VzKF9fX19fXylcblxuIyBsb2FkIHRoZSBwYWNrYWdlXG5saWJyYXJ5KF9fX19fXylcblxucGVuZ3VpbnMifQ==
-</script>
-</div>
-</div>
-<div class="cell" data-exercise="install-pkg" data-check="true">
-<script type="exercise-check-install-pkg-contents">
-eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6Imluc3RhbGwtcGtnIn0sImNvZGUiOiJsaWJyYXJ5KHFsY2hlY2tyKVxuYXBwbHlfY2hlY2tzKFxuICBcIkRpZCB5b3UgdXNlIHRoZSByaWdodCBmdW5jdGlvbiBmb3IgaW5zdGFsbGluZyB0aGUgcGFja2FnZT9cIiA9ICFzZWFyY2hfYXN0KHFsXy5jb2RlLCAuZm4gPSBpbnN0YWxsLnBhY2thZ2VzKSxcbiAgXCJEaWQgeW91IHVzZSB0aGUgcmlnaHQgZnVuY3Rpb24gZm9yIGxvYWRpbmcgdGhlIHBhY2thZ2U/XCIgPSAhc2VhcmNoX2FzdChxbF9hc3QoKSwgLmZuID0gbGlicmFyeSksXG4gIFwiRGlkIHlvdSBpbnN0YWxsIHRoZSByaWdodCBwYWNrYWdlPyBIaW50OiBpdCBuZWVkcyB0byBiZSBpbiBcXFwicXVvdGVzXFxcIlwiID0gIXNlYXJjaF9hc3QocWxfYXN0KCksIC5leHByID0gaW5zdGFsbC5wYWNrYWdlcyhcInBhbG1lcnBlbmd1aW5zXCIpKSxcbiAgXCJEaWQgeW91IGxvYWQgdGhlIHJpZ2h0IHBhY2thZ2U/XCIgPSAhc2VhcmNoX2FzdChxbF9hc3QoKSwgLmV4cHIgPSBcInBhbG1lcnBlbmd1aW5zXCIgJWluJSAucGFja2FnZXMoKSlcbikifQ==
-</script>
-</div>
+<!-- TODO: Consider expanding scope to non-monash templates -->
 
 
-<script type="webr-data">
-eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC40LjEvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyIsInFsY2hlY2tyIl0sInJlcG9zIjpbImh0dHBzOi8vbGVhcm5yLWFjYWRlbXkuZ2l0aHViLmlvL3FsY2hlY2tyIl19LCJyZW5kZXJfZGYiOiJkZWZhdWx0In0=
-</script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV8xO1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItMSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzEgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBleGVyY2lzZSBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKFxuICAgIHtcbiAgICAgIGlkOiBcIndlYnItMS1jb250ZW50c1wiLFxuICAgICAgZW52aXI6IGBleGVyY2lzZS1lbnYtJHtibG9jay5hdHRyLmV4ZXJjaXNlfWAsXG4gICAgICBlcnJvcjogZmFsc2UsXG4gICAgICBjYXB0aW9uOiAnRXhlcmNpc2UnLFxuICAgIH0sXG4gICAgYmxvY2suYXR0clxuICApO1xuXG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxudmlld29mIF93ZWJyX3ZhbHVlXzEgPSB3ZWJST2pzLnByb2Nlc3MoX3dlYnJfZWRpdG9yXzEsIHt9KTtcbl93ZWJyX2ZlZWRiYWNrXzEgPSB7XG4gIGNvbnN0IHsgV2ViUkdyYWRlciB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3QgZW1wdHlGZWVkYmFjayA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpO1xuXG4gIGNvbnN0IGdyYWRlciA9IG5ldyBXZWJSR3JhZGVyKF93ZWJyX3ZhbHVlXzEuZXZhbHVhdG9yKTtcbiAgY29uc3QgZmVlZGJhY2sgPSBhd2FpdCBncmFkZXIuZ3JhZGVFeGVyY2lzZSgpO1xuICBpZiAoIWZlZWRiYWNrKSByZXR1cm4gZW1wdHlGZWVkYmFjaztcbiAgcmV0dXJuIGZlZWRiYWNrO1xufVxuIn0seyJjZWxsTmFtZSI6IndlYnItcHJlbHVkZSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IndlYlJPanMgPSB7XG4gIGNvbnN0IHsgV2ViUiB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZS5XZWJSO1xuICBjb25zdCB7XG4gICAgV2ViUkV2YWx1YXRvcixcbiAgICBXZWJSRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoXG4gIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHN0YXR1c0NvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1zdGF0dXNcIik7XG4gIGNvbnN0IGluZGljYXRvckNvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGluZGljYXRvckNvbnRhaW5lci5jbGFzc0xpc3QucmVtb3ZlKFwiZC1ub25lXCIpO1xuXG4gIGxldCBzdGF0dXNUZXh0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKVxuICBzdGF0dXNUZXh0LmNsYXNzTGlzdCA9IFwiZXhlcmNpc2UtbG9hZGluZy1kZXRhaWxzXCI7XG4gIHN0YXR1c1RleHQgPSBzdGF0dXNDb250YWluZXIuYXBwZW5kQ2hpbGQoc3RhdHVzVGV4dCk7XG4gIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5pdGlhbGlzZWA7XG5cbiAgLy8gSG9pc3QgaW5kaWNhdG9yIG91dCBmcm9tIGZpbmFsIHNsaWRlIHdoZW4gcnVubmluZyB1bmRlciByZXZlYWxcbiAgY29uc3QgcmV2ZWFsU3RhdHVzID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgLmV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpZiAocmV2ZWFsU3RhdHVzKSB7XG4gICAgcmV2ZWFsU3RhdHVzLnJlbW92ZSgpO1xuICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsID4gLnNsaWRlc1wiKS5hcHBlbmRDaGlsZChyZXZlYWxTdGF0dXMpO1xuICB9XG5cbiAgLy8gTWFrZSBhbnkgcmV2ZWFsIHNsaWRlcyB3aXRoIGxpdmUgY2VsbHMgc2Nyb2xsYWJsZVxuICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKFwiLnJldmVhbCAuZXhlcmNpc2UtY2VsbFwiKS5mb3JFYWNoKChlbCkgPT4ge1xuICAgIGVsLmNsb3Nlc3QoJ3NlY3Rpb24uc2xpZGUnKS5jbGFzc0xpc3QuYWRkKFwic2Nyb2xsYWJsZVwiKTtcbiAgfSlcblxuICAvLyB3ZWJSIHN1cHBsZW1lbnRhbCBkYXRhIGFuZCBvcHRpb25zXG4gIGNvbnN0IGRhdGFDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItZGF0YVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGRhdGEgPSBKU09OLnBhcnNlKGI2NERlY29kZShkYXRhQ29udGVudCkpO1xuXG4gIC8vIEdyYWIgbGlzdCBvZiByZXNvdXJjZXMgdG8gYmUgZG93bmxvYWRlZFxuICBjb25zdCBmaWxlc0NvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwidmZzLWZpbGVcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBmaWxlcyA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGZpbGVzQ29udGVudCkpO1xuXG4gIC8vIEluaXRpYWxpc2Ugd2ViUiBhbmQgc2V0dXAgZm9yIFIgY29kZSBldmFsdWF0aW9uXG4gIGxldCB3ZWJSUHJvbWlzZSA9IChhc3luYyAod2ViUikgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgd2ViUmA7XG4gICAgYXdhaXQgd2ViUi5pbml0KCk7XG5cbiAgICAvLyBJbnN0YWxsIHByb3ZpZGVkIGxpc3Qgb2YgcGFja2FnZXNcbiAgICAvLyBFbnN1cmUgd2ViUiBkZWZhdWx0IHJlcG8gaXMgaW5jbHVkZWRcbiAgICBkYXRhLnBhY2thZ2VzLnJlcG9zLnB1c2goXCJodHRwczovL3JlcG8uci13YXNtLm9yZ1wiKVxuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIHdlYlIuZXZhbFJWb2lkKGBcbiAgICAgICAgd2Vicjo6aW5zdGFsbChwa2csIHJlcG9zID0gcmVwb3MpXG4gICAgICAgIGxpYnJhcnkocGtnLCBjaGFyYWN0ZXIub25seSA9IFRSVUUpXG4gICAgICBgLCB7IGVudjoge1xuICAgICAgICBwa2c6IHBrZyxcbiAgICAgICAgcmVwb3M6IGRhdGEucGFja2FnZXMucmVwb3MsXG4gICAgICB9fSk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCB3ZWJSLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKCFlLm1lc3NhZ2UuaW5jbHVkZXMoXCJGUyBlcnJvclwiKSkge1xuICAgICAgICAgICAgdGhyb3cgZTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHJldHVybiBhd2FpdCB3ZWJSLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluc3RhbGxpbmcgd2ViUiBzaGltc2A7XG4gICAgYXdhaXQgd2ViUi5ldmFsUlZvaWQoYHdlYnI6OnNoaW1faW5zdGFsbCgpYCk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFdlYlIgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUih3ZWJSLCBkYXRhKTtcblxuICAgIHN0YXR1c1RleHQucmVtb3ZlKCk7XG4gICAgaWYgKHN0YXR1c0NvbnRhaW5lci5jaGlsZHJlbi5sZW5ndGggPT0gMCkge1xuICAgICAgc3RhdHVzQ29udGFpbmVyLnBhcmVudE5vZGUucmVtb3ZlKCk7XG4gICAgfVxuICAgIHJldHVybiB3ZWJSO1xuICB9KShuZXcgV2ViUihkYXRhLm9wdGlvbnMpKTtcblxuICAvLyBLZWVwIHRyYWNrIG9mIGluaXRpYWwgT0pTIGJsb2NrIHJlbmRlclxuICBjb25zdCByZW5kZXJlZE9qcyA9IHt9O1xuXG4gIGNvbnN0IHByb2Nlc3MgPSBhc3luYyAoY29udGV4dCwgaW5wdXRzKSA9PiB7XG4gICAgY29uc3Qgd2ViUiA9IGF3YWl0IHdlYlJQcm9taXNlO1xuICAgIGNvbnN0IGV2YWx1YXRvciA9IG5ldyBXZWJSRXZhbHVhdG9yKHdlYlIsIGNvbnRleHQpXG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHJvY2VzcyxcbiAgICB3ZWJSUHJvbWlzZSxcbiAgICByZW5kZXJlZE9qcyxcbiAgfTtcbn1cbiJ9XX0=
+eyJjb250ZW50cyI6W119
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">
@@ -326,20 +191,8 @@ eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xIiwiaW5saW5lIjpmYWxzZSwibWV0
 <script type="vfs-file">
 W10=
 </script>
-</section>
 
 </main> <!-- /main -->
-<script type="ojs-module-contents">
-eyJjb250ZW50cyI6W119
-</script>
-<script type="module">
-if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
-window._ojs.paths.runtimeToDoc = "../../modules/starter/rstudio-basics";
-window._ojs.paths.runtimeToRoot = "../..";
-window._ojs.paths.docToRoot = "../../..";
-window._ojs.selfContained = false;
-window._ojs.runtime.interpretFromScriptTags();
-</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

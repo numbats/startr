@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-02-18">
+<meta name="dcterms.date" content="2025-02-21">
 
-<title>Quarto Basics</title>
+<title>1. Quarto Basics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -39,9 +73,11 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-b1f392a39194f2101ae5ce2c3ccd3b7e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-3204a54a37e7b2072cd53fe285cb3a4c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-ee57b11313ca63e618186ea68f897590.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="../../../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-contrib/kbd/kbd.js"></script>
+<link href="../../../site_libs/quarto-contrib/kbd/kbd.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -76,17 +112,6 @@ ul.task-list li input[type="checkbox"] {
       }
 </style>
 <style>
-div.callout-todo.callout {
-  border-left-color: pink;
-}
-div.callout-todo.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-todo .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
 div.callout-tada.callout {
   border-left-color: #008000;
 }
@@ -98,8 +123,48 @@ div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.c
   content: '🎉';
   background-image: none;
 }
+div.callout-todo.callout {
+  border-left-color: pink;
+}
+div.callout-todo.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-todo .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.callout-titled .callout-icon::before {
+  content: '📝';
+  background-image: none;
+}
 </style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -138,7 +203,7 @@ div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.c
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Quarto Basics</h1>
+      <h1 class="title">1. Quarto Basics</h1>
             <p class="subtitle lead">With Quarto, creating documents and reports becomes a breeze. In this chapter, you will learn how to set up Quarto, explore its key features, and start creating your own quarto documents with ease.</p>
                       </div>
   </div>
@@ -150,7 +215,7 @@ div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.c
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">18 February 2025</p>
+        <p class="date">21 February 2025</p>
       </div>
     </div>
     
@@ -178,10 +243,7 @@ div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.c
   <li><a href="#text-formatting" id="toc-text-formatting" class="nav-link" data-scroll-target="#text-formatting">Text Formatting</a></li>
   <li><a href="#lists" id="toc-lists" class="nav-link" data-scroll-target="#lists">Lists</a></li>
   </ul></li>
-  <li><a href="#rendering-your-document" id="toc-rendering-your-document" class="nav-link" data-scroll-target="#rendering-your-document">Rendering Your Document</a>
-  <ul class="collapse">
-  <li><a href="#test-your-knowledge" id="toc-test-your-knowledge" class="nav-link" data-scroll-target="#test-your-knowledge">Test your knowledge</a></li>
-  </ul></li>
+  <li><a href="#rendering-your-document" id="toc-rendering-your-document" class="nav-link" data-scroll-target="#rendering-your-document">Rendering Your Document</a></li>
   <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources">Additional Resources</a></li>
   </ul>
 </nav>
@@ -197,8 +259,8 @@ div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.c
 
 
 
-<section id="what-is-quarto" class="level1 alert alert-block alert-warning">
-<h1>What is Quarto?</h1>
+<section id="what-is-quarto" class="level2 alert alert-block alert-warning">
+<h2 class="anchored" data-anchor-id="what-is-quarto">What is Quarto?</h2>
 <p>Quarto is a <strong>free, open-source</strong> system that helps you create <strong>interactive</strong> and <strong>reproducible</strong> documents easily.</p>
 </section>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -214,65 +276,60 @@ A Brief History Of Literate Programming
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>Literate programming</strong> combines code and documentation in a single, readable document. Before delving into the basics of <code>Quarto</code>, it may be worthwhile to know the <em>brief</em> history of its predecessors.</p>
-<section id="sweave" class="level2">
-<h2 class="anchored" data-anchor-id="sweave">Sweave</h2>
+<section id="sweave" class="level3">
+<h3 class="anchored" data-anchor-id="sweave">Sweave</h3>
 <p>Sweave was one of the first tools for literate programming in R, allowing users to embed R code in LaTeX documents, combining R’s statistical power with LaTeX’s typesetting.</p>
 </section>
-<section id="r-markdown" class="level2">
-<h2 class="anchored" data-anchor-id="r-markdown">R Markdown</h2>
+<section id="r-markdown" class="level3">
+<h3 class="anchored" data-anchor-id="r-markdown">R Markdown</h3>
 <p>R Markdown is a modern alternative to Sweave, enabling the integration of text and R code in various output formats like HTML, PDF, and Word, not just LaTeX.</p>
 </section>
-<section id="quarto" class="level2">
-<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
+<section id="quarto" class="level3">
+<h3 class="anchored" data-anchor-id="quarto">Quarto</h3>
 <p>Which leads us to Quarto, a new system that enhances the R Markdown ecosystem. Quarto provides a seamless framework for integrating code, text, and visualisations into a single, interactive, and reproducible document.</p>
 </section>
 </div>
 </div>
 </div>
-<section id="quarto-fundamentals" class="level1">
-<h1>Quarto Fundamentals</h1>
+<section id="quarto-fundamentals" class="level2">
+<h2 class="anchored" data-anchor-id="quarto-fundamentals">Quarto Fundamentals</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/quarto_fundamentals.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
+<p><img src="resources/quarto_fundamentals.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
 </figure>
 </div>
 <p>Quarto provides a seamless framework for integrating code, text, and visualisations into a single, interactive, and reproducible document. Written in <code>Markdown</code>, Quarto is easy to learn yet powerful enough for complex document creation.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Quarto: Multi-Language and Multi-Engine
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <p>Quarto is not only limited to R code chunks, and you can also use <strong>Python, Julia, and SQL code chunks</strong> in your Quarto documents.</p>
-<p>R Markdown on the other hand is tied to R, and has a dependency and requirement for R.</p>
+<p>Despite the name, R Markdown also allows you to write documents containing code from many programming languages. The difference is that R Markdown requires rendering (‘knitting’) with R, while Quarto doesn’t!</p>
+</div>
 </div>
 </div>
 <p>Quarto also provides a range of <a href="https://quarto.org/docs/websites/website-about.html"><strong>built-in templates</strong></a> that you can use to create documents for different purposes, such as <strong>academic papers, presentations, and websites.</strong> These templates make it easy to get started with Quarto and create professional-looking documents with minimal effort.</p>
-<section id="setting-up-quarto" class="level2">
-<h2 class="anchored" data-anchor-id="setting-up-quarto">Setting Up Quarto</h2>
-<p>To get started with Quarto, you will need to <strong>install Quarto</strong>. You can do this by <a href="https://quarto.org/docs/get-started/">here</a>.</p>
+<section id="setting-up-quarto" class="level3">
+<h3 class="anchored" data-anchor-id="setting-up-quarto">Setting Up Quarto</h3>
+<p>If you’re using a recent version of RStudio, Quarto will already be installed and ready for you to use. If you have trouble rendering documents, you may need to install or update Quarto - detailed instructions for this can be found <a href="https://quarto.org/docs/get-started/">here</a>.</p>
 <p>Once you have installed Quarto, you can create a new Quarto document by:</p>
 <ol type="1">
 <li><p>Go to the File menu in RStudio</p></li>
 <li><p>Select New <code>File</code> &gt; <code>New File</code> &gt; <code>Quarto Document</code></p></li>
 </ol>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/select_new.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="307"></p>
-</figure>
-</div>
+<p><img src="resources/qmd_new.png" class="img-fluid"></p>
 <ol start="3" type="1">
 <li>Choose the document type: <code>Document</code>, <code>Presentation</code>, or <code>Interactive</code>.</li>
 </ol>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/document_type.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="347"></p>
-</figure>
-</div>
+<p><img src="resources/qmd_wizard.png" class="img-fluid"></p>
 <p>A Quarto file is a plain text file with the extension <code>.qmd</code>.</p>
 <p>Now that you’ve got your first <code>quarto</code> document up and ready, let’s explore some <strong>key components!</strong> These include:</p>
 <ul>
@@ -281,26 +338,25 @@ Quarto: Multi-Language and Multi-Engine
 <li><p>Markdown text</p></li>
 </ul>
 </section>
-<section id="yaml" class="level2">
-<h2 class="anchored" data-anchor-id="yaml">YAML</h2>
+<section id="yaml" class="level3">
+<h3 class="anchored" data-anchor-id="yaml">YAML</h3>
 <p>When you open up your first <code>quarto</code> document, you will notice a block of text up the top that looks something like this:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/yaml.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
-</figure>
-</div>
+<p><img src="resources/yaml.png" class="img-fluid"></p>
 <p>This is the YAML header, which contains metadata about your document, including the title, author, and editor. It allows you to edit the document’s title (currently “Untitled”), specifies that the output will be in <code>HTML format</code>, and indicates that the document will open in the <code>visual editor</code> by default.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Source vs Visual Editor
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <p><a href="https://rstudio.com/products/rstudio/download/">RStudio v1.4</a> or higher includes Visual Markdown editing. Instead of markdown syntax (e.g., <strong>bolding</strong> with double asterisks), you can format text, add images and insert tables using a toolbar or keyboard commands, similar to a word processor. View sections <a href="https://r4ds.hadley.nz/quarto">28.3 and 28.4</a> for more detail.</p>
+</div>
 </div>
 </div>
 <p>Beyond the basics, you can add some real handy components to the <a href="https://quarto.org/docs/output-formats/html-basics.html">YAML</a></p>
@@ -329,29 +385,32 @@ Source vs Visual Editor
 </tbody>
 </table>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-YAML Structure
+YAML indentation
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<p>The structure of a YAML can be a little finicky, and errors may occur if it is not formatted correctly. If you encountering errors or missing components - it may be worthwhile to cross-check. A useful starting point is the <a href="https://quarto.org/docs/reference/formats/opml.html">Quarto documentation</a>.</p>
+<p>The structure of a YAML is very particular about indentation, and errors may occur if it is not formatted correctly. If you encounter cryptic error messages about keywords in your YAML then it’s worth checking the spacing of items carefully. A useful starting point is Quarto’s <a href="https://quarto.org/docs/get-started/hello/rstudio.html">getting started documentation</a>.</p>
+</div>
 </div>
 </div>
 </section>
-<section id="r-code-chunks" class="level2">
-<h2 class="anchored" data-anchor-id="r-code-chunks">R Code Chunks</h2>
+<section id="r-code-chunks" class="level3">
+<h3 class="anchored" data-anchor-id="r-code-chunks">R Code Chunks</h3>
 <p>Code chunks refer to sections in the document where you can write and execute code. These chunks are enclosed by three backticks followed by the name of the language you are using (e.g., <code>r</code> for R code). Code chunks can be included in three ways:</p>
 <ol type="1">
-<li>Keyboard commands: <code>Ctrl + Alt + I</code> (Windows) or <code>Cmd + Option + I</code> (Mac)</li>
-<li>Clicking the <code>Insert</code> button in the toolbar (top right):</li>
+<li><p>Keyboard commands: <kbd aria-hidden="true">Ctrl-Alt-I</kbd><span class="visually-hidden">Ctrl-Alt-I</span> (Windows) or <kbd aria-hidden="true">Cmd-Option-I</kbd><span class="visually-hidden">Cmd-Option-I</span> (Mac)</p></li>
+<li><p>Clicking the <code>Insert</code> button in the toolbar (top right):</p></li>
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/insert.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="347"></p>
+<p><img src="resources/insert.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="347"></p>
 </figure>
 </div>
 <ol start="3" type="1">
@@ -359,27 +418,34 @@ YAML Structure
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/code_chunk.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
+<p><img src="resources/code_chunk.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
 </figure>
 </div>
 <p>Write the code you want to include within the chunk and when you run it, the output will be displayed directly below the chunk!</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Did you know
+Inline code
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<p>Code doesn’t have to be in a chunk! You can also include <code>inline code</code> by using backticks (``) around code you would like to run in text.</p>
+<p>Code doesn’t have to be in a chunk! You can also embed the results of code within paragraphs using include code chunks, it looks like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>The approximate value of $\pi$ is <span class="in">`{r} pi`</span>:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p>The approximate value of <span class="math inline">\(\pi\)</span> is 3.1415927</p>
+</blockquote>
+</div>
 </div>
 </div>
 <p>You can also add options to the code chunk to control how the code is executed and displayed. For example, you can specify the output format, the width and height of plots, and whether the code should be displayed in the output.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/chunk_options.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
+<p><img src="resources/chunk_options.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
 </figure>
 </div>
 <p>Look at the image of the code chunk above, you can see that the chunk has the following options:</p>
@@ -387,30 +453,21 @@ Did you know
 <p><code>fig-width</code>: This option specifies the width of the figure.</p>
 <p><code>echo</code>: This option controls whether the code in the chunk is displayed in the output.</p>
 <p>These are only a couple examples of options for chunk options, and there are many more available. You can find a full list of chunk options in <a href="https://r4ds.hadley.nz/quarto">section 28.5.2</a> as well as further discussion in Communicating with Quarto.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Global Options
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>To set global options for all code chunks, add them in the YAML header under <code>execute:</code>. Indent the options you want to apply by pressing tab on the next line.</p>
-</div>
-</div>
+<!-- ::: {.callout-tip collapse=false} -->
+<!-- ## Global Options -->
+<!-- To set global options for all code chunks, add them in the YAML header under `execute:`. Indent the options you want to apply by pressing tab on the next line. -->
+<!-- ::: -->
 </section>
 </section>
-<section id="markdown-text" class="level1">
-<h1>Markdown text</h1>
+<section id="markdown-text" class="level2">
+<h2 class="anchored" data-anchor-id="markdown-text">Markdown text</h2>
 <p>In a Quarto document, you can write text using Markdown syntax. Markdown is a lightweight markup language that allows you to format text using simple and intuitive syntax. You can use Markdown to create headings, lists, links, images, and more.</p>
-<section id="headings" class="level2">
-<h2 class="anchored" data-anchor-id="headings">Headings</h2>
+<section id="headings" class="level3">
+<h3 class="anchored" data-anchor-id="headings">Headings</h3>
 <p>Headings are created using the <code>#</code> symbol followed by the heading text. The number of <code>#</code> symbols indicates the level of the heading. For example, <code>#</code> creates a first-level heading, <code>##</code> creates a second-level heading, and so on.</p>
 </section>
-<section id="text-formatting" class="level2">
-<h2 class="anchored" data-anchor-id="text-formatting">Text Formatting</h2>
+<section id="text-formatting" class="level3">
+<h3 class="anchored" data-anchor-id="text-formatting">Text Formatting</h3>
 <p>Just like in any other word processors, you can also format your text. Here are some examples:</p>
 <ul>
 <li><strong>Bold</strong>: <code>**bold**</code> or <code>__bold__</code></li>
@@ -419,26 +476,15 @@ Global Options
 <li><code>Code</code>: <code>`code`</code></li>
 </ul>
 </section>
-<section id="lists" class="level2">
-<h2 class="anchored" data-anchor-id="lists">Lists</h2>
-<p>Lists can be created using <code>*</code>. You can also create nested lists by indenting the items with spaces.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Checklist
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You can also create checklists in Quarto! This can be done by using <code>- [ ]</code> for an empty box and <code>- [x]</code> for a checked box.</p>
-</div>
-</div>
+<section id="lists" class="level3">
+<h3 class="anchored" data-anchor-id="lists">Lists</h3>
+<p>Unordered lists can be created using <code>*</code> or <code>-</code>, with indentation used to indent list items.</p>
+<p>Numbered lists can be created with <code>1.</code>, <code>2.</code>, and so on.</p>
+<p>You can also create checklists by using <code>- [ ]</code> for an empty box and <code>- [x]</code> for a checked box.</p>
 </section>
 </section>
-<section id="rendering-your-document" class="level1">
-<h1>Rendering Your Document</h1>
+<section id="rendering-your-document" class="level2">
+<h2 class="anchored" data-anchor-id="rendering-your-document">Rendering Your Document</h2>
 <p>Once you have written your document, you can render it to see the output. To render your document you can:</p>
 <ol type="1">
 <li>click the <code>Render</code> button in the toolbar</li>
@@ -447,7 +493,7 @@ Checklist
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/console_render.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="700"></p>
+<p><img src="resources/console_render.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="700"></p>
 </figure>
 </div>
 <ol start="4" type="1">
@@ -455,18 +501,16 @@ Checklist
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/terminal_render.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="700"></p>
+<p><img src="resources/terminal_render.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="700"></p>
 </figure>
 </div>
 <p>When you render your document, Quarto will execute the code chunks and generate the output. The output will be displayed in the Viewer pane in RStudio, and you can also view the output in a web browser by clicking cog icon next to <code>Render</code> and ticking the <code>Preview in window</code> box.</p>
-<section id="test-your-knowledge" class="level2">
-<h2 class="anchored" data-anchor-id="test-your-knowledge">Test your knowledge</h2>
-<p>** potentially a multiple choice question here about different common chunk options and what they do ??**</p>
-<p>** interactive component to edit a basic yaml / include things in yaml – pain point: warnings, messages = false, toc **</p>
+<!-- ## Test your knowledge -->
+<!-- ** potentially a multiple choice question here about different common chunk options and what they do ??** -->
+<!-- ** interactive component to edit a basic yaml / include things in yaml -- pain point: warnings, messages = false, toc ** -->
 </section>
-</section>
-<section id="additional-resources" class="level1">
-<h1>Additional Resources</h1>
+<section id="additional-resources" class="level2">
+<h2 class="anchored" data-anchor-id="additional-resources">Additional Resources</h2>
 <p>These are the more basic of the quarto markdown syntax. For more on how to communicate with quarto, refer to Communicating with Quarto. Additionally, the following resources may be helpful:</p>
 <ul>
 <li><a href="https://quarto.org/docs/get-started/">Get Started with Quarto</a></li>

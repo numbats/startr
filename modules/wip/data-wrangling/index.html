@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-02-18">
+<meta name="dcterms.date" content="2025-02-21">
 
-<title>Linear regression with R</title>
+<title>Data wrangling with R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -73,7 +73,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-b1f392a39194f2101ae5ce2c3ccd3b7e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-3204a54a37e7b2072cd53fe285cb3a4c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-ee57b11313ca63e618186ea68f897590.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="../../../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -110,17 +110,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       }
 </style>
 <style>
-div.callout-tada.callout {
-  border-left-color: #008000;
-}
-div.callout-tada.callout-style-default > .callout-header {
-  background-color: rgba(0, 128, 0, 0.13);
-}
-div.callout-tada .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.callout-titled .callout-icon::before {
-  content: '🎉';
-  background-image: none;
-}
 div.callout-todo.callout {
   border-left-color: pink;
 }
@@ -130,6 +119,17 @@ div.callout-todo.callout-style-default > .callout-header {
 div.callout-todo .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.callout-titled .callout-icon::before {
   content: '📝';
+  background-image: none;
+}
+div.callout-tada.callout {
+  border-left-color: #008000;
+}
+div.callout-tada.callout-style-default > .callout-header {
+  background-color: rgba(0, 128, 0, 0.13);
+}
+div.callout-tada .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.callout-titled .callout-icon::before {
+  content: '🎉';
   background-image: none;
 }
 </style>
@@ -248,7 +248,7 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
   const initializeWebRTimerStart = performance.now();
 
   // Determine if we need to install R packages
-  var installRPackagesList = ['ggplot2'];
+  var installRPackagesList = ['palmerpenguins', 'rlang', 'dplyr', 'tidyr'];
   // Check to see if we have an empty array, if we do set to skip the installation.
   var setupRPackages = !(installRPackagesList.indexOf("") !== -1);
   var autoloadRPackages = true;
@@ -527,35 +527,6 @@ check_answer <- function(.code) {
   };
 </script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -594,8 +565,8 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Linear regression with R</h1>
-            <p class="subtitle lead">Welcome to the LearR Academy module on Linear Regression! This module is designed to introduce you to the concepts and techniques of linear regression, an widely used tool in the field of statistics, data science, and machine learning. Through this module, you will explore the mathematical principles underlying linear regression, learn how to build and evaluate models using R, and understand the practical applications of these models in real-world scenarios. Whether you are predicting housing prices or forecasting sales, this module will equip you with the skills and knowledge to leverage the power of linear regression for insightful data analysis and informed decision-making.</p>
+      <h1 class="title">Data wrangling with R</h1>
+            <p class="subtitle lead">In this chapter, you will learn to use tidyr and dplyr from the tidyverse in R for tidying your data set and data maniplulation.</p>
                       </div>
   </div>
     
@@ -606,7 +577,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">18 February 2025</p>
+        <p class="date">21 February 2025</p>
       </div>
     </div>
     
@@ -621,12 +592,19 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#simple-linear-regression" id="toc-simple-linear-regression" class="nav-link active" data-scroll-target="#simple-linear-regression">Simple linear regression</a>
+  <li><a href="#introduction-to-tidyverse" id="toc-introduction-to-tidyverse" class="nav-link active" data-scroll-target="#introduction-to-tidyverse">Introduction to tidyverse</a>
   <ul class="collapse">
-  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#introduction-to-tidyverse-1" id="toc-introduction-to-tidyverse-1" class="nav-link" data-scroll-target="#introduction-to-tidyverse-1">Introduction to tidyverse</a></li>
   </ul></li>
-  <li><a href="#pearson-correlation-coefficient" id="toc-pearson-correlation-coefficient" class="nav-link" data-scroll-target="#pearson-correlation-coefficient">Pearson correlation coefficient</a></li>
-  <li><a href="#residuals-and-r-squared" id="toc-residuals-and-r-squared" class="nav-link" data-scroll-target="#residuals-and-r-squared">Residuals and R-squared</a></li>
+  <li><a href="#introduction-to-dplyr" id="toc-introduction-to-dplyr" class="nav-link" data-scroll-target="#introduction-to-dplyr">Introduction to dplyr</a>
+  <ul class="collapse">
+  <li><a href="#introduction-to-dplyr-1" id="toc-introduction-to-dplyr-1" class="nav-link" data-scroll-target="#introduction-to-dplyr-1">Introduction to dplyr</a></li>
+  <li><a href="#select" id="toc-select" class="nav-link" data-scroll-target="#select">select()</a>
+  <ul class="collapse">
+  <li><a href="#selection-helpers" id="toc-selection-helpers" class="nav-link" data-scroll-target="#selection-helpers">Selection helpers</a></li>
+  </ul></li>
+  <li><a href="#filter" id="toc-filter" class="nav-link" data-scroll-target="#filter">filter()</a></li>
+  </ul></li>
   </ul>
 </nav>
 </nav>
@@ -651,12 +629,79 @@ window.Quarto = {
 
 
 
-<section id="simple-linear-regression" class="level1">
-<h1>Simple linear regression</h1>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Linear regression is a statistical method used to model the relationship between a dependent variable and one or more independent variables. It aims to find the best-fitting linear relationship that describes how the dependent variable changes in response to the independent variable(s). This technique is of key importance in statistics and data science and is used extensively for predictive analysis.</p>
-<p>Simple linear regression refers to fitting a straight line to a set of data points to model the relationship between a single independent variable and a dependent variable. The equation of a simple linear regression model is given by: <span class="math inline">\(y = \beta_0 + \beta_1x + \epsilon\)</span>, where <span class="math inline">\(y\)</span> is the dependent variable, <span class="math inline">\(x\)</span> is the independent variable, <span class="math inline">\(\beta_0\)</span> is the intercept, <span class="math inline">\(\beta_1\)</span> is the slope, and <span class="math inline">\(\epsilon\)</span> is the error term that follows a normal distribution with zero mean and constant variance <span class="math inline">\(\sigma^2\)</span>.</p>
+<section id="introduction-to-tidyverse" class="level1">
+<h1>Introduction to tidyverse</h1>
+<section id="introduction-to-tidyverse-1" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-tidyverse-1">Introduction to tidyverse</h2>
+<p>The tidyverse is a collection of R packages that transform and visualize data. They aim to be cohesive with each other and provide simple building block functions for you to use in complex applications. All packages of the tidyverse share very similar syntax and ideologies.</p>
+<p>The tidyverse includes the following packages:</p>
+<ul>
+<li><code>dplyr</code>: grammar of data manipulation</li>
+<li><code>tidyr</code>: reshape your data</li>
+<li><code>readr</code>: read rectangular data</li>
+<li><code>tibble</code>: re-imagining of the data frame</li>
+<li><code>stringr</code>: working with string data</li>
+<li><code>ggplot2</code>: grammar of graphics</li>
+</ul>
+<p>and many more…</p>
+<p>In this chapter, we focus on two packages: <strong>dplyr</strong> and <strong>tidyr</strong>.</p>
+<p><strong>dplyr</strong> makes manipulating data easy. <strong>tidyr</strong> helps you to create “tidy data” (data where each variable is in a column, each observation is a row and each value is a cell). These packages contain the functions that help with adding, renaming, removing columns, computing new variables, joining data sets together, and summarising your data. These can solve the most common data manipulation challenges.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+To get start on the journey
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>First, install the core tidyverse packages with: <code>install.packages("tidyverse")</code></p>
+<p>Then, load the tidyverse package with: <code>library(tidyverse)</code></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Did you know you can also load specific library separately, for example, <code>library(dplyr)</code></p>
+</div>
+</div>
+</section>
+</section>
+<section id="introduction-to-dplyr" class="level1">
+<h1>Introduction to dplyr</h1>
+<section id="introduction-to-dplyr-1" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-dplyr-1">Introduction to dplyr</h2>
+<p><strong>dplyr</strong> provides a selection of tools for the most common data wrangling tasks. There are a few simple yet handy functions.</p>
+<ul>
+<li><code>select()</code></li>
+<li><code>filter()</code></li>
+<li><code>arrange()</code></li>
+<li><code>mutate()</code></li>
+<li><code>group_by()</code> along with <code>ungroup()</code></li>
+<li><code>count()</code></li>
+<li><code>case_when()</code></li>
+</ul>
+</section>
+<section id="select" class="level2">
+<h2 class="anchored" data-anchor-id="select">select()</h2>
+<p>This function allows you to pick particular variables from your data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(variable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is not only limited to one variable selection. You can select multiple variables by separating the column name with the comma.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(variable1, variable2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -667,20 +712,9 @@ Your turn!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Consider the following plot with <code>dist</code> as the dependent variable and <code>speed</code> as the independent variable:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cars, <span class="fu">aes</span>(speed, dist)) <span class="sc">+</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/slr-plot-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>What is the approximate best intercept and slope for the data?</p>
+<p>We will be using penguin data from the palmerpenguins package.</p>
+<p>Let’s say that you want to look at whether the <strong>body mass</strong> changes over the <strong>year</strong>.</p>
+<p>Hint: To look at the column names of the data, you can use the functions <code>colnames()</code></p>
 </div>
 </div>
 <div id="qwebr-interactive-area-1" class="qwebr-interactive-area">
@@ -707,13 +741,13 @@ Your turn!
   const outputCodeDiv = document.getElementById("qwebr-output-code-area-1");
   const editorDiv = document.getElementById("qwebr-editor-1");
   const outputGraphDiv = document.getElementById("qwebr-output-graph-area-1");
-  const webrCode = `library(ggplot2)
-ggplot(cars, aes(speed, dist)) +
-  geom_point() + 
-# Insert the intercept
-  geom_abline(intercept = ___, 
-# Insert the slope
-              slope = ___)
+  const webrCode = `# library the packages needed
+library(palmerpenguins)
+library(dplyr)
+
+# Select the column of interests
+penguins |>
+    ___
 `
 
   // Load the Monaco Editor and create an instance
@@ -981,29 +1015,20 @@ ggplot(cars, aes(speed, dist)) +
     executeCode(
 `teachr_tests <- function(.code, .printed, .errored, .warned) {
   
-p<- .printed[[1]]
-abline_data<- p$layers[[2]]$data
-
-
-c(
-  "Humm. The intercept seems to be too high..." = abline_data$intercept > (-12),
-  "Humm. The intercept seems to be too low..." = abline_data$intercept < (-22),
-  "Are you sure. The slop seems to be too low" = abline_data$slope < (2),  
-  "Are you sure. The slop seems to be too high" = abline_data$slope > (6) 
-)
+!all(c("body_mass_g", "year") %in% all.vars(.code))
 }
 check_answer(r"(` + editor.getValue() + `)")`
     );
   };
   
   solveButton.onclick = function () {
-    editor.setValue(`library(ggplot2)
-ggplot(cars, aes(speed, dist)) +
-  geom_point() + 
-# Insert the intercept
-  geom_abline(intercept = -17, 
-# Insert the slope
-              slope = 4)
+    editor.setValue(`# library the packages needed
+library(palmerpenguins)
+library(dplyr)
+
+# Select the column of interests
+penguins |>
+    select(body_mass_g, year)
 `);
   };
   
@@ -1011,737 +1036,138 @@ ggplot(cars, aes(speed, dist)) +
     editor.setValue(webrCode);
   };
 </script>
-</section>
-</section>
-<section id="pearson-correlation-coefficient" class="level1">
-<h1>Pearson correlation coefficient</h1>
-<p>The Pearson correlation coefficient (<span class="math inline">\(r\)</span>) is a measure of the strength and direction of association between two continuous variables. It ranges from -1 to 1, where:</p>
+<section id="selection-helpers" class="level3">
+<h3 class="anchored" data-anchor-id="selection-helpers">Selection helpers</h3>
+<p>There are many helper functions that allow you to select variables by matching the patterns in the column’s name. Let’s look at a few examples.</p>
 <ul>
-<li>1 indicates a perfect positive linear relationship,</li>
-<li>-1 indicates a perfect negative linear relationship,</li>
-<li>0 indicates no linear relationship.</li>
+<li><code>starts_with()</code>: select all variables that start with a prefix.</li>
 </ul>
-<p>The Pearson correlation coefficient is calculated using the following formula:</p>
-<p><span class="math display">\[
-r_{x,y} = \frac{\sum_{i_1}^{n}{(x_i-\bar{x})(y_i-\bar{y})}} {\sqrt{\sum_{i=1}^{n}{(x_i-\bar{x})^2}}\sqrt{\sum_{i=1}^{n}{(y_i-\bar{y})^2}}}
-\]</span></p>
-<p>where:</p>
-<ul>
-<li><span class="math inline">\(n\)</span> is the number of pairs of of data points,</li>
-<li><span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are the individual sample points indexed with <span class="math inline">\(i\)</span>,</li>
-<li><span class="math inline">\(\bar{x}\)</span> and <span class="math inline">\(\bar{y}\)</span> are the sample means of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, respectively.</li>
-</ul>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Your turn!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Consider the <code>mtcars</code> dataset. Compute the the Pearson correlation coefficient between <code>mpg</code> (miles per gallon) and <code>hp</code> (horsepower).</p>
-</div>
-</div>
-<div id="qwebr-interactive-area-2" class="qwebr-interactive-area">
-  <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-2">🟡 Loading
-    webR...</button>
-  <button class="btn btn-default qwebr-button qwebr-button-check" disabled="" type="button" id="qwebr-button-check-2">💡 Check answer</button>
-  <button class="btn btn-default qwebr-button qwebr-button-solve" type="button" id="qwebr-button-solve-2">✅ Show solution</button>
-  <button class="btn btn-default qwebr-button qwebr-button-reset" type="button" id="qwebr-button-reset-2">💥 Reset code</button>
-  <div id="qwebr-console-area-2" class="qwebr-console-area">
-    <div id="qwebr-editor-2" class="qwebr-editor"></div>
-    <div id="qwebr-output-code-area-2" class="qwebr-output-code-area" aria-live="assertive">
-      <pre style="visibility: hidden"></pre>
-    </div>
-  </div>
-  <div id="qwebr-output-graph-area-2" class="qwebr-output-graph-area">
-  </div>
-</div>
-<script type="module">
-  // Retrieve webR code cell information
-  const runButton = document.getElementById("qwebr-button-run-2");
-  const checkButton = document.getElementById("qwebr-button-check-2");
-  const solveButton = document.getElementById("qwebr-button-solve-2");
-  const resetButton = document.getElementById("qwebr-button-reset-2");
-  const outputCodeDiv = document.getElementById("qwebr-output-code-area-2");
-  const editorDiv = document.getElementById("qwebr-editor-2");
-  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-2");
-  const webrCode = `# Load the dataset
-data(mtcars)
-
-# Calculate Pearson correlation
-correlation <- cor(___, ___)
-`
-
-  // Load the Monaco Editor and create an instance
-  let editor;
-  require(['vs/editor/editor.main'], function () {
-    editor = monaco.editor.create(editorDiv, {
-      value: webrCode,
-      language: 'r',
-      theme: 'vs-light',
-      automaticLayout: true,           // TODO: Could be problematic for slide decks
-      scrollBeyondLastLine: false,
-      minimap: {
-        enabled: false
-      },
-      fontSize: '17.5pt',               // Bootstrap is 1 rem
-      renderLineHighlight: "none",     // Disable current line highlighting
-      hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
-    });
-
-    // Dynamically modify the height of the editor window if new lines are added.
-    let ignoreEvent = false;
-    const updateHeight = () => {
-      const contentHeight = editor.getContentHeight();
-      // We're avoiding a width change
-      //editorDiv.style.width = `${width}px`;
-      editorDiv.style.height = `${contentHeight}px`;
-      try {
-        ignoreEvent = true;
-
-        // The key to resizing is this call
-        editor.layout();
-      } finally {
-        ignoreEvent = false;
-      }
-    };
-
-    // Helper function to check if selected text is empty
-    function isEmptyCodeText(selectedCodeText) {
-      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
-    }
-
-    // Registry of keyboard shortcuts that should be re-added to each editor window
-    // when focus changes.
-    const addWebRKeyboardShortCutCommands = () => {
-      // Add a keydown event listener for Shift+Enter to run all code in cell
-      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
-
-        // Retrieve all text inside the editor
-        executeCode(editor.getValue());
-      });
-
-      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
-      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
-
-        // Get the selected text from the editor
-        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
-        // Check if no code is selected
-        if (isEmptyCodeText(selectedText)) {
-          // Obtain the current cursor position
-          let currentPosition = editor.getPosition();
-          // Retrieve the current line content
-          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
-
-          // Propose a new position to move the cursor to
-          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
-
-          // Check if the new position is beyond the last line of the editor
-          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
-            // Add a new line at the end of the editor
-            editor.executeEdits("addNewLine", [{
-            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
-            text: "\n", 
-            forceMoveMarkers: true,
-            }]);
-          }
-          
-          // Run the entire line of code.
-          executeCode(currentLine);
-
-          // Move cursor to new position
-          editor.setPosition(newPosition);
-        } else {
-          // Code to run when Ctrl+Enter is pressed with selected code
-          executeCode(selectedText);
-        }
-      });
-    }
-
-    // Register an on focus event handler for when a code cell is selected to update
-    // what keyboard shortcut commands should work.
-    // This is a workaround to fix a regression that happened with multiple
-    // editor windows since Monaco 0.32.0 
-    // https://github.com/microsoft/monaco-editor/issues/2947
-    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
-
-    // Register an on change event for when new code is added to the editor window
-    editor.onDidContentSizeChange(updateHeight);
-
-    // Manually re-update height to account for the content we inserted into the call
-    updateHeight();
-  });
-
-  // Function to execute the code (accepts code as an argument)
-  async function executeCode(codeToRun) {
-
-    // Disallowing execution of other code cells
-    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
-      btn.disabled = true;
-    });
-
-    // Create a canvas variable for graphics
-    let canvas = undefined;
-
-    // Create a pager variable for help/file contents
-    let pager = [];
-
-    // Process 
-    async function parseTypePager(msg) { 
-
-        // Split out the event data
-        const { path, title, deleteFile } = msg.data; 
-
-        // Process the pager data by reading the information from disk
-        const paged_data = await webR.FS.readFile(path).then((data) => {
-          // Obtain the file content
-          let content = new TextDecoder().decode(data);
-
-          // Remove excessive backspace characters until none remain
-          while(content.match(/.[\b]/)){
-            content = content.replace(/.[\b]/g, '');
-          }
-
-          // Returned cleaned data
-          return content;
-        });
-
-        // Unlink file if needed
-        if (deleteFile) { 
-          await webR.FS.unlink(path); 
-        } 
-
-        // Return extracted data with spaces
-        return paged_data;
-    } 
-
-    // Initialize webR
-    await webR.init();
-
-    // Setup a webR canvas by making a namespace call into the {webr} package
-    await webR.evalRVoid("webr::canvas(width=504, height=360)");
-
-    // Capture output data from evaluating the code
-    const result = await webRCodeShelter.captureR(codeToRun, {
-      withAutoprint: true,
-      captureStreams: true,
-      captureConditions: false//,
-      // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
-    });
-
-    // Start attempting to parse the result data
-    try {
-
-      // Stop creating images
-      await webR.evalRVoid("dev.off()");
-
-      // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
-      const out = result.output
-        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
-        .map((evt, index) => {
-          const className = `qwebr-output-code-${evt.type}`;
-          return `<code id="${className}-editor-2-result-${index + 1}" class="${className}">${qwebrEscapeHTMLCharacters(evt.data)}</code>`;
-        })
-        .join("\n");
-
-
-      // Clean the state
-      const msgs = await webR.flush();
-
-      // Output each image event stored
-      msgs.forEach((msg) => {
-        // Determine if old canvas can be used or a new canvas is required.
-        if (msg.type === 'canvas'){
-          // Add image to the current canvas
-          if (msg.data.event === 'canvasImage') {
-            canvas.getContext('2d').drawImage(msg.data.image, 0, 0);
-          } else if (msg.data.event === 'canvasNewPage') {
-            // Generate a new canvas element
-            canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 504);
-            canvas.setAttribute("height", 2 * 360);
-            canvas.style.width = "700px";
-            canvas.style.display = "block";
-            canvas.style.margin = "auto";
-          }
-        } 
-      });
-
-      // Use `map` to process the filtered "pager" events asynchronously
-      const pager = await Promise.all(
-        msgs.filter(msg => msg.type === 'pager').map(
-          async (msg) => {
-            return await parseTypePager(msg);
-          }
-        )
-      );
-
-      // Nullify the output area of content
-      outputCodeDiv.innerHTML = "";
-      outputGraphDiv.innerHTML = "";
-
-      // Design an output object for messages
-      const pre = document.createElement("pre");
-      if (/\S/.test(out)) {
-        // Display results as HTML elements to retain output styling
-        const div = document.createElement("div");
-        div.innerHTML = out;
-        pre.appendChild(div);
-      } else {
-        // If nothing is present, hide the element.
-        pre.style.visibility = "hidden";
-      }
-      outputCodeDiv.appendChild(pre);
-
-      // Place the graphics on the canvas
-      if (canvas) {
-        outputGraphDiv.appendChild(canvas);
-      }
-
-      // Display the pager data
-      if (pager) {
-        // Use the `pre` element to preserve whitespace.
-        pager.forEach((paged_data, index) => {
-          let pre_pager = document.createElement("pre");
-          pre_pager.innerText = paged_data;
-          pre_pager.classList.add("qwebr-output-code-pager");
-          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-2-result-" + (index + 1));
-          outputCodeDiv.appendChild(pre_pager);
-        });
-      }
-    } finally {
-      // Clean up the remaining code
-      webRCodeShelter.purge();
-    }
-
-    // Switch to allowing execution of code
-    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
-      btn.disabled = false;
-    });
-    
-    // Revert to the initial code cell state
-    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run code</span>';
-    checkButton.innerHTML = '💡 Check answer';
-  }
-
-  // Add a click event listener to the run button
-  runButton.onclick = function () {
-    // Emphasize the active code cell
-    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run code</span>';
-    executeCode(editor.getValue());
-  };
-  
-  checkButton.onclick = function () {
-    // Emphasize the active code cell
-    checkButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Check answer</span>';
-    executeCode(
-`teachr_tests <- function(.code, .printed, .errored, .warned) {
-  
-c(
-  "Are you using the correct variables?" = abs(correlation - (-0.7761684)) > 10e-6
-)
-}
-check_answer(r"(` + editor.getValue() + `)")`
-    );
-  };
-  
-  solveButton.onclick = function () {
-    editor.setValue(`# Load the dataset
-data(mtcars)
-
-# Calculate Pearson correlation
-correlation <- cor(mtcars$mpg, mtcars$hp)
-`);
-  };
-  
-  resetButton.onclick = function () {
-    editor.setValue(webrCode);
-  };
-</script>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Your turn!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Consider the <code>mtcars</code> dataset. Create a scatter plot with a regression line considering the variables <code>mpg</code> (miles per gallon) and <code>hp</code> (horsepower).</p>
-</div>
-</div>
-<div id="qwebr-interactive-area-3" class="qwebr-interactive-area">
-  <button class="btn btn-default qwebr-button qwebr-button-run" disabled="" type="button" id="qwebr-button-run-3">🟡 Loading
-    webR...</button>
-  <button class="btn btn-default qwebr-button qwebr-button-check" disabled="" type="button" id="qwebr-button-check-3">💡 Check answer</button>
-  <button class="btn btn-default qwebr-button qwebr-button-solve" type="button" id="qwebr-button-solve-3">✅ Show solution</button>
-  <button class="btn btn-default qwebr-button qwebr-button-reset" type="button" id="qwebr-button-reset-3">💥 Reset code</button>
-  <div id="qwebr-console-area-3" class="qwebr-console-area">
-    <div id="qwebr-editor-3" class="qwebr-editor"></div>
-    <div id="qwebr-output-code-area-3" class="qwebr-output-code-area" aria-live="assertive">
-      <pre style="visibility: hidden"></pre>
-    </div>
-  </div>
-  <div id="qwebr-output-graph-area-3" class="qwebr-output-graph-area">
-  </div>
-</div>
-<script type="module">
-  // Retrieve webR code cell information
-  const runButton = document.getElementById("qwebr-button-run-3");
-  const checkButton = document.getElementById("qwebr-button-check-3");
-  const solveButton = document.getElementById("qwebr-button-solve-3");
-  const resetButton = document.getElementById("qwebr-button-reset-3");
-  const outputCodeDiv = document.getElementById("qwebr-output-code-area-3");
-  const editorDiv = document.getElementById("qwebr-editor-3");
-  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-3");
-  const webrCode = `# Load the dataset
-data(mtcars)
-
-# Create a scatter plot with a regression line
-ggplot(mtcars, aes(x = ___, y = ___)) +
-  geom_point() +
-  geom_smooth(method = "lm", col = "blue") +
-  labs(title = "Scatter Plot of MPG vs Horsepower",
-       x = "Horsepower",
-       y = "Miles per Gallon") +
-  theme_minimal()
-`
-
-  // Load the Monaco Editor and create an instance
-  let editor;
-  require(['vs/editor/editor.main'], function () {
-    editor = monaco.editor.create(editorDiv, {
-      value: webrCode,
-      language: 'r',
-      theme: 'vs-light',
-      automaticLayout: true,           // TODO: Could be problematic for slide decks
-      scrollBeyondLastLine: false,
-      minimap: {
-        enabled: false
-      },
-      fontSize: '17.5pt',               // Bootstrap is 1 rem
-      renderLineHighlight: "none",     // Disable current line highlighting
-      hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
-    });
-
-    // Dynamically modify the height of the editor window if new lines are added.
-    let ignoreEvent = false;
-    const updateHeight = () => {
-      const contentHeight = editor.getContentHeight();
-      // We're avoiding a width change
-      //editorDiv.style.width = `${width}px`;
-      editorDiv.style.height = `${contentHeight}px`;
-      try {
-        ignoreEvent = true;
-
-        // The key to resizing is this call
-        editor.layout();
-      } finally {
-        ignoreEvent = false;
-      }
-    };
-
-    // Helper function to check if selected text is empty
-    function isEmptyCodeText(selectedCodeText) {
-      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
-    }
-
-    // Registry of keyboard shortcuts that should be re-added to each editor window
-    // when focus changes.
-    const addWebRKeyboardShortCutCommands = () => {
-      // Add a keydown event listener for Shift+Enter to run all code in cell
-      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
-
-        // Retrieve all text inside the editor
-        executeCode(editor.getValue());
-      });
-
-      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
-      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
-
-        // Get the selected text from the editor
-        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
-        // Check if no code is selected
-        if (isEmptyCodeText(selectedText)) {
-          // Obtain the current cursor position
-          let currentPosition = editor.getPosition();
-          // Retrieve the current line content
-          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
-
-          // Propose a new position to move the cursor to
-          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
-
-          // Check if the new position is beyond the last line of the editor
-          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
-            // Add a new line at the end of the editor
-            editor.executeEdits("addNewLine", [{
-            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
-            text: "\n", 
-            forceMoveMarkers: true,
-            }]);
-          }
-          
-          // Run the entire line of code.
-          executeCode(currentLine);
-
-          // Move cursor to new position
-          editor.setPosition(newPosition);
-        } else {
-          // Code to run when Ctrl+Enter is pressed with selected code
-          executeCode(selectedText);
-        }
-      });
-    }
-
-    // Register an on focus event handler for when a code cell is selected to update
-    // what keyboard shortcut commands should work.
-    // This is a workaround to fix a regression that happened with multiple
-    // editor windows since Monaco 0.32.0 
-    // https://github.com/microsoft/monaco-editor/issues/2947
-    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
-
-    // Register an on change event for when new code is added to the editor window
-    editor.onDidContentSizeChange(updateHeight);
-
-    // Manually re-update height to account for the content we inserted into the call
-    updateHeight();
-  });
-
-  // Function to execute the code (accepts code as an argument)
-  async function executeCode(codeToRun) {
-
-    // Disallowing execution of other code cells
-    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
-      btn.disabled = true;
-    });
-
-    // Create a canvas variable for graphics
-    let canvas = undefined;
-
-    // Create a pager variable for help/file contents
-    let pager = [];
-
-    // Process 
-    async function parseTypePager(msg) { 
-
-        // Split out the event data
-        const { path, title, deleteFile } = msg.data; 
-
-        // Process the pager data by reading the information from disk
-        const paged_data = await webR.FS.readFile(path).then((data) => {
-          // Obtain the file content
-          let content = new TextDecoder().decode(data);
-
-          // Remove excessive backspace characters until none remain
-          while(content.match(/.[\b]/)){
-            content = content.replace(/.[\b]/g, '');
-          }
-
-          // Returned cleaned data
-          return content;
-        });
-
-        // Unlink file if needed
-        if (deleteFile) { 
-          await webR.FS.unlink(path); 
-        } 
-
-        // Return extracted data with spaces
-        return paged_data;
-    } 
-
-    // Initialize webR
-    await webR.init();
-
-    // Setup a webR canvas by making a namespace call into the {webr} package
-    await webR.evalRVoid("webr::canvas(width=504, height=360)");
-
-    // Capture output data from evaluating the code
-    const result = await webRCodeShelter.captureR(codeToRun, {
-      withAutoprint: true,
-      captureStreams: true,
-      captureConditions: false//,
-      // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
-    });
-
-    // Start attempting to parse the result data
-    try {
-
-      // Stop creating images
-      await webR.evalRVoid("dev.off()");
-
-      // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
-      const out = result.output
-        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
-        .map((evt, index) => {
-          const className = `qwebr-output-code-${evt.type}`;
-          return `<code id="${className}-editor-3-result-${index + 1}" class="${className}">${qwebrEscapeHTMLCharacters(evt.data)}</code>`;
-        })
-        .join("\n");
-
-
-      // Clean the state
-      const msgs = await webR.flush();
-
-      // Output each image event stored
-      msgs.forEach((msg) => {
-        // Determine if old canvas can be used or a new canvas is required.
-        if (msg.type === 'canvas'){
-          // Add image to the current canvas
-          if (msg.data.event === 'canvasImage') {
-            canvas.getContext('2d').drawImage(msg.data.image, 0, 0);
-          } else if (msg.data.event === 'canvasNewPage') {
-            // Generate a new canvas element
-            canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 504);
-            canvas.setAttribute("height", 2 * 360);
-            canvas.style.width = "700px";
-            canvas.style.display = "block";
-            canvas.style.margin = "auto";
-          }
-        } 
-      });
-
-      // Use `map` to process the filtered "pager" events asynchronously
-      const pager = await Promise.all(
-        msgs.filter(msg => msg.type === 'pager').map(
-          async (msg) => {
-            return await parseTypePager(msg);
-          }
-        )
-      );
-
-      // Nullify the output area of content
-      outputCodeDiv.innerHTML = "";
-      outputGraphDiv.innerHTML = "";
-
-      // Design an output object for messages
-      const pre = document.createElement("pre");
-      if (/\S/.test(out)) {
-        // Display results as HTML elements to retain output styling
-        const div = document.createElement("div");
-        div.innerHTML = out;
-        pre.appendChild(div);
-      } else {
-        // If nothing is present, hide the element.
-        pre.style.visibility = "hidden";
-      }
-      outputCodeDiv.appendChild(pre);
-
-      // Place the graphics on the canvas
-      if (canvas) {
-        outputGraphDiv.appendChild(canvas);
-      }
-
-      // Display the pager data
-      if (pager) {
-        // Use the `pre` element to preserve whitespace.
-        pager.forEach((paged_data, index) => {
-          let pre_pager = document.createElement("pre");
-          pre_pager.innerText = paged_data;
-          pre_pager.classList.add("qwebr-output-code-pager");
-          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-3-result-" + (index + 1));
-          outputCodeDiv.appendChild(pre_pager);
-        });
-      }
-    } finally {
-      // Clean up the remaining code
-      webRCodeShelter.purge();
-    }
-
-    // Switch to allowing execution of code
-    document.querySelectorAll(".qwebr-button-run, .qwebr-button-check").forEach((btn) => {
-      btn.disabled = false;
-    });
-    
-    // Revert to the initial code cell state
-    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run code</span>';
-    checkButton.innerHTML = '💡 Check answer';
-  }
-
-  // Add a click event listener to the run button
-  runButton.onclick = function () {
-    // Emphasize the active code cell
-    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run code</span>';
-    executeCode(editor.getValue());
-  };
-  
-  checkButton.onclick = function () {
-    // Emphasize the active code cell
-    checkButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Check answer</span>';
-    executeCode(
-`teachr_tests <- function(.code, .printed, .errored, .warned) {
-  
-p<- .code[[1]]
-x_variable<- p$mapping[[1]][2][[1]]
-y_variable<- p$mapping[[2]][2][[1]]
-
-c(
-  "Are you using the correct variables?" = x_variable != "hp", 
-  "Are you using the correct variables?" = y_variable != "mpg" 
-)
-}
-check_answer(r"(` + editor.getValue() + `)")`
-    );
-  };
-  
-  solveButton.onclick = function () {
-    editor.setValue(`# Load the dataset
-data(mtcars)
-
-# Create a scatter plot with a regression line
-ggplot(mtcars, aes(x = hp, y = mpg)) +
-  geom_point() +
-  geom_smooth(method = "lm", col = "blue") +
-  labs(title = "Scatter Plot of MPG vs Horsepower",
-       x = "Horsepower",
-       y = "Miles per Gallon") +
-  theme_minimal()
-`);
-  };
-  
-  resetButton.onclick = function () {
-    editor.setValue(webrCode);
-  };
-</script>
-</section>
-<section id="residuals-and-r-squared" class="level1">
-<h1>Residuals and R-squared</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform linear regression</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp, <span class="at">data =</span> mtcars)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary of the model</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"bill"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = mpg ~ hp, data = mtcars)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--5.7121 -2.1122 -0.8854  1.5819  8.2360 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 30.09886    1.63392  18.421  &lt; 2e-16 ***
-hp          -0.06823    0.01012  -6.742 1.79e-07 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.863 on 30 degrees of freedom
-Multiple R-squared:  0.6024,    Adjusted R-squared:  0.5892 
-F-statistic: 45.46 on 1 and 30 DF,  p-value: 1.788e-07</code></pre>
+<pre><code># A tibble: 344 × 2
+   bill_length_mm bill_depth_mm
+            &lt;dbl&gt;         &lt;dbl&gt;
+ 1           39.1          18.7
+ 2           39.5          17.4
+ 3           40.3          18  
+ 4           NA            NA  
+ 5           36.7          19.3
+ 6           39.3          20.6
+ 7           38.9          17.8
+ 8           39.2          19.6
+ 9           34.1          18.1
+10           42            20.2
+# ℹ 334 more rows</code></pre>
 </div>
 </div>
-<p><strong>Congratulations! This is the end of the Linear Regression with R module!</strong></p>
+<ul>
+<li><code>ends_with()</code>: select all variables that ends with a suffix.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="fu">ends_with</span>(<span class="st">"mm"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 3
+   bill_length_mm bill_depth_mm flipper_length_mm
+            &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;
+ 1           39.1          18.7               181
+ 2           39.5          17.4               186
+ 3           40.3          18                 195
+ 4           NA            NA                  NA
+ 5           36.7          19.3               193
+ 6           39.3          20.6               190
+ 7           38.9          17.8               181
+ 8           39.2          19.6               195
+ 9           34.1          18.1               193
+10           42            20.2               190
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<ul>
+<li><code>contains()</code>: select all variables that contains a literal string.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">"length"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 2
+   bill_length_mm flipper_length_mm
+            &lt;dbl&gt;             &lt;int&gt;
+ 1           39.1               181
+ 2           39.5               186
+ 3           40.3               195
+ 4           NA                  NA
+ 5           36.7               193
+ 6           39.3               190
+ 7           38.9               181
+ 8           39.2               195
+ 9           34.1               193
+10           42                 190
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<ul>
+<li><code>num_range()</code>: select all variables that matches a numerical range like x01, x02, x03.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>billboard <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="fu">num_range</span>(<span class="st">"wk"</span>, <span class="dv">10</span><span class="sc">:</span><span class="dv">15</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 317 × 6
+    wk10  wk11  wk12  wk13  wk14  wk15
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1    NA    NA    NA    NA    NA    NA
+ 2    NA    NA    NA    NA    NA    NA
+ 3    51    51    51    47    44    38
+ 4    61    61    59    61    66    72
+ 5    57    64    70    75    76    78
+ 6     6     7    22    29    36    47
+ 7    NA    NA    NA    NA    NA    NA
+ 8    36    37    37    38    49    61
+ 9    10     9     8     6     1     2
+10    59    66    68    61    67    59
+# ℹ 307 more rows</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="filter" class="level2">
+<h2 class="anchored" data-anchor-id="filter">filter()</h2>
+<p>This allow you to extract observation from the data based on a given condition.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(expression)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For the expression field, there are many functions and operators that are useful for constructing the expressions.</p>
+<ul>
+<li><code>==</code>, <code>&gt;</code>, <code>&gt;=</code> etc</li>
+<li><code>&amp;</code>, <code>|</code>, <code>!</code>, <code>xor()</code></li>
+<li><code>is.na()</code></li>
+<li><code>between()</code>, <code>near()</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"Gentoo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 124 × 8
+   species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Gentoo  Biscoe           46.1          13.2               211        4500
+ 2 Gentoo  Biscoe           50            16.3               230        5700
+ 3 Gentoo  Biscoe           48.7          14.1               210        4450
+ 4 Gentoo  Biscoe           50            15.2               218        5700
+ 5 Gentoo  Biscoe           47.6          14.5               215        5400
+ 6 Gentoo  Biscoe           46.5          13.5               210        4550
+ 7 Gentoo  Biscoe           45.4          14.6               211        4800
+ 8 Gentoo  Biscoe           46.7          15.3               219        5200
+ 9 Gentoo  Biscoe           43.3          13.4               209        4400
+10 Gentoo  Biscoe           46.8          15.4               215        5150
+# ℹ 114 more rows
+# ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
+</div>
+</div>
 
 
 <script type="ojs-module-contents">
@@ -1758,6 +1184,7 @@ eyJjb250ZW50cyI6W119
 <script type="vfs-file">
 W10=
 </script>
+</section>
 </section>
 
 </main> <!-- /main -->

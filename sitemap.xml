@@ -5,24 +5,28 @@
     <lastmod>2025-01-20T02:56:06.635Z</lastmod>
   </url>
   <url>
+    <loc>https://startr.numbat.space/modules/wip/data-wrangling/index.html</loc>
+    <lastmod>2025-02-21T02:58:14.512Z</lastmod>
+  </url>
+  <url>
     <loc>https://startr.numbat.space/modules/starter/r-basics/index.html</loc>
-    <lastmod>2025-02-18T06:53:03.462Z</lastmod>
+    <lastmod>2025-02-21T03:48:57.274Z</lastmod>
   </url>
   <url>
     <loc>https://startr.numbat.space/modules/starter/installation/index.html</loc>
-    <lastmod>2025-02-18T06:53:00.458Z</lastmod>
+    <lastmod>2025-02-20T12:08:48.726Z</lastmod>
   </url>
   <url>
     <loc>https://startr.numbat.space/modules/starter/rstudio-basics/index.html</loc>
-    <lastmod>2025-02-18T06:53:00.459Z</lastmod>
+    <lastmod>2025-02-20T12:29:27.532Z</lastmod>
   </url>
   <url>
-    <loc>https://startr.numbat.space/modules/analysis/data-wrangling/index.html</loc>
-    <lastmod>2024-12-14T05:05:12.434Z</lastmod>
+    <loc>https://startr.numbat.space/modules/analysis/dplyr/index.html</loc>
+    <lastmod>2025-02-21T03:57:16.905Z</lastmod>
   </url>
   <url>
-    <loc>https://startr.numbat.space/modules/writing/monash-templates/index.html</loc>
-    <lastmod>2024-12-14T05:05:12.534Z</lastmod>
+    <loc>https://startr.numbat.space/modules/analysis/readr/index.html</loc>
+    <lastmod>2025-02-21T03:59:14.747Z</lastmod>
   </url>
   <url>
     <loc>https://startr.numbat.space/contribute.html</loc>
@@ -30,22 +34,30 @@
   </url>
   <url>
     <loc>https://startr.numbat.space/modules/writing/quarto-basics/index.html</loc>
-    <lastmod>2024-12-14T05:05:12.541Z</lastmod>
+    <lastmod>2025-02-21T03:58:13.506Z</lastmod>
   </url>
   <url>
-    <loc>https://startr.numbat.space/modules/analysis/linear-regression/index.html</loc>
-    <lastmod>2024-12-14T05:05:12.435Z</lastmod>
+    <loc>https://startr.numbat.space/modules/analysis/tidyr/index.html</loc>
+    <lastmod>2025-02-21T03:57:15.115Z</lastmod>
+  </url>
+  <url>
+    <loc>https://startr.numbat.space/modules/statistics/linear-regression/index.html</loc>
+    <lastmod>2025-02-21T03:58:23.621Z</lastmod>
   </url>
   <url>
     <loc>https://startr.numbat.space/modules/starter/project-structure/index.html</loc>
-    <lastmod>2025-02-18T06:53:00.458Z</lastmod>
+    <lastmod>2025-02-20T12:08:48.727Z</lastmod>
   </url>
   <url>
     <loc>https://startr.numbat.space/modules/starter/debugging/index.html</loc>
-    <lastmod>2025-02-01T00:49:40.029Z</lastmod>
+    <lastmod>2025-02-21T03:48:57.273Z</lastmod>
+  </url>
+  <url>
+    <loc>https://startr.numbat.space/modules/wip/monash-templates/index.html</loc>
+    <lastmod>2024-12-14T05:05:12.534Z</lastmod>
   </url>
   <url>
     <loc>https://startr.numbat.space/index.html</loc>
-    <lastmod>2025-02-01T00:49:40.029Z</lastmod>
+    <lastmod>2025-02-21T03:48:23.081Z</lastmod>
   </url>
 </urlset>
