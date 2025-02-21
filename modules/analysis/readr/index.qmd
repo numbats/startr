@@ -1,0 +1,195 @@
+---
+title: Reading data from files
+subtitle: 'The basics of reading, restructuring, and otherwise manipulating data to produce clean tidy datasets.'
+title-block-banner: yes
+engine: knitr
+format:
+  lesson-html: default
+webr:
+  packages:
+    - qlcheckr
+    - palmerpenguins
+    - readr
+    - readxl
+  repos:
+    - https://repo.r-wasm.org/
+    - https://learnr-academy.github.io/qlcheckr
+ojs-engine: true
+difficulty: "Beginner"
+time: "30 minutes"
+---
+
+Data is the core of data analysis, and accurately reading data is the first step of any analysis. There are many data formats and platforms in use, and understanding how to read them efficiently is necessary for working with data in R. Later in your analysis, you often need to share your cleaned dataset or tabulated results with others, and knowing how to write data to appropriate file formats is necessary for effective communication and collaboration.
+
+This lesson will teach the basics of file-based data formats, including:
+
+* **Text-based data (e.g. CSV)**
+  
+  These datasets use structured plain text data, and are popular for their simplicity and compatibility.
+
+* **Excel data**
+   
+  Spreadsheet formats used by Microsoft Excel, supporting complex data structures including formulas and graphs.
+
+* **Serialized Data Formats (e.g. RDS and RData)**
+
+  These formats are purpose built and can only be read in by specialised functions for that format.
+
+* **Parquet data**
+  
+  Parquet is a columnar storage file format which is ideal for large and complex data structures.
+  
+<!-- There are of course other data sources which use external services to access the data. -->
+
+<!-- * **Databases:** -->
+<!--    - **SQL Databases (e.g., MySQL, PostgreSQL):** Structured data storage systems using query languages for data manipulation. -->
+<!--    - **NoSQL Databases (e.g., MongoDB):** Flexible schema design and unstructured data handling, suitable for large-scale data. -->
+
+
+<!-- * **Web-Based Formats:** -->
+<!--    - **JSON (JavaScript Object Notation):** Lightweight data-interchange format, easy for humans to read and write, and machines to parse. -->
+<!--    - **XML (eXtensible Markup Language):** Flexible, structured format primarily used for data exchange on the web. -->
+
+<!-- * **Big Data Platforms:** -->
+<!--    - **Hadoop/HDFS:** Distributed file systems designed to handle large datasets across clusters. -->
+<!--    - **Apache Spark:** Open-source analytics engine for big data processing, supporting multiple languages. -->
+
+## Text-Based Data
+
+Text-based data formats are widely used due to their simplicity and compatibility across various platforms, storing data as plain text. The `readr` package in R is ideal for importing and exporting text-based datasets.
+
+### Comma-Separated Values (CSV)
+
+CSV files are popular for representing tabular data, where each line is a row of data and columns are separated by commas.
+
+You can open these files in any text editor, which will show you something like this:
+
+```
+species,island,bill_length_mm,bill_depth_mm,flipper_length_mm,body_mass_g,sex
+Adelie,Torgersen,39.1,18.7,181,3750,male
+Gentoo,Biscoe,37.8,18.3,174,3400,female
+```
+
+### Reading CSVs
+
+The `read_csv()` function from `readr` is recommended to read in CSV files. Simply use the function with the file path to the dataset.
+
+The raw CSV for the Palmer penguins dataset can be found at `system.file("extdata/penguins_raw.csv", package = "palmerpenguins")`, and it can be imported into R as `penguins_csv` with this code:
+
+```{r}
+library(readr)
+# Read the raw penguins csv file from palmerpenguins package. 
+penguins_csv <- read_csv(system.file("extdata/penguins_raw.csv", package = "palmerpenguins"))
+```
+
+
+Notice the message about "column specification" when this dataset is imported. Text-based data needs parsing into appropriate data types, such as integers or characters.
+
+The `readr` package guesses data types for each column automatically. This guessing is usually accurate, but it is strongly recommended that you verify these column types and make any corrections if needed.
+
+You can manually specify the column types with `col_types`, which is safer than relying on guessing. You can generate some starter code for column types based on the guessed types using `spec()`.
+
+```{r}
+spec(penguins_csv)
+```
+
+Then simply copy this specification (making any necessary changes) into the `col_spec` argument like so:
+
+```{r}
+penguins_csv <- read_csv(
+  system.file("extdata/penguins_raw.csv", package = "palmerpenguins"),
+  col_types = cols(
+    studyName = col_character(),
+    `Sample Number` = col_double(),
+    Species = col_character(),
+    Region = col_character(),
+    Island = col_character(),
+    Stage = col_character(),
+    `Individual ID` = col_character(),
+    `Clutch Completion` = col_character(),
+    `Date Egg` = col_date(format = ""),
+    `Culmen Length (mm)` = col_double(),
+    `Culmen Depth (mm)` = col_double(),
+    `Flipper Length (mm)` = col_double(),
+    `Body Mass (g)` = col_double(),
+    Sex = col_character(),
+    `Delta 15 N (o/oo)` = col_double(),
+    `Delta 13 C (o/oo)` = col_double(),
+    Comments = col_character()
+  )
+)
+```
+
+Now the data types will always be accurate, with any incompatible values being converted to NA (with warnings).
+
+### Other useful importing options
+
+The contents of data files can be just as varied as the file formats themselves. The `{readr}` package provides many useful arguments to handle these variations to accurately read in the values. Read the documentation with `?read_csv` for all the details, here are some particularly useful arguments:
+
+- `skip`: Number of lines to skip before reading data, useful for excluding metadata.
+- `na`: Specify how missing values are represented, e.g., `na = c("", "NA", "missing")`.
+- `locale`: Specify the language for the data (useful for if dates and text encodings differ).
+
+### Writing CSVs
+
+The `write_csv()` function is used to export data frames to CSV files. Simply pass in the dataset to export, and the file path of where the data should be written.
+
+```r
+# Exporting a data frame to a CSV file
+write_csv(penguins_csv, "output/penguins_processed.csv")
+```
+
+### Other text-based formats
+
+Different formats are suited to specific needs, such as varying delimiters or fixed column widths. Here's a summary of other file formats and the functions used to import and export them.
+
+| Format                | Read Function     | Write Function     | Description                            |
+|-----------------------|-------------------|--------------------|----------------------------------------|
+| Comma-Separated       | `read_csv()`      | `write_csv()`      | Commas separate values                 |
+| Tab-Separated         | `read_tsv()`      | `write_tsv()`      | Tabs separate values                   |
+| Delimited             | `read_delim()`    | `write_delim()`    | Custom delimiter specified by user     |
+| Fixed Width Format    | `read_fwf()`      | N/A                | Columns of fixed widths                |
+| White Space Delimited | `read_table()`    | N/A                | Separated by white space               |
+
+### Reading multiple files
+
+For datasets with similar structures, `readr` enables you to read them together into a single dataset (optionally with a file identifier).
+
+Simply use the `read_*()` function with a vector of file paths, and you can add a column for the file name with `id = <file_name_column>`.
+
+## Excel files
+
+The `read_excel()` function from the `readxl` package is designed to import data from Excel files into R. It supports both `.xls` and `.xlsx` formats. Only a single sheet can be read in at a time, and by default the first sheet is read.
+
+```{r}
+#| eval: false
+library(readxl)
+# Importing data from an Excel file
+penguins_xlsx <- read_excel("penguins_data.xlsx")
+```
+
+The `read_excel()` function behaves very similarly to the `{readr}` functions, but has some additional options specific to excel:
+
+- `sheet`: Specify which sheet to read either with the sheet name (as a string) or the sheet index (as a number).
+
+- `range`: This option lets you define a specific cell range to import from the selected sheet, for example `"A1:D10"`.
+
+The `{readxl}` package does not support writing excel files.
+
+## Serialised R Data Formats
+
+In R, serialised data formats such as RDS and RDA (or RData) are used to efficiently save and load R objects, preserving their structure and metadata. These formats allow you to save and restore any R object, not just datasets, making them a useful format for storing intermediate results.
+
+Serialised formats provide quick read and write operations because they do not require parsing and deparsing like text-based data formats. The disadvantage of this is that these formats are not designed for use outside the R ecosystem.
+
+The `readr` package supports reading and writing RDS files, with a similar usage to other text-based file formats:
+
+```{r}
+library(readr)
+
+# Writing the penguins data to an RDS file
+write_rds(penguins_csv, "penguins.rds")
+
+# Reading the penguins data from an RDS file
+penguins_rds <- read_rds("penguins.rds")
+```
