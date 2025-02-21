@@ -3,25 +3,17 @@ title: 5. Strategies for troubleshooting in R
 subtitle: 'With coding comes bugs and errors that need troubleshooting. In this chapter, you will learn how to decipher errors, find help for fixing them, and practice asking clear questions with minimally reproducible examples.'
 title-block-banner: yes
 engine: knitr
-filters:
-  - webr-teachr
-webr:
-  packages: 
+ojs-engine: true
 format:
   lesson-html: default
-difficulty: "Advanced"
-time: "1 hour"
+difficulty: "Beginner"
+time: "30 minutes"
 ---
+
+{{< include /_extensions/r-wasm/live/_knitr.qmd >}}
 
 ```{r setup, include = FALSE}
 library(tidyverse)
-knitr::knit_hooks$set(class = function(before, options, envir) {
-  if(before) {
-    sprintf("<div class='%s'>", options$class)
-  } else {
-    "</div>"
-  }
-})
 knitr::opts_chunk$set(fig.retina = 2,
                       fig.width = 6, 
                       fig.height = 4,
@@ -45,334 +37,403 @@ detach_package <- function(pkg, character.only = FALSE)
 
 ```
 
-# What are error messages?
+Code errors can be frustrating, but they're actually trying to help by telling you what went wrong. Understanding how to read error messages, debug your code, and ask for help effectively will save you time in fixing these errors.
 
-Eek! There's a bug in my code and it's causing lots of [scary red errors]{style="color: red;"}!
+## Understanding errors, warnings, and messages
 
-Don't panic - believe it or not, this error is just trying to help you! It also may have just saved you from invalid results that you may not have have noticed.
+R uses three types of 'conditions' with different severity for issues with your code: errors, warnings, and messages. Regardless of severity, they should be read carefully as they provide useful information for improving your code.
 
-Errors can be frustrating, essentially you've just asked the computer to do something and it has said no!
+### Errors 🚨 
 
-There are a few troubleshooting techniques that we can use to find the source of the error, modify your code, and get the results you're looking for.
+Errors stop your code from running, meaning that you won't get any results. Errors indicate a problem with your code that must be fixed before execution can continue.
 
-# Read the error
+Try to cause the `sum()` function to raise an error:
+
+```{webr}
+#| exercise: incorrect_sum_inputs
+sum(c(1, 2, 3))
+```
+
+```{webr}
+#| exercise: incorrect_sum_inputs
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Try using non-numeric values with the sum function, does it error?" = exists_in(ql_errors(), grepl, pattern = "invalid 'type'", fixed = TRUE)
+  )
+)
+```
+
+::: { .hint exercise="incorrect_sum_inputs"}
+::: { .callout-note collapse=false}
+## Hint
+
+Ensure that all elements you are attempting to sum are numeric. Mixing data types like characters and numbers will result in an error.
+
+```r
+sum(c(1, 3, "apple"))
+```
+:::
+:::
+
+There are many error messages that you might encounter, here's a few common ones with some tips on how to fix them:
+
+- **`Error: object 'x' not found`**
+
+  The variable `x` does not exist in your environment. Have you typed the variable name correctly? Perhaps it actually doesn't exist, and you need to create it by running your earlier code?
+  
+- **`Error: cannot open the connection`**
+  
+  The file path you're trying to read does not exist or is incorrect. Carefully compare your file path with the location of the file on your computer.
+  
+- **`Error: could not find function "mutate"`**
+
+  The function is from a package that has not been loaded with `library()`.
+  
+- **Error in sample$x : object of type 'closure' is not subsettable**
+
+  `sample` is a function (aka a 'closure'), and not a dataset with an `x` variable.
+  
+  Check the names of your variables, and try to use dataset names that don't match function names (avoid `data`, `sample`, `df`, and `dt`).
+  
+- **`Error in log(x, na.rm = TRUE) : unused argument (na.rm = TRUE)`**
+
+  You provided an argument that the function does not use. Check the help file for the function, and see which argument names are usable.
+
+- **`Error in log(...) : argument "x" is missing, with no default`**
+
+  A required argument was not provided, for example `log()` without any numbers to log. Check the help file to understand how to provide the missing argument.
+  
+- **`Error in library(package) : there is no package called 'package'`**
+  
+  The package is not installed, install it with `install.packages("package")`.
+
+
+::: {.callout-tip collapse=false}
+## Silent errors
+
+Errors stopping your code can be frustrating, but they've just saved you from something much worse: incorrect results. Situations where the code runs without complaints but produces incorrect results are known as *silent errors*.
+
+Silent errors are arguably the worst type of coding problem fix. They don't give a helpful message about what went wrong and you might not even notice the problem until much later. Carefully check the results of your code to identify any unreasonable output that might be from a silent error.
+:::
+
+
+### Warnings ⚠️
+
+Warnings don't stop execution but indicate something might be wrong. Your code runs, but the result may not be what you expect. After reading the warning, you should take a close look at your code and the output and make changes if the result isn't right.
+
+Trigger a warning by using log() with negative values.
+
+```{webr}
+#| exercise: incorrect_log_usage
+result <- log(______)
+```
+
+```{webr}
+#| exercise: incorrect_log_usage
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "The `log()` function didn't issue a warning, use a negative number." = exists_in(ql_warnings(), grepl, pattern = "NaNs produced", fixed = TRUE)
+  )
+)
+```
+
+::: { .hint exercise="incorrect_log_usage"}
+::: { .callout-note collapse=false}
+## Hint
+
+The `log()` function accepts numbers greater than zero. If a negative number is used, it will produce a warning due to an invalid argument within its domain.
+
+```r
+result <- log(-1)  # This will produce a warning since log of negative numbers is undefined
+```
+:::
+:::
+
+Other common warnings include:
+
+- **`Warning: NAs introduced by coercion`**
+
+  R tried to convert data to a different type (e.g., `as.numeric("text")`) and failed, replacing invalid values with `NA`.  
+  
+- **`Warning: number of items to replace is not a multiple of replacement length`**
+
+  You tried to assign values to a vector of a different length (e.g., `x[1:5] <- 1:3`). This 'recycles' values to get the replacement length (5), so `x[1:5]` will now contain `c(1, 2, 3, 1, 2)` rather than just `1:3`.
+  
+- **`Warning: Removed X rows containing missing values (geom_point)`**
+
+  ggplot2 removed rows with `NA`s before plotting a the points, so be careful since any patterns in the missing values will not be evident in the plot.
+  
+- **`Warning: package ‘dplyr' was built under R version X.Y.Z`**
+  
+  The installed package was built for a different version of R than what you are currently using. This is usually ok, but it is safest to reinstall the problematic packages.
+
+### Messages 💬
+
+Messages are used to communicate important details about the code's execution.  They don't necessarily indicate a problem with your code or results, but they should be read carefully to understand something important about your code or result.
+
+For example, a message informs you of newly masked objects when you load a package like `dplyr`. Masked objects are usually functions (e.g. `lag()`) which are replaced by functions of the same name from the package. You can explicitly use a function from a specific package with `stats::lag()` or `dplyr::lag()` to remove any ambiguity.
+
+```{webr}
+#| exercise: dplyr_masking_warning
+# Load the dplyr package to observe masking warnings
+library(______)
+```
+
+```{webr}
+#| exercise: dplyr_masking_warning
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Loading the `dplyr` package produces masking warnings when functions from dplyr have the same names as those in base R." = "dplyr"%in%.packages() || exists_in(ql_messages(), grepl, pattern = "The following objects are masked from", fixed = TRUE)
+  )
+)
+```
+
+::: { .hint exercise="dplyr_masking_warning"}
+::: { .callout-note collapse=false}
+## Hint
+
+Loading the `dplyr` package will produce a message regarding masking when function names overlap with those in base R.
+
+```r
+library(dplyr)
+```
+:::
+:::
+
+## Troubleshooting problems
+
+### Read the message 📚
 
 The first step is to carefully **read** the error message, it often contains clues into where and why the code didn't run. With some time and experience, you'll begin to identify these errors and fix your code quickly based on the message alone!
 
-## Let's have a look at some common error messages
+Some of the most common (and most confusing) error messages were described earlier, but if you're having trouble understanding the message then you might need to search for more information.
 
-```{r,echo = FALSE, eval=TRUE}
-detach_package(palmerpenguins)
-```
+### Search the message 🔎
 
-```{webr-teachr}
-# Lets look at the penguins data from the palmerpenguins package
-# Lets take a look at the structure
-str(penguins)
+Error messages can be confusing, and even after carefully reading the message it may be difficult to ascertain what the problem is.
 
-```
+Chances are you're not the first person to encounter this problem and there's a well explained solution waiting for you on the internet - you just need to find it. Just copy the error exactly, add some relevant contextual keywords like "R" and search!
 
-Oh no! An error message: ["Error: object 'palmerpenguins' not found"]{style="color: red;"}!
+With some luck, you'll be met with a series of StackOverflow threads, blog posts and other websites explaining the solution to the exact problem you're facing.
 
-When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="color: red;"}, it usually means there is a typo or the object wasn't loaded in correctly. In this instance, we haven't used the correct object. Let's look at how we can fix this.
-
-```{webr-teachr}
-# Let's try to have a look at the structure of the penguins data set
-# We will first load in the palmerpenguins package
-library(palmerpenguins)
-str(<<penguins>>)
-  
-???
-  
-p <- .code[[1]][[2]][[2]]
-  
-c("did you put in penguins?" = !"penguins" %in% all.vars(.code))
-```
-
-Typos are a common error, whether it's in the object name or the function name. In this example, we accidentally used the package name, instead of the name of the data from within the package. When you see the error message ["Error: object '\_\_\_\_\_' not found"]{style="color: red;"}, please check and make sure that everything is inputted correctly and the relevant packages are loaded in.
-
-## What if we cannot find the function?!
-
-```{r,echo = FALSE, eval=TRUE}
-detach_package(tidyverse)
-```
-
-```{webr-teachr}
-# Let's try to have a look at the structure of the penguins dataset
-# Instead of the base R function of checking structure for your dataset, let's use dplyr function glance to do that. 
-
-glimpse(penguins)
-  
-???
-  
-```
-
-Oh no, we could not find the function of `glimpse()`! We've checked the spelling, so what could be the problem now?
-
-When you see the error message ["Error: could not find function "\_\_\_\_\_"]{style="color: red;"}, it usually means the required package hasn't been loaded into environment.
-
-Let's try add in the required package `dplyr`
-
-```{webr-teachr}
-
-# Let's try to have a look at the structure of the penguins dataset 
-# Instead of the base R function of checking structure for your dataset, let's use dplyr function glimpse to do that. 
-
-library(<<dplyr>>)
-glimpse(penguins)
-  
-???
-
-  c(
-  "Did you load in the dplyr package in library()?" = !search_ast(.code, .expr = library(dplyr)
-)
-
-  
-```
-
-Sometimes, reading the error message can be a bit tricky. If you're not sure what the error message is trying to tell you, don't worry! We'll cover some other strategies.
-
-## Search the message 🔎
-
-**Often,** error messages can be confusing, and even after carefully reading the message it may be difficult to ascertain what the problem is.
-
-Chances are you're not the first person to encounter this problem and there's a well explained solution waiting for you on the internet - you just need to find it.
-
-Take this [notoriously confusing error](https://www.youtube.com/watch?v=vgYS-F8opgE) for example. In this code, I want to see the first few values of my `sample` object. Try running the code below:
-
-```{webr-teachr}
-
-sample[1:3]
-  
-???
-  
-```
-
-["Error: object of type 'closure' is not subsettable"]{style="color: red;"}
-
-What is a *'closure'*? Why can't I subset my data with `x[1:3]`?
-
-When confronted with an error you've never seen, and don't understand - search the web! Just copy the error exactly, "object of type 'closure' is not subsettable", add some relevant keywords like "R" and search!
-
-With some luck, you'll be met with a series of StackOverflow threads, blog posts and other websites explaining the solution to the exact problem you're facing. Here's my top 3 search results:
-
--   <https://coolbutuseless.github.io/2019/02/12/object-of-type-closure-is-not-subsettable/>
--   <https://stackoverflow.com/questions/11308367/error-in-my-code-object-of-type-closure-is-not-subsettable>
--   <https://www.r-bloggers.com/2019/02/object-of-type-closure-is-not-subsettable/>
-
-::: callout-tip
+::: {.callout-tip collapse=false}
 ## Tips for searching errors online
 
-**1.** Add double quotes around the error message. This searches for those exact words in that exact order.
+1. Add double quotes around the error message. This searches for those exact words in that exact order.
 
-**2.** For long error messages, just search for the unique sounding parts (don't include parts specific to your code, like a variable name)
+2. Only search generic parts of the error message (don't include specifics of your code or variable names)
 
-**3.** Add keywords to describe your code's language, like 'R'.
+3. Add keywords relating to the problem, like the language 'R', the package 'dplyr', and the context 'joining data'.
 
-**4.** If you're looking for solutions on a specific website, add `site:<domain>` to the search. For example, `site:stackoverflow.com`.
+4. If you're looking for solutions on a specific website, add `site:<domain>` to the search. For example, `site:stackoverflow.com`.
 :::
 
-## Divide and conquer 💪
+### Divide and conquer 💪
 
 If you understand the message, but have no idea where the problem stems from - try running smaller sections of your code to see if that small section causes the error. Once you identify the small section of code causing the error, it should be slightly easier to find the issue in your code.
 
-::: {.callout-note icon="false"}
-## Running into this issue often?
+::: {.callout-tip icon=false collapse=false}
+## Poor code readability makes debugging harder  
 
-If you frequently use this strategy, it may indicate a code styling issue. Consider breaking your code into smaller pieces instead of trying to do everything in one line. For tips on good coding practices, see [Jenny Bryan's presentation 'Code Smells and Feels](https://www.youtube.com/watch?v=7oyiPBjLAWY).
+If you frequently struggle to locate errors, your code style might be part of the problem.  
+
+Breaking your code into small modular chunks instead of cramming everything into one line makes debugging easier. For best practices on writing clean, maintainable R code, check out Jenny Bryan's UseR! 2018 talk, [*Code Smells and Feels*](https://www.youtube.com/watch?v=7oyiPBjLAWY).
 :::
 
-## Turn it off and on again 🔄
+### Read the documentation 📄
+
+R's built-in documentation can help you understand how functions are supposed to be used. 
+
+Use `?function_name` or `help(function_name)` to access a function's help page, which includes descriptions, usage examples, and default values. You might also find reading the package vignettes with `vignette(package="dplyr")` useful, they offer guided introductions into how to use the package.
+
+### Turn it off and on again 🔄
 
 The age old classic (but sometimes it really does work!).
 
-In R, you don't necessarily need to restart your *whole* computer, but instead you can try restarting RStudio, or your R session. Usually I would restart R, which can be done in RStudio
-
-This can be done in two ways:
+In R, you don't necessarily need to restart your *whole* computer, but instead you can try restarting RStudio, or your R session. Usually I would restart R, which can be done in RStudio in two ways:
 
 1.  'Session' on the top menu bar, then 'Restart R'
-2.  `Ctrl + Shift + F10` (Windows) or `Cmd + Shift + F10` (Mac)
+2.  {{< kbd Ctrl-Shift-F10 >}} (Windows) or {{< kbd Cmd-Shift-F10 >}} (Mac)
 
-There are a few reasons why this can work. It allows you to re-run your code from a clean slate, with no extra packages loaded that you haven't asked for and no extra objects in your environment.
+This can fix your problem by resetting your environment to a clean state. Re-running your code without extra unused packages loaded or old variables in the environment might just work!
 
-# Asking for help
+## Asking for help
 
-Once you've carefully read the error, searched the web, and tried everything else you can think of, it's time to ask for help. However for a stranger to take time out of their day to find the solution and write a good answer for you, you better have written a good question for them!
+Once you've carefully read the error, searched the web, and tried everything else you can think of, it's time to ask others for help.
 
-::: {style="text-align: center;"}
-<img src="images/bad_question.png" alt="Bad Question" width="600"/>
+### Asking good questions
+
+To get useful help, it is important that you ask a **good question**. Consider answering these two equivalent questions, which is easier to understand?
+
+::: {.callout-important icon = false}
+## ❌ Bad question
+
+**urgent help needed with assignment error**
+
+My code doesn't work. Please help i need it working for my assignment asap!
+
+data <- read.csv("C://Users/James/Downloads/project-a9j-2020a/files/survey_data.csv")
+data %>% filter(y == "A") %>% ggplot(aes(y = y, x = temperature)) + geom_line()
 :::
 
-Read ahead to find out why this is an example of a **bad question**.
+::: {.callout-tip icon = false}
+## ✅ Good question
 
-::: callout-note
-## Good Questions
+**Error with dplyr `filter()`: "object not found"**
 
-A **good question** consists of a **clear and concise** description of your problem, and a **small example** that can be used to reproduce the issue.
+I'm trying to filter a dataset in `dplyr`, but I'm getting an error that I don't understand. Here's my code and error message:  
+
+```r
+survey <- data.frame(x = c(1, 2, 3), y = c("A", "B", "C"))
+survey %>% filter(y == "A")
+```
+Error: `Error in filter(y == "A") : object 'y' not found`
+
+I expected it to return rows where `y` is `"A"`. How should I fix this?
 :::
 
-## Describe the problem
+Writing a good question will help you and others understand your problem, and you might even find the solution in the process of writing it! Here's some tips for writing good questions:
 
-A good description provides some context to your question. When writing your question, think about what you are trying to achieve.
+- **Be clear and concise**
+  
+  Explain what you're trying to do and what isn't working.
+- **Explain what you expected**
 
-Instead of writing generic phrases like "it doesn't work" or "it shows errors," provide more detailed information about your issue.
+  Describe the output or behaviour you were hoping for.  
+- **Provide a minimal reproducible example (reprex)**
 
--   Clearly state your goal and the expected output.
+  Share a small, self-contained snippet of code that reproduces the issue. The `{reprex}` package will help you do this.
+- **Style your code**
+  
+  Use a code style with proper indentation and spacing to make it easy to read.
+- **Include the full error message**
+  
+  Copy and paste the exact error instead of summarising it.  
+- **Show what you've already tried**
+  
+  Briefly mention other solutions you've tried to avoid duplicate suggestions.
 
--   Include the exact wording of any error messages you receive.
+### Creating minimal reproducible examples
 
--   Use a descriptive title that summarises your problem succinctly.
+A minimal reproducible example (MRE) is essential for effectively communicating problems with code. The process of creating a MRE might also help you resolve the problem yourself!
 
-## Provide a minimal reproducible example
+The guiding principles of creating a minimal reproducible example are:
 
-A minimal reproducible example is the smallest amount of code that still produces the error. This step is so important that we've dedicated an entire section to writing good examples. An example allows the person helping you to quickly understand the issue you are facing, and make changes directly to your example to demonstrate the solution.
+#### Minimal
 
-The process of creating an example, and reducing it down into the minimal amount of code you can to produce the error, often results in you finding the solution yourself.
+Minimising code and data makes it easier for others to find the problem and offer a solution. Isolating the problem down to just a few lines of code or rows of data can help you (and those helping you) understand exactly where the problem is caused.
 
-## Where to ask for help
+- **Remove unnecessary code**
+  
+  Include as little code as possible to show the problem.
+- **Use small datasets**
+  
+  Prefer built-in datasets or create/sample small example datasets.
+- **Avoid external dependencies**
+  
+  Remove any unused packages or files that are irrelevant to the problem.
 
-+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [**Stack Overflow.**](https://stackoverflow.com/questions/tagged/rstudio) | This is a platform where you can search for solutions and ask for help. Before asking a question on Stack Overflow, you can search some key words from your understanding of error messages. It is likely that people have already asked similar questions related to your error and you can try the solutions provided by others under the question.                                                                          |
-+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [**RStudio Community.**](https://forum.posit.co/)                         | This is a community channel for RStudio users. Similar to Stack Overflow, you can ask questions and also find solutions.                                                                                                                                                                                                                                                                                                       |
-+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [**GitHub.**](https://github.com/)                                        | If you've thoroughly investigated your error and believe the issue lies in the package rather than your code, you can contact the package's developer. Most R packages are open-source and maintained on Github.                                                                                                                                                                                                               |
-|                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|                                                                           | 1\. Search for the package's repository using its name along with "R" and "GitHub".                                                                                                                                                                                                                                                                                                                                            |
-|                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|                                                                           | 2\. Use the "Issues" tab to report your problem.                                                                                                                                                                                                                                                                                                                                                                               |
-|                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|                                                                           | 3\. Make sure to check if the issue has already been reported before creating a new one.                                                                                                                                                                                                                                                                                                                                       |
-+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Discussion Forum on Moodle or** [**Ed.**](http://edstem.org)            | If you're preparing for your Monash University course, a good place to ask for help is the discussion forum on Moodle. You can also seek assistance from your lecturers and tutors.                                                                                                                                                                                                                                            |
-|                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|                                                                           | -   If your unit uses Ed as a discussion space, use it to ask or answer questions. Some units may even allow you to post privately or anonymously if you feel shy posting publicly.                                                                                                                                                                                                                                            |
-+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Trusty (sometimes) AI.**                                                | There are many AI tools that can help you write code, and some can even help you debug it. However, AI should be used with caution. While it can assist in troubleshooting errors, it may not always provide the best solution. You should still try to understand what the code is doing and why it's causing an error to avoid using code from AI which may be producing inaccurate results (despite running without error). |
-+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Teachers and Tutors in Consultations.**                                 | Ask your lecturers and tutors for help during consultation sessions, which are available for any content-related difficulties, including debugging code.                                                                                                                                                                                                                                                                       |
-|                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|                                                                           | -   Prepare a small demonstration of your error beforehand to make the session more effective.                                                                                                                                                                                                                                                                                                                                 |
-|                                                                           | -   The benefit of these sessions is that we can guide you closer to the solution until you figure it out yourself.                                                                                                                                                                                                                                                                                                            |
-|                                                                           | -   Don't be disheartened if your error, which you've struggled with for hours, is solved in minutes — we've had plenty of practice (also being stuck for hours) troubleshooting these errors.                                                                                                                                                                                                                                 |
-+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+In the bad/good code example, the good code is more minimal because it removes the irrelevant ggplot2 code.
 
-::: callout-tip
+#### Reproducible
+
+Reproducible code includes all elements needed recreate the problem on a different computer, including:
+
+- **Required packages**
+  
+  If external packages are needed, include loading the packages in your MRE.
+- **Used datasets**
+  
+  If you can't use built-in datasets, then ideally the minimal dataset is created with code without separate data files. You can create a dataset directly with `data.frame()`, or convert any existing R object into code with `dput()`. Try using `dput()` with the `letters` vector.
+  
+- **Set random seeds**
+  
+  If your problem includes randomisation (e.g. `sample()`, or random samples from distributions), you should also include `set.seed()` at the top of your MRE with a seed that reproduces the problem.
+
+The good code example above is more reproducible because it directly embeds the dataset into the code. In the process of making the MRE (specifically thinking about the required packages for the code) might result in the discovery that this problem is resulting from not loading dplyr with `library(dplyr)`!
+
+::: {.callout-note collapse=false}
+## Session information
+
+Sometimes the error is specific to your system, and isn't easily reproduced on other computers. Some issues can be specific to other things about your system such as your operating system, system language/locale, R version, or R package versions.
+
+To include useful information about your system, include `sessioninfo::session_info()` at the end of your example. If you're using `{reprex}` to create your MRE you can use `repex(session_info = TRUE)`.
+:::
+
+#### Example
+
+The minimal and reproducible code you write should be an example of the problem you are facing!
+
+- **Clearly state the issue**
+  
+  Explain what you expect versus what happens.
+- **Ensure clarity**
+  
+  Add code comments to highlight your intention and the problem.
+
+The good code example clearly describes the goal and unexpected result.
+
+::: {.callout-tip collapse=false}
+## Creating MREs with the `{reprex}` package
+
+The [`{reprex}`](https://reprex.tidyverse.org/) package helps you share reproducible examples by running the example code in a clean environment and then copying a neatly formatted version of your code and its results (including tables, figures, and more).
+
+To create a *reprex*, simply:
+
+1. Copy the example code that you've made minimal and reproducible,
+2. Run `reprex::reprex()`, or click ``Render reprex...` in the Addins menu and follow the prompts,
+3. When the results are ready, you'll find a preview of the MRE pop-up in the Viewer tab of RStudio (and the markdown code for sharing it copied to your clipboard),
+4. Paste the results into the help forum of your choice (some useful places are listed below).
+
+View this [short clip](https://www.youtube.com/watch?v=35suhGR53wQ) for a guided walkthrough of using the `reprex` package by it's creator!
+
+:::
+
+### Where to ask for help
+
+
++-----------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Class Discussion Forum (e.g. Moodle)**            | If you're preparing for your Monash University course, a good place to ask for help is the discussion forum on Moodle. You can also seek assistance from your lecturers and tutors.                                                                                                                                                                                                                                               |
++-----------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Ask an LLM**                                      | There are many large language models (LLMs) that can help you write and debug code. However, AI tools should be used with caution. While it can assist in troubleshooting errors, it may not always provide the best solution. You should still try to understand what the code is doing and why it's causing an error to avoid using code from AI which may be producing inaccurate results (despite running without error).     |
++-----------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Consultations**                                   | Ask your lecturers and tutors for help during consultation sessions, which are available for any content-related difficulties, including debugging code.                                                                                                                                                                                                                                                                          |
+|                                                     |                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|                                                     | - Prepare a small demonstration of your error beforehand to make the session more effective.                                                                                                                                                                                                                                                                                                                                      |
+|                                                     | - The benefit of these sessions is that we can guide you closer to the solution until you figure it out yourself.                                                                                                                                                                                                                                                                                                                 |
+|                                                     | - Don't be disheartened if your error, which you've struggled with for hours, is solved in minutes — we've had plenty of practice (also being stuck for hours) troubleshooting these errors.                                                                                                                                                                                                                                      |
++-----------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Stack Overflow**                                  | This is a platform where you can search for solutions and ask for help. It is likely that people have already asked similar questions related to your error and you can try the solutions provided by others under the question. Thoroughly search for similar questions already asked on the website before asking for help with your problem.                                                                                   |
++-----------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Posit Community**                                 | This is a community channel for RStudio users. Similar to Stack Overflow, you can ask questions and also find solutions.                                                                                                                                                                                                                                                                                                          |
++-----------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **GitHub**                                          | If you've thoroughly investigated your error and believe the issue lies in the package rather than your code, you can contact the package's developer. Most R packages are maintained on GitHub, and developers typically prefer problems with their packages reported in the GitHub repository's issues—just make sure that a similar issue hasn't already been reported!                                                        |
++-----------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+
+
+::: {.callout-tip collapse=false}
 ## Help and Learn
 
 Answering questions on the forum can help consolidate your understanding and prepare you for asking and answering questions in other forums such as Stack Overflow.
 :::
 
-# Minimal Reproducible Examples
 
-::: callout-note
-## Remember
+<!-- # Troubleshooting checklist ☑️ -->
 
-A minimally reproducible example (often called an MRE) contains all of the code necessary for someone else to encounter the same error you're facing.
-:::
+<!-- This is **not an exhaustive check-list.** What needs to be included and checked is very question specific, but this checklist should apply to most questions. -->
 
-To create one, you need to provide the **exact packages you're using**, some **data** if needed, and **your code.** A good example is also **minimal**, which means that you've taken the time to remove as much unrelated packages, code and data as possible to produce the error.
-
-## Providing minimal datasets
-
-If your question involves using a dataset, you will need to provide a small dataset to demonstrate the problem. Often people say that the data is confidential and can’t be provided, but usually the problem isn’t specific to the data you are using. Taking the time to try your code on a different dataset is a good debugging step, and R provides many good datasets to use in these examples built in. You can find a complete list of datasets available to all R users with the `data(package = "datasets")` function.
-
-If you do need to use a custom dataset specific to your project, try reducing the size of the dataset before making your example. The error may only occur for some specific rows of your data. Once you've narrowed in on the issue, you can convert your minimal data object to code for producing it using the `dput()` function.
-
-For example you can use use the below code to provide the first 6 rows of the iris dataset.
-
-```{r}
-dput(head(iris))
-```
-
-Try it yourself! Create a minimal dataset using the `dput()` function for the `penguins` dataset.
-
-::: callout-tip
-## Hint
-
-We want to be putting the `penguins` data to create a minimal dataset.
-:::
-
-```{webr-teachr}
-
-# Load the penguins dataset
-library(palmerpenguins)
-# Use dput() to create a minimal dataset
-<<dput(head(penguins))>>
-  
-???
-  
-c("Did you use dput() with head(penguins)?" =  !search_ast(.code, .expr = dput(head(penguins))))
-
-```
-
-You can then copy this generated code, and make it part of your example to create your example data.
-
-Alternatively you can save this minimal dataset to a file, and attach the file in your question.
-
-When you read that file in, make sure you avoid absolute paths to it. Not everyone has the same file structure as you, so they won't be able to access your dataset if it is stored at `/home/learnr/Documents/My Job/project_2040/data/housing_prices.csv`. Instead provide a short relative oath, such as `housing_prices.csv` or `data/housing_prices.csv`. If you're uploading files, it's also nice to provide a zip that contains a R script of your minimal reproducible code, along with the data in the folders referenced by the script.
-
--- potentially a multiple choice question here on relative paths? ---
-
-## Create minimal reproducible examples
-
-As part of a data analysis you probably write a lot of code. You need to read in the data, tidy it up, run some calculations and make some plots. When you run into an error, providing your entire analysis just makes it more time consuming for helpers to run your code and identify the source of the error.
-
-A *minimal* reproducible example cuts out as much of the code as possible, keeping just a few essential lines for producing the error. If your error comes after the data cleaning, remove that code and start with a clean, minimal dataset.
-
-If your code includes any randomisation, it’s a good idea to set the random seed using the `set.seed()` function. This ensures that each time the code is ran, the same random results are obtained.
-
-::: callout-tip
-## Reproducing random results
-
-The `set.seed()` function in R ensures reproducible results in code involving random values. It guarantees the same random values are produced each time you run the code, aiding in debugging and consistency. The number in the brackets can be any integer.
-:::
-
-The process of cleaning up your code and reducing it down into a small example is another great exercise that often helps you identify the problem and fix it yourself.
-
-Remember, you need to provide **all code necessary** to **load in packages you use**, **read in data** and **run functions** that cause the error.
-
-## Provide session information
-
-Sometimes the error is specific to the version of R, or the packages you are using. To help others help you, you can provide the session information using the `sessioninfo::sessionInfo()` function. This will print out the version of R you are using, and the versions of the packages you have loaded, which makes it easier to fix some version, language or OS specific problems. A good reproducible example should come with this session information output.
-
-## Using the `reprex` package for producing examples
-
-the [`reprex`](https://reprex.tidyverse.org/) package is a useful tool that can help you make a reproducible example. It can be used to run the code in your example in a clean environment, which is a good way to test if you've included everything necessary for others to reproduce the error. It'll also copy a neatly formatted version of your example which will also display in your **Viewer** window and includes images and console output from the example as it runs on your computer. It can even include a collapsible summary of your session information.
-
-To use `reprex`:
-
-1.  Install it from CRAN using `install.packages("reprex")`.
-2.  Once installed, load in the reprex package using `library(reprex)`
-3.  You can use the `reprex()` function to create a reproducible example.
-
-You can also use the `reprex()` function in RStudio by selecting the code you want to include in the example, and clicking the "Reprex" button in the Addins menu.
-
-
-```{=html}
-<div class="image-container">
-    <img src="images/addin_reprex.png" width="260">
-    <img src="images/popup_reprex.png" width="385">
-</div>
-```
-
-After clicking `Render reprex...` in the Addins menu, a new window will pop up with the reprex output (left image). As you've copied the example, you can use the 'on the clipboard' source. Choose a venue for where you're planning to post the question, and tick 'Append session info'. Finally, press **Render** to run the code and see if it's reproducible.
-
-View this [short clip](https://www.youtube.com/watch?v=35suhGR53wQ) to see how to use the `reprex` package.
-
-# Asking for help checklist ☑️
-
-This is **not an exhaustive check-list.** What needs to be included and checked is very question specific, but this checklist should apply to most questions.
-
--   [ ] Is the problem [**clearly**]{.highlight} and [**succinctly described?**]{.highlight}
--   [ ] Is the [**expected solution or behaviour**]{.highlight} outlined?
--   [ ] Has [**nobody asked this question**]{.highlight} before? (Search the web!)
--   [ ] Are you asking the [**right people**]{.highlight} at the [**right place?**]{.highlight}
--   [ ] Have you added [**appropriate tags**]{.highlight} or [**keywords**]{.highlight} to reach the right experts?
--   [ ] Have you prepared your example using the [**reprex package**]{.highlight} to ensure the problem is easily reproduced on other computers?
--   [ ] Have you [**minimised your problem**]{.highlight} as much as possible, [**removing irrelevant packages, data and code**]{.highlight}?
-
-**If your questions involve a dataset**
-
--   [ ] Is the data supplied
--   [ ] If the data is big, [**could you cull your data further**]{.highlight} to communicate or reproduce the problem?
+<!-- -   [ ] Is the problem [**clearly**]{.highlight} and [**succinctly described?**]{.highlight} -->
+<!-- -   [ ] Is the [**expected solution or behaviour**]{.highlight} outlined? -->
+<!-- -   [ ] Has [**nobody asked this question**]{.highlight} before? (Search the web!) -->
+<!-- -   [ ] Are you asking the [**right people**]{.highlight} at the [**right place?**]{.highlight} -->
+<!-- -   [ ] Have you added [**appropriate tags**]{.highlight} or [**keywords**]{.highlight} to reach the right experts? -->
+<!-- -   [ ] Have you created a minimal reproducible example using the [**reprex package**]{.highlight}? (Include your session information!) -->
+<!-- -   [ ] Have you [**minimised your problem**]{.highlight} as much as possible, [**removing irrelevant packages, data and code**]{.highlight}? -->
