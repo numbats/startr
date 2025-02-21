@@ -7,8 +7,8 @@ listing:
   - id: analysis
     contents: modules/analysis
     template: partials/track-listing.ejs
-  - id: writing
-    contents: modules/writing
+  - id: statistics
+    contents: modules/statistics
     template: partials/track-listing.ejs
 format:
   html:
@@ -58,12 +58,12 @@ format:
 ```{=html}
 <input type="checkbox" class = "track-chkbox">
 <div class="track-header-card">
-  <span> Document writing </span>
+  <span>Statistical modelling</span>
   <i></i>
 </div>
 ```
 
-:::{#writing .listing}
+:::{#statistics .listing}
 :::
 
 :::
