@@ -1,0 +1,694 @@
+---
+title: 3. Data manipulation
+subtitle: 'How to modify a dataset with dplyr to compute new columns or summaries, change rows or columns, and join datasets together.'
+title-block-banner: yes
+engine: knitr
+format:
+  lesson-html: default
+webr:
+  packages:
+    - qlcheckr
+    - palmerpenguins
+    - dplyr
+  repos:
+    - https://repo.r-wasm.org/
+    - https://learnr-academy.github.io/qlcheckr
+ojs-engine: true
+difficulty: "Intermediate"
+time: "45 minutes"
+---
+
+{{< include /_extensions/r-wasm/live/_knitr.qmd >}}
+
+Data manipulation is used in analysis for improving data quality, exploring data, and calculating summary tables. It involves modifying observations with filters, sorting data, and selecting, renaming, and adding variables. Computing summaries helps derive insights by aggregating data, while joining tables allows for combining multiple datasets into a cohesive singular dataset. Tools from `dplyr` enable such data manipulation, preparing informative summary tables and making data ready for modelling and visualisation.
+
+## Manipulating Variables
+
+Manipulating variables involves adding new columns, removing unnecessary ones, and renaming existing columns to improve data clarity and relevance. It also includes transforming data by creating derived variables, thereby enhancing the dataset's usability for analysis.
+
+### Select variables (`select()`)
+
+The `select()` function allows you to choose specific columns from a dataset.
+
+```{r}
+#| message: false
+library(dplyr)
+library(palmerpenguins)
+
+# Select species, island, and bill_length_mm columns
+penguins |>
+  select(species, island, bill_length_mm)
+```
+
+Try selecting the bill length and depth from the `penguins` dataset.
+
+```{webr}
+#| exercise: select_penguin_columns
+penguins |> 
+  select(______)
+```
+
+```{webr}
+#| exercise: select_penguin_columns
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Ensure you are selecting the `bill_length_mm`, and `bill_depth_mm` columns from the penguins dataset." = !exists_in(ql_results(), \(x) identical(x, select(penguins, bill_length_mm, bill_depth_mm)[names(x)]))
+  )
+)
+```
+
+::: { .hint exercise="select_penguin_columns"}
+::: { .callout-note collapse=false}
+## Hint
+
+Use `select()` to extract the `bill_length_mm`, and `bill_depth_mm` columns.
+
+```r
+penguins |> 
+  select(bill_length_mm, bill_depth_mm)
+```
+:::
+:::
+
+:::{.callout-tip collapse=false}
+## Tidy selection
+
+The `select()` function supports tidy selection, much like `pivot_longer()` and many other functions from `tidyr`.
+
+This allowing you to use helpers like `starts_with()` and `contains()` to efficiently select columns.
+:::
+
+### Rename variables (`rename()`)
+
+The `rename()` function changes the names of existing columns.
+
+```{r}
+# Rename bill_length_mm to bill_length
+penguins |>
+  rename(bill_length = bill_length_mm)
+```
+
+Try renaming the columns to remove the units from the variable names.
+
+```{webr}
+#| exercise: rename_remove_units
+# Rename columns to remove all units from variable names
+penguins |> 
+  rename(______ = bill_length_mm, ______ = bill_depth_mm, flipper_length = ______, ______ = ______)
+```
+
+```{webr}
+#| exercise: rename_remove_units
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Removing all units from column names, e.g., `bill_length_mm` to `bill_length`." = !exists_in(ql_results(), \(x) all(c("bill_length", "bill_depth", "flipper_length", "body_mass") %in% names(x)))
+  )
+)
+```
+
+::: { .hint exercise="rename_remove_units"}
+::: { .callout-note collapse=false}
+## Hint
+
+Use `rename()` to modify column names to remove units, such as changing `bill_length_mm` to `bill_length`, `bill_depth_mm` to `bill_depth`, `flipper_length_mm` to `flipper_length`, and `body_mass_g` to `body_mass`.
+
+```r
+penguins |> 
+  rename(
+    bill_length = bill_length_mm, 
+    bill_depth = bill_depth_mm, 
+    flipper_length = flipper_length_mm,
+    body_mass = body_mass_g
+  )
+```
+:::
+:::
+
+### Compute variables (`mutate()`)
+
+The `mutate()` function creates new columns or modifies existing ones.
+
+```{r}
+# Add a new column for body mass in kilograms
+penguins |>
+  mutate(body_mass_kg = body_mass_g / 1000)
+```
+
+Try creating new columns which convert the bill length, bill depth, and flipper length into centimetres.
+
+```{webr}
+#| exercise: convert_mm_to_cm
+# Convert millimetre columns to centimetres in the penguins dataset: bill_length_mm, bill_depth_mm, and flipper_length_mm
+penguins |> 
+  mutate(
+    bill_length_cm = ______ / 10,
+    bill_depth_cm = bill_depth_mm / ______,
+    flipper_length_cm = ______ / ______
+  )
+```
+
+```{webr}
+#| exercise: convert_mm_to_cm
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Ensure you are correctly converting `bill_length_mm`, `bill_depth_mm`, and `flipper_length_mm` to centimetres by dividing by 10." = !search_ast(ql_ast(), .expr = mutate(penguins, bill_length_cm = bill_length_mm / 10, bill_depth_cm = bill_depth_mm / 10, flipper_length_cm = flipper_length_mm / 10))
+  )
+)
+```
+
+::: { .hint exercise="convert_mm_to_cm"}
+::: { .callout-note collapse=false}
+## Hint
+
+Use `mutate()` to convert the millimetre columns to centimetres, for instance, change `bill_length_mm` to `bill_length_cm` by dividing by 10.
+
+```r
+penguins |> 
+  mutate(
+    bill_length_cm = bill_length_mm / 10,
+    bill_depth_cm = bill_depth_mm / 10,
+    flipper_length_cm = flipper_length_mm / 10
+  )
+```
+:::
+:::
+
+::: {.callout-tip collapse=false}
+## Mutating across multiple columns
+
+To apply the same calculation across multiple columns, use `mutate()` with `across()` and tidy selection functions. For instance, you can convert measurements from millimetres to centimetres for all columns ending with "mm" by dividing by 10.
+
+```{r}
+penguins |>
+  mutate(
+    across(
+      # Specify columns with tidy selection
+      .cols = ends_with("mm"),
+      # Calculations on each column
+      .fns = ~ .x / 10, 
+      # Name of the new colum (replace mm with cm)
+      .names = "{sub('mm', 'cm', .col)}"
+    )
+  )
+```
+
+A named list of functions can be provided to compute multiple things across multiple columns.
+:::
+
+## Manipulating Observations
+
+### Extract rows by condition (`filter()`)
+
+The `filter()` function selects rows based on specific conditions.
+
+```{r}
+# Filter for Adelie species only
+penguins |>
+  filter(species == "Adelie")
+```
+
+Try using `filter()` to keep only penguins with above average flipper lengths.
+
+```{webr}
+#| exercise: filter_above_average_flipper_length
+# Filter penguins with flipper length above the average
+penguins |> 
+  filter(______ > mean(______))
+```
+
+```{webr}
+#| exercise: filter_above_average_flipper_length
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Use na.rm = TRUE inside mean() to ignore missing values" = !search_ast(ql_ast(), .expr = mean(na.rm = TRUE)),
+    "Check your filter condition, you should be filtering based on `flipper_length_mm`" = !exists_in(ql_results(), \(x) nrow(x) == 148)
+  )
+)
+```
+
+::: { .hint exercise="filter_above_average_flipper_length"}
+::: { .callout-note collapse=false}
+## Hint
+
+Filter the penguins dataset to include only the rows where `flipper_length_mm` is greater than the mean of `flipper_length_mm`.
+
+```r
+penguins |> 
+  filter(flipper_length_mm > mean(flipper_length_mm, na.rm = TRUE))
+```
+:::
+:::
+
+### Extract rows by position (`slice()`)
+
+The `slice()` function selects rows by their position.
+
+```{r}
+# Get the first 5 rows
+penguins |>
+  slice(1:5)
+```
+
+::: {.callout-tip collapse=false}
+## Slicing the start and end of the data
+
+To quickly access the top or bottom rows of your data, you can use `slice_head()` and `slice_tail()` functions.
+
+```{r}
+# Slice the top 5 rows
+penguins %>%
+  slice_head(n = 5)
+
+# Slice the bottom 10% of rows
+penguins %>%
+  slice_tail(prop = 0.1)
+```
+
+A negative `n` or `prop` will remove values from the start or end of the data.
+:::
+
+`slice_min()` and `slice_max()` in `dplyr` help you extract rows with the smallest or largest values of a specific column. This is useful for identifying extremes within your data.
+
+```{r}
+# Find penguins with the smallest bill length
+penguins %>%
+  slice_min(bill_length_mm, n = 3)
+```
+
+To take a random sample of rows from your dataset, use the `slice_sample()` function. This is helpful for creating a subset of data for exploratory analysis or testing.
+
+```{r}
+# Randomly slice 10 penguins
+penguins %>%
+  slice_sample(n = 10)
+```
+
+Use an appropriate slice function to find the 5 heaviest penguins.
+
+```{webr}
+#| exercise: find_heaviest_penguins
+# Find the 5 heaviest penguins based on their body mass
+penguins |> 
+  ______(order_by = ______ , n = ______)
+```
+
+```{webr}
+#| exercise: find_heaviest_penguins
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Ensure you are using `slice_max()` with `order_by = body_mass_g` and specifying `n = 5` to get the 5 heaviest penguins." = !search_ast(ql_ast(), .expr = slice_max(penguins, order_by = body_mass_g, n = 5))
+  )
+)
+```
+
+::: { .hint exercise="find_heaviest_penguins"}
+::: { .callout-note collapse=false}
+## Hint
+
+Use the `slice_max()` function to find the 5 penguins with the highest `body_mass_g`, sorting by this variable and specifying `n = 5`.
+
+```r
+penguins |> 
+  slice_max(order_by = body_mass_g, n = 5)
+```
+:::
+:::
+
+### Unique combinations (`distinct()`)
+
+The `distinct()` function returns unique rows, removing duplicates.
+
+```{r}
+# Get distinct species and islands combinations
+penguins |>
+  distinct(species, island)
+```
+
+Use `distinct()` to find which years exist in the dataset.
+
+```{webr}
+#| exercise: find_distinct_years
+# Use distinct() to find unique years in the data
+penguins |> 
+  distinct(______)
+```
+
+```{webr}
+#| exercise: find_distinct_years
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Ensure you are using `distinct(year)` to find the unique years present in the dataset." = !search_ast(ql_ast(), .expr = distinct(penguins, year))
+  )
+)
+```
+
+::: { .hint exercise="find_distinct_years"}
+::: { .callout-note collapse=false}
+## Hint
+
+Use `distinct(year)` to find and extract the unique years in the dataset.
+
+```r
+penguins |> 
+  distinct(year)
+```
+:::
+:::
+
+### Sort rows (`arrange()`)
+
+The `arrange()` function orders the rows according to one or more columns. You can wrap a variable in `desc()` to sort that variable in descending order.
+
+```{r}
+# Arrange penguins by bill length in descending order
+penguins |>
+  arrange(desc(bill_length_mm))
+```
+
+Try sorting the penguins dataset by species and flipper_length_mm.
+
+```{webr}
+#| exercise: arrange_penguins_by_species_flipper_length
+# Arrange the penguins dataset by species and flipper_length_mm
+penguins |> 
+  arrange(______ , ______)
+```
+
+```{webr}
+#| exercise: arrange_penguins_by_species_flipper_length
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Sort the dataset first by species and then by flipper_length_mm." = !search_ast(ql_ast(), .expr = arrange(penguins, species, flipper_length_mm))
+  )
+)
+```
+
+::: { .hint exercise="arrange_penguins_by_species_flipper_length"}
+::: { .callout-note collapse=false}
+## Hint
+
+Use the `arrange()` function to sort the dataset first by `species` and then by `flipper_length_mm`.
+
+```r
+penguins |> 
+  arrange(species, flipper_length_mm)
+```
+:::
+:::
+
+## Grouped Operations
+The `group_by()` function is used to group data by one or more variables for subsequent operations.
+
+```r
+# Group by species and island
+penguins |>
+  group_by(species, island)
+```
+
+While `group_by()` doesn't change any rows or columns of the data itself, it alters how other `dplyr` functions operate, affecting calculations and transformations.
+
+Grouped operations are most commonly used with `summarise()` to calculate aggregated statistics, like averages or totals, for each group. However, `group_by()` also works seamlessly with other `dplyr` functions like `filter()` and `mutate()`, allowing you to conduct calculations and transformations within each group.
+
+::: {.callout-tip collapse=false}
+## Mutating within groups
+
+Mutating within groups allows you to transform data based on group-specific calculations. For example, you can determine if a penguin's `body_mass_g` is above average for its species.
+
+```{r}
+penguins |> 
+  group_by(species) |> 
+  mutate(above_average_mass = body_mass_g > mean(body_mass_g, na.rm = TRUE)) |> 
+  ungroup()
+```
+
+:::
+
+## Summarising Observations
+
+### `summarise()`
+
+The `summarise()` function in `dplyr` calculates summary statistics over a dataset, allowing you to condense information into key metrics.
+
+```{r}
+# Calculate summary statistics for flipper length
+penguins %>%
+  summarise(
+    min_flipper = min(flipper_length_mm, na.rm = TRUE),
+    median_flipper = median(flipper_length_mm, na.rm = TRUE),
+    max_flipper = max(flipper_length_mm, na.rm = TRUE)
+  )
+```
+
+The `summarise()` function is often combined with `group_by()`, allowing you to compare summary statistics across different segments of your data.
+
+```{r}
+# Summarise the average bill length for each species
+penguins |>
+  group_by(species) |>
+  summarise(average_bill_length = mean(bill_length_mm, na.rm = TRUE))
+```
+
+Try calculating the average body mass by sex for Adelie, Chinstrap, and Gentoo penguins.
+
+```{webr}
+#| exercise: summarise_average_mass_by_sex_species
+# Summarise the average body mass of penguins by sex and species
+penguins |> 
+  group_by(______ , ______) |> 
+  summarise(average_body_mass = mean(______ , na.rm = TRUE))
+```
+
+```{webr}
+#| exercise: summarise_average_mass_by_sex_species
+#| check: true
+library(qlcheckr)
+
+ans <- penguins |> 
+  group_by(sex, species) |> 
+  summarise(average_body_mass = mean(body_mass_g, na.rm = TRUE)) |> 
+  pull(average_body_mass)
+
+apply_checks(
+  c(
+    "You should group by both `sex` and `species`." = !search_ast(ql_ast(), .expr = group_by(sex, species)),
+    "Calculate the mean of `body_mass_g`, don't forget about missing values!" = !search_ast(ql_ast(), .expr = mean(body_mass_g, na.rm = TRUE)),
+    "The result is incorrect, try again" = !exists_in(ql_results(), \(x) is.data.frame(x) && any(vapply(x, identical, logical(1L), ans)))
+  )
+)
+```
+
+::: { .hint exercise="summarise_average_mass_by_sex_species"}
+::: { .callout-note collapse=false}
+## Hint
+
+Group the data by both `sex` and `species` before using `summarise()` to calculate the mean of `body_mass_g`.
+
+```r
+penguins |> 
+  group_by(sex, species) |> 
+  summarise(average_body_mass = mean(body_mass_g, na.rm = TRUE))
+```
+:::
+:::
+
+### `count()`
+
+The `count()` function in `dplyr` is used to tally the number of occurrences of each unique combination of values in specified columns. This is similar to `distinct()`, which identifies unique cases, but `count()` provides the number of times each distinct case occurs.
+
+```{r}
+# Count the penguins of each sex for each species
+penguins %>%
+  count(species, sex)
+```
+
+Try counting the number of penguins recorded on each island.
+
+```{webr}
+#| exercise: count_penguins_per_island
+# Count the number of penguins recorded on each island
+penguins |> 
+  count(______)
+```
+
+```{webr}
+#| exercise: count_penguins_per_island
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Use `penguins |> count(island)` to compute the number of penguins recorded on each island." = !search_ast(ql_ast(), .expr = count(penguins, island))
+  )
+)
+```
+
+::: { .hint exercise="count_penguins_per_island"}
+::: { .callout-note collapse=false}
+## Hint
+
+Use `count()` to tally the number of penguins recorded for each `island` specified in the dataset.
+
+```r
+penguins |> 
+  count(island)
+```
+:::
+:::
+
+## Joining Tables
+
+There are several ways to join multiple tables together in `dplyr`. You can combine data by stacking rows using `bind_rows()` or by adding columns with `bind_cols()`. To add new variables based on common identifying columns, you can use mutating joins like `left_join()`, `right_join()`, `inner_join()`, and `full_join()`. To extract observations based on matching values in a secondary dataset, use the filtering join function `anti_join()`.
+
+### Combining data (`bind_rows()`, `bind_cols()`)
+
+Multiple datasets with the same variables can be combined by stacking rows using `bind_rows()`, while datasets with the same observations can be merged by adding columns using `bind_cols()`.
+
+These functions combine data without using common identifying keys, and so special care should be taken to ensure that the datasets are compatible (aligned rows and columns). If your datasets do have matching identifying columns, it is safer to use mutating joins instead of `bind_cols()`.
+
+It is common for datasets to be provided in multiple files, such as a separate dataset for each year of collection. Since they all have the same set of variables, we can use `bind_rows()` to combine these datasets together.
+
+```{r}
+#| code-fold: true
+#| code-summary: Code for setting up separate penguins datasets
+library(dplyr)
+library(palmerpenguins)
+penguins_year <- penguins |> 
+  group_by(year) |> 
+  group_split()
+penguins_2007 <- penguins_year[[1]]
+penguins_2008 <- penguins_year[[3]]
+penguins_2009 <- penguins_year[[2]]
+```
+```{r}
+bind_rows(penguins_2007, penguins_2008, penguins_2009)
+```
+
+### Mutating join (`left_join()`, `right_join()`, `inner_join()`, `full_join()`)
+
+Mutating joins add additional variables from one dataset to another based on matching key columns.
+
+| Join Type      | Description                                                                                                                                | Rows Retained from Left Dataset | Rows Retained from Right Dataset |
+|----------------|--------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|----------------------------------|
+| `left_join()`  | Adds columns from the right dataset to the left dataset. Keeps all rows from the left dataset, with `NA` for unmatched right dataset rows. | All                             | Only those that match            |
+| `right_join()` | Adds columns from the left dataset to the right dataset. Keeps all rows from the right dataset, with `NA` for unmatched left dataset rows. | Only those that match           | All                              |
+| `inner_join()` | Returns rows that have matching keys in both datasets and adds columns of both datasets to the result.                                     | Only those that match           | Only those that match            |
+| `full_join()`  | Combines all rows from both datasets, treating unmatched keys with `NA` values in columns from the opposite dataset.                       | All                             | All                              |
+
+
+Suppose we have a `penguin_info` dataset which contains key details about different penguin species, including their scientific name, typical nest type, and conservation status.
+
+```{r}
+penguin_info <- tibble(
+  species = c("Adelie", "Chinstrap", "Gentoo"),
+  scientific_name = c("Pygoscelis adeliae", "Pygoscelis antarcticus", "Pygoscelis papua"),
+  nest_type = c("Nests made from stones", "Nests made from stones", "Nests lined with pebbles and vegetation"),
+  conservation_status = c("Least Concern", "Least Concern", "Least Concern")
+)
+penguin_info
+```
+
+We can add this additional information about the penguin species to the data using a `left_join()`.
+
+```{r}
+penguins |>
+  left_join(penguin_info, by = "species")
+```
+
+Try to add information about the islands to the `penguins` dataset. Information from the Dream island was not provided in the supplementary `island_info` dataset, so use an appropriate join operation that will produce a combined dataset without any missing values.
+
+```{webr}
+#| exercise: join_penguins_island_info
+library(dplyr)
+island_info <- tibble(
+  island = c("Biscoe", "Torgersen"),
+  coastline_km = c(10, 3),
+  latitude = c(-64.8, -64.8),
+  longitude = c(-63.8, -64.1)
+)
+
+penguins |> 
+  ______(island_info, by = "______")
+```
+
+```{webr}
+#| exercise: join_penguins_island_info
+#| check: true
+library(qlcheckr)
+apply_checks(
+  c(
+    "Ensure you are using the data frame `island_info` in the `inner_join()` function, and the `by` argument correctly references the common column `island`." = !search_ast(ql_ast(), .expr = inner_join(penguins, island_info, by = "island"))
+  )
+)
+```
+
+::: { .hint exercise="join_penguins_island_info"}
+::: { .callout-note collapse=false}
+## Hint
+
+Consider using an `inner_join()` for combining the two datasets. This is appropriate because `inner_join()` will only keep rows with matching values in both datasets. Since the `Dream` island is not available in `island_info`, its entries from `penguins` will be excluded from the final merged dataset.
+
+```r
+penguins |> 
+  inner_join(island_info, by = ______)
+```
+:::
+:::
+
+::: { .hint exercise="join_penguins_island_info"}
+::: { .callout-note collapse=false}
+## Hint
+
+The datasets need to be joined on a key column they both have in common. In this case, it is the `island` column, which links data about islands from both the `penguins` and `island_info` datasets.
+
+```r
+penguins |> 
+  inner_join(island_info, by = "island")
+```
+:::
+:::
+
+
+### Filtering join (`semi_join()`, `anti_join()`)
+
+Filtering join functions filter the rows in the left dataset based on matching values in the right dataset. Unlike mutating joins, filtering joins do not add additional variables from the right dataset; the right dataset is only used to identify rows to keep or remove.
+
+| Join Type      | Description                                                                                   | Rows Retained from Left Dataset                     | Rows Retained from Right Dataset     |
+|----------------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------|--------------------------------------|
+| `semi_join()`  | Returns rows from the left dataset that have matching keys in the right dataset.              | Only those that match                               | Not included in the result           |
+| `anti_join()`  | Returns rows from the left dataset that do not have matching keys in the right dataset.       | Only those without a match                          | Not included in the result           |
+
+
+The `anti_join()` function filters observations from the first dataset that do not have matching keys in the second dataset. This is useful when you want to identify records in one dataset without corresponding entries in another.
+
+Suppose we don't want to add additional information about the islands, but we are only interested in the islands we have complete data for. We could use a filtering join to keep only the observations with known island information.
+
+```{r}
+island_info <- tibble(
+  island = c("Biscoe", "Torgersen"),
+  coastline_km = c(10, 3),
+  latitude = c(-64.8, -64.8),
+  longitude = c(-63.8, -64.1)
+)
+
+penguins |>
+  semi_join(island_info, by = "island")
+```
+
+::: {.callout-tip collapse=false}
+## Finding incomplete data
+
+Filtering joins can help you identify implicit missing values in your dataset if you have a second dataset with a complete set of identifying variables. Using `anti_join(complete_data, analysis_data)` will reveal which observations are missing from your analysis dataset.
+:::
