@@ -6,7 +6,8 @@ contributes:
     html:
       from: markdown+emoji
       theme: [default, lesson.scss]
-      date: today
+      # date: today
+      # date-modified: last-modified
       date-format: "D MMMM YYYY"
       # format-resources:
       #   - lesson.scss
