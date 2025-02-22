@@ -475,6 +475,7 @@ With `fill()`, you can specify the direction of the fill with `.direction`, choo
 The `replace_na()` function allows you to replace `NA` values with a specific value. It works very similarly to the `fill` option of the `complete()` function, where a dataset and list of replacement values for each column is provided.
 
 ```{r}
+#| eval: false
 data |> 
   replace_na(
     list(
