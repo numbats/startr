@@ -80,9 +80,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-project','listing-website','listing-custom-callout','listing-filters','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-execute','listing-difficulty','listing-time','listing-dev','listing-ojs-engine','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count','listing-toc-depth',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      valueNames: ['listing-project','listing-website','listing-custom-callout','listing-filters','listing-format','listing-language','listing-title','listing-subtitle','listing-title-block-banner','listing-engine','listing-execute','listing-difficulty','listing-time','listing-dev','listing-ojs-engine','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count','listing-toc-depth','listing-webr',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-project","listing-website","listing-custom-callout","listing-filters","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-execute","listing-difficulty","listing-time","listing-dev","listing-ojs-engine","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-toc-depth"],
+      searchColumns: ["listing-project","listing-website","listing-custom-callout","listing-filters","listing-format","listing-language","listing-title","listing-subtitle","listing-title-block-banner","listing-engine","listing-execute","listing-difficulty","listing-time","listing-dev","listing-ojs-engine","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-toc-depth","listing-webr"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -184,17 +184,6 @@ ul.task-list li input[type="checkbox"] {
   })
   </script>
 <style>
-div.callout-tada.callout {
-  border-left-color: #008000;
-}
-div.callout-tada.callout-style-default > .callout-header {
-  background-color: rgba(0, 128, 0, 0.13);
-}
-div.callout-tada .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.callout-titled .callout-icon::before {
-  content: '🎉';
-  background-image: none;
-}
 div.callout-todo.callout {
   border-left-color: pink;
 }
@@ -204,6 +193,17 @@ div.callout-todo.callout-style-default > .callout-header {
 div.callout-todo .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.callout-titled .callout-icon::before {
   content: '📝';
+  background-image: none;
+}
+div.callout-tada.callout {
+  border-left-color: #008000;
+}
+div.callout-tada.callout-style-default > .callout-header {
+  background-color: rgba(0, 128, 0, 0.13);
+}
+div.callout-tada .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.callout-titled .callout-icon::before {
+  content: '🎉';
   background-image: none;
 }
 </style>
@@ -377,7 +377,7 @@ No matching items
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-  " class="track-list-title" href="./modules/analysis/dplyr/index.html"> 3. Data manipulation </a> <span class="track-list-desc"> How to modify a dataset with dplyr to compute new columns or summaries, change rows or columns, and join datasets together.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 30 minutes </span> <span class="intermediate"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Intermediate </span> </span>
+  " class="track-list-title" href="./modules/analysis/dplyr/index.html"> 3. Data manipulation </a> <span class="track-list-desc"> How to modify a dataset with dplyr to compute new columns or summaries, change rows or columns, and join datasets together.</span> <span class="track-list-icons"> <img src="assets/schedule-icon.svg"> <span class="track-list-time"> 45 minutes </span> <span class="intermediate"> <span></span> <span></span> <span></span> </span> <span class="track-list-diff"> Intermediate </span> </span>
 </li>
 </ul>
 <div class="listing-no-matching d-none">

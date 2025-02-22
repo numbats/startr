@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-02-21">
 
 <title>2. Tidy data restructuring</title>
 <style>
@@ -20,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -75,6 +108,8 @@ ul.task-list li input[type="checkbox"] {
         background: yes;
       }
 </style>
+<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <style>
 div.callout-tada.callout {
   border-left-color: #008000;
@@ -147,12 +182,6 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
   <div class="quarto-title-meta">
 
       
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">21 February 2025</p>
-      </div>
-    </div>
     
       
     </div>
@@ -161,7 +190,35 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#tidy-data" id="toc-tidy-data" class="nav-link active" data-scroll-target="#tidy-data">Tidy data</a>
+  <ul class="collapse">
+  <li><a href="#the-tidy-data-format" id="toc-the-tidy-data-format" class="nav-link" data-scroll-target="#the-tidy-data-format">The tidy data format</a></li>
+  <li><a href="#using-tidy-data" id="toc-using-tidy-data" class="nav-link" data-scroll-target="#using-tidy-data">Using tidy data</a></li>
+  </ul></li>
+  <li><a href="#pivoting-with-pivot_longer-and-pivot_wider" id="toc-pivoting-with-pivot_longer-and-pivot_wider" class="nav-link" data-scroll-target="#pivoting-with-pivot_longer-and-pivot_wider">Pivoting with <code>pivot_longer()</code> and <code>pivot_wider()</code></a>
+  <ul class="collapse">
+  <li><a href="#pivot_longer" id="toc-pivot_longer" class="nav-link" data-scroll-target="#pivot_longer"><code>pivot_longer()</code></a></li>
+  <li><a href="#pivot_wider" id="toc-pivot_wider" class="nav-link" data-scroll-target="#pivot_wider"><code>pivot_wider()</code></a></li>
+  </ul></li>
+  <li><a href="#split-or-combine-columns" id="toc-split-or-combine-columns" class="nav-link" data-scroll-target="#split-or-combine-columns">Split or combine columns</a>
+  <ul class="collapse">
+  <li><a href="#separate_wider_" id="toc-separate_wider_" class="nav-link" data-scroll-target="#separate_wider_"><code>separate_wider_*()</code></a></li>
+  <li><a href="#separate_longer_" id="toc-separate_longer_" class="nav-link" data-scroll-target="#separate_longer_"><code>separate_longer_*()</code></a></li>
+  <li><a href="#unite" id="toc-unite" class="nav-link" data-scroll-target="#unite"><code>unite()</code></a></li>
+  </ul></li>
+  <li><a href="#handling-missing-values" id="toc-handling-missing-values" class="nav-link" data-scroll-target="#handling-missing-values">Handling Missing Values</a>
+  <ul class="collapse">
+  <li><a href="#complete" id="toc-complete" class="nav-link" data-scroll-target="#complete"><code>complete()</code></a></li>
+  <li><a href="#drop_na" id="toc-drop_na" class="nav-link" data-scroll-target="#drop_na"><code>drop_na()</code></a></li>
+  <li><a href="#fill" id="toc-fill" class="nav-link" data-scroll-target="#fill"><code>fill()</code></a></li>
+  <li><a href="#replace_na" id="toc-replace_na" class="nav-link" data-scroll-target="#replace_na"><code>replace_na()</code></a></li>
+  </ul></li>
+  </ul>
+</nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -174,11 +231,835 @@ div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.c
 
 
 
-<p>To be completed.</p>
+<p>The idea of tidy data is fundamental to data analysis with the tidyverse. Tidy data describes a clean and principled structure for your data which simplifies analysis tasks. The <code>tidyr</code> package provides tools to maintain or convert datasets into this tidy format, ensuring they integrate smoothly with other tidyverse tools for tasks like visualisation and modelling.</p>
+<section id="tidy-data" class="level2">
+<h2 class="anchored" data-anchor-id="tidy-data">Tidy data</h2>
+<section id="the-tidy-data-format" class="level3">
+<h3 class="anchored" data-anchor-id="the-tidy-data-format">The tidy data format</h3>
+<p>Tidy data describes a format for structuring data such that:</p>
+<ul>
+<li>Each <em>variable</em> is a column; each column is a variable.</li>
+<li>Each <em>observation</em> is a row; each row is an observation.</li>
+<li>Each <em>value</em> is a cell; each cell is a single value.</li>
+</ul>
+<p>This flat and consistent format makes it easier to perform data manipulation and analysis tasks, especially with other tools from the tidyverse.</p>
+<p>Consider this untidy dataset from the World Health Organization’s global tuberculosis report:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>who</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7,240 × 60
+   country  iso2  iso3   year new_sp_m014 new_sp_m1524 new_sp_m2534 new_sp_m3544
+   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+ 1 Afghani… AF    AFG    1980          NA           NA           NA           NA
+ 2 Afghani… AF    AFG    1981          NA           NA           NA           NA
+ 3 Afghani… AF    AFG    1982          NA           NA           NA           NA
+ 4 Afghani… AF    AFG    1983          NA           NA           NA           NA
+ 5 Afghani… AF    AFG    1984          NA           NA           NA           NA
+ 6 Afghani… AF    AFG    1985          NA           NA           NA           NA
+ 7 Afghani… AF    AFG    1986          NA           NA           NA           NA
+ 8 Afghani… AF    AFG    1987          NA           NA           NA           NA
+ 9 Afghani… AF    AFG    1988          NA           NA           NA           NA
+10 Afghani… AF    AFG    1989          NA           NA           NA           NA
+# ℹ 7,230 more rows
+# ℹ 52 more variables: new_sp_m4554 &lt;dbl&gt;, new_sp_m5564 &lt;dbl&gt;,
+#   new_sp_m65 &lt;dbl&gt;, new_sp_f014 &lt;dbl&gt;, new_sp_f1524 &lt;dbl&gt;,
+#   new_sp_f2534 &lt;dbl&gt;, new_sp_f3544 &lt;dbl&gt;, new_sp_f4554 &lt;dbl&gt;,
+#   new_sp_f5564 &lt;dbl&gt;, new_sp_f65 &lt;dbl&gt;, new_sn_m014 &lt;dbl&gt;,
+#   new_sn_m1524 &lt;dbl&gt;, new_sn_m2534 &lt;dbl&gt;, new_sn_m3544 &lt;dbl&gt;,
+#   new_sn_m4554 &lt;dbl&gt;, new_sn_m5564 &lt;dbl&gt;, new_sn_m65 &lt;dbl&gt;, …</code></pre>
+</div>
+</div>
+<p>This dataset is structurally untidy since the columns 5 through 60 (prefixed with <code>"new_"</code>) mix together the diagnosis method, sex, and age group categories. As a result, the columns no longer describe each variable (since many columns are used for the same variable), and each row isn’t an observation (since rows contain many observations for different methods, genders, and ages).</p>
+<p>Untidy data makes it difficult to perform simple analysis tasks such as comparing the rates of tuberculosis for different age groups, since the calculation would span many columns. A tidy data format as shown below simplifies this operation, since the age variable is now in a singular column that can be easily grouped for comparison summaries.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for cleaning the <code>who</code> dataset</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>who_tidy <span class="ot">&lt;-</span> who <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"new"</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Split the names into multiple columns</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">"diagnosis"</span>, <span class="st">"sex"</span>, <span class="st">"age"</span>),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use a regular expression where each matching group becomes a column</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_pattern =</span> <span class="st">"new_?(.*)_(.)(.*)"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Reformat the name columns into factors with better labels</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_transform =</span> <span class="fu">list</span>(</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">diagnosis =</span> \(x) <span class="fu">factor</span>(x, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"rel"</span>, <span class="st">"sn"</span>, <span class="st">"sp"</span>, <span class="st">"ep"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Relapse"</span>, <span class="st">"Negative pulmonary smear"</span>, <span class="st">"Positive pulmonary smear"</span>, <span class="st">"Extrapulmonary"</span>)),</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">sex =</span> \(x) <span class="fu">factor</span>(x, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"m"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Female"</span>, <span class="st">"Male"</span>)),</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">age =</span> \(x) <span class="fu">factor</span>(x, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"014"</span>, <span class="st">"1524"</span>, <span class="st">"2534"</span>, <span class="st">"3544"</span>, <span class="st">"4554"</span>, <span class="st">"5564"</span>, <span class="st">"65"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"0-14"</span>, <span class="st">"15-24"</span>, <span class="st">"25-34"</span>, <span class="st">"35-44"</span>, <span class="st">"45-54"</span>, <span class="st">"55-64"</span>, <span class="st">"65+"</span>), <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"count"</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Drop structurally missing values</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_drop_na =</span> <span class="cn">TRUE</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>who_tidy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 76,046 × 8
+   country     iso2  iso3   year diagnosis                sex    age   count
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;fct&gt;                    &lt;fct&gt;  &lt;ord&gt; &lt;dbl&gt;
+ 1 Afghanistan AF    AFG    1997 Positive pulmonary smear Male   0-14      0
+ 2 Afghanistan AF    AFG    1997 Positive pulmonary smear Male   15-24    10
+ 3 Afghanistan AF    AFG    1997 Positive pulmonary smear Male   25-34     6
+ 4 Afghanistan AF    AFG    1997 Positive pulmonary smear Male   35-44     3
+ 5 Afghanistan AF    AFG    1997 Positive pulmonary smear Male   45-54     5
+ 6 Afghanistan AF    AFG    1997 Positive pulmonary smear Male   55-64     2
+ 7 Afghanistan AF    AFG    1997 Positive pulmonary smear Male   65+       0
+ 8 Afghanistan AF    AFG    1997 Positive pulmonary smear Female 0-14      5
+ 9 Afghanistan AF    AFG    1997 Positive pulmonary smear Female 15-24    38
+10 Afghanistan AF    AFG    1997 Positive pulmonary smear Female 25-34    36
+# ℹ 76,036 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="using-tidy-data" class="level3">
+<h3 class="anchored" data-anchor-id="using-tidy-data">Using tidy data</h3>
+<p>In the next lesson we will learn how to compute summary statistics with dplyr, such as the total tuberculosis cases by age group. A tidy data format makes it much easier to calculate these summaries.</p>
+<div class="grid">
+<div class="g-col-6 g-col-md-12">
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+❌ Untidy data code
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Untidy data makes it difficult to perform simple calculations.</p>
+<p>Since the age variable is ‘wide’ (spread across many columns), the code needs to write out many column names where it is easy to make a mistake. The resulting table is also ‘wide’, and lacks any description of what the data shows (age and totals).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>who <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">0-14</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(new_sp_m014, new_sp_f014, new_sn_m014, new_sn_f014, new_ep_m014, new_ep_f014, newrel_m014, newrel_f014, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">15-24</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(new_sp_m1524, new_sp_f1524, new_sn_m1524, new_sn_f1524, new_ep_m1524, new_ep_f1524, newrel_m1524, newrel_f1524, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">25-34</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(new_sp_m2534, new_sp_f2534, new_sn_m2534, new_sn_f2534, new_ep_m2534, new_ep_f2534, newrel_m2534, newrel_f2534, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">35-44</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(new_sp_m3544, new_sp_f3544, new_sn_m3544, new_sn_f3544, new_ep_m3544, new_ep_f3544, newrel_m3544, newrel_f3544, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">45-54</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(new_sp_m4554, new_sp_f4554, new_sn_m4554, new_sn_f4554, new_ep_m4554, new_ep_f4554, newrel_m4554, newrel_f4554, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">55-64</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(new_sp_m5564, new_sp_f5564, new_sn_m5564, new_sn_f5564, new_ep_m5564, new_ep_f5564, newrel_m5564, newrel_f5564, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">65+</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(new_sp_m65, new_sp_f65, new_sn_m65, new_sn_f65, new_ep_m65, new_ep_f65, newrel_m65, newrel_f65, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 7
+   `0-14` `15-24` `25-34` `35-44` `45-54` `55-64`   `65+`
+    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 1708251 7642727 9636127 8766716 6500726 4799668 4343303</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="g-col-6 g-col-md-12">
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Tidy data code
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tidy data makes the code simpler to read and write.</p>
+<p>Since each variable is only specified once in the code, mistakes are less likely and easier to find and fix. The resulting table is also in a ‘long’ and tidy format, with descriptive column names.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>who_tidy <span class="sc">|&gt;</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(age) <span class="sc">|&gt;</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">sum</span>(count))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 2
+  age     total
+  &lt;ord&gt;   &lt;dbl&gt;
+1 0-14  1708251
+2 15-24 7642727
+3 25-34 9636127
+4 35-44 8766716
+5 45-54 6500726
+6 55-64 4799668
+7 65+   4343303</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="pivoting-with-pivot_longer-and-pivot_wider" class="level2">
+<h2 class="anchored" data-anchor-id="pivoting-with-pivot_longer-and-pivot_wider">Pivoting with <code>pivot_longer()</code> and <code>pivot_wider()</code></h2>
+<p>Pivoting describes changing the structure of the data, where columns are gathered into rows (<code>pivot_longer()</code>) or rows are spread across columns (<code>pivot_wider()</code>).</p>
+<section id="pivot_longer" class="level3">
+<h3 class="anchored" data-anchor-id="pivot_longer"><code>pivot_longer()</code></h3>
+<p>This function is used to transform a dataset from wide to long format. Untidy data often has variables mixed among many columns (like the <code>who</code> tuberculosis dataset), and <code>pivot_longer()</code> is most useful for cleaning data into a long tidy format.</p>
+<p>The <code>pivot_longer()</code> function requires two main inputs, the dataset and the columns to pivot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(col1, col2, col3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There are many ways to specify the columns, one way is to write them all inside <code>c()</code>. Usually wide untidy datasets have many columns to pivot (the <code>who</code> dataset has 56), and so writing each column can be tedious and error prone. Fortunately there is a better way, columns can be specified using <strong>tidy selection</strong>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tidy selection
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tidy selection describes a collection of helpful tools for selecting variables:</p>
+<ul>
+<li><code>col1:col3</code>: select all variables from <code>col1</code> to <code>col3</code>,</li>
+<li><code>starts_with("col")</code>/<code>ends_with("x")</code>: select variables with a start or end string,</li>
+<li><code>contains("x")</code>/<code>matches("\\d+$")</code>: select variables that <em>contains</em> the string, or <em>matches</em> the <a href="https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions">regular expression</a></li>
+<li>and much more!</li>
+</ul>
+<p>A comprehensive summary can be found in the <code>?tidyr_tidy_select</code> documentation.</p>
+</div>
+</div>
+<p>To tidy the <code>who</code> dataset into a long format, we use <code>pivot_longer()</code> on the wide columns which conveniently all start with <code>"new"</code>. We can also use <code>names_to</code> and <code>values_to</code> to give better names for the new columns which previously were the names and values of the selected columns.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>who <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"new"</span>),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"diagnosis_sex_age"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"count"</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 405,440 × 6
+   country     iso2  iso3   year diagnosis_sex_age count
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;
+ 1 Afghanistan AF    AFG    1980 new_sp_m014          NA
+ 2 Afghanistan AF    AFG    1980 new_sp_m1524         NA
+ 3 Afghanistan AF    AFG    1980 new_sp_m2534         NA
+ 4 Afghanistan AF    AFG    1980 new_sp_m3544         NA
+ 5 Afghanistan AF    AFG    1980 new_sp_m4554         NA
+ 6 Afghanistan AF    AFG    1980 new_sp_m5564         NA
+ 7 Afghanistan AF    AFG    1980 new_sp_m65           NA
+ 8 Afghanistan AF    AFG    1980 new_sp_f014          NA
+ 9 Afghanistan AF    AFG    1980 new_sp_f1524         NA
+10 Afghanistan AF    AFG    1980 new_sp_f2534         NA
+# ℹ 405,430 more rows</code></pre>
+</div>
+</div>
+<p>Since a wide untidy dataset requires values for every cell, the data has many missing values. After pivoting the data into a longer format, these missing values are no longer structurally required by the data (although they may still be useful or informative). We can remove these missing value rows with the <code>values_drop_na</code> option:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>who <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"new"</span>),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"diagnosis_sex_age"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"count"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_drop_na =</span> <span class="cn">TRUE</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 76,046 × 6
+   country     iso2  iso3   year diagnosis_sex_age count
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;
+ 1 Afghanistan AF    AFG    1997 new_sp_m014           0
+ 2 Afghanistan AF    AFG    1997 new_sp_m1524         10
+ 3 Afghanistan AF    AFG    1997 new_sp_m2534          6
+ 4 Afghanistan AF    AFG    1997 new_sp_m3544          3
+ 5 Afghanistan AF    AFG    1997 new_sp_m4554          5
+ 6 Afghanistan AF    AFG    1997 new_sp_m5564          2
+ 7 Afghanistan AF    AFG    1997 new_sp_m65            0
+ 8 Afghanistan AF    AFG    1997 new_sp_f014           5
+ 9 Afghanistan AF    AFG    1997 new_sp_f1524         38
+10 Afghanistan AF    AFG    1997 new_sp_f2534         36
+# ℹ 76,036 more rows</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Separating multiple variables in names
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is also possible to split the <code>diagnosis_sex_age</code> column into three separate columns using <code>names_sep</code> (for simple delimiters) or <code>names_pattern</code> (for matching <a href="https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions">regular expressions</a>).</p>
+<p>In this case values like <code>"new_sp_m554"</code>, <code>new_sn_f65</code> and <code>newrel_m5564</code> are not easily separable by a delimiter, and so a regular expression like <code>"names_pattern = new_?(.*)_(.)(.*)"</code> is required.</p>
+<p>Alternatively, we can use <code>separate()</code> to separate a column into multiple columns.</p>
+</div>
+</div>
+<p>The <code>world_bank_pop</code> dataset contains years across multiple columns, use <code>pivot_longer()</code> to gather all of the year columns into a single <code>"year"</code> column with the population values collected into a <code>"population"</code> column.</p>
+<div class="cell" data-exercise="pivot_longer_world_bank_pop">
+<div>
+<div id="webr-1" class="exercise-cell">
+
+</div>
+<script type="webr-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicGl2b3RfbG9uZ2VyX3dvcmxkX2JhbmtfcG9wIn0sImNvZGUiOiIjIFRyYW5zZm9ybSB0aGUgZGF0YXNldCBmcm9tIHdpZGUgdG8gbG9uZyBmb3JtYXQgdXNpbmcgcGl2b3RfbG9uZ2VyXG5saWJyYXJ5KHRpZHlyKVxud29ybGRfYmFua19wb3AgfD4gXG4gIHBpdm90X2xvbmdlcihjb2xzID0gX19fX19fLCBuYW1lc190byA9IF9fX19fXywgdmFsdWVzX3RvID0gX19fX19fKSJ9
+</script>
+</div>
+</div>
+<div class="cell" data-exercise="pivot_longer_world_bank_pop" data-check="true">
+<script type="exercise-check-pivot_longer_world_bank_pop-contents">
+eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6InBpdm90X2xvbmdlcl93b3JsZF9iYW5rX3BvcCJ9LCJjb2RlIjoibGlicmFyeShxbGNoZWNrcilcbmFucyA8LSB3b3JsZF9iYW5rX3BvcCB8PiBwaXZvdF9sb25nZXIoY29scyA9IGAyMDAwYDpgMjAxN2AsIG5hbWVzX3RvID0gXCJ5ZWFyXCIsIHZhbHVlc190byA9IFwicG9wdWxhdGlvblwiKVxuYXBwbHlfY2hlY2tzKFxuICBjKFxuICAgIFwiTWFrZSBzdXJlIHlvdSBzcGVjaWZ5IHRoZSByYW5nZSBvZiBjb2x1bW5zIHRvIHBpdm90IHVzaW5nIGBwaXZvdF9sb25nZXIoKWAuXCIgPSAhc2VhcmNoX2FzdChxbF9hc3QoKSwgLmZuID0gcGl2b3RfbG9uZ2VyKSxcbiAgICBcIlNlbGVjdCBhbGwgb2YgdGhlIGNvbHVtbnMgd2hpY2ggY29udGFpbnMgeWVhcnNcIiA9ICFleGlzdHNfaW4ocWxfcmVzdWx0cygpLCBcXCh4KSBpZGVudGljYWwodW5uYW1lKHgpLCB1bm5hbWUoYW5zKSkpLFxuICAgIFwiVXNlIFxcXCJ5ZWFyXFxcIiBmb3IgdGhlIHllYXJzIGNvbHVtbiBuYW1lXCIgID0gIWV4aXN0c19pbihxbF9yZXN1bHRzKCksIFxcKHgpIGlzLmRhdGEuZnJhbWUoeCkgJiYgaWRlbnRpY2FsKHgkeWVhciwgYW5zJHllYXIpKSxcbiAgICBcIlVzZSBcXFwicG9wdWxhdGlvblxcXCIgZm9yIHRoZSB2YWx1ZXMgY29sdW1uIG5hbWVcIiAgPSAhZXhpc3RzX2luKHFsX3Jlc3VsdHMoKSwgXFwoeCkgaXMuZGF0YS5mcmFtZSh4KSAmJiBpZGVudGljYWwoeCRwb3B1bGF0aW9uLCBhbnMkcG9wdWxhdGlvbikpXG4gIClcbikifQ==
+</script>
+</div>
+<div class="hint webr-ojs-exercise exercise-hint d-none" data-exercise="pivot_longer_world_bank_pop">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>All of the year columns can be selected using either:</p>
+<ul>
+<li>the range of columns <code>2000</code>:<code>2017</code>,</li>
+<li>the regular expression <code>matches(\\d{4})</code> (4 digits), or</li>
+<li>the logical test <code>where(is.numeric)</code> to select all columns containing numbers (which is only the year columns)</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>world_bank_pop <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="st">`</span><span class="at">2000</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">2017</span><span class="st">`</span>, <span class="at">names_to =</span> <span class="st">"year"</span>, <span class="at">values_to =</span> <span class="st">"population"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="pivot_wider" class="level3">
+<h3 class="anchored" data-anchor-id="pivot_wider"><code>pivot_wider()</code></h3>
+<p>Conversely, <code>pivot_wider()</code> is used to transform data from long to wide format. This can be useful if your data is untidy because it is too long (multiple variables are contained in rows of a column), or if you’ve completed your analysis and want to nicely present some results in a table of your report.</p>
+<p>The <code>pivot_wider()</code> function requires two main inputs, the column names for the wider table’s names and values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> <span class="st">"names"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> <span class="st">"values"</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>fish_encounters</code> dataset contains sightings of 19 tagged fish as they travel past measurement stations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fish_encounters</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 114 × 3
+   fish  station  seen
+   &lt;fct&gt; &lt;fct&gt;   &lt;int&gt;
+ 1 4842  Release     1
+ 2 4842  I80_1       1
+ 3 4842  Lisbon      1
+ 4 4842  Rstr        1
+ 5 4842  Base_TD     1
+ 6 4842  BCE         1
+ 7 4842  BCW         1
+ 8 4842  BCE2        1
+ 9 4842  BCW2        1
+10 4842  MAE         1
+# ℹ 104 more rows</code></pre>
+</div>
+</div>
+<p>It can be useful to treat each measurement <code>station</code> as a separate variable, considering each individual fish as the observational unit (rather than a sighting of a fish at a station).</p>
+<p>For this we can use <code>pivot_wider()</code> to spread <code>station</code> into the columns with <code>seen</code> as each cell’s values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fish_encounters <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"station"</span>, <span class="at">values_from =</span> <span class="st">"seen"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 19 × 12
+   fish  Release I80_1 Lisbon  Rstr Base_TD   BCE   BCW  BCE2  BCW2   MAE   MAW
+   &lt;fct&gt;   &lt;int&gt; &lt;int&gt;  &lt;int&gt; &lt;int&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1 4842        1     1      1     1       1     1     1     1     1     1     1
+ 2 4843        1     1      1     1       1     1     1     1     1     1     1
+ 3 4844        1     1      1     1       1     1     1     1     1     1     1
+ 4 4845        1     1      1     1       1    NA    NA    NA    NA    NA    NA
+ 5 4847        1     1      1    NA      NA    NA    NA    NA    NA    NA    NA
+ 6 4848        1     1      1     1      NA    NA    NA    NA    NA    NA    NA
+ 7 4849        1     1     NA    NA      NA    NA    NA    NA    NA    NA    NA
+ 8 4850        1     1     NA     1       1     1     1    NA    NA    NA    NA
+ 9 4851        1     1     NA    NA      NA    NA    NA    NA    NA    NA    NA
+10 4854        1     1     NA    NA      NA    NA    NA    NA    NA    NA    NA
+11 4855        1     1      1     1       1    NA    NA    NA    NA    NA    NA
+12 4857        1     1      1     1       1     1     1     1     1    NA    NA
+13 4858        1     1      1     1       1     1     1     1     1     1     1
+14 4859        1     1      1     1       1    NA    NA    NA    NA    NA    NA
+15 4861        1     1      1     1       1     1     1     1     1     1     1
+16 4862        1     1      1     1       1     1     1     1     1    NA    NA
+17 4863        1     1     NA    NA      NA    NA    NA    NA    NA    NA    NA
+18 4864        1     1     NA    NA      NA    NA    NA    NA    NA    NA    NA
+19 4865        1     1      1    NA      NA    NA    NA    NA    NA    NA    NA</code></pre>
+</div>
+</div>
+<p>Notice how the wider form introduces many NA values. These are combinations of fish identifiers and measurement stations which did not have a row in the original dataset. For this dataset, this means that the fish was not <code>seen</code> at the station and we can safely fill these missing values with 0 using the <code>values_fill</code> option:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>fish_encounters <span class="sc">|&gt;</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"station"</span>, <span class="at">values_from =</span> <span class="st">"seen"</span>, <span class="at">values_fill =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 19 × 12
+   fish  Release I80_1 Lisbon  Rstr Base_TD   BCE   BCW  BCE2  BCW2   MAE   MAW
+   &lt;fct&gt;   &lt;int&gt; &lt;int&gt;  &lt;int&gt; &lt;int&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1 4842        1     1      1     1       1     1     1     1     1     1     1
+ 2 4843        1     1      1     1       1     1     1     1     1     1     1
+ 3 4844        1     1      1     1       1     1     1     1     1     1     1
+ 4 4845        1     1      1     1       1     0     0     0     0     0     0
+ 5 4847        1     1      1     0       0     0     0     0     0     0     0
+ 6 4848        1     1      1     1       0     0     0     0     0     0     0
+ 7 4849        1     1      0     0       0     0     0     0     0     0     0
+ 8 4850        1     1      0     1       1     1     1     0     0     0     0
+ 9 4851        1     1      0     0       0     0     0     0     0     0     0
+10 4854        1     1      0     0       0     0     0     0     0     0     0
+11 4855        1     1      1     1       1     0     0     0     0     0     0
+12 4857        1     1      1     1       1     1     1     1     1     0     0
+13 4858        1     1      1     1       1     1     1     1     1     1     1
+14 4859        1     1      1     1       1     0     0     0     0     0     0
+15 4861        1     1      1     1       1     1     1     1     1     1     1
+16 4862        1     1      1     1       1     1     1     1     1     0     0
+17 4863        1     1      0     0       0     0     0     0     0     0     0
+18 4864        1     1      0     0       0     0     0     0     0     0     0
+19 4865        1     1      1     0       0     0     0     0     0     0     0</code></pre>
+</div>
+</div>
+<p>The <code>indicator</code> variable of the <code>world_bank_pop</code> dataset contains both population totals and growth. These two values are in principle, two different variables which should be treated as separate columns. After pivoting the year columns into a longer structure, now pivot these population indicator variables into a wider structure to produce a tidy data format.</p>
+<div class="cell" data-exercise="pivot_wider_world_bank_pop">
+<div>
+<div id="webr-3" class="exercise-cell">
+
+</div>
+<script type="webr-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicGl2b3Rfd2lkZXJfd29ybGRfYmFua19wb3AifSwiY29kZSI6IiMgRmlyc3QsIHBpdm90IHRoZSB5ZWFyIGNvbHVtbnMgdG8gYSBsb25nZXIgc3RydWN0dXJlLCB0aGVuIHBpdm90IGluZGljYXRvciB2YXJpYWJsZXMgdG8gYSB3aWRlciBzdHJ1Y3R1cmVcbndvcmxkX2JhbmtfcG9wIHw+IFxuICBwaXZvdF9sb25nZXIoY29scyA9IGAyMDAwYDpgMjAxN2AsIG5hbWVzX3RvID0gXCJ5ZWFyXCIsIHZhbHVlc190byA9IFwicG9wdWxhdGlvblwiKSB8PiBcbiAgcGl2b3Rfd2lkZXIobmFtZXNfZnJvbSA9IFwiX19fX19fXCIsIHZhbHVlc19mcm9tID0gXCJfX19fX19cIikifQ==
+</script>
+</div>
+</div>
+<div class="cell" data-exercise="pivot_wider_world_bank_pop" data-check="true">
+<script type="exercise-check-pivot_wider_world_bank_pop-contents">
+eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6InBpdm90X3dpZGVyX3dvcmxkX2JhbmtfcG9wIn0sImNvZGUiOiJsaWJyYXJ5KHFsY2hlY2tyKVxuXG5hbnMgPC0gd29ybGRfYmFua19wb3AgfD4gXG4gIHBpdm90X2xvbmdlcihjb2xzID0gYDIwMDBgOmAyMDE3YCwgbmFtZXNfdG8gPSBcInllYXJcIiwgdmFsdWVzX3RvID0gXCJwb3B1bGF0aW9uXCIpIHw+IFxuICBwaXZvdF93aWRlcihuYW1lc19mcm9tID0gXCJpbmRpY2F0b3JcIiwgdmFsdWVzX2Zyb20gPSBcInBvcHVsYXRpb25cIilcbmFwcGx5X2NoZWNrcyhcbiAgYyhcbiAgICBcIlVzZSBgcGl2b3Rfd2lkZXIoKWAgdG8gcGl2b3QgdGhlIGluZGljYXRvciBjb2x1bW4gaW50byBhIHdpZGVyIGZvcm1hdC5cIiA9ICFzZWFyY2hfYXN0KHFsX2FzdCgpLCAuZm4gPSBwaXZvdF93aWRlciksXG4gICAgXCJQaXZvdCB0aGUgYGluZGljYXRvcmAgY29sdW1uIHdpZGVyIHVzaW5nIGBwb3B1bGF0aW9uYCBmb3IgdGhlIHZhbHVlcy5cIiA9ICFleGlzdHNfaW4ocWxfcmVzdWx0cygpLCBpZGVudGljYWwsIGFucylcbiAgKVxuKSJ9
+</script>
+</div>
+<div class="hint webr-ojs-exercise exercise-hint d-none" data-exercise="pivot_wider_world_bank_pop">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>The <code>indicator</code> variable contains ‘total’ and ‘growth’ variables, which should be made into new columns (<code>names_from</code>). The <code>population</code> variable contains values for these new population totals and growth columns (<code>values_from</code>).</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>world_bank_pop <span class="sc">|&gt;</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="st">`</span><span class="at">2000</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">2017</span><span class="st">`</span>, <span class="at">names_to =</span> <span class="st">"year"</span>, <span class="at">values_to =</span> <span class="st">"population"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"indicator"</span>, <span class="at">values_from =</span> <span class="st">"population"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="split-or-combine-columns" class="level2">
+<h2 class="anchored" data-anchor-id="split-or-combine-columns">Split or combine columns</h2>
+<p>Occasionally the values of single column contains information about multiple variables or observations. Separating this column into multiple columns or rows into a tidy data format (where each column is a variable, and each row is an observation) makes later analysis easier.</p>
+<section id="separate_wider_" class="level3">
+<h3 class="anchored" data-anchor-id="separate_wider_"><code>separate_wider_*()</code></h3>
+<p>Separating combined values into a wider format is appropriate when the values contain information about multiple variables.</p>
+<p>There are three ways to separate values into columns:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 78%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>separate_wider_position()</code></td>
+<td>Splits a column into multiple columns using specific position indices, ideal for fixed-width data.</td>
+</tr>
+<tr class="even">
+<td><code>separate_wider_delim()</code></td>
+<td>Divides a column into new columns based on a specified delimiter, useful for structured patterns.</td>
+</tr>
+<tr class="odd">
+<td><code>separate_wider_regex()</code></td>
+<td>Uses regular expressions to separate a column into multiple columns, suitable for complex patterns.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>indicator</code> variable from the <code>world_bank_pop</code> dataset encodes multiple variables separated by <code>.</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>world_bank_pop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,064 × 20
+   country indicator      `2000`  `2001`  `2002`  `2003`  `2004`  `2005`  `2006`
+   &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 ABW     SP.URB.TOTL    4.16e4 4.20e+4 4.22e+4 4.23e+4 4.23e+4 4.24e+4 4.26e+4
+ 2 ABW     SP.URB.GROW    1.66e0 9.56e-1 4.01e-1 1.97e-1 9.46e-2 1.94e-1 3.67e-1
+ 3 ABW     SP.POP.TOTL    8.91e4 9.07e+4 9.18e+4 9.27e+4 9.35e+4 9.45e+4 9.56e+4
+ 4 ABW     SP.POP.GROW    2.54e0 1.77e+0 1.19e+0 9.97e-1 9.01e-1 1.00e+0 1.18e+0
+ 5 AFE     SP.URB.TOTL    1.16e8 1.20e+8 1.24e+8 1.29e+8 1.34e+8 1.39e+8 1.44e+8
+ 6 AFE     SP.URB.GROW    3.60e0 3.66e+0 3.72e+0 3.71e+0 3.74e+0 3.81e+0 3.81e+0
+ 7 AFE     SP.POP.TOTL    4.02e8 4.12e+8 4.23e+8 4.34e+8 4.45e+8 4.57e+8 4.70e+8
+ 8 AFE     SP.POP.GROW    2.58e0 2.59e+0 2.61e+0 2.62e+0 2.64e+0 2.67e+0 2.70e+0
+ 9 AFG     SP.URB.TOTL    4.31e6 4.36e+6 4.67e+6 5.06e+6 5.30e+6 5.54e+6 5.83e+6
+10 AFG     SP.URB.GROW    1.86e0 1.15e+0 6.86e+0 7.95e+0 4.59e+0 4.47e+0 5.03e+0
+# ℹ 1,054 more rows
+# ℹ 11 more variables: `2007` &lt;dbl&gt;, `2008` &lt;dbl&gt;, `2009` &lt;dbl&gt;, `2010` &lt;dbl&gt;,
+#   `2011` &lt;dbl&gt;, `2012` &lt;dbl&gt;, `2013` &lt;dbl&gt;, `2014` &lt;dbl&gt;, `2015` &lt;dbl&gt;,
+#   `2016` &lt;dbl&gt;, `2017` &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>The first part is always <code>"SP"</code> and can be ignored, but the second part is <code>"POP"</code> (total population) or <code>"URB"</code> (urban population), and the third part is <code>"TOTL"</code> (population totals) or <code>"GROW"</code> (population growth).</p>
+<p>We can use <code>separate_wider_delim()</code> to separate <code>indicator</code> based on the <code>"."</code> delimiter.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>world_bank_pop <span class="sc">|&gt;</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_wider_delim</span>(indicator, <span class="at">delim =</span> <span class="st">"."</span>, <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"sp"</span>, <span class="st">"location"</span>, <span class="st">"indicator"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,064 × 22
+   country sp    location indicator       `2000`  `2001`  `2002`  `2003`  `2004`
+   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 ABW     SP    URB      TOTL          41625    4.20e+4 4.22e+4 4.23e+4 4.23e+4
+ 2 ABW     SP    URB      GROW              1.66 9.56e-1 4.01e-1 1.97e-1 9.46e-2
+ 3 ABW     SP    POP      TOTL          89101    9.07e+4 9.18e+4 9.27e+4 9.35e+4
+ 4 ABW     SP    POP      GROW              2.54 1.77e+0 1.19e+0 9.97e-1 9.01e-1
+ 5 AFE     SP    URB      TOTL      115551653    1.20e+8 1.24e+8 1.29e+8 1.34e+8
+ 6 AFE     SP    URB      GROW              3.60 3.66e+0 3.72e+0 3.71e+0 3.74e+0
+ 7 AFE     SP    POP      TOTL      401600588    4.12e+8 4.23e+8 4.34e+8 4.45e+8
+ 8 AFE     SP    POP      GROW              2.58 2.59e+0 2.61e+0 2.62e+0 2.64e+0
+ 9 AFG     SP    URB      TOTL        4314700    4.36e+6 4.67e+6 5.06e+6 5.30e+6
+10 AFG     SP    URB      GROW              1.86 1.15e+0 6.86e+0 7.95e+0 4.59e+0
+# ℹ 1,054 more rows
+# ℹ 13 more variables: `2005` &lt;dbl&gt;, `2006` &lt;dbl&gt;, `2007` &lt;dbl&gt;, `2008` &lt;dbl&gt;,
+#   `2009` &lt;dbl&gt;, `2010` &lt;dbl&gt;, `2011` &lt;dbl&gt;, `2012` &lt;dbl&gt;, `2013` &lt;dbl&gt;,
+#   `2014` &lt;dbl&gt;, `2015` &lt;dbl&gt;, `2016` &lt;dbl&gt;, `2017` &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="separate_longer_" class="level3">
+<h3 class="anchored" data-anchor-id="separate_longer_"><code>separate_longer_*()</code></h3>
+<p>Separating combined values into a longer format is appropriate when a column contains multiple values, for example a clothing product’s sizes or styles.</p>
+<p>There are two ways to separate values into rows:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 80%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>separate_longer_position()</code></td>
+<td>Breaks a column into multiple rows based on specified fixed positions, useful for expanding fixed-width data.</td>
+</tr>
+<tr class="even">
+<td><code>separate_longer_delim()</code></td>
+<td>Splits a column into multiple rows using a specified delimiter, ideal for lists or values separated by delimiters.</td>
+</tr>
+</tbody>
+</table>
+<p>Consider this dataset of clothing items:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample dataset of clothing products</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>clothing_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">item =</span> <span class="fu">c</span>(<span class="st">"T-Shirt"</span>, <span class="st">"Jacket"</span>, <span class="st">"Dress"</span>),</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="fu">c</span>(<span class="st">"S, M, L"</span>, <span class="st">"M, L, XL"</span>, <span class="st">"XS, S, M, L"</span>),</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">colour =</span> <span class="fu">c</span>(<span class="st">"Red, Blue, Green"</span>, <span class="st">"Black, Grey"</span>, <span class="st">"Purple, Yellow"</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>clothing_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  item    size        colour          
+  &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;           
+1 T-Shirt S, M, L     Red, Blue, Green
+2 Jacket  M, L, XL    Black, Grey     
+3 Dress   XS, S, M, L Purple, Yellow  </code></pre>
+</div>
+</div>
+<p>Since each size and colour is separated by <code>", "</code>, we can use <code>separate_longer_delim()</code> to separate the multiple product sizes and colours into rows.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>clothing_data <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_longer_delim</span>(size, <span class="at">delim =</span> <span class="st">", "</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_longer_delim</span>(colour, <span class="at">delim =</span> <span class="st">", "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 23 × 3
+   item    size  colour
+   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt; 
+ 1 T-Shirt S     Red   
+ 2 T-Shirt S     Blue  
+ 3 T-Shirt S     Green 
+ 4 T-Shirt M     Red   
+ 5 T-Shirt M     Blue  
+ 6 T-Shirt M     Green 
+ 7 T-Shirt L     Red   
+ 8 T-Shirt L     Blue  
+ 9 T-Shirt L     Green 
+10 Jacket  M     Black 
+# ℹ 13 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="unite" class="level3">
+<h3 class="anchored" data-anchor-id="unite"><code>unite()</code></h3>
+<p>The <code>unite()</code> function combines multiple columns into a single column, separating the values of each column by a delimiter (by default <code>sep = "_"</code>). This is the opposite operation of <code>separate_wider_*()</code>.</p>
+<p>It requires two inputs, the data and columns to combine. The <code>col</code> argument supports tidy selection.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(<span class="at">col =</span> <span class="fu">c</span>(col1, col2, col3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is rarely useful for producing tidy data, but it can be useful for preparing data for reports or creating unique identifiers.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(<span class="at">col =</span> <span class="st">"category"</span>, <span class="fu">c</span>(species, island, sex), <span class="at">sep =</span> <span class="st">"_"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 6
+   category     bill_length_mm bill_depth_mm flipper_length_mm body_mass_g  year
+   &lt;chr&gt;                 &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;int&gt;
+ 1 Adelie_Torg…           39.1          18.7               181        3750  2007
+ 2 Adelie_Torg…           39.5          17.4               186        3800  2007
+ 3 Adelie_Torg…           40.3          18                 195        3250  2007
+ 4 Adelie_Torg…           NA            NA                  NA          NA  2007
+ 5 Adelie_Torg…           36.7          19.3               193        3450  2007
+ 6 Adelie_Torg…           39.3          20.6               190        3650  2007
+ 7 Adelie_Torg…           38.9          17.8               181        3625  2007
+ 8 Adelie_Torg…           39.2          19.6               195        4675  2007
+ 9 Adelie_Torg…           34.1          18.1               193        3475  2007
+10 Adelie_Torg…           42            20.2               190        4250  2007
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="handling-missing-values" class="level2">
+<h2 class="anchored" data-anchor-id="handling-missing-values">Handling Missing Values</h2>
+<p>Appropriately representing missing values in your dataset is necessary for an accurate analysis. The <code>tidyr</code> package in R offers several tools for managing missing data, both implicit and explicit. Implicit missing values occur when expected combinations of data are absent, while explicit missing values appear as <code>NA</code> in your dataset.</p>
+<section id="complete" class="level3">
+<h3 class="anchored" data-anchor-id="complete"><code>complete()</code></h3>
+<p>The <code>complete()</code> function transforms <em>implicit</em> missing values (where the row itself is missing) into explicit missing values. It does this by finding all combinations of specified variables, and adding any missing combinations using <code>NA</code> values.</p>
+<p>It requires two inputs, the dataset and a structure of variables to combine.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(brand, <span class="fu">nesting</span>(state, region))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>nesting()</code> function can limit combinations within other variables, preventing redundant or impossible combinations. The code uses <code>nesting(state, region)</code> to ensure that only existing state-region pairings are considered when filling missing data, preventing improper combinations of regions into other states.</p>
+<p>The <code>fish_encounters</code> dataset only contains rows where a fish was seen at a measurement station, and so there is an implicit missing value for each time a fish was not observed.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>fish_encounters</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 114 × 3
+   fish  station  seen
+   &lt;fct&gt; &lt;fct&gt;   &lt;int&gt;
+ 1 4842  Release     1
+ 2 4842  I80_1       1
+ 3 4842  Lisbon      1
+ 4 4842  Rstr        1
+ 5 4842  Base_TD     1
+ 6 4842  BCE         1
+ 7 4842  BCW         1
+ 8 4842  BCE2        1
+ 9 4842  BCW2        1
+10 4842  MAE         1
+# ℹ 104 more rows</code></pre>
+</div>
+</div>
+<p>We can use <code>complete()</code> to make these unobserved fish explicit in the data (notice the additional rows, scroll to see them).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>fish_encounters <span class="sc">|&gt;</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(fish, station)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 209 × 3
+   fish  station  seen
+   &lt;fct&gt; &lt;fct&gt;   &lt;int&gt;
+ 1 4842  Release     1
+ 2 4842  I80_1       1
+ 3 4842  Lisbon      1
+ 4 4842  Rstr        1
+ 5 4842  Base_TD     1
+ 6 4842  BCE         1
+ 7 4842  BCW         1
+ 8 4842  BCE2        1
+ 9 4842  BCW2        1
+10 4842  MAE         1
+11 4842  MAW         1
+12 4843  Release     1
+13 4843  I80_1       1
+14 4843  Lisbon      1
+15 4843  Rstr        1
+16 4843  Base_TD     1
+17 4843  BCE         1
+18 4843  BCW         1
+19 4843  BCE2        1
+20 4843  BCW2        1
+21 4843  MAE         1
+22 4843  MAW         1
+23 4844  Release     1
+24 4844  I80_1       1
+25 4844  Lisbon      1
+26 4844  Rstr        1
+27 4844  Base_TD     1
+28 4844  BCE         1
+29 4844  BCW         1
+30 4844  BCE2        1
+31 4844  BCW2        1
+32 4844  MAE         1
+33 4844  MAW         1
+34 4845  Release     1
+35 4845  I80_1       1
+36 4845  Lisbon      1
+37 4845  Rstr        1
+38 4845  Base_TD     1
+39 4845  BCE        NA
+40 4845  BCW        NA
+41 4845  BCE2       NA
+42 4845  BCW2       NA
+43 4845  MAE        NA
+44 4845  MAW        NA
+45 4847  Release     1
+46 4847  I80_1       1
+47 4847  Lisbon      1
+48 4847  Rstr       NA
+49 4847  Base_TD    NA
+50 4847  BCE        NA
+# ℹ 159 more rows</code></pre>
+</div>
+</div>
+<p>Since we know all implicit missing values were cases where the fish wasn’t <code>seen</code> at the station, we can use <code>fill</code> to give a known value.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>fish_encounters <span class="sc">|&gt;</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(fish, station, <span class="at">fill =</span> <span class="fu">list</span>(<span class="at">seen =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 209 × 3
+   fish  station  seen
+   &lt;fct&gt; &lt;fct&gt;   &lt;int&gt;
+ 1 4842  Release     1
+ 2 4842  I80_1       1
+ 3 4842  Lisbon      1
+ 4 4842  Rstr        1
+ 5 4842  Base_TD     1
+ 6 4842  BCE         1
+ 7 4842  BCW         1
+ 8 4842  BCE2        1
+ 9 4842  BCW2        1
+10 4842  MAE         1
+11 4842  MAW         1
+12 4843  Release     1
+13 4843  I80_1       1
+14 4843  Lisbon      1
+15 4843  Rstr        1
+16 4843  Base_TD     1
+17 4843  BCE         1
+18 4843  BCW         1
+19 4843  BCE2        1
+20 4843  BCW2        1
+21 4843  MAE         1
+22 4843  MAW         1
+23 4844  Release     1
+24 4844  I80_1       1
+25 4844  Lisbon      1
+26 4844  Rstr        1
+27 4844  Base_TD     1
+28 4844  BCE         1
+29 4844  BCW         1
+30 4844  BCE2        1
+31 4844  BCW2        1
+32 4844  MAE         1
+33 4844  MAW         1
+34 4845  Release     1
+35 4845  I80_1       1
+36 4845  Lisbon      1
+37 4845  Rstr        1
+38 4845  Base_TD     1
+39 4845  BCE         0
+40 4845  BCW         0
+41 4845  BCE2        0
+42 4845  BCW2        0
+43 4845  MAE         0
+44 4845  MAW         0
+45 4847  Release     1
+46 4847  I80_1       1
+47 4847  Lisbon      1
+48 4847  Rstr        0
+49 4847  Base_TD     0
+50 4847  BCE         0
+# ℹ 159 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="drop_na" class="level3">
+<h3 class="anchored" data-anchor-id="drop_na"><code>drop_na()</code></h3>
+<p>The <code>drop_na()</code> function transforms explicit missing values (represented by <code>NA</code> in the dataset) into implicit non-missing values. This is accomplished by removing the entire rows that contain <code>NA</code> values, leaving behind a dataset with only complete observations. It is the natural opposite of <code>complete()</code>.</p>
+<p>It requires two inputs, the dataset and the variables to drop rows with missing values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(col1, col2, col3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="fill" class="level3">
+<h3 class="anchored" data-anchor-id="fill"><code>fill()</code></h3>
+<p>Used to fill missing values using the previous or next value. This is a type of imputation, and should be done with care as to not introduce bias or inaccuracies into your analysis. The <code>fill()</code> function is particularly useful for data where missing values can logically be assumed to continue from the nearest previous or next observation.</p>
+<p>The <code>fill()</code> function accepts three inputs, the dataset, columns to fill, and the direction for filling missing values. There are four options for the fill direction:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><code>.direction</code></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>"down"</code></td>
+<td>Fills NA with the last non-missing value</td>
+</tr>
+<tr class="even">
+<td><code>"up"</code></td>
+<td>Fills NA with the next non-missing value</td>
+</tr>
+<tr class="odd">
+<td><code>"downup"</code></td>
+<td>Fills “down” if possible, otherwise uses “up”</td>
+</tr>
+<tr class="even">
+<td><code>"updown"</code></td>
+<td>Fills “up” if possible, otherwise uses “down”</td>
+</tr>
+</tbody>
+</table>
+<p>With <code>fill()</code>, you can specify the direction of the fill with <code>.direction</code>, choosing either <code>"down"</code> to propagate the last valid observation forward, <code>"up"</code> to carry the next valid observation backward, or both <code>"downup"</code> or <code>"updown"</code> to fill missing values in more complex patterns. This ensures that imputation respects the data’s natural progression or sequence and maintains its structural integrity.</p>
+</section>
+<section id="replace_na" class="level3">
+<h3 class="anchored" data-anchor-id="replace_na"><code>replace_na()</code></h3>
+<p>The <code>replace_na()</code> function allows you to replace <code>NA</code> values with a specific value. It works very similarly to the <code>fill</code> option of the <code>complete()</code> function, where a dataset and list of replacement values for each column is provided.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replace_na</span>(</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">col1 =</span> <span class="dv">0</span>,</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">col2 =</span> <span class="cn">FALSE</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
+<script type="webr-data">
+eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC40LjEvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyIsInFsY2hlY2tyIiwidGlkeXIiXSwicmVwb3MiOlsiaHR0cHM6Ly9yZXBvLnItd2FzbS5vcmcvIiwiaHR0cHM6Ly9sZWFybnItYWNhZGVteS5naXRodWIuaW8vcWxjaGVja3IiXX0sInJlbmRlcl9kZiI6ImRlZmF1bHQifQ==
+</script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W119
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0zIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV8zO1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItMyIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzMgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBleGVyY2lzZSBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKFxuICAgIHtcbiAgICAgIGlkOiBcIndlYnItMy1jb250ZW50c1wiLFxuICAgICAgZW52aXI6IGBleGVyY2lzZS1lbnYtJHtibG9jay5hdHRyLmV4ZXJjaXNlfWAsXG4gICAgICBlcnJvcjogZmFsc2UsXG4gICAgICBjYXB0aW9uOiAnRXhlcmNpc2UnLFxuICAgIH0sXG4gICAgYmxvY2suYXR0clxuICApO1xuXG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxudmlld29mIF93ZWJyX3ZhbHVlXzMgPSB3ZWJST2pzLnByb2Nlc3MoX3dlYnJfZWRpdG9yXzMsIHt9KTtcbl93ZWJyX2ZlZWRiYWNrXzMgPSB7XG4gIGNvbnN0IHsgV2ViUkdyYWRlciB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3QgZW1wdHlGZWVkYmFjayA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpO1xuXG4gIGNvbnN0IGdyYWRlciA9IG5ldyBXZWJSR3JhZGVyKF93ZWJyX3ZhbHVlXzMuZXZhbHVhdG9yKTtcbiAgY29uc3QgZmVlZGJhY2sgPSBhd2FpdCBncmFkZXIuZ3JhZGVFeGVyY2lzZSgpO1xuICBpZiAoIWZlZWRiYWNrKSByZXR1cm4gZW1wdHlGZWVkYmFjaztcbiAgcmV0dXJuIGZlZWRiYWNrO1xufVxuIn0seyJjZWxsTmFtZSI6IndlYnItd2lkZ2V0LTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIC8vIFdhaXQgZm9yIG91dHB1dCB0byBiZSB3cml0dGVuIHRvIHRoZSBET00sIHRoZW4gdHJpZ2dlciB3aWRnZXQgcmVuZGVyaW5nXG4gIGF3YWl0IF93ZWJyX3ZhbHVlXzE7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfd2Vicl9lZGl0b3JfMSA9IHtcbiAgY29uc3QgeyBXZWJSRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ3ZWJyLTEtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICAvLyBEZWZhdWx0IGV4ZXJjaXNlIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oXG4gICAge1xuICAgICAgaWQ6IFwid2Vici0xLWNvbnRlbnRzXCIsXG4gICAgICBlbnZpcjogYGV4ZXJjaXNlLWVudi0ke2Jsb2NrLmF0dHIuZXhlcmNpc2V9YCxcbiAgICAgIGVycm9yOiBmYWxzZSxcbiAgICAgIGNhcHRpb246ICdFeGVyY2lzZScsXG4gICAgfSxcbiAgICBibG9jay5hdHRyXG4gICk7XG5cbiAgY29uc3QgZWRpdG9yID0gbmV3IFdlYlJFeGVyY2lzZUVkaXRvcih3ZWJST2pzLndlYlJQcm9taXNlLCBibG9jay5jb2RlLCBvcHRpb25zKTtcbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG52aWV3b2YgX3dlYnJfdmFsdWVfMSA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMSwge30pO1xuX3dlYnJfZmVlZGJhY2tfMSA9IHtcbiAgY29uc3QgeyBXZWJSR3JhZGVyIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBlbXB0eUZlZWRiYWNrID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnZGl2Jyk7XG5cbiAgY29uc3QgZ3JhZGVyID0gbmV3IFdlYlJHcmFkZXIoX3dlYnJfdmFsdWVfMS5ldmFsdWF0b3IpO1xuICBjb25zdCBmZWVkYmFjayA9IGF3YWl0IGdyYWRlci5ncmFkZUV4ZXJjaXNlKCk7XG4gIGlmICghZmVlZGJhY2spIHJldHVybiBlbXB0eUZlZWRiYWNrO1xuICByZXR1cm4gZmVlZGJhY2s7XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici1wcmVsdWRlIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoid2ViUk9qcyA9IHtcbiAgY29uc3QgeyBXZWJSIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lLldlYlI7XG4gIGNvbnN0IHtcbiAgICBXZWJSRXZhbHVhdG9yLFxuICAgIFdlYlJFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBSLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGhcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIHdlYlIgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgLy8gSW5pdGlhbGlzZSB3ZWJSIGFuZCBzZXR1cCBmb3IgUiBjb2RlIGV2YWx1YXRpb25cbiAgbGV0IHdlYlJQcm9taXNlID0gKGFzeW5jICh3ZWJSKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyB3ZWJSYDtcbiAgICBhd2FpdCB3ZWJSLmluaXQoKTtcblxuICAgIC8vIEluc3RhbGwgcHJvdmlkZWQgbGlzdCBvZiBwYWNrYWdlc1xuICAgIC8vIEVuc3VyZSB3ZWJSIGRlZmF1bHQgcmVwbyBpcyBpbmNsdWRlZFxuICAgIGRhdGEucGFja2FnZXMucmVwb3MucHVzaChcImh0dHBzOi8vcmVwby5yLXdhc20ub3JnXCIpXG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gd2ViUi5ldmFsUlZvaWQoYFxuICAgICAgICB3ZWJyOjppbnN0YWxsKHBrZywgcmVwb3MgPSByZXBvcylcbiAgICAgICAgbGlicmFyeShwa2csIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSlcbiAgICAgIGAsIHsgZW52OiB7XG4gICAgICAgIHBrZzogcGtnLFxuICAgICAgICByZXBvczogZGF0YS5wYWNrYWdlcy5yZXBvcyxcbiAgICAgIH19KTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICB0cnkge1xuICAgICAgICAgIGF3YWl0IHdlYlIuRlMubWtkaXIocGF0aCk7XG4gICAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgICBpZiAoIWUubWVzc2FnZS5pbmNsdWRlcyhcIkZTIGVycm9yXCIpKSB7XG4gICAgICAgICAgICB0aHJvdyBlO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgcmV0dXJuIGF3YWl0IHdlYlIuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5zdGFsbGluZyB3ZWJSIHNoaW1zYDtcbiAgICBhd2FpdCB3ZWJSLmV2YWxSVm9pZChgd2Vicjo6c2hpbV9pbnN0YWxsKClgKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgV2ViUiBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBSKHdlYlIsIGRhdGEpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHdlYlI7XG4gIH0pKG5ldyBXZWJSKGRhdGEub3B0aW9ucykpO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCB3ZWJSID0gYXdhaXQgd2ViUlByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFdlYlJFdmFsdWF0b3Iod2ViUiwgY29udGV4dClcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBwcm9jZXNzLFxuICAgIHdlYlJQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICB9O1xufVxuIn1dfQ==
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">
@@ -191,8 +1072,21 @@ eyJjb250ZW50cyI6W119
 <script type="vfs-file">
 W10=
 </script>
+</section>
+</section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../modules/analysis/tidyr";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
