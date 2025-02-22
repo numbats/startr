@@ -1,5 +1,5 @@
 ---
-title: Quarto Basics
+title: 1. Quarto Basics
 subtitle: 'With Quarto, creating documents and reports becomes a breeze. In this chapter, you will learn how to set up Quarto, explore its key features, and start creating your own quarto documents with ease.'
 title-block-banner: yes
 engine: knitr
