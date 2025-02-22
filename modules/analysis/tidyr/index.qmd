@@ -1,0 +1,486 @@
+---
+title: 2. Tidy data restructuring
+subtitle: 'How to restructure a messy dataset with tidyr into tidy data.'
+title-block-banner: yes
+engine: knitr
+format:
+  lesson-html: default
+webr:
+  packages:
+    - qlcheckr
+    - tidyr
+  repos:
+    - https://repo.r-wasm.org/
+    - https://learnr-academy.github.io/qlcheckr
+ojs-engine: true
+difficulty: "Intermediate"
+time: "30 minutes"
+---
+
+{{< include /_extensions/r-wasm/live/_knitr.qmd >}}
+
+The idea of tidy data is fundamental to data analysis with the tidyverse. Tidy data describes a clean and principled structure for your data which simplifies analysis tasks. The `tidyr` package provides tools to maintain or convert datasets into this tidy format, ensuring they integrate smoothly with other tidyverse tools for tasks like visualisation and modelling.
+
+## Tidy data
+
+### The tidy data format
+
+Tidy data describes a format for structuring data such that:
+
+* Each *variable* is a column; each column is a variable.
+* Each *observation* is a row; each row is an observation.
+* Each *value* is a cell; each cell is a single value.
+
+This flat and consistent format makes it easier to perform data manipulation and analysis tasks, especially with other tools from the tidyverse.
+
+Consider this untidy dataset from the World Health Organization's global tuberculosis report:
+
+```{r}
+library(tidyr)
+who
+```
+
+This dataset is structurally untidy since the columns 5 through 60 (prefixed with `"new_"`) mix together the diagnosis method, sex, and age group categories. As a result, the columns no longer describe each variable (since many columns are used for the same variable), and each row isn't an observation (since rows contain many observations for different methods, genders, and ages).
+
+Untidy data makes it difficult to perform simple analysis tasks such as comparing the rates of tuberculosis for different age groups, since the calculation would span many columns. A tidy data format as shown below simplifies this operation, since the age variable is now in a singular column that can be easily grouped for comparison summaries.
+
+```{r}
+#| code-fold: true
+#| code-summary: Code for cleaning the `who` dataset
+library(tidyr)
+who_tidy <- who |> 
+  pivot_longer(
+    cols = starts_with("new"),
+    # Split the names into multiple columns
+    names_to = c("diagnosis", "sex", "age"),
+    # Use a regular expression where each matching group becomes a column
+    names_pattern = "new_?(.*)_(.)(.*)",
+    # Reformat the name columns into factors with better labels
+    names_transform = list(
+      diagnosis = \(x) factor(x, levels = c("rel", "sn", "sp", "ep"), labels = c("Relapse", "Negative pulmonary smear", "Positive pulmonary smear", "Extrapulmonary")),
+      sex = \(x) factor(x, levels = c("f", "m"), labels = c("Female", "Male")),
+      age = \(x) factor(x, levels = c("014", "1524", "2534", "3544", "4554", "5564", "65"), labels = c("0-14", "15-24", "25-34", "35-44", "45-54", "55-64", "65+"), ordered = TRUE)
+      ),
+    values_to = "count",
+    # Drop structurally missing values
+    values_drop_na = TRUE
+  )
+```
+
+
+```{r}
+who_tidy
+```
+
+### Using tidy data
+
+In the next lesson we will learn how to compute summary statistics with dplyr, such as the total tuberculosis cases by age group. A tidy data format makes it much easier to calculate these summaries.
+
+::: {.grid}
+
+::: {.g-col-6 .g-col-md-12}
+::: {.callout-important icon=false}
+## ❌ Untidy data code
+
+Untidy data makes it difficult to perform simple calculations. 
+
+Since the age variable is 'wide' (spread across many columns), the code needs to write out many column names where it is easy to make a mistake. The resulting table is also 'wide', and lacks any description of what the data shows (age and totals).
+
+```{r}
+#| message: false
+library(dplyr)
+who |> 
+  summarise(
+    `0-14` = sum(new_sp_m014, new_sp_f014, new_sn_m014, new_sn_f014, new_ep_m014, new_ep_f014, newrel_m014, newrel_f014, na.rm = TRUE),
+    `15-24` = sum(new_sp_m1524, new_sp_f1524, new_sn_m1524, new_sn_f1524, new_ep_m1524, new_ep_f1524, newrel_m1524, newrel_f1524, na.rm = TRUE),
+    `25-34` = sum(new_sp_m2534, new_sp_f2534, new_sn_m2534, new_sn_f2534, new_ep_m2534, new_ep_f2534, newrel_m2534, newrel_f2534, na.rm = TRUE),
+    `35-44` = sum(new_sp_m3544, new_sp_f3544, new_sn_m3544, new_sn_f3544, new_ep_m3544, new_ep_f3544, newrel_m3544, newrel_f3544, na.rm = TRUE),
+    `45-54` = sum(new_sp_m4554, new_sp_f4554, new_sn_m4554, new_sn_f4554, new_ep_m4554, new_ep_f4554, newrel_m4554, newrel_f4554, na.rm = TRUE),
+    `55-64` = sum(new_sp_m5564, new_sp_f5564, new_sn_m5564, new_sn_f5564, new_ep_m5564, new_ep_f5564, newrel_m5564, newrel_f5564, na.rm = TRUE),
+    `65+` = sum(new_sp_m65, new_sp_f65, new_sn_m65, new_sn_f65, new_ep_m65, new_ep_f65, newrel_m65, newrel_f65, na.rm = TRUE)
+  )
+```
+:::
+:::
+
+::: {.g-col-6 .g-col-md-12}
+::: {.callout-tip icon=false}
+## ✅ Tidy data code
+
+Tidy data makes the code simpler to read and write.
+
+Since each variable is only specified once in the code, mistakes are less likely and easier to find and fix. The resulting table is also in a 'long' and tidy format, with descriptive column names.
+
+```{r}
+library(dplyr)
+who_tidy |> 
+  group_by(age) |> 
+  summarise(total = sum(count))
+```
+:::
+:::
+
+:::
+
+
+## Pivoting with `pivot_longer()` and `pivot_wider()`
+
+Pivoting describes changing the structure of the data, where columns are gathered into rows (`pivot_longer()`) or rows are spread across columns (`pivot_wider()`).
+
+### `pivot_longer()`
+
+This function is used to transform a dataset from wide to long format. Untidy data often has variables mixed among many columns (like the `who` tuberculosis dataset), and `pivot_longer()` is most useful for cleaning data into a long tidy format. 
+
+The `pivot_longer()` function requires two main inputs, the dataset and the columns to pivot.
+
+```{r}
+#| eval: false
+data |> 
+  pivot_longer(cols = c(col1, col2, col3))
+```
+
+There are many ways to specify the columns, one way is to write them all inside `c()`. Usually wide untidy datasets have many columns to pivot (the `who` dataset has 56), and so writing each column can be tedious and error prone. Fortunately there is a better way, columns can be specified using **tidy selection**.
+
+::: {.callout-tip}
+## Tidy selection
+
+Tidy selection describes a collection of helpful tools for selecting variables:
+
+* `col1:col3`: select all variables from `col1` to `col3`,
+* `starts_with("col")`/`ends_with("x")`: select variables with a start or end string,
+* `contains("x")`/`matches("\\d+$")`: select variables that *contains* the string, or *matches* the [regular expression](https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions)
+* and much more!
+
+A comprehensive summary can be found in the `?tidyr_tidy_select` documentation.
+:::
+
+To tidy the `who` dataset into a long format, we use `pivot_longer()` on the wide columns which conveniently all start with `"new"`. We can also use `names_to` and `values_to` to give better names for the new columns which previously were the names and values of the selected columns.
+
+```{r}
+who |> 
+  pivot_longer(
+    cols = starts_with("new"),
+    names_to = "diagnosis_sex_age",
+    values_to = "count"
+  )
+```
+
+Since a wide untidy dataset requires values for every cell, the data has many missing values. After pivoting the data into a longer format, these missing values are no longer structurally required by the data (although they may still be useful or informative). We can remove these missing value rows with the `values_drop_na` option:
+
+```{r}
+who |> 
+  pivot_longer(
+    cols = starts_with("new"),
+    names_to = "diagnosis_sex_age",
+    values_to = "count",
+    values_drop_na = TRUE
+  )
+```
+
+::: {.callout-tip}
+## Separating multiple variables in names
+
+It is also possible to split the `diagnosis_sex_age` column into three separate columns using `names_sep` (for simple delimiters) or `names_pattern` (for matching [regular expressions](https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions)).
+
+In this case values like `"new_sp_m554"`, `new_sn_f65` and `newrel_m5564` are not easily separable by a delimiter, and so a regular expression like `"names_pattern = new_?(.*)_(.)(.*)"` is required.
+
+Alternatively, we can use `separate()` to separate a column into multiple columns.
+:::
+
+The `world_bank_pop` dataset contains years across multiple columns, use `pivot_longer()` to gather all of the year columns into a single `"year"` column with the population values collected into a `"population"` column.
+
+```{webr}
+#| exercise: pivot_longer_world_bank_pop
+# Transform the dataset from wide to long format using pivot_longer
+library(tidyr)
+world_bank_pop |> 
+  pivot_longer(cols = ______, names_to = ______, values_to = ______)
+```
+
+```{webr}
+#| exercise: pivot_longer_world_bank_pop
+#| check: true
+library(qlcheckr)
+ans <- world_bank_pop |> pivot_longer(cols = `2000`:`2017`, names_to = "year", values_to = "population")
+apply_checks(
+  c(
+    "Make sure you specify the range of columns to pivot using `pivot_longer()`." = !search_ast(ql_ast(), .fn = pivot_longer),
+    "Select all of the columns which contains years" = exists_in(ql_results(), \(x) identical(unname(x), unname(ans))),
+    "Use \"year\" for the years column name"  = exists_in(ql_results(), \(x) is.data.farme(x) && identical(x$year, ans$year)),
+    "Use \"population\" for the values column name"  = exists_in(ql_results(), \(x) is.data.farme(x) && identical(x$population, ans$population))
+  )
+)
+```
+
+::: { .hint exercise="pivot_longer_world_bank_pop"}
+::: { .callout-note collapse="false"}
+## Hint
+
+All of the year columns can be selected using either:
+
+* the range of columns `2000`:`2017`,
+* the regular expression `matches(\\d{4})` (4 digits), or
+* the logical test `where(is.numeric)` to select all columns containing numbers (which is only the year columns)
+
+```r
+world_bank_pop |> 
+  pivot_longer(cols = `2000`:`2017`, names_to = "year", values_to = "population")
+```
+:::
+:::
+
+### `pivot_wider()`
+
+Conversely, `pivot_wider()` is used to transform data from long to wide format. This can be useful if your data is untidy because it is too long (multiple variables are contained in rows of a column), or if you've completed your analysis and want to nicely present some results in a table of your report.
+
+The `pivot_wider()` function requires two main inputs, the column names for the wider table's names and values.
+
+```{r}
+#| eval: false
+data |> 
+  pivot_wider(
+    names_from = "names",
+    values_from = "values"
+  )
+```
+
+The `fish_encounters` dataset contains sightings of 19 tagged fish as they travel past measurement stations.
+
+```{r}
+fish_encounters
+```
+
+It can be useful to treat each measurement `station` as a separate variable, considering each individual fish as the observational unit (rather than a sighting of a fish at a station).
+
+For this we can use `pivot_wider()` to spread `station` into the columns with `seen` as each cell's values.
+
+```{r}
+fish_encounters |> 
+  pivot_wider(names_from = "station", values_from = "seen")
+```
+
+Notice how the wider form introduces many NA values. These are combinations of fish identifiers and measurement stations which did not have a row in the original dataset. For this dataset, this means that the fish was not `seen` at the station and we can safely fill these missing values with 0 using the `values_fill` option:
+
+```{r}
+fish_encounters |> 
+  pivot_wider(names_from = "station", values_from = "seen", values_fill = 0)
+```
+
+The `indicator` variable of the `world_bank_pop` dataset contains both population totals and growth. These two values are in principle, two different variables which should be treated as separate columns. After pivoting the year columns into a longer structure, now pivot these population indicator variables into a wider structure to produce a tidy data format.
+
+```{webr}
+#| exercise: pivot_wider_world_bank_pop
+# First, pivot the year columns to a longer structure, then pivot indicator variables to a wider structure
+world_bank_pop |> 
+  pivot_longer(cols = `2000`:`2017`, names_to = "year", values_to = "population") |> 
+  pivot_wider(names_from = "______", values_from = "______")
+```
+
+```{webr}
+#| exercise: pivot_wider_world_bank_pop
+#| check: true
+library(qlcheckr)
+
+ans <- world_bank_pop |> 
+  pivot_longer(cols = `2000`:`2017`, names_to = "year", values_to = "population") |> 
+  pivot_wider(names_from = "indicator", values_from = "population")
+apply_checks(
+  c(
+    "Use `pivot_wider()` to pivot the indicator column into a wider format." = !search_ast(ql_ast(), .fn = pivot_wider),
+    "Pivot the `indicator` column wider using `population` for the values." = exists_in(ql_results(), identical, ans),
+  )
+```
+
+::: { .hint exercise="pivot_wider_world_bank_pop"}
+::: { .callout-note collapse="false"}
+## Hint
+
+The `indicator` variable contains 'total' and 'growth' variables, which should be made into new columns (`names_from`). The `population` variable contains values for these new population totals and growth columns (`values_from`).
+
+```r
+world_bank_pop |> 
+  pivot_longer(cols = `2000`:`2017`, names_to = "year", values_to = "population") |> 
+  pivot_wider(names_from = "indicator", values_from = "population")
+```
+:::
+:::
+
+
+## Split or combine columns
+
+Occasionally the values of single column contains information about multiple variables or observations. Separating this column into multiple columns or rows into a tidy data format (where each column is a variable, and each row is an observation) makes later analysis easier.
+
+### `separate_wider_*()`
+
+Separating combined values into a wider format is appropriate when the values contain information about multiple variables.
+
+There are three ways to separate values into columns:
+
+| Function                   | Description                                                                                         |
+|----------------------------|-----------------------------------------------------------------------------------------------------|
+| `separate_wider_position()`| Splits a column into multiple columns using specific position indices, ideal for fixed-width data.  |
+| `separate_wider_delim()`   | Divides a column into new columns based on a specified delimiter, useful for structured patterns.   |
+| `separate_wider_regex()`   | Uses regular expressions to separate a column into multiple columns, suitable for complex patterns. |
+
+The `indicator` variable from the `world_bank_pop` dataset encodes multiple variables separated by `.`.
+
+```{r}
+world_bank_pop
+```
+
+The first part is always `"SP"` and can be ignored, but the second part is `"POP"` (total population) or `"URB"` (urban population), and the third part is `"TOTL"` (population totals) or `"GROW"` (population growth).
+
+We can use `separate_wider_delim()` to separate `indicator` based on the `"."` delimiter.
+
+```{r}
+world_bank_pop |> 
+  separate_wider_delim(indicator, delim = ".", names = c("sp", "location", "indicator"))
+```
+
+
+### `separate_longer_*()`
+
+Separating combined values into a longer format is appropriate when a column contains multiple values, for example a clothing product's sizes or styles.
+
+There are two ways to separate values into rows:
+
+| Function Name               | Description                                                                                                               |
+|-----------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| `separate_longer_position()`| Breaks a column into multiple rows based on specified fixed positions, useful for expanding fixed-width data.             |
+| `separate_longer_delim()`   | Splits a column into multiple rows using a specified delimiter, ideal for lists or values separated by delimiters.        |
+
+Consider this dataset of clothing items:
+
+```{r}
+# Sample dataset of clothing products
+clothing_data <- tibble(
+  item = c("T-Shirt", "Jacket", "Dress"),
+  size = c("S, M, L", "M, L, XL", "XS, S, M, L"),
+  colour = c("Red, Blue, Green", "Black, Grey", "Purple, Yellow")
+)
+clothing_data
+```
+
+Since each size and colour is separated by `", "`, we can use `separate_longer_delim()` to separate the multiple product sizes and colours into rows.
+
+```{r}
+clothing_data %>%
+  separate_longer_delim(size, delim = ", ") |> 
+  separate_longer_delim(colour, delim = ", ")
+```
+
+
+### `unite()`
+
+The `unite()` function combines multiple columns into a single column, separating the values of each column by a delimiter (by default `sep = "_"`). This is the opposite operation of `separate_wider_*()`.
+
+It requires two inputs, the data and columns to combine. The `col` argument supports tidy selection.
+
+```{r}
+#| eval: false
+data |> 
+  unite(col = c(col1, col2, col3))
+```
+
+This is rarely useful for producing tidy data, but it can be useful for preparing data for reports or creating unique identifiers.
+
+```{r}
+library(palmerpenguins)
+penguins %>%
+  unite(col = "category", c(species, island, sex), sep = "_")
+```
+
+## Handling Missing Values
+
+Appropriately representing missing values in your dataset is necessary for an accurate analysis. The `tidyr` package in R offers several tools for managing missing data, both implicit and explicit. Implicit missing values occur when expected combinations of data are absent, while explicit missing values appear as `NA` in your dataset. 
+
+### `complete()`
+
+The `complete()` function transforms *implicit* missing values (where the row itself is missing) into explicit missing values. It does this by finding all combinations of specified variables, and adding any missing combinations using `NA` values.
+
+It requires two inputs, the dataset and a structure of variables to combine.
+
+```{r}
+#| eval: false
+data |> 
+  complete(brand, nesting(state, region))
+```
+
+The `nesting()` function can limit combinations within other variables, preventing redundant or impossible combinations. The code uses `nesting(state, region)` to ensure that only existing state-region pairings are considered when filling missing data, preventing improper combinations of regions into other states.
+
+The `fish_encounters` dataset only contains rows where a fish was seen at a measurement station, and so there is an implicit missing value for each time a fish was not observed.
+
+```{r}
+fish_encounters
+```
+
+We can use `complete()` to make these unobserved fish explicit in the data (notice the additional rows, scroll to see them).
+
+```{r}
+#| eval: false
+fish_encounters |> 
+  complete(fish, station)
+```
+```{r}
+#| echo: false
+fish_encounters |> 
+  complete(fish, station) |> 
+  print(n=50)
+```
+
+Since we know all implicit missing values were cases where the fish wasn't `seen` at the station, we can use `fill` to give a known value.
+
+```{r}
+#| eval: false
+fish_encounters |> 
+  complete(fish, station, fill = list(seen = 0))
+```
+```{r}
+#| echo: false
+fish_encounters |> 
+  complete(fish, station, fill = list(seen = 0)) |> 
+  print(n=50)
+```
+
+
+### `drop_na()`
+
+The `drop_na()` function transforms explicit missing values (represented by `NA` in the dataset) into implicit non-missing values. This is accomplished by removing the entire rows that contain `NA` values, leaving behind a dataset with only complete observations. It is the natural opposite of `complete()`.
+
+It requires two inputs, the dataset and the variables to drop rows with missing values.
+
+```{r}
+#| eval: false
+data |> 
+  drop_na(col1, col2, col3)
+```
+
+### `fill()`
+
+Used to fill missing values using the previous or next value. This is a type of imputation, and should be done with care as to not introduce bias or inaccuracies into your analysis. The `fill()` function is particularly useful for data where missing values can logically be assumed to continue from the nearest previous or next observation.
+
+The `fill()` function accepts three inputs, the dataset, columns to fill, and the direction for filling missing values. There are four options for the fill direction:
+
+| `.direction`      | Description                                    |
+|-------------------|------------------------------------------------|
+| `"down"`          | Fills NA with the last non-missing value       |
+| `"up"`            | Fills NA with the next non-missing value       |
+| `"downup"`        | Fills "down" if possible, otherwise uses "up"  |
+| `"updown"`        | Fills "up" if possible, otherwise uses "down"  |
+
+With `fill()`, you can specify the direction of the fill with `.direction`, choosing either `"down"` to propagate the last valid observation forward, `"up"` to carry the next valid observation backward, or both `"downup"` or `"updown"` to fill missing values in more complex patterns. This ensures that imputation respects the data's natural progression or sequence and maintains its structural integrity.
+
+### `replace_na()`
+
+The `replace_na()` function allows you to replace `NA` values with a specific value. It works very similarly to the `fill` option of the `complete()` function, where a dataset and list of replacement values for each column is provided.
+
+```{r}
+data |> 
+  replace_na(
+    list(
+      col1 = 0,
+      col2 = FALSE
+    )
+  )
+```
+
