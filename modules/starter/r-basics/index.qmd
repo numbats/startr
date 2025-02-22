@@ -6,6 +6,14 @@ engine: knitr
 difficulty: "Beginner"
 time: "20 minutes"
 dev: "Draft"
+webr:
+  packages:
+    - qlcheckr
+    - palmerpenguins
+    - tibble
+  repos:
+    - https://repo.r-wasm.org/
+    - https://learnr-academy.github.io/qlcheckr
 ojs-engine: true
 format:
   lesson-html: default
@@ -98,7 +106,7 @@ You can look at the help file for any R function using `?` or `help()`, try look
 ?log
 ```
 
-In this documentation (under **Usage**) you'll see that the `log()` function can accept 2 inputs: `log(x, base = exp(1))`.
+In this documentation (scroll down to **Usage**) you'll see that the `log()` function can accept 2 inputs: `log(x, base = exp(1))`.
 
 By default the logarithm's `base` is `exp(1)` or $e$ (giving the natural logarithm), but you can change this by specifying a different `base`. Try changing the logarithm's base to `10`:
 
@@ -116,6 +124,19 @@ apply_checks(
   "Use the log() function with a base of 10" = !search_ast(ql_ast(), .expr = log(1, base = 10))
 )
 ```
+
+
+::: { .hint exercise="log10"}
+::: { .callout-note collapse="false"}
+## Hint
+
+The `log()` function can take an optional `base` parameter to specify the logarithm's base. By default, it uses the natural logarithm (base `e`), but if you want to compute the logarithm with base 10, you can specify it as follows.
+
+```r
+log(1, base = 10)
+```
+:::
+:::
 
 ## Syntax
 
@@ -137,15 +158,14 @@ R returns a 'syntax error' because it didn't expect a division (/) to occur **im
 #| check: true
 library(qlcheckr)
 apply_checks(
-  "Try to calculate `3 */ 5`, what happens?" = !grepl("*/", ql_code()),
+  "Try to calculate `3 */ 5`, what happens?" = !grepl("*/", ql_src()),
   "The code you wrote produce a syntax error, have you used */ as shown?" = !exists_in(ql_errors(), grepl, pattern = "unexpected"),
   .msg_correct = "That's correct!<br>R returns an error because it didn't expect a division (/) to occur <b>immediately</b> after multiplication (*)."
 )
 ``` 
 -->
 
-Syntax errors are commonly from mismatched quotes (`'...'`, `"..."`) or brackets (`(...)`, `{...}`), and can be tricky to fix. We'll learn more about fixing errors in the next lesson about troubleshooting. 
-<!-- TODO crossref -->
+Syntax errors are commonly from mismatched quotes (`'...'`, `"..."`) or brackets (`(...)`, `{...}`), and can be tricky to fix. We'll learn more about fixing errors in the [next lesson about troubleshooting](../debugging).
 
 ### Code comments
 
@@ -164,9 +184,22 @@ exp(1)
 #| check: true
 library(qlcheckr)
 apply_checks(
-  "A code comment starts with #, and is followed by any text that explains your code." = !exists_in(ql_code(), grepl, pattern = "^\s*#")
+  "A code comment starts with #, and is followed by any text that explains your code." = !exists_in(ql_src(), grepl, pattern = "^\\s*#")
 )
 ```
+
+::: { .hint exercise="comment"}
+::: { .callout-note collapse="false"}
+## Hint
+
+To include a comment in your code, start with the `#` symbol followed by your explanatory text. Comments help explain what the code is doing or why certain decisions were made.
+
+```r
+# This calculates the exponential of 1, returning Euler's number (e)
+exp(1)
+```
+:::
+:::
 
 ### The pipe, `|>`
 
@@ -184,7 +217,7 @@ rnorm(1000) |>
   mean()
 ```
 
-Writing long chains of code with the pipe makes your code easier to read and can be documented with comments. The equivalent code without the pipe is `mean(exp(rnorm(1000)))`, since `rnorm(1000)` is 'piped' into the `exp()` function giving `exp(rnorm(1000))` which is then piped into the `mean()` function.
+Writing long chains of code with the pipe makes your code easier to read and can be documented with comments. The equivalent code without the pipe is `mean(exp(rnorm(1000)))`, which you read from the innermost set of brackets outwards. With the pipe, we say `rnorm(1000)` is 'piped' into the `exp()` function giving `exp(rnorm(1000))` which is then piped into the `mean()` function.
 
 ::: callout-tip
 ## The magrittr pipe, `%>%`
@@ -222,9 +255,23 @@ log(______)
 library(qlcheckr)
 apply_checks(
   "Incorrect result, have you correctly saved `e` as `exp(1)`?" = !exists_in(ql_results(), `==`, 1),
-  "Use log(e) to re-use the previously computed `e <- exp(1)`." = !search_ast(ql_ast(), .expr = log(e)),
+  "Use log(e) to re-use the previously computed `e <- exp(1)`." = !search_ast(ql_ast(), .expr = log(e))
 )
 ```
+
+
+::: { .hint exercise="reuse"}
+::: { .callout-note collapse="false"}
+## Hint
+
+To compute the natural logarithm of Euler's number \( e \), re-use the `e` variable you have previously defined. Recall that \( e \) can be represented by `exp(1)` which you'll use as follows:
+
+```r
+e <- exp(1)
+log(e)
+```
+:::
+:::
 
 ### Object naming
 
@@ -470,6 +517,18 @@ apply_checks(
 )
 ```
 
+::: { .hint exercise="matrix"}
+::: { .callout-note collapse="false"}
+## Hint
+
+To create a matrix, use the `matrix()` function. You need to fill the matrix with `c(letters, LETTERS)`, setting the number of rows to 26 and the number of columns to 2:
+
+```r
+matrix(c(letters, LETTERS), nrow = 26, ncol = 2)
+```
+:::
+:::
+
 Some useful functions for working with matrices includes:
 
 - `dim()`: Get the dimensions (rows and columns) of the matrix.  
@@ -514,6 +573,18 @@ apply_checks(
 )
 ```
 
+::: { .hint exercise="index"}
+::: { .callout-note collapse="false"}
+## Hint
+
+Use indexing with square brackets `[]` to access elements at a specific position in a vector. For example, to get the 13th letter of the alphabet from the `letters` vector:
+
+```r
+letters[13]
+```
+:::
+:::
+
 Now try to slice the first 10 letters by constructing a numeric sequence with `seq()`:
 
 ```{webr}
@@ -544,6 +615,18 @@ seq(1, 10)
 :::
 :::
 
+::: { .hint exercise="slice"}
+::: { .callout-note collapse="false"}
+## Hint
+
+To slice and obtain a sequence of elements, such as the first 10 letters, use the `seq()` function within the indexing brackets to generate a sequence from 1 to 10.
+
+```r
+letters[seq(1, 10)]
+```
+:::
+:::
+
 ::: { .callout-tip collapse="false"}
 ## Other indices
 
@@ -570,6 +653,18 @@ apply_checks(
   "The expected dataset doesn't match, have you sliced the data at the correct positions with `seq()`?" = !exists_in(ql_results(), identical, volcano[1:10, 43:51])
 )
 ```
+
+::: { .hint exercise="slicemat"}
+::: { .callout-note collapse="false"}
+## Hint
+
+To extract a subset of a matrix with specific rows and columns, use the matrix indexing with a range. For example, to get rows 1 to 10 and columns 43 to 51:
+
+```r
+volcano[1:10, 43:51]
+```
+:::
+:::
 
 ::: { .callout-tip collapse="false"}
 ## Slicing only one dimension
@@ -607,8 +702,7 @@ You can see that the `data.frame` has 26 rows and that today's date has been rep
 
 A data frame is one of the most commonly used data structures in R for storing data. It is similar to a matrix, but it allows you to store different types of data (numeric, character, logical, etc.) in different columns.
 
-Data frames are usually created by importing data files, the most common data format is CSV (comma separated values) which can be read in with `read.csv()`. More information about reading data can be found in the data reading lesson.
-<!-- TODO crossref -->
+Data frames are usually created by importing data files, the most common data format is CSV (comma separated values) which can be read in with `read.csv()`. More information about reading data can be found in the [data reading lesson](/modules/analysis/readr).
 
 Many packages also come with datasets for demonstrating examples, we'll be using the `penguins` data.frame from the `palmerpenguins` package:
 
@@ -632,7 +726,7 @@ library(palmerpenguins)
 # Extract the 2nd column
 penguins[[______]]
 
-# Extract the body mass column
+# Extract the flipper length column
 penguins$______
 ```
 
@@ -642,6 +736,27 @@ penguins$______
 library(qlcheckr)
 apply_checks(
   "The second column was not extracted." = !exists_in(ql_results(), identical, penguins[[2L]]),
-  "The `body_mass_g` column was not extracted." = !exists_in(ql_results(), identical, penguins[["body_mass_g"]])
+  "The `flipper_length_mm` column was not extracted." = !exists_in(ql_results(), identical, penguins[["flipper_length_mm"]])
 )
 ```
+
+
+::: { .hint exercise="extract"}
+::: { .callout-note collapse="false"}
+## Hint
+
+To extract columns in a data frame, you can use either double square brackets `[[]]` for column indexing by position or the dollar sign `$` for extraction by column name.
+
+- For the 2nd column, use:
+
+```r
+penguins[[2]]
+```
+
+- For extracting the `flipper_length_mm` column, use:
+
+```r
+penguins$flipper_length_mm
+```
+:::
+:::
