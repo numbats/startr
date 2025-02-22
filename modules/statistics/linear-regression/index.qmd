@@ -1,5 +1,5 @@
 ---
-title: 6. Linear regression
+title: 1. Linear regression
 subtitle: 'Statistically summarise relationships between variables of a dataset with a linear regression model.'
 title-block-banner: yes
 engine: knitr
