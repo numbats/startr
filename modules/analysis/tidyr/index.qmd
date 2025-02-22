@@ -205,9 +205,9 @@ ans <- world_bank_pop |> pivot_longer(cols = `2000`:`2017`, names_to = "year", v
 apply_checks(
   c(
     "Make sure you specify the range of columns to pivot using `pivot_longer()`." = !search_ast(ql_ast(), .fn = pivot_longer),
-    "Select all of the columns which contains years" = exists_in(ql_results(), \(x) identical(unname(x), unname(ans))),
-    "Use \"year\" for the years column name"  = exists_in(ql_results(), \(x) is.data.farme(x) && identical(x$year, ans$year)),
-    "Use \"population\" for the values column name"  = exists_in(ql_results(), \(x) is.data.farme(x) && identical(x$population, ans$population))
+    "Select all of the columns which contains years" = !exists_in(ql_results(), \(x) identical(unname(x), unname(ans))),
+    "Use \"year\" for the years column name"  = !exists_in(ql_results(), \(x) is.data.frame(x) && identical(x$year, ans$year)),
+    "Use \"population\" for the values column name"  = !exists_in(ql_results(), \(x) is.data.frame(x) && identical(x$population, ans$population))
   )
 )
 ```
@@ -287,8 +287,9 @@ ans <- world_bank_pop |>
 apply_checks(
   c(
     "Use `pivot_wider()` to pivot the indicator column into a wider format." = !search_ast(ql_ast(), .fn = pivot_wider),
-    "Pivot the `indicator` column wider using `population` for the values." = exists_in(ql_results(), identical, ans),
+    "Pivot the `indicator` column wider using `population` for the values." = !exists_in(ql_results(), identical, ans)
   )
+)
 ```
 
 ::: { .hint exercise="pivot_wider_world_bank_pop"}
