@@ -42,3 +42,4 @@ format:
     theme:
       - default
       - styles/main.scss
+    include-after-body: plausible.html
