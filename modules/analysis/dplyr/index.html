@@ -111,17 +111,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <style>
-div.callout-todo.callout {
-  border-left-color: pink;
-}
-div.callout-todo.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-todo .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
 div.callout-tada.callout {
   border-left-color: #008000;
 }
@@ -131,6 +120,17 @@ div.callout-tada.callout-style-default > .callout-header {
 div.callout-tada .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-tada.callout-style-default .callout-icon::before, div.callout-tada.callout-titled .callout-icon::before {
   content: '🎉';
+  background-image: none;
+}
+div.callout-todo.callout {
+  border-left-color: pink;
+}
+div.callout-todo.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-todo .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-todo.callout-style-default .callout-icon::before, div.callout-todo.callout-titled .callout-icon::before {
+  content: '📝';
   background-image: none;
 }
 </style>
@@ -658,18 +658,18 @@ Slicing the start and end of the data
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 8
-   species   island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
-   &lt;fct&gt;     &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
- 1 Gentoo    Biscoe           48.2          14.3               210        4600
- 2 Gentoo    Biscoe           47.5          15                 218        4950
- 3 Chinstrap Dream            50.6          19.4               193        3800
- 4 Adelie    Biscoe           38.6          17.2               199        3750
- 5 Adelie    Biscoe           42.2          19.5               197        4275
- 6 Chinstrap Dream            50.9          17.9               196        3675
- 7 Gentoo    Biscoe           NA            NA                  NA          NA
- 8 Chinstrap Dream            47.6          18.3               195        3850
- 9 Gentoo    Biscoe           45.2          14.8               212        5200
-10 Adelie    Dream            35.6          17.5               191        3175
+   species   island   bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;     &lt;fct&gt;             &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Adelie    Dream              36            17.1               187        3700
+ 2 Chinstrap Dream              43.5          18.1               202        3400
+ 3 Chinstrap Dream              49.2          18.2               195        4400
+ 4 Adelie    Biscoe             40.6          18.8               193        3800
+ 5 Adelie    Biscoe             39            17.5               186        3550
+ 6 Adelie    Torgers…           34.6          17.2               189        3200
+ 7 Adelie    Biscoe             42.2          19.5               197        4275
+ 8 Adelie    Dream              39            18.7               185        3650
+ 9 Gentoo    Biscoe             47.2          13.7               214        4925
+10 Gentoo    Biscoe             46.2          14.5               209        4800
 # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </div>
 </div>
@@ -1295,6 +1295,8 @@ W10=
 </section>
 
 </main> <!-- /main -->
+<!-- plausible --> 
+<script defer="" data-domain="startr.numbat.space" src="https://track.mitchelloharawild.com/js/plausible.js"></script>
 <script type="ojs-module-contents">
 eyJjb250ZW50cyI6W119
 </script>
