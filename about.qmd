@@ -5,6 +5,7 @@ format:
     theme:
       - default
       - styles/main.scss
+    include-after-body: plausible.html
 ---
 
 StartR is a website with materials to help you learn R and start using it to explore data. No prior experience in programming, statistics, or data is required to work through these materials. These materials were developed to prepare our students for our courses that expect some familiarity of R and data analysis.

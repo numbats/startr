@@ -19,6 +19,7 @@ format:
       - default
       - styles/main.scss
       - styles/listing.scss
+    include-after-body: plausible.html
 ---
 
 :::{.track-listing}
