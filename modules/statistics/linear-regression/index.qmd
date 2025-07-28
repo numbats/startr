@@ -11,7 +11,7 @@ webr:
     - palmerpenguins
   repos:
     - https://repo.r-wasm.org/
-    - https://startr-academy.github.io/qlcheckr
+    - https://startr-academy.r-universe.dev
 difficulty: "Intermediate"
 time: "30 minutes"
 ojs-engine: true

@@ -13,7 +13,7 @@ webr:
     - tibble
   repos:
     - https://repo.r-wasm.org/
-    - https://startr-academy.github.io/qlcheckr
+    - https://startr-academy.r-universe.dev
 ojs-engine: true
 format:
   lesson-html: default
