@@ -91,9 +91,9 @@ format:
 :::
 
 :::{.footer}
-[The team](https://github.com/numbats/monash-startr-modules/graphs/contributors)
+[The team](https://github.com/numbats/startr/graphs/contributors)
 
-[Contribute](https://github.com/numbats/monash-startr-modules)
+[Contribute](https://github.com/numbats/startr)
  
 [About](https://numbat.space/)
 
