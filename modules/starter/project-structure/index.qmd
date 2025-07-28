@@ -407,17 +407,17 @@ External paths refer to file locations external to the computer you are using bu
 **Example:**
 ```R
 # Windows/macOS/Linux
-data <- read.csv("https://learnr.numbat.space/data/survey_results.csv")
+data <- read.csv("https://startr.numbat.space/data/survey_results.csv")
 ```
 
 A URL consists of several parts:
 
 - **Protocol** (`https://`): The communication method used to access the resource. Most often this will be `http` or `https` (Hypertext Transfer Protocol Secure, the protocol for websites). Other protocols that are commonly used include `ftp` (File Transfer Protocol), or `s3` (Simply Storage Service).
-- **Address / Location** (`learnr.numbat.space`): The network address of the server hosting the resource. In this case, `learnr.numbat.space` is the address, identifying the specific server to connect to.  
+- **Address / Location** (`startr.numbat.space`): The network address of the server hosting the resource. In this case, `startr.numbat.space` is the address, identifying the specific server to connect to.  
 - **Path** (`/data/survey_results.csv`): The absolute path of the file or resource on the server.
 - **Other Information**: Sometimes additional details are needed to connect to the external server, commonly this is:
-  - A port number like `:8080` specifies a network port (`https://learnr.numbat.space:8080/...`).  
-  - Credentials like `username:password@` can provide login information (`https://user:pass@learnr.numbat.space/...`).  
+  - A port number like `:8080` specifies a network port (`https://startr.numbat.space:8080/...`).  
+  - Credentials like `username:password@` can provide login information (`https://user:pass@startr.numbat.space/...`).  
 
 ::: {.callout-tip collapse="false"}
 ## Using external paths
@@ -425,7 +425,7 @@ A URL consists of several parts:
 Many R functions allow you to directly use web URLs for accessing data, for example `read.csv()` shown earlier. If the function you want doesn't support external file paths, you can download the files with `download.file()`.
 
 ```r
-download.file("https://learnr.numbat.space/data/survey_results.csv", destfile = "data/survey_results.csv")
+download.file("https://startr.numbat.space/data/survey_results.csv", destfile = "data/survey_results.csv")
 data <- read.csv("data/survey_results.csv")
 ```
 :::

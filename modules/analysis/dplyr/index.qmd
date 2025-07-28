@@ -12,7 +12,7 @@ webr:
     - dplyr
   repos:
     - https://repo.r-wasm.org/
-    - https://learnr-academy.github.io/qlcheckr
+    - https://startr-academy.github.io/qlcheckr
 ojs-engine: true
 difficulty: "Intermediate"
 time: "45 minutes"

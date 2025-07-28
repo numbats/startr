@@ -18,4 +18,4 @@ contributes:
         packages:
           - qlcheckr
         repos:
-          - https://learnr-academy.github.io/qlcheckr
+          - https://startr-academy.github.io/qlcheckr
